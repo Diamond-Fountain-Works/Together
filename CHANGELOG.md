@@ -1,3 +1,15 @@
+# Together changelog
+
+## 0.2.1 · Build 2 — Our Finances (development)
+
+- Added three-tab finance workspace, one shared/individual/AA expense ledger, derived reserve balances and dated deposits.
+- Added ISO 4217 currency wheels, integer/Decimal frozen CNY settlements, categories/date events/period filters and safe card metadata.
+- Added monthly rule revisions, deterministic Provisional instances, backfill, nonblocking reminders and confirm/correct/skip actions.
+- Added signed finance operations, audit changes, remote one-time notifications and V3 compatibility checks with preserved V2 route/identity upgrade.
+- Kept physical SwiftData schema and original source; added a real old-source store migration fixture, finance tests and native UI/rendering evidence gates.
+- Existing installed 0.0.1 App is not replaced by this task. No bank connectivity, debt settlement, Android, offline mailbox or automatic updater.
+- Final acceptance details and remaining environment/physical-network limits: TEST_PLAN.md and qa/results.
+
 # Changelog
 
 ## 0.0.1 · Build 1 — 2026-10-10 incremental development

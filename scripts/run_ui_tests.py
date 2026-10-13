@@ -11,7 +11,7 @@ output=ROOT/'qa/visual/candidates';output.mkdir(parents=True,exist_ok=True)
 import datetime
 stamp=datetime.datetime.now().strftime('%Y%m%d-%H%M%S');bundle=results/f'ui-{stamp}.xcresult'
 env=os.environ.copy()
-derived=Path.home()/'.cache/Together/UIQA-DerivedData'
+derived=Path(os.environ.get('TOGETHER_UI_DERIVED_DATA',str(Path.home()/('.cache/Together/UIQA-'+project.name+'-DerivedData'))))
 derived.mkdir(parents=True,exist_ok=True)
 subprocess.run([sys.executable,'script/generate_project.py'],cwd=project,check=True,env=env)
 command=['xcodebuild','-project','Together.xcodeproj','-scheme','Together','-configuration','Debug','-destination',f'platform=macOS,arch={platform.machine()}','-derivedDataPath',str(derived),'-resultBundlePath',str(bundle),'-test-timeouts-enabled','YES','-default-test-execution-time-allowance','300','-maximum-test-execution-time-allowance','300','test']
@@ -21,6 +21,10 @@ if selected:
   command.append('-only-testing:TogetherUITests/TogetherUITests/'+name)
 with (results/'ui-test.log').open('w') as log:run=subprocess.run(command,cwd=project,env=env,stdout=log,stderr=subprocess.STDOUT)
 summary={'status':'PASS' if run.returncode==0 else 'FAIL','resultBundle':str(bundle),'exitCode':run.returncode,'screenshots':[],'skippedPages':['Our Story: not implemented']}
+log_text=(results/'ui-test.log').read_text()
+if run.returncode!=0 and 'Timed out while enabling automation mode' in log_text and 'Test Case ' not in log_text:
+    summary['status']='NOT RUN'
+    summary['reason']='macOS XCTest automation mode could not initialize; no UI assertions executed.'
 if bundle.exists():
  raw=subprocess.run(['xcrun','xcresulttool','get','test-results','summary','--path',str(bundle),'--format','json'],capture_output=True,text=True)
  if raw.returncode==0:

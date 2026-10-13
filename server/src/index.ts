@@ -84,7 +84,7 @@ function checkDescriptor(d: Descriptor): void {
     !uuid.test(d.userId) ||
     !uuid.test(d.initialSpaceId) ||
     from64(d.publicKey).length !== 32 ||
-    d.protocolVersion !== 2 ||
+    ![2, 3].includes(d.protocolVersion) ||
     typeof d.displayName !== "string" ||
     d.displayName.length > 80 ||
     !d.initialTimeZoneIdentifier
@@ -114,6 +114,7 @@ export default {
       return json({
         status: "ok",
         protocol: 1,
+        deviceProtocols: [2, 3],
         delivery: "realtime-only",
         version: env.SERVICE_VERSION,
       });

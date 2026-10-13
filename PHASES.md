@@ -1,3 +1,22 @@
+# 0.2.1 implementation record
+
+Safe checkpoint: external Git directory `~/.cache/Together/finance-development.git`, branch `feature/our-finances-v0.2.1`, original commit `4231afb3a5e911f1095f6c5314c95a0630c736ca`. Root home Git main is untouched. `0.0.1` source unchanged; new work is in `0.2.1`. Installed App remains unchanged.
+
+| Phase | Actual changed files | Implemented | Validation / remaining |
+|---|---|---|---|
+| A | Version folder, ReleaseVersion.json, qa/project.json, requirements/architecture | Audit, isolated branch/checkpoint, Build 2, unchanged physical schema | Original finance absent; no user store reset |
+| B | Money, FinanceAmountDraft, FinancialCalendar, FinanceCurrencies.json | Exact minors/Decimal, ISO precision, frozen CNY/quote, calendar cycles | Unit tests cover rounding/FX/DST/short months |
+| C | FinanceModels/Projector/Service, UnitedReservesView/ReserveEditor | Opening/deposits/history/negative derived balance, pending vs reconciled | Duplicate/field conflict and zero conversion tests |
+| D | Expense domain/services/editors/list, DateEvent | One ledger, four funding modes, AA remainders, filters/statistics | Preserves untouched fields when a remote change arrives during editing |
+| E | Bill/revision/occurrence services and review/notification logic | Monthly rules, next-natural-month defaults, sparse forecasts, stable dues, confirm/correct/skip, future pause/termination | Core lifecycle tests pass; real OS notification delivery needs opt-in/manual acceptance |
+| F | Views/Finances, FinanceNavigation, RootView/ApplicationModel | Three tabs, wheel controls, cards/cycles, one create action, light/dark/reduced | Native build and limited Computer Use; XCUITest mode blocked by environment |
+| G | FinanceProjector, Operations/ReplicaEngine, peer/relay compatibility, server | Signed finance operations, one-time remote banners, change review, V3 with old-route upgrade | Actual local and public native clients; physical dual-Mac NOT RUN |
+| H | Migration fixture/scripts/tests, catalogs/release notes, QA and docs | Actual old-code store upgrade; versioned Universal package and rendering candidates | Current reports distinguish test/build/visual/deployment; baselines await human approval |
+
+No Android, bank integration, debt collection, extra expense ledger, C2 mailbox, auto updater or fake Our Story was added. Main data models/keys/route remain, original non-finance rules preserved. Final machine counts and package evidence are in `qa/results/finance-delivery.json` and `summary.json`; incomplete UI/physical network acceptance is not marked complete.
+
+## Preserved earlier phase history
+
 # Together 0.0.1 · 实施记录
 
 原 A–O 为历史记录；文末“最新增量”替代 Home 礼物卡、Tailscale 正常流程和旧验收状态。

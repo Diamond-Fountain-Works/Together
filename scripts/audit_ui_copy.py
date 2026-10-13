@@ -90,12 +90,17 @@ def scan():
     for path in sourceRoot.rglob('*.swift'):
         if 'UITesting' in path.parts or path.name in ['Copy.swift','UIFixture.swift']:continue
         source=path.read_text()
-        for key in re.findall(r'Copy\.(?:text|format)\(\s*"([^"]+)"',source):
+        for match in re.finditer(r'Copy\.(?:text|format)\(\s*"([^"]+)"',source):
+            key=match.group(1)
+            # A dynamic enum/code suffix is not itself a visible catalog entry.
+            # Concrete branches are covered by catalog/enum tests; do not demand
+            # a fictitious translation for e.g. "finance.status.".
+            if key.endswith('.') and re.match(r'\s*\+',source[match.end():]):continue
             if key not in entries:issue(path,key,'unknown_catalog_key','Error','Register the key in UI.xcstrings and review metadata.')
         for start,end,raw in literals(source):
             line=source[source.rfind('\n',0,start)+1:start]
             if re.search(r'Copy\.(?:text|format)\([^)]*$',line):
-                if re.match(r'^(copy|nav|role|gift|status|setup)\.',raw) and raw not in entries:issue(path,raw,'unknown_catalog_key','Error','Register every conditional catalog key, not only the first branch.')
+                if re.match(r'^(copy|nav|role|gift|status|setup|finance)\.',raw) and raw not in entries and not (raw.endswith('.') and re.match(r'\s*\+',source[end:])):issue(path,raw,'unknown_catalog_key','Error','Register every conditional catalog key, not only the first branch.')
             if visible(path,source,start,raw):
                 if raw in ['', ' ']:continue
                 issue(path,f'line:{source.count(chr(10),0,start)+1}', 'visible_literal','Error','Move this static text/template to the catalog; leave user data untouched.')

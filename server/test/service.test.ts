@@ -9,7 +9,7 @@ const sha = async (text: string) =>
   )
     .map((b) => b.toString(16).padStart(2, "0"))
     .join("");
-async function device(name = "Fixture A") {
+async function device(name = "Fixture A", protocolVersion = 2) {
   const key = (await crypto.subtle.generateKey({ name: "Ed25519" }, true, [
     "sign",
     "verify",
@@ -25,7 +25,7 @@ async function device(name = "Fixture A") {
         new Uint8Array(await crypto.subtle.exportKey("raw", key.publicKey)),
       ),
       displayName: name,
-      protocolVersion: 2,
+      protocolVersion,
       initialTimeZoneIdentifier: "Asia/Shanghai",
     },
   };
@@ -77,9 +77,20 @@ const body = (d: Awaited<ReturnType<typeof device>>) => ({
   profileName: d.profileName,
 });
 describe("real Workers runtime / invitation and authorization", () => {
+  it("accepts finance protocol 3 and keeps protocol 2 routes compatible", async () => {
+    for (const version of [2, 3]) {
+      const d = await device("Version fixture", version);
+      const response = await request(d, "POST", "/v1/invitations", body(d), "version-" + version);
+      expect(response.status).toBe(200);
+    }
+    const future = await device("Unsupported version", 99);
+    expect((await request(future, "POST", "/v1/invitations", body(future), "unsupported-version")).status).toBe(400);
+  });
   it("health declares realtime-only", async () => {
     const r = await exports.default.fetch("https://service.test/health");
-    expect(((await r.json()) as any).delivery).toBe("realtime-only");
+    const status = (await r.json()) as any;
+    expect(status.delivery).toBe("realtime-only");
+    expect(status.deviceProtocols).toEqual([2, 3]);
   });
   it("creates unpredictable 12-character invitation, consumes once, requires both confirmations", async () => {
     const a = await device(),

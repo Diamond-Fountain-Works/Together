@@ -3228,6 +3228,2449 @@
       "review": "approved",
       "reason": "Necessary accessible label for the user-requested workspace switch.",
       "textSHA256": "9a56884b21a85ce7a86dcc00e55df9763be254c17451178e7b36a7e8d9f0ed2a"
+    },
+    "finance.currency.CNY": {
+      "category": "Status",
+      "context": "ISO 4217 reference currency data in the user-requested searchable picker",
+      "review": "approved",
+      "reason": "Functional currency reference labels for the requested financial module; no decorative text.",
+      "textSHA256": "ba9771ca730db58fec6782e8bb84034a1e7d8d2f8ab26f897168a2c175fe8419"
+    },
+    "finance.currency.USD": {
+      "category": "Status",
+      "context": "ISO 4217 reference currency data in the user-requested searchable picker",
+      "review": "approved",
+      "reason": "Functional currency reference labels for the requested financial module; no decorative text.",
+      "textSHA256": "dcdd3b5c450b378708a720dee8f388bf77bad0ac8750032eae31112d1f0e2eea"
+    },
+    "finance.currency.EUR": {
+      "category": "Status",
+      "context": "ISO 4217 reference currency data in the user-requested searchable picker",
+      "review": "approved",
+      "reason": "Functional currency reference labels for the requested financial module; no decorative text.",
+      "textSHA256": "383c900abf8a83d757ba4703f1356677eb8b7882a017206159218d19208bae91"
+    },
+    "finance.currency.JPY": {
+      "category": "Status",
+      "context": "ISO 4217 reference currency data in the user-requested searchable picker",
+      "review": "approved",
+      "reason": "Functional currency reference labels for the requested financial module; no decorative text.",
+      "textSHA256": "b650f21f60ced8e5d186a00f38bab4ba3e829e8849fbde9758558a7d31d8a5f7"
+    },
+    "finance.currency.GBP": {
+      "category": "Status",
+      "context": "ISO 4217 reference currency data in the user-requested searchable picker",
+      "review": "approved",
+      "reason": "Functional currency reference labels for the requested financial module; no decorative text.",
+      "textSHA256": "ef90fd11dd549699a10f549815721218b2fffb95ad7830c1557d308fd1cd0ec2"
+    },
+    "finance.currency.HKD": {
+      "category": "Status",
+      "context": "ISO 4217 reference currency data in the user-requested searchable picker",
+      "review": "approved",
+      "reason": "Functional currency reference labels for the requested financial module; no decorative text.",
+      "textSHA256": "86e7ba554eed12a0b30fa1c7cd8baf82a646b1f2f490c6d461f017b4867fea83"
+    },
+    "finance.currency.KRW": {
+      "category": "Status",
+      "context": "ISO 4217 reference currency data in the user-requested searchable picker",
+      "review": "approved",
+      "reason": "Functional currency reference labels for the requested financial module; no decorative text.",
+      "textSHA256": "724a5caa0b368523387c263af74ff46b6962cfc66ba7a68b0a8f9572107f442c"
+    },
+    "finance.currency.SGD": {
+      "category": "Status",
+      "context": "ISO 4217 reference currency data in the user-requested searchable picker",
+      "review": "approved",
+      "reason": "Functional currency reference labels for the requested financial module; no decorative text.",
+      "textSHA256": "38bd18373a9ce67da6f9d9d3d97d021cb1662b48779f78979d91e80acd6378b2"
+    },
+    "finance.currency.AED": {
+      "category": "Status",
+      "context": "ISO 4217 reference currency data in the user-requested searchable picker",
+      "review": "approved",
+      "reason": "Functional currency reference labels for the requested financial module; no decorative text.",
+      "textSHA256": "874c174f6132a0327646f1e6a1f85f198e10b0a84c3a8b216b3d8b92d9bea77f"
+    },
+    "finance.currency.AFN": {
+      "category": "Status",
+      "context": "ISO 4217 reference currency data in the user-requested searchable picker",
+      "review": "approved",
+      "reason": "Functional currency reference labels for the requested financial module; no decorative text.",
+      "textSHA256": "cfed82d5dc031050f3ceb5b07d95e39c10e7a74b9fd0a2027714010c25998920"
+    },
+    "finance.currency.ALL": {
+      "category": "Status",
+      "context": "ISO 4217 reference currency data in the user-requested searchable picker",
+      "review": "approved",
+      "reason": "Functional currency reference labels for the requested financial module; no decorative text.",
+      "textSHA256": "727299ec77be69103a3c73bd3bf59017a18389bf683ee94010f40b268f2858a9"
+    },
+    "finance.currency.AMD": {
+      "category": "Status",
+      "context": "ISO 4217 reference currency data in the user-requested searchable picker",
+      "review": "approved",
+      "reason": "Functional currency reference labels for the requested financial module; no decorative text.",
+      "textSHA256": "0a6e901d7f310ec52bccff80193fd0d50c99843870d2477a2654bbf9d5bcee1f"
+    },
+    "finance.currency.AOA": {
+      "category": "Status",
+      "context": "ISO 4217 reference currency data in the user-requested searchable picker",
+      "review": "approved",
+      "reason": "Functional currency reference labels for the requested financial module; no decorative text.",
+      "textSHA256": "da164a5e3e41b376d00c30730577e7ee03648210d5825b1fefb9fec5e3ac4c5f"
+    },
+    "finance.currency.ARS": {
+      "category": "Status",
+      "context": "ISO 4217 reference currency data in the user-requested searchable picker",
+      "review": "approved",
+      "reason": "Functional currency reference labels for the requested financial module; no decorative text.",
+      "textSHA256": "dc2b7f540d5d4a0f51f476f95b95d7bcafe56b0bf3f4ca6e1320f161cbe14440"
+    },
+    "finance.currency.AUD": {
+      "category": "Status",
+      "context": "ISO 4217 reference currency data in the user-requested searchable picker",
+      "review": "approved",
+      "reason": "Functional currency reference labels for the requested financial module; no decorative text.",
+      "textSHA256": "4fa134c15eecdaa2f2aecfbdc91af1d52a7503e54e69dd419d39ccde3a204bcf"
+    },
+    "finance.currency.AWG": {
+      "category": "Status",
+      "context": "ISO 4217 reference currency data in the user-requested searchable picker",
+      "review": "approved",
+      "reason": "Functional currency reference labels for the requested financial module; no decorative text.",
+      "textSHA256": "b980f051f59f48f4224b6d3953f97ec584de0cf4a979a190082221a67307f46c"
+    },
+    "finance.currency.AZN": {
+      "category": "Status",
+      "context": "ISO 4217 reference currency data in the user-requested searchable picker",
+      "review": "approved",
+      "reason": "Functional currency reference labels for the requested financial module; no decorative text.",
+      "textSHA256": "30d597bff297a127f960cf13f60c6136b61732266b7da0488a01a453f513d1a8"
+    },
+    "finance.currency.BAM": {
+      "category": "Status",
+      "context": "ISO 4217 reference currency data in the user-requested searchable picker",
+      "review": "approved",
+      "reason": "Functional currency reference labels for the requested financial module; no decorative text.",
+      "textSHA256": "f995dbec5dce90cc6469693f1bd3f423f6775267a84639486ef11f71f9b4e6a9"
+    },
+    "finance.currency.BBD": {
+      "category": "Status",
+      "context": "ISO 4217 reference currency data in the user-requested searchable picker",
+      "review": "approved",
+      "reason": "Functional currency reference labels for the requested financial module; no decorative text.",
+      "textSHA256": "6f497afd69ac8ab0af4a9e694119eabcc7fbb9417775b5784eaaa2e336402616"
+    },
+    "finance.currency.BDT": {
+      "category": "Status",
+      "context": "ISO 4217 reference currency data in the user-requested searchable picker",
+      "review": "approved",
+      "reason": "Functional currency reference labels for the requested financial module; no decorative text.",
+      "textSHA256": "b34f15336b90efaebf6a1032485be817e463c2231a856580c57d0b1b192e70ed"
+    },
+    "finance.currency.BHD": {
+      "category": "Status",
+      "context": "ISO 4217 reference currency data in the user-requested searchable picker",
+      "review": "approved",
+      "reason": "Functional currency reference labels for the requested financial module; no decorative text.",
+      "textSHA256": "49060f6bea969af898f85584e5d375b6934aeec2d13a15ebc876ff93206aef92"
+    },
+    "finance.currency.BIF": {
+      "category": "Status",
+      "context": "ISO 4217 reference currency data in the user-requested searchable picker",
+      "review": "approved",
+      "reason": "Functional currency reference labels for the requested financial module; no decorative text.",
+      "textSHA256": "1b4801a5e2f2adb0edec81dbcaffdbb15950df869fd55b831eb304f5f9887682"
+    },
+    "finance.currency.BMD": {
+      "category": "Status",
+      "context": "ISO 4217 reference currency data in the user-requested searchable picker",
+      "review": "approved",
+      "reason": "Functional currency reference labels for the requested financial module; no decorative text.",
+      "textSHA256": "6f0c2bf234f75d11aaddf2d84b74ed38b10f7b44de2c637dfb87c3c7cf9d7e18"
+    },
+    "finance.currency.BND": {
+      "category": "Status",
+      "context": "ISO 4217 reference currency data in the user-requested searchable picker",
+      "review": "approved",
+      "reason": "Functional currency reference labels for the requested financial module; no decorative text.",
+      "textSHA256": "c2ecae1731d33a4112e2b87b4418a8d141fb292448344d70a32fabe02a2b8d34"
+    },
+    "finance.currency.BOB": {
+      "category": "Status",
+      "context": "ISO 4217 reference currency data in the user-requested searchable picker",
+      "review": "approved",
+      "reason": "Functional currency reference labels for the requested financial module; no decorative text.",
+      "textSHA256": "a9a339eb2daf4901570bf83bed70097da4091de8abaa7d7a8f471eb76d661a67"
+    },
+    "finance.currency.BOV": {
+      "category": "Status",
+      "context": "ISO 4217 reference currency data in the user-requested searchable picker",
+      "review": "approved",
+      "reason": "Functional currency reference labels for the requested financial module; no decorative text.",
+      "textSHA256": "befd6ba68678979a3f17b4f65645b9daf3817b60c4e714ff3b5c9536630df92a"
+    },
+    "finance.currency.BRL": {
+      "category": "Status",
+      "context": "ISO 4217 reference currency data in the user-requested searchable picker",
+      "review": "approved",
+      "reason": "Functional currency reference labels for the requested financial module; no decorative text.",
+      "textSHA256": "ef7a1dc6297aa2192f038aee4ea1a202ba01dbdd71eb8f1b20528fd8bf8db7d5"
+    },
+    "finance.currency.BSD": {
+      "category": "Status",
+      "context": "ISO 4217 reference currency data in the user-requested searchable picker",
+      "review": "approved",
+      "reason": "Functional currency reference labels for the requested financial module; no decorative text.",
+      "textSHA256": "0aea02d5db4a0c675d8de59d0080fcb1a67af1ac506d7de5d323a38e77aaca03"
+    },
+    "finance.currency.BTN": {
+      "category": "Status",
+      "context": "ISO 4217 reference currency data in the user-requested searchable picker",
+      "review": "approved",
+      "reason": "Functional currency reference labels for the requested financial module; no decorative text.",
+      "textSHA256": "21b48c251c51542865baf0cad97e8606c581f999db60c17bdecde6880dfd7da9"
+    },
+    "finance.currency.BWP": {
+      "category": "Status",
+      "context": "ISO 4217 reference currency data in the user-requested searchable picker",
+      "review": "approved",
+      "reason": "Functional currency reference labels for the requested financial module; no decorative text.",
+      "textSHA256": "241c9cd160546f2aa8d7c0eea7cdc9d61b40bc242594cff5c85f138955605a20"
+    },
+    "finance.currency.BYN": {
+      "category": "Status",
+      "context": "ISO 4217 reference currency data in the user-requested searchable picker",
+      "review": "approved",
+      "reason": "Functional currency reference labels for the requested financial module; no decorative text.",
+      "textSHA256": "64aceb12575e7b75f332e0698912fd89be1b42646389fbef265144d49ff58c0a"
+    },
+    "finance.currency.BZD": {
+      "category": "Status",
+      "context": "ISO 4217 reference currency data in the user-requested searchable picker",
+      "review": "approved",
+      "reason": "Functional currency reference labels for the requested financial module; no decorative text.",
+      "textSHA256": "ca5f9c8415aa9b5ffff5e1198de27fa072bb4949713be450d1c516d9db56023a"
+    },
+    "finance.currency.CAD": {
+      "category": "Status",
+      "context": "ISO 4217 reference currency data in the user-requested searchable picker",
+      "review": "approved",
+      "reason": "Functional currency reference labels for the requested financial module; no decorative text.",
+      "textSHA256": "a190607f8222b92cd11e473652593995ee429a9661ffb3da2d249c1a54871520"
+    },
+    "finance.currency.CDF": {
+      "category": "Status",
+      "context": "ISO 4217 reference currency data in the user-requested searchable picker",
+      "review": "approved",
+      "reason": "Functional currency reference labels for the requested financial module; no decorative text.",
+      "textSHA256": "67cd3ccb1bff3f063b6c97fc85c4f5e39f6f98bbab90e9200915619e3afac9df"
+    },
+    "finance.currency.CHE": {
+      "category": "Status",
+      "context": "ISO 4217 reference currency data in the user-requested searchable picker",
+      "review": "approved",
+      "reason": "Functional currency reference labels for the requested financial module; no decorative text.",
+      "textSHA256": "19d62f59a99cdb18a525e56e78dffe1a23428e25c3edb39922c04403de29e0ab"
+    },
+    "finance.currency.CHF": {
+      "category": "Status",
+      "context": "ISO 4217 reference currency data in the user-requested searchable picker",
+      "review": "approved",
+      "reason": "Functional currency reference labels for the requested financial module; no decorative text.",
+      "textSHA256": "f634a3d23ce2d59615577d5cf944dc070bc2feaa9ec125faafb6b5347af6864b"
+    },
+    "finance.currency.CHW": {
+      "category": "Status",
+      "context": "ISO 4217 reference currency data in the user-requested searchable picker",
+      "review": "approved",
+      "reason": "Functional currency reference labels for the requested financial module; no decorative text.",
+      "textSHA256": "90902b20d775fd3b03436aa37a37952264c859fada92ed9952398554e1a71c89"
+    },
+    "finance.currency.CLF": {
+      "category": "Status",
+      "context": "ISO 4217 reference currency data in the user-requested searchable picker",
+      "review": "approved",
+      "reason": "Functional currency reference labels for the requested financial module; no decorative text.",
+      "textSHA256": "ac191653882287c13882d9f20d7cfa354ff8b9a0e3f7c066aaebeb1503f23f33"
+    },
+    "finance.currency.CLP": {
+      "category": "Status",
+      "context": "ISO 4217 reference currency data in the user-requested searchable picker",
+      "review": "approved",
+      "reason": "Functional currency reference labels for the requested financial module; no decorative text.",
+      "textSHA256": "80562f4335b63a98ec2b78e2433fcd6393938f99528eab087860dfcb6639e2f7"
+    },
+    "finance.currency.COP": {
+      "category": "Status",
+      "context": "ISO 4217 reference currency data in the user-requested searchable picker",
+      "review": "approved",
+      "reason": "Functional currency reference labels for the requested financial module; no decorative text.",
+      "textSHA256": "10041da473348efa035dd8f01b0d8ddf43e00e4d0f043d08a6f141dcc0059eaf"
+    },
+    "finance.currency.COU": {
+      "category": "Status",
+      "context": "ISO 4217 reference currency data in the user-requested searchable picker",
+      "review": "approved",
+      "reason": "Functional currency reference labels for the requested financial module; no decorative text.",
+      "textSHA256": "6ac310c2078088ef140cf124f3681cc56cb52a88d6cabf96e821f0703a95cb55"
+    },
+    "finance.currency.CRC": {
+      "category": "Status",
+      "context": "ISO 4217 reference currency data in the user-requested searchable picker",
+      "review": "approved",
+      "reason": "Functional currency reference labels for the requested financial module; no decorative text.",
+      "textSHA256": "b8d54d63250add747498fd1d17751474baa7ce5d3e529cbd5bec2250b0f3a70e"
+    },
+    "finance.currency.CUP": {
+      "category": "Status",
+      "context": "ISO 4217 reference currency data in the user-requested searchable picker",
+      "review": "approved",
+      "reason": "Functional currency reference labels for the requested financial module; no decorative text.",
+      "textSHA256": "133b1688246b231daf3b3a6b24838bc91f618f06c4ab89018570fd7333054f10"
+    },
+    "finance.currency.CVE": {
+      "category": "Status",
+      "context": "ISO 4217 reference currency data in the user-requested searchable picker",
+      "review": "approved",
+      "reason": "Functional currency reference labels for the requested financial module; no decorative text.",
+      "textSHA256": "4d6f288f3a65ab79a2117bafb39e631f738b09e5ce7909191a08eab2c7f59e74"
+    },
+    "finance.currency.CZK": {
+      "category": "Status",
+      "context": "ISO 4217 reference currency data in the user-requested searchable picker",
+      "review": "approved",
+      "reason": "Functional currency reference labels for the requested financial module; no decorative text.",
+      "textSHA256": "19e3d71d086a45760b33fce5774ba6a628435c3d973c6a4be2840f7caf31f03d"
+    },
+    "finance.currency.DJF": {
+      "category": "Status",
+      "context": "ISO 4217 reference currency data in the user-requested searchable picker",
+      "review": "approved",
+      "reason": "Functional currency reference labels for the requested financial module; no decorative text.",
+      "textSHA256": "832e329a549cba322908033768df9464c2269781705d0868146459000d38b5d1"
+    },
+    "finance.currency.DKK": {
+      "category": "Status",
+      "context": "ISO 4217 reference currency data in the user-requested searchable picker",
+      "review": "approved",
+      "reason": "Functional currency reference labels for the requested financial module; no decorative text.",
+      "textSHA256": "cc73f0b4cedc951ea60d525c97d681887660151b87ba1ab0aa6462b5aac82105"
+    },
+    "finance.currency.DOP": {
+      "category": "Status",
+      "context": "ISO 4217 reference currency data in the user-requested searchable picker",
+      "review": "approved",
+      "reason": "Functional currency reference labels for the requested financial module; no decorative text.",
+      "textSHA256": "12ce479396e3415bc7af8e11f9b24cb2a7c4470ceaef8c22641f37ca720adb32"
+    },
+    "finance.currency.DZD": {
+      "category": "Status",
+      "context": "ISO 4217 reference currency data in the user-requested searchable picker",
+      "review": "approved",
+      "reason": "Functional currency reference labels for the requested financial module; no decorative text.",
+      "textSHA256": "fc1dd2c2e66f3f2f42ab475693b98d5b5010f9b7003434261f91b71c10fc0b8a"
+    },
+    "finance.currency.EGP": {
+      "category": "Status",
+      "context": "ISO 4217 reference currency data in the user-requested searchable picker",
+      "review": "approved",
+      "reason": "Functional currency reference labels for the requested financial module; no decorative text.",
+      "textSHA256": "dfc71bffb50a13e7a50bb003ec6c2461ca52d2d01275e2ccaefd63c6daec8c99"
+    },
+    "finance.currency.ERN": {
+      "category": "Status",
+      "context": "ISO 4217 reference currency data in the user-requested searchable picker",
+      "review": "approved",
+      "reason": "Functional currency reference labels for the requested financial module; no decorative text.",
+      "textSHA256": "e9a5225ca27dfc9a9a760c9559b70ad72fa61e4d6ca632d61889d64117a4ce3c"
+    },
+    "finance.currency.ETB": {
+      "category": "Status",
+      "context": "ISO 4217 reference currency data in the user-requested searchable picker",
+      "review": "approved",
+      "reason": "Functional currency reference labels for the requested financial module; no decorative text.",
+      "textSHA256": "5fb4ca2fdb358c3fbaa6276f2316b36c45ee0e9597b68279a126b567ae0122cf"
+    },
+    "finance.currency.FJD": {
+      "category": "Status",
+      "context": "ISO 4217 reference currency data in the user-requested searchable picker",
+      "review": "approved",
+      "reason": "Functional currency reference labels for the requested financial module; no decorative text.",
+      "textSHA256": "18b455012ece053d17641f72119daa74a662cd01a8b1b75af237c34d6e49e8b9"
+    },
+    "finance.currency.FKP": {
+      "category": "Status",
+      "context": "ISO 4217 reference currency data in the user-requested searchable picker",
+      "review": "approved",
+      "reason": "Functional currency reference labels for the requested financial module; no decorative text.",
+      "textSHA256": "25c2213dc1d51ec109ce85fdafbafd12222fb7a3823ab4b393861cacc0ed9205"
+    },
+    "finance.currency.GEL": {
+      "category": "Status",
+      "context": "ISO 4217 reference currency data in the user-requested searchable picker",
+      "review": "approved",
+      "reason": "Functional currency reference labels for the requested financial module; no decorative text.",
+      "textSHA256": "d035ff8479d739c8a0d89209fa8a0e1bffb84b15398c62231d70a758d910ae9d"
+    },
+    "finance.currency.GHS": {
+      "category": "Status",
+      "context": "ISO 4217 reference currency data in the user-requested searchable picker",
+      "review": "approved",
+      "reason": "Functional currency reference labels for the requested financial module; no decorative text.",
+      "textSHA256": "fcebb1da6d89678358e621995628020bec3d3d7cdd5e5f348f8ec014f410f6a6"
+    },
+    "finance.currency.GIP": {
+      "category": "Status",
+      "context": "ISO 4217 reference currency data in the user-requested searchable picker",
+      "review": "approved",
+      "reason": "Functional currency reference labels for the requested financial module; no decorative text.",
+      "textSHA256": "7ae0901187d7822fd9258c13b2cc1820e460428ddd08353cf1a25ef785283101"
+    },
+    "finance.currency.GMD": {
+      "category": "Status",
+      "context": "ISO 4217 reference currency data in the user-requested searchable picker",
+      "review": "approved",
+      "reason": "Functional currency reference labels for the requested financial module; no decorative text.",
+      "textSHA256": "e322c29a30f2dda6b8a13cc32e28e2a6f251c43a0544526945b3ec698bb52ceb"
+    },
+    "finance.currency.GNF": {
+      "category": "Status",
+      "context": "ISO 4217 reference currency data in the user-requested searchable picker",
+      "review": "approved",
+      "reason": "Functional currency reference labels for the requested financial module; no decorative text.",
+      "textSHA256": "36b91ed2d0783a7ffa9887390e6a1139c67537f19f6c85c50fb49151745720d2"
+    },
+    "finance.currency.GTQ": {
+      "category": "Status",
+      "context": "ISO 4217 reference currency data in the user-requested searchable picker",
+      "review": "approved",
+      "reason": "Functional currency reference labels for the requested financial module; no decorative text.",
+      "textSHA256": "c23fa12f6e5d4e8559cb2a4c359e8e0f8619df4d507d372bbaead363d27fada9"
+    },
+    "finance.currency.GYD": {
+      "category": "Status",
+      "context": "ISO 4217 reference currency data in the user-requested searchable picker",
+      "review": "approved",
+      "reason": "Functional currency reference labels for the requested financial module; no decorative text.",
+      "textSHA256": "9c37903c4f2cfe9afdad9c495a6e867cd653c5e5c688899af7a181c007b71dda"
+    },
+    "finance.currency.HNL": {
+      "category": "Status",
+      "context": "ISO 4217 reference currency data in the user-requested searchable picker",
+      "review": "approved",
+      "reason": "Functional currency reference labels for the requested financial module; no decorative text.",
+      "textSHA256": "9628c27c608be24143f0d0b7d07d324289e13076a898bd5081067fe793f8604a"
+    },
+    "finance.currency.HTG": {
+      "category": "Status",
+      "context": "ISO 4217 reference currency data in the user-requested searchable picker",
+      "review": "approved",
+      "reason": "Functional currency reference labels for the requested financial module; no decorative text.",
+      "textSHA256": "9eb0a5ef4c1ee88380147f202f0e78fda5a39e37ac5cf996ae3120241fd741d2"
+    },
+    "finance.currency.HUF": {
+      "category": "Status",
+      "context": "ISO 4217 reference currency data in the user-requested searchable picker",
+      "review": "approved",
+      "reason": "Functional currency reference labels for the requested financial module; no decorative text.",
+      "textSHA256": "b4ac5f35b5bb25504ea924a0c8fe0d1faf8135d1e4c635ed4c9c776a43d7dc4c"
+    },
+    "finance.currency.IDR": {
+      "category": "Status",
+      "context": "ISO 4217 reference currency data in the user-requested searchable picker",
+      "review": "approved",
+      "reason": "Functional currency reference labels for the requested financial module; no decorative text.",
+      "textSHA256": "fd48ca00931936f92e18657bae2bb4cf386b091d1b2863c322f92b4ce07e0a2d"
+    },
+    "finance.currency.ILS": {
+      "category": "Status",
+      "context": "ISO 4217 reference currency data in the user-requested searchable picker",
+      "review": "approved",
+      "reason": "Functional currency reference labels for the requested financial module; no decorative text.",
+      "textSHA256": "da68b6eeaba0c650d3f62491d3f1dd4d046d269dec47a5a75340d1150d2e090e"
+    },
+    "finance.currency.INR": {
+      "category": "Status",
+      "context": "ISO 4217 reference currency data in the user-requested searchable picker",
+      "review": "approved",
+      "reason": "Functional currency reference labels for the requested financial module; no decorative text.",
+      "textSHA256": "a0b0f65d836639b6d9fc9ada3efe5c3e77c3537d3a97cfb383ee5af38db830a1"
+    },
+    "finance.currency.IQD": {
+      "category": "Status",
+      "context": "ISO 4217 reference currency data in the user-requested searchable picker",
+      "review": "approved",
+      "reason": "Functional currency reference labels for the requested financial module; no decorative text.",
+      "textSHA256": "22bd913511b48ee03edb717f4a106e8a28b104f25b18b78558d087362e1442aa"
+    },
+    "finance.currency.IRR": {
+      "category": "Status",
+      "context": "ISO 4217 reference currency data in the user-requested searchable picker",
+      "review": "approved",
+      "reason": "Functional currency reference labels for the requested financial module; no decorative text.",
+      "textSHA256": "089d14d99cb41f60c65a789bc32d577ccf872fa824486023baab61ebafe33452"
+    },
+    "finance.currency.ISK": {
+      "category": "Status",
+      "context": "ISO 4217 reference currency data in the user-requested searchable picker",
+      "review": "approved",
+      "reason": "Functional currency reference labels for the requested financial module; no decorative text.",
+      "textSHA256": "53238245ea054df15d1f2ba567add4626a27ac641e2bbfc9ffd7e4232404281b"
+    },
+    "finance.currency.JMD": {
+      "category": "Status",
+      "context": "ISO 4217 reference currency data in the user-requested searchable picker",
+      "review": "approved",
+      "reason": "Functional currency reference labels for the requested financial module; no decorative text.",
+      "textSHA256": "570147e226185e46f42eee206aee7307d4739f1a7b18543ef0071527da7e823e"
+    },
+    "finance.currency.JOD": {
+      "category": "Status",
+      "context": "ISO 4217 reference currency data in the user-requested searchable picker",
+      "review": "approved",
+      "reason": "Functional currency reference labels for the requested financial module; no decorative text.",
+      "textSHA256": "5634f06797e4a46a0862539b6b5e4a63ea7589c078bf97d7232bb4a2d82afffb"
+    },
+    "finance.currency.KES": {
+      "category": "Status",
+      "context": "ISO 4217 reference currency data in the user-requested searchable picker",
+      "review": "approved",
+      "reason": "Functional currency reference labels for the requested financial module; no decorative text.",
+      "textSHA256": "373abf6d2d0f8832ca7fe2df08d7ef13eecfa374a9e16a4f0c314b0f97badabe"
+    },
+    "finance.currency.KGS": {
+      "category": "Status",
+      "context": "ISO 4217 reference currency data in the user-requested searchable picker",
+      "review": "approved",
+      "reason": "Functional currency reference labels for the requested financial module; no decorative text.",
+      "textSHA256": "a11f1b879793136ec1844d28f3ae51d2e18bc982cfe484643e6fc19457b74b94"
+    },
+    "finance.currency.KHR": {
+      "category": "Status",
+      "context": "ISO 4217 reference currency data in the user-requested searchable picker",
+      "review": "approved",
+      "reason": "Functional currency reference labels for the requested financial module; no decorative text.",
+      "textSHA256": "1c066111ecad5edcbf639aacce0243d721f4e63b931e40352ebbb1c2e965b047"
+    },
+    "finance.currency.KMF": {
+      "category": "Status",
+      "context": "ISO 4217 reference currency data in the user-requested searchable picker",
+      "review": "approved",
+      "reason": "Functional currency reference labels for the requested financial module; no decorative text.",
+      "textSHA256": "398ca7faa1aedde3b0d3bc8947548b5b9bdd0efa2843d3f7b5aa73f8616a88e4"
+    },
+    "finance.currency.KPW": {
+      "category": "Status",
+      "context": "ISO 4217 reference currency data in the user-requested searchable picker",
+      "review": "approved",
+      "reason": "Functional currency reference labels for the requested financial module; no decorative text.",
+      "textSHA256": "0e04992e5ea673398eb907a7caa73f5498d224c683e04038f302b73df0ca6f9f"
+    },
+    "finance.currency.KWD": {
+      "category": "Status",
+      "context": "ISO 4217 reference currency data in the user-requested searchable picker",
+      "review": "approved",
+      "reason": "Functional currency reference labels for the requested financial module; no decorative text.",
+      "textSHA256": "e5a97c8db976f7ebc5c98b6dc17fbb47ebd2d7b16a5afa9f3a738307d41c9486"
+    },
+    "finance.currency.KYD": {
+      "category": "Status",
+      "context": "ISO 4217 reference currency data in the user-requested searchable picker",
+      "review": "approved",
+      "reason": "Functional currency reference labels for the requested financial module; no decorative text.",
+      "textSHA256": "31b5c5b6531cd75189081cb0d83382a59eb7adfb8a29e1fb17a837947021914e"
+    },
+    "finance.currency.KZT": {
+      "category": "Status",
+      "context": "ISO 4217 reference currency data in the user-requested searchable picker",
+      "review": "approved",
+      "reason": "Functional currency reference labels for the requested financial module; no decorative text.",
+      "textSHA256": "fb702312cad7a5b07e103ea457c47c0299999a0c6e1f1c7252af8caa31c1fa39"
+    },
+    "finance.currency.LAK": {
+      "category": "Status",
+      "context": "ISO 4217 reference currency data in the user-requested searchable picker",
+      "review": "approved",
+      "reason": "Functional currency reference labels for the requested financial module; no decorative text.",
+      "textSHA256": "55ce8e77d6c8b302a3171f4abd8a69ebc3e3c9b8626805f18244b63e75fc8cc1"
+    },
+    "finance.currency.LBP": {
+      "category": "Status",
+      "context": "ISO 4217 reference currency data in the user-requested searchable picker",
+      "review": "approved",
+      "reason": "Functional currency reference labels for the requested financial module; no decorative text.",
+      "textSHA256": "805dfcb4548be8f581b51c3338c7b25f881494c5d6fbe198feefb7ccc623e730"
+    },
+    "finance.currency.LKR": {
+      "category": "Status",
+      "context": "ISO 4217 reference currency data in the user-requested searchable picker",
+      "review": "approved",
+      "reason": "Functional currency reference labels for the requested financial module; no decorative text.",
+      "textSHA256": "4275e20a6a315788594a88d3a21ff9640d86e4cab3df8297149cfe6856b80904"
+    },
+    "finance.currency.LRD": {
+      "category": "Status",
+      "context": "ISO 4217 reference currency data in the user-requested searchable picker",
+      "review": "approved",
+      "reason": "Functional currency reference labels for the requested financial module; no decorative text.",
+      "textSHA256": "82c0d8db7f752995a4033cc7e2e7b43450735716b99a0cb9bd8bb0f777642e9a"
+    },
+    "finance.currency.LSL": {
+      "category": "Status",
+      "context": "ISO 4217 reference currency data in the user-requested searchable picker",
+      "review": "approved",
+      "reason": "Functional currency reference labels for the requested financial module; no decorative text.",
+      "textSHA256": "0aaabdb6a262629d521d83b6c06de6e0b1995360236c76b0f8ebcfd98a2341b0"
+    },
+    "finance.currency.LYD": {
+      "category": "Status",
+      "context": "ISO 4217 reference currency data in the user-requested searchable picker",
+      "review": "approved",
+      "reason": "Functional currency reference labels for the requested financial module; no decorative text.",
+      "textSHA256": "87e250d882e0470b1ffd084d86edf4c8cc6bea7b9da1c7f2e4b33dcdabe6d833"
+    },
+    "finance.currency.MAD": {
+      "category": "Status",
+      "context": "ISO 4217 reference currency data in the user-requested searchable picker",
+      "review": "approved",
+      "reason": "Functional currency reference labels for the requested financial module; no decorative text.",
+      "textSHA256": "2f23f1e7f3f339dcc7aac3c6c9033d980272b495de24655294f185d24a092f08"
+    },
+    "finance.currency.MDL": {
+      "category": "Status",
+      "context": "ISO 4217 reference currency data in the user-requested searchable picker",
+      "review": "approved",
+      "reason": "Functional currency reference labels for the requested financial module; no decorative text.",
+      "textSHA256": "351bbf6ae4e2a4755fd303aa2f7e84ca74cb2ac43b5436c0d54ab400abab8ccd"
+    },
+    "finance.currency.MGA": {
+      "category": "Status",
+      "context": "ISO 4217 reference currency data in the user-requested searchable picker",
+      "review": "approved",
+      "reason": "Functional currency reference labels for the requested financial module; no decorative text.",
+      "textSHA256": "f63e7f21ca306fcafb8d39760ce724f57592a3ebc0e4b76f759ca928e4291d9e"
+    },
+    "finance.currency.MKD": {
+      "category": "Status",
+      "context": "ISO 4217 reference currency data in the user-requested searchable picker",
+      "review": "approved",
+      "reason": "Functional currency reference labels for the requested financial module; no decorative text.",
+      "textSHA256": "7e6a4629ce96c185f26a8babdaf36e3d72e33665391eb70ac9514623f5a8c1a8"
+    },
+    "finance.currency.MMK": {
+      "category": "Status",
+      "context": "ISO 4217 reference currency data in the user-requested searchable picker",
+      "review": "approved",
+      "reason": "Functional currency reference labels for the requested financial module; no decorative text.",
+      "textSHA256": "0fe22c0d97f41cd3c3e5da0e6e30c3fba064936cdc3fbf198582550fe0a53f84"
+    },
+    "finance.currency.MNT": {
+      "category": "Status",
+      "context": "ISO 4217 reference currency data in the user-requested searchable picker",
+      "review": "approved",
+      "reason": "Functional currency reference labels for the requested financial module; no decorative text.",
+      "textSHA256": "e43eecade9e7430a8a6f4e56544c4a151e083936a57a3747b94b175cb97137f0"
+    },
+    "finance.currency.MOP": {
+      "category": "Status",
+      "context": "ISO 4217 reference currency data in the user-requested searchable picker",
+      "review": "approved",
+      "reason": "Functional currency reference labels for the requested financial module; no decorative text.",
+      "textSHA256": "2108eef7af4c00ebdf5375ec328cd421cd73e700384101450073b6911b2feb4f"
+    },
+    "finance.currency.MRU": {
+      "category": "Status",
+      "context": "ISO 4217 reference currency data in the user-requested searchable picker",
+      "review": "approved",
+      "reason": "Functional currency reference labels for the requested financial module; no decorative text.",
+      "textSHA256": "a1f23a3738e9632ccec2ba75fd12681ff7330b7cef000829ab9da6ee01a52fa8"
+    },
+    "finance.currency.MUR": {
+      "category": "Status",
+      "context": "ISO 4217 reference currency data in the user-requested searchable picker",
+      "review": "approved",
+      "reason": "Functional currency reference labels for the requested financial module; no decorative text.",
+      "textSHA256": "6e9e30a063c7962000aa9e61ec7dc8d98d3b550e5ce53eadd0382ce1966581d5"
+    },
+    "finance.currency.MVR": {
+      "category": "Status",
+      "context": "ISO 4217 reference currency data in the user-requested searchable picker",
+      "review": "approved",
+      "reason": "Functional currency reference labels for the requested financial module; no decorative text.",
+      "textSHA256": "a7f8902a79fb30e29928696e764c54dd3682fc433fbf4bfbaaa537f3f4f45738"
+    },
+    "finance.currency.MWK": {
+      "category": "Status",
+      "context": "ISO 4217 reference currency data in the user-requested searchable picker",
+      "review": "approved",
+      "reason": "Functional currency reference labels for the requested financial module; no decorative text.",
+      "textSHA256": "3860fb76b5f174c477d576aa2df719357c48ae1b8fa98d5b457697e809a6a3c8"
+    },
+    "finance.currency.MXN": {
+      "category": "Status",
+      "context": "ISO 4217 reference currency data in the user-requested searchable picker",
+      "review": "approved",
+      "reason": "Functional currency reference labels for the requested financial module; no decorative text.",
+      "textSHA256": "027e50dd107a123821f5fd01a67a8fa335c55bf99a6d6b81f17ec2bd1a5987b5"
+    },
+    "finance.currency.MXV": {
+      "category": "Status",
+      "context": "ISO 4217 reference currency data in the user-requested searchable picker",
+      "review": "approved",
+      "reason": "Functional currency reference labels for the requested financial module; no decorative text.",
+      "textSHA256": "29df14ad420dfbf38d1e7bcffca757bb1b79cb0ecf68fb0e4fa8f1758a326934"
+    },
+    "finance.currency.MYR": {
+      "category": "Status",
+      "context": "ISO 4217 reference currency data in the user-requested searchable picker",
+      "review": "approved",
+      "reason": "Functional currency reference labels for the requested financial module; no decorative text.",
+      "textSHA256": "50b807c7a51dc712466c2ab25105f4f38d55cac61b979055e9f2c2cefefb0b7c"
+    },
+    "finance.currency.MZN": {
+      "category": "Status",
+      "context": "ISO 4217 reference currency data in the user-requested searchable picker",
+      "review": "approved",
+      "reason": "Functional currency reference labels for the requested financial module; no decorative text.",
+      "textSHA256": "f036ef5a91305b20b459e48ae9c5fb7b8fa965d94c201f828949d493f5237b08"
+    },
+    "finance.currency.NAD": {
+      "category": "Status",
+      "context": "ISO 4217 reference currency data in the user-requested searchable picker",
+      "review": "approved",
+      "reason": "Functional currency reference labels for the requested financial module; no decorative text.",
+      "textSHA256": "a163a88e561b3e4da1670d3e2e427df9c365e53feb46d93e80ccb60a2e7cd119"
+    },
+    "finance.currency.NGN": {
+      "category": "Status",
+      "context": "ISO 4217 reference currency data in the user-requested searchable picker",
+      "review": "approved",
+      "reason": "Functional currency reference labels for the requested financial module; no decorative text.",
+      "textSHA256": "535c5c0615a300e0a6ebdda073ad230a570963f1ca8499357de8ce90bcc39f42"
+    },
+    "finance.currency.NIO": {
+      "category": "Status",
+      "context": "ISO 4217 reference currency data in the user-requested searchable picker",
+      "review": "approved",
+      "reason": "Functional currency reference labels for the requested financial module; no decorative text.",
+      "textSHA256": "035034f421551cde3a9fefc99ab677e41806c07651a58f893c67758579edbe42"
+    },
+    "finance.currency.NOK": {
+      "category": "Status",
+      "context": "ISO 4217 reference currency data in the user-requested searchable picker",
+      "review": "approved",
+      "reason": "Functional currency reference labels for the requested financial module; no decorative text.",
+      "textSHA256": "66f55f57224bb88316c2e1c164727038296aacc74c1fd3822d81adfb5c018a6b"
+    },
+    "finance.currency.NPR": {
+      "category": "Status",
+      "context": "ISO 4217 reference currency data in the user-requested searchable picker",
+      "review": "approved",
+      "reason": "Functional currency reference labels for the requested financial module; no decorative text.",
+      "textSHA256": "03523a3ac3cdc5e90e594016568dd9533fd926374d056c3c281226970a2805bb"
+    },
+    "finance.currency.NZD": {
+      "category": "Status",
+      "context": "ISO 4217 reference currency data in the user-requested searchable picker",
+      "review": "approved",
+      "reason": "Functional currency reference labels for the requested financial module; no decorative text.",
+      "textSHA256": "fbe85a810b30f4fdb6840a35de27934b274a2af5b8ed8cfb3a504b16e09a8439"
+    },
+    "finance.currency.OMR": {
+      "category": "Status",
+      "context": "ISO 4217 reference currency data in the user-requested searchable picker",
+      "review": "approved",
+      "reason": "Functional currency reference labels for the requested financial module; no decorative text.",
+      "textSHA256": "ed35523696a7037a7d0399e8defad30257cef7d6351d7b3a09971b3c65f4fffb"
+    },
+    "finance.currency.PAB": {
+      "category": "Status",
+      "context": "ISO 4217 reference currency data in the user-requested searchable picker",
+      "review": "approved",
+      "reason": "Functional currency reference labels for the requested financial module; no decorative text.",
+      "textSHA256": "316b64efd94b459ec2a92aade69ed6f67eeb8f32d63927d6d9d92ce527acca1e"
+    },
+    "finance.currency.PEN": {
+      "category": "Status",
+      "context": "ISO 4217 reference currency data in the user-requested searchable picker",
+      "review": "approved",
+      "reason": "Functional currency reference labels for the requested financial module; no decorative text.",
+      "textSHA256": "361847a8cfe5a8ddf3acd7a13c38b42b0649e7642bed9d44709076e29440afb9"
+    },
+    "finance.currency.PGK": {
+      "category": "Status",
+      "context": "ISO 4217 reference currency data in the user-requested searchable picker",
+      "review": "approved",
+      "reason": "Functional currency reference labels for the requested financial module; no decorative text.",
+      "textSHA256": "57e3795a3bddf3ecc09fd620078f1ace8c68974bf50e387e364d256bd9cb13ae"
+    },
+    "finance.currency.PHP": {
+      "category": "Status",
+      "context": "ISO 4217 reference currency data in the user-requested searchable picker",
+      "review": "approved",
+      "reason": "Functional currency reference labels for the requested financial module; no decorative text.",
+      "textSHA256": "9bafddc424d5e6a1e348742930d27bbb67cf04c10ece11b31d8bf9b766b22b53"
+    },
+    "finance.currency.PKR": {
+      "category": "Status",
+      "context": "ISO 4217 reference currency data in the user-requested searchable picker",
+      "review": "approved",
+      "reason": "Functional currency reference labels for the requested financial module; no decorative text.",
+      "textSHA256": "e881b099458ea26374e9c8e186f1efae044edc321f3e46460dfd557858c2141a"
+    },
+    "finance.currency.PLN": {
+      "category": "Status",
+      "context": "ISO 4217 reference currency data in the user-requested searchable picker",
+      "review": "approved",
+      "reason": "Functional currency reference labels for the requested financial module; no decorative text.",
+      "textSHA256": "31a3dd56c3bbdb9716944dd6e7e04b2c70a8729ac0fb7bc036f24c79cd1ca541"
+    },
+    "finance.currency.PYG": {
+      "category": "Status",
+      "context": "ISO 4217 reference currency data in the user-requested searchable picker",
+      "review": "approved",
+      "reason": "Functional currency reference labels for the requested financial module; no decorative text.",
+      "textSHA256": "252f9b757612e49590a268e2362ea4afaed7252cdf2b34a7bd62d2d9873a7453"
+    },
+    "finance.currency.QAR": {
+      "category": "Status",
+      "context": "ISO 4217 reference currency data in the user-requested searchable picker",
+      "review": "approved",
+      "reason": "Functional currency reference labels for the requested financial module; no decorative text.",
+      "textSHA256": "69c3a49613b2caea2fab5182295c867ed164a27d2d155b615bbff12742dbbf4c"
+    },
+    "finance.currency.RON": {
+      "category": "Status",
+      "context": "ISO 4217 reference currency data in the user-requested searchable picker",
+      "review": "approved",
+      "reason": "Functional currency reference labels for the requested financial module; no decorative text.",
+      "textSHA256": "b988a3b053f06947848b8d35cb16f7ed8926245b5788b20064538813a25d78e7"
+    },
+    "finance.currency.RSD": {
+      "category": "Status",
+      "context": "ISO 4217 reference currency data in the user-requested searchable picker",
+      "review": "approved",
+      "reason": "Functional currency reference labels for the requested financial module; no decorative text.",
+      "textSHA256": "8b5ba0b2ed80b721fbe9c493a403f50be126181504ada6d4a35581ed2b6be27d"
+    },
+    "finance.currency.RUB": {
+      "category": "Status",
+      "context": "ISO 4217 reference currency data in the user-requested searchable picker",
+      "review": "approved",
+      "reason": "Functional currency reference labels for the requested financial module; no decorative text.",
+      "textSHA256": "e43aeba8da97a9d931d5b9ca31105349013c9821a254ac9c713c9a2ad2352015"
+    },
+    "finance.currency.RWF": {
+      "category": "Status",
+      "context": "ISO 4217 reference currency data in the user-requested searchable picker",
+      "review": "approved",
+      "reason": "Functional currency reference labels for the requested financial module; no decorative text.",
+      "textSHA256": "66ebfa3f6a4133c6052c222474a2b5a67c2d44d43bac1f3b6eca48ab93e55650"
+    },
+    "finance.currency.SAR": {
+      "category": "Status",
+      "context": "ISO 4217 reference currency data in the user-requested searchable picker",
+      "review": "approved",
+      "reason": "Functional currency reference labels for the requested financial module; no decorative text.",
+      "textSHA256": "242ecf4919ea9fc0559a35e9f7304bc482262a72913ecac4bdb3d10ecb739235"
+    },
+    "finance.currency.SBD": {
+      "category": "Status",
+      "context": "ISO 4217 reference currency data in the user-requested searchable picker",
+      "review": "approved",
+      "reason": "Functional currency reference labels for the requested financial module; no decorative text.",
+      "textSHA256": "294eef17a3debbec882bf207ebc9c53de31c326306bee24c45b8642cb18b5455"
+    },
+    "finance.currency.SCR": {
+      "category": "Status",
+      "context": "ISO 4217 reference currency data in the user-requested searchable picker",
+      "review": "approved",
+      "reason": "Functional currency reference labels for the requested financial module; no decorative text.",
+      "textSHA256": "770bccfbd3213243741dc5181409bcde62c113c8af5dc30c61ae73edff48b89c"
+    },
+    "finance.currency.SDG": {
+      "category": "Status",
+      "context": "ISO 4217 reference currency data in the user-requested searchable picker",
+      "review": "approved",
+      "reason": "Functional currency reference labels for the requested financial module; no decorative text.",
+      "textSHA256": "ee01db2ed9f8f9e5279dcc051f1488417318c6df2024f7aac158542466f5a769"
+    },
+    "finance.currency.SEK": {
+      "category": "Status",
+      "context": "ISO 4217 reference currency data in the user-requested searchable picker",
+      "review": "approved",
+      "reason": "Functional currency reference labels for the requested financial module; no decorative text.",
+      "textSHA256": "21215d02388537373caead23e11985d0e17d4f62f84a96ee5db10a614dd1ed9c"
+    },
+    "finance.currency.SHP": {
+      "category": "Status",
+      "context": "ISO 4217 reference currency data in the user-requested searchable picker",
+      "review": "approved",
+      "reason": "Functional currency reference labels for the requested financial module; no decorative text.",
+      "textSHA256": "6556aa0294b3d96483e1164fbf8ae9679fbe6cd2838b276464d055861cf34250"
+    },
+    "finance.currency.SLE": {
+      "category": "Status",
+      "context": "ISO 4217 reference currency data in the user-requested searchable picker",
+      "review": "approved",
+      "reason": "Functional currency reference labels for the requested financial module; no decorative text.",
+      "textSHA256": "fb02c8c17122689f2f0fdddef40f2316fc22b455c64bb50abd6866c9dc6e9f6f"
+    },
+    "finance.currency.SOS": {
+      "category": "Status",
+      "context": "ISO 4217 reference currency data in the user-requested searchable picker",
+      "review": "approved",
+      "reason": "Functional currency reference labels for the requested financial module; no decorative text.",
+      "textSHA256": "346929507bc12959ab6d673e31efb19e4d7d6f78336d63c2007042e26376a68a"
+    },
+    "finance.currency.SRD": {
+      "category": "Status",
+      "context": "ISO 4217 reference currency data in the user-requested searchable picker",
+      "review": "approved",
+      "reason": "Functional currency reference labels for the requested financial module; no decorative text.",
+      "textSHA256": "af095fc95d9146a1dde5b8359dafebc6acae403cfff820444239920733b6f588"
+    },
+    "finance.currency.SSP": {
+      "category": "Status",
+      "context": "ISO 4217 reference currency data in the user-requested searchable picker",
+      "review": "approved",
+      "reason": "Functional currency reference labels for the requested financial module; no decorative text.",
+      "textSHA256": "6e833af33e18aa3d7e43a095a23c3024680db42808e29afafb9a5900156b0c83"
+    },
+    "finance.currency.STN": {
+      "category": "Status",
+      "context": "ISO 4217 reference currency data in the user-requested searchable picker",
+      "review": "approved",
+      "reason": "Functional currency reference labels for the requested financial module; no decorative text.",
+      "textSHA256": "fb99d84200f2806548dfaef80339293ce7bda04481e5be44681a841b3b11960d"
+    },
+    "finance.currency.SVC": {
+      "category": "Status",
+      "context": "ISO 4217 reference currency data in the user-requested searchable picker",
+      "review": "approved",
+      "reason": "Functional currency reference labels for the requested financial module; no decorative text.",
+      "textSHA256": "24e8c9bc7261ea81118d109e623a1ee1fa8bb307f09c015041724d7726b676f0"
+    },
+    "finance.currency.SYP": {
+      "category": "Status",
+      "context": "ISO 4217 reference currency data in the user-requested searchable picker",
+      "review": "approved",
+      "reason": "Functional currency reference labels for the requested financial module; no decorative text.",
+      "textSHA256": "9d76d3be79f7ce7a21f0db3eeb8700d1a3760dca6d9031d075c398916bab546b"
+    },
+    "finance.currency.SZL": {
+      "category": "Status",
+      "context": "ISO 4217 reference currency data in the user-requested searchable picker",
+      "review": "approved",
+      "reason": "Functional currency reference labels for the requested financial module; no decorative text.",
+      "textSHA256": "e29bc519da3c002acb1ec8ba65e7487e024ab265464a934c494b3e47a1dce6ff"
+    },
+    "finance.currency.THB": {
+      "category": "Status",
+      "context": "ISO 4217 reference currency data in the user-requested searchable picker",
+      "review": "approved",
+      "reason": "Functional currency reference labels for the requested financial module; no decorative text.",
+      "textSHA256": "45e90cc8034cd0e6827e7b8081f6fcff9aaed0d3abaceafbd6f42d710c91caab"
+    },
+    "finance.currency.TJS": {
+      "category": "Status",
+      "context": "ISO 4217 reference currency data in the user-requested searchable picker",
+      "review": "approved",
+      "reason": "Functional currency reference labels for the requested financial module; no decorative text.",
+      "textSHA256": "297a3015752b4ec4fbd7bafc7ef1f12408a3bbebc5098fb38d6220884e653aab"
+    },
+    "finance.currency.TMT": {
+      "category": "Status",
+      "context": "ISO 4217 reference currency data in the user-requested searchable picker",
+      "review": "approved",
+      "reason": "Functional currency reference labels for the requested financial module; no decorative text.",
+      "textSHA256": "fc4da299feac6c5b65e92af27638d777cfc24ee757522ff13a2bda9e73e9c2af"
+    },
+    "finance.currency.TND": {
+      "category": "Status",
+      "context": "ISO 4217 reference currency data in the user-requested searchable picker",
+      "review": "approved",
+      "reason": "Functional currency reference labels for the requested financial module; no decorative text.",
+      "textSHA256": "a8ebfe12307a93dba61a04143d843d9ee20da6706022c9d65281e21eca75671e"
+    },
+    "finance.currency.TOP": {
+      "category": "Status",
+      "context": "ISO 4217 reference currency data in the user-requested searchable picker",
+      "review": "approved",
+      "reason": "Functional currency reference labels for the requested financial module; no decorative text.",
+      "textSHA256": "2487f56c399b7e97f5bc15bc4af87d955d658512bc3ec0a7473cab5c4ba321bc"
+    },
+    "finance.currency.TRY": {
+      "category": "Status",
+      "context": "ISO 4217 reference currency data in the user-requested searchable picker",
+      "review": "approved",
+      "reason": "Functional currency reference labels for the requested financial module; no decorative text.",
+      "textSHA256": "ec6bf20bdad6632abd13802be6201f44f200f5e4b4445f8363ea4b14eaa2d3c1"
+    },
+    "finance.currency.TTD": {
+      "category": "Status",
+      "context": "ISO 4217 reference currency data in the user-requested searchable picker",
+      "review": "approved",
+      "reason": "Functional currency reference labels for the requested financial module; no decorative text.",
+      "textSHA256": "3422e5e7e7f1ad48cda59ba9518c45a9bd0bb631f79cd117b27a7acc207eb7fc"
+    },
+    "finance.currency.TWD": {
+      "category": "Status",
+      "context": "ISO 4217 reference currency data in the user-requested searchable picker",
+      "review": "approved",
+      "reason": "Functional currency reference labels for the requested financial module; no decorative text.",
+      "textSHA256": "08694ee60e60e2bc8396ec93d1bcd3c43ea01760abe30bb97d657e045a1e521c"
+    },
+    "finance.currency.TZS": {
+      "category": "Status",
+      "context": "ISO 4217 reference currency data in the user-requested searchable picker",
+      "review": "approved",
+      "reason": "Functional currency reference labels for the requested financial module; no decorative text.",
+      "textSHA256": "54096185d20f3d550416806a20a135d63e81d8067f3429334aec992dacb6a7e1"
+    },
+    "finance.currency.UAH": {
+      "category": "Status",
+      "context": "ISO 4217 reference currency data in the user-requested searchable picker",
+      "review": "approved",
+      "reason": "Functional currency reference labels for the requested financial module; no decorative text.",
+      "textSHA256": "2ff2c04b06c8e6e043ceb7ff1658581b47a12be7caa62c5810d8ae335382f960"
+    },
+    "finance.currency.UGX": {
+      "category": "Status",
+      "context": "ISO 4217 reference currency data in the user-requested searchable picker",
+      "review": "approved",
+      "reason": "Functional currency reference labels for the requested financial module; no decorative text.",
+      "textSHA256": "5a14c7a0c2d17fbe73f1a0513c9baa3cc5fb93cc4652b4fdfd933eab37f25c15"
+    },
+    "finance.currency.USN": {
+      "category": "Status",
+      "context": "ISO 4217 reference currency data in the user-requested searchable picker",
+      "review": "approved",
+      "reason": "Functional currency reference labels for the requested financial module; no decorative text.",
+      "textSHA256": "3c1e034de6e266f47cb0825907e8c1dc3de1d736a7fea313a940784369b90892"
+    },
+    "finance.currency.UYI": {
+      "category": "Status",
+      "context": "ISO 4217 reference currency data in the user-requested searchable picker",
+      "review": "approved",
+      "reason": "Functional currency reference labels for the requested financial module; no decorative text.",
+      "textSHA256": "6901799fab7cf067499bcf3702b1120aacab12159f67197bf251d793a2456699"
+    },
+    "finance.currency.UYU": {
+      "category": "Status",
+      "context": "ISO 4217 reference currency data in the user-requested searchable picker",
+      "review": "approved",
+      "reason": "Functional currency reference labels for the requested financial module; no decorative text.",
+      "textSHA256": "d516523fc78651425efaf201289b1483d924c45a631dba4eca0a17702ba575a2"
+    },
+    "finance.currency.UYW": {
+      "category": "Status",
+      "context": "ISO 4217 reference currency data in the user-requested searchable picker",
+      "review": "approved",
+      "reason": "Functional currency reference labels for the requested financial module; no decorative text.",
+      "textSHA256": "6af1561f2c4aa359f91d52ab79261565f10ef6ca8563e2f9d474b35067238485"
+    },
+    "finance.currency.UZS": {
+      "category": "Status",
+      "context": "ISO 4217 reference currency data in the user-requested searchable picker",
+      "review": "approved",
+      "reason": "Functional currency reference labels for the requested financial module; no decorative text.",
+      "textSHA256": "dc5c2c95a6e163f6eac11b96a0fcc2273c18cf157df63cf2b317621a495ed7e4"
+    },
+    "finance.currency.VED": {
+      "category": "Status",
+      "context": "ISO 4217 reference currency data in the user-requested searchable picker",
+      "review": "approved",
+      "reason": "Functional currency reference labels for the requested financial module; no decorative text.",
+      "textSHA256": "2a84b46384f4d3ff62330e24367a308b04f2227df2ee0230bb13ddcb3d378264"
+    },
+    "finance.currency.VES": {
+      "category": "Status",
+      "context": "ISO 4217 reference currency data in the user-requested searchable picker",
+      "review": "approved",
+      "reason": "Functional currency reference labels for the requested financial module; no decorative text.",
+      "textSHA256": "2a84b46384f4d3ff62330e24367a308b04f2227df2ee0230bb13ddcb3d378264"
+    },
+    "finance.currency.VND": {
+      "category": "Status",
+      "context": "ISO 4217 reference currency data in the user-requested searchable picker",
+      "review": "approved",
+      "reason": "Functional currency reference labels for the requested financial module; no decorative text.",
+      "textSHA256": "dc96b9b9e9bac32645a06d26527160a09a882580d9054d8b2d71e90e08d33bc4"
+    },
+    "finance.currency.VUV": {
+      "category": "Status",
+      "context": "ISO 4217 reference currency data in the user-requested searchable picker",
+      "review": "approved",
+      "reason": "Functional currency reference labels for the requested financial module; no decorative text.",
+      "textSHA256": "a874cc7e91d36efb4eca4bab98cd93f7b7adcb6064844d8ca3d06c95dd81873c"
+    },
+    "finance.currency.WST": {
+      "category": "Status",
+      "context": "ISO 4217 reference currency data in the user-requested searchable picker",
+      "review": "approved",
+      "reason": "Functional currency reference labels for the requested financial module; no decorative text.",
+      "textSHA256": "f8f5641346c386d42c2f47d0a7b6c3aeaa2068ec09cd825b32b2635482359c8d"
+    },
+    "finance.currency.XAD": {
+      "category": "Status",
+      "context": "ISO 4217 reference currency data in the user-requested searchable picker",
+      "review": "approved",
+      "reason": "Functional currency reference labels for the requested financial module; no decorative text.",
+      "textSHA256": "c5bed772e4f11663ce06ecf6b76e7aae64f03d68d92191e90d6c67ef4602a8e4"
+    },
+    "finance.currency.XAF": {
+      "category": "Status",
+      "context": "ISO 4217 reference currency data in the user-requested searchable picker",
+      "review": "approved",
+      "reason": "Functional currency reference labels for the requested financial module; no decorative text.",
+      "textSHA256": "69565bff99169ab2acf154f2437d64db46b5a98fd0b6f24fb9d9a64b06139fde"
+    },
+    "finance.currency.XCD": {
+      "category": "Status",
+      "context": "ISO 4217 reference currency data in the user-requested searchable picker",
+      "review": "approved",
+      "reason": "Functional currency reference labels for the requested financial module; no decorative text.",
+      "textSHA256": "19c13f6caa579e0d2738b8389d78d331426e0b713723e4d13c7b568144063145"
+    },
+    "finance.currency.XCG": {
+      "category": "Status",
+      "context": "ISO 4217 reference currency data in the user-requested searchable picker",
+      "review": "approved",
+      "reason": "Functional currency reference labels for the requested financial module; no decorative text.",
+      "textSHA256": "e95e9ef2422c7cf7db922ea5c10311dc458eed6b11aa3b6e37cc44ce6fd4eb45"
+    },
+    "finance.currency.XOF": {
+      "category": "Status",
+      "context": "ISO 4217 reference currency data in the user-requested searchable picker",
+      "review": "approved",
+      "reason": "Functional currency reference labels for the requested financial module; no decorative text.",
+      "textSHA256": "ea8aa788435bf1ea75e59eb55ef98240509efa818342c726dacaaacfadbbfb2d"
+    },
+    "finance.currency.XPF": {
+      "category": "Status",
+      "context": "ISO 4217 reference currency data in the user-requested searchable picker",
+      "review": "approved",
+      "reason": "Functional currency reference labels for the requested financial module; no decorative text.",
+      "textSHA256": "2df59ff01b2ae7fc7a6be8be5cd8d46d45356a2cd582d770e60029e1824c4675"
+    },
+    "finance.currency.YER": {
+      "category": "Status",
+      "context": "ISO 4217 reference currency data in the user-requested searchable picker",
+      "review": "approved",
+      "reason": "Functional currency reference labels for the requested financial module; no decorative text.",
+      "textSHA256": "e2a12050b6d6010ac382a595d867129d62d547f5f7284727abb72c0937c2f503"
+    },
+    "finance.currency.ZAR": {
+      "category": "Status",
+      "context": "ISO 4217 reference currency data in the user-requested searchable picker",
+      "review": "approved",
+      "reason": "Functional currency reference labels for the requested financial module; no decorative text.",
+      "textSHA256": "044dcfaf9b32a30847a1aadcf9eb834d84dd725313a148bf758b71b710093e7c"
+    },
+    "finance.currency.ZMW": {
+      "category": "Status",
+      "context": "ISO 4217 reference currency data in the user-requested searchable picker",
+      "review": "approved",
+      "reason": "Functional currency reference labels for the requested financial module; no decorative text.",
+      "textSHA256": "ed04f9db8951833e0e4822897702675a461a0d8a3a5028536b0c81eba9d4f9ad"
+    },
+    "finance.currency.ZWG": {
+      "category": "Status",
+      "context": "ISO 4217 reference currency data in the user-requested searchable picker",
+      "review": "approved",
+      "reason": "Functional currency reference labels for the requested financial module; no decorative text.",
+      "textSHA256": "94e028b2734a14b19553c36e7cab9e210df27655419f14a80ab8d63f33ef8bf9"
+    },
+    "finance.title": {
+      "category": "Navigation",
+      "context": "Together 0.2.1 Our Finances",
+      "review": "approved",
+      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
+      "textSHA256": "33734a35d8a51c1c1f2a5a5aac3ce8ad38c20c019fd3bffb7d3904f0a6a29eff"
+    },
+    "finance.tab.reserves": {
+      "category": "Navigation",
+      "context": "Together 0.2.1 Our Finances",
+      "review": "approved",
+      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
+      "textSHA256": "2a84cd13ccdac724fa73f88e5df4fb1ae21580182c1666c9553075393b83d4bc"
+    },
+    "finance.tab.expenses": {
+      "category": "Navigation",
+      "context": "Together 0.2.1 Our Finances",
+      "review": "approved",
+      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
+      "textSHA256": "d311416fa3aadb4d8cbf54c9a8d48cef3a272ef469a075328909de18e34f6fb9"
+    },
+    "finance.tab.bills": {
+      "category": "Navigation",
+      "context": "Together 0.2.1 Our Finances",
+      "review": "approved",
+      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
+      "textSHA256": "b96378daf44715b5ad9fdd213cb9d8cdc5bc1efb75597a5d614c5773679637ee"
+    },
+    "finance.settings": {
+      "category": "Navigation",
+      "context": "Together 0.2.1 Our Finances",
+      "review": "approved",
+      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
+      "textSHA256": "d55aa6b6aa14329b0bec50f15d596be67f6b84afd48aa6255b119d484ca69745"
+    },
+    "finance.events.title": {
+      "category": "Navigation",
+      "context": "Together 0.2.1 Our Finances",
+      "review": "approved",
+      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
+      "textSHA256": "60ebc41e479bee6e5e42d5b1b686f66bde6b3d48886f169469d7613e4c472387"
+    },
+    "finance.cards.title": {
+      "category": "Navigation",
+      "context": "Together 0.2.1 Our Finances",
+      "review": "approved",
+      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
+      "textSHA256": "339ef26eeadec6d3f6f97e24aa25ec7a0ab4696928e495088bcf3eafea502f5e"
+    },
+    "finance.cycle.title": {
+      "category": "Navigation",
+      "context": "Together 0.2.1 Our Finances",
+      "review": "approved",
+      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
+      "textSHA256": "8db49d7055bb118dba424177f6e4f8849da994a9dcd31827b8adb1e6508bb9c6"
+    },
+    "finance.action.cancel": {
+      "category": "Action",
+      "context": "Together 0.2.1 Our Finances",
+      "review": "approved",
+      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
+      "textSHA256": "2cd0f3be8738a86cede1a1452f874f31d569864bbb00cacd4130990f4610cb5c"
+    },
+    "finance.action.save": {
+      "category": "Action",
+      "context": "Together 0.2.1 Our Finances",
+      "review": "approved",
+      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
+      "textSHA256": "a3030bf8f16dc63c6b277564c68f78a3be5abe5f2907c51826dee7184ff793fd"
+    },
+    "finance.action.edit": {
+      "category": "Action",
+      "context": "Together 0.2.1 Our Finances",
+      "review": "approved",
+      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
+      "textSHA256": "051836569928a9f91145a70e00b212b62a06c21a97d2d828cb75acd3fbe851b9"
+    },
+    "finance.action.delete": {
+      "category": "Action",
+      "context": "Together 0.2.1 Our Finances",
+      "review": "approved",
+      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
+      "textSHA256": "2f9daa828907b93ff8a00d41a16828e0c6388bf3a95dadf816c8ee9c3bdac37d"
+    },
+    "finance.action.revoke": {
+      "category": "Action",
+      "context": "Together 0.2.1 Our Finances",
+      "review": "approved",
+      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
+      "textSHA256": "926a50b98ece2667069d47bd532e8ae1fb23218868a8f289c09937478f717c7a"
+    },
+    "finance.action.close": {
+      "category": "Action",
+      "context": "Together 0.2.1 Our Finances",
+      "review": "approved",
+      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
+      "textSHA256": "3fd47edce45b3603d4192f61dbf3e51162589b0951042a18d244132ac92e7bb7"
+    },
+    "finance.action.view": {
+      "category": "Action",
+      "context": "Together 0.2.1 Our Finances",
+      "review": "approved",
+      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
+      "textSHA256": "db8db0530432bd1596cd1ef21016dfc12392548a4b82019f1b1d7a315e0a55c0"
+    },
+    "finance.action.settings": {
+      "category": "Action",
+      "context": "Together 0.2.1 Our Finances",
+      "review": "approved",
+      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
+      "textSHA256": "d55aa6b6aa14329b0bec50f15d596be67f6b84afd48aa6255b119d484ca69745"
+    },
+    "finance.action.changes": {
+      "category": "Action",
+      "context": "Together 0.2.1 Our Finances",
+      "review": "approved",
+      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
+      "textSHA256": "67fef6fe217cffd103c6ac090f968cea396a424b94b45f054920739137849e28"
+    },
+    "finance.action.allExpenses": {
+      "category": "Action",
+      "context": "Together 0.2.1 Our Finances",
+      "review": "approved",
+      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
+      "textSHA256": "e97e60b3ba9dae1cb2e2972daa771563825767e8972b8fc7cb555061178c60af"
+    },
+    "finance.action.new.reserves": {
+      "category": "Action",
+      "context": "Together 0.2.1 Our Finances",
+      "review": "approved",
+      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
+      "textSHA256": "773badd32bd8e498fbe8e2640723b24b48d797121cdf8f172fbd714a9e2c285f"
+    },
+    "finance.action.new.expenses": {
+      "category": "Action",
+      "context": "Together 0.2.1 Our Finances",
+      "review": "approved",
+      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
+      "textSHA256": "307474c6a276d386de1ad3965ce865aaed72d0bc9a963e8485be7ad8b3676f5d"
+    },
+    "finance.action.new.bills": {
+      "category": "Action",
+      "context": "Together 0.2.1 Our Finances",
+      "review": "approved",
+      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
+      "textSHA256": "3029f0212e7cfac58848f67f534515e8cc50b6cb5db4c23ba376a448709bbc7f"
+    },
+    "finance.events.new": {
+      "category": "Action",
+      "context": "Together 0.2.1 Our Finances",
+      "review": "approved",
+      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
+      "textSHA256": "9d060f4e9bd727b3e253d0a8a2d47105e2fbc502ac6d4ea7a9ec1f075d7f3401"
+    },
+    "finance.cards.new": {
+      "category": "Action",
+      "context": "Together 0.2.1 Our Finances",
+      "review": "approved",
+      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
+      "textSHA256": "39a3f90e1ebc294a5d3f85daa4af85682106bd468517f9bd87bebe77c09b7a2a"
+    },
+    "finance.bill.editDefaults": {
+      "category": "Action",
+      "context": "Together 0.2.1 Our Finances",
+      "review": "approved",
+      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
+      "textSHA256": "042be246e02901c27cf6e98a3ac22e08470fb5ce23ed7dc096fa8420c77496f4"
+    },
+    "finance.bill.editOccurrence": {
+      "category": "Action",
+      "context": "Together 0.2.1 Our Finances",
+      "review": "approved",
+      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
+      "textSHA256": "776f75fecef31a29b98ef0a8568631e3987db25b52d99da16a7c8e55a006c099"
+    },
+    "finance.bill.pause": {
+      "category": "Action",
+      "context": "Together 0.2.1 Our Finances",
+      "review": "approved",
+      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
+      "textSHA256": "8d12fc0d4eb26021d93db693a076e474b8fc6e01f8808666744816c8ba72b746"
+    },
+    "finance.bill.resume": {
+      "category": "Action",
+      "context": "Together 0.2.1 Our Finances",
+      "review": "approved",
+      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
+      "textSHA256": "e0534b8a4e46a0cb5601d4da01910450a4ef2ffd6eacdc29c7312dcf7cfe0930"
+    },
+    "finance.bill.terminate": {
+      "category": "Action",
+      "context": "Together 0.2.1 Our Finances",
+      "review": "approved",
+      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
+      "textSHA256": "8637ac9558ff10931c4af0da6735233feabd229424d49ce1fa63a2d6706156de"
+    },
+    "finance.review.correct": {
+      "category": "Action",
+      "context": "Together 0.2.1 Our Finances",
+      "review": "approved",
+      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
+      "textSHA256": "909009a4821ef09eba5b9f3bb5a56ca1e7c1167b84a39443891cc744488c3117"
+    },
+    "finance.review.modify": {
+      "category": "Action",
+      "context": "Together 0.2.1 Our Finances",
+      "review": "approved",
+      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
+      "textSHA256": "ecaa3aaacadfbd3cf85109c4dc0b2df32eecb1716099bd28d775393102dc03da"
+    },
+    "finance.review.skipped": {
+      "category": "Action",
+      "context": "Together 0.2.1 Our Finances",
+      "review": "approved",
+      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
+      "textSHA256": "553e94225c32d3eaa1cea332ff63e2ff7a337413211b123934f923e287df4ecc"
+    },
+    "finance.reserves.opening": {
+      "category": "Action",
+      "context": "Together 0.2.1 Our Finances",
+      "review": "approved",
+      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
+      "textSHA256": "b2d9c1b1bdfd8f95bf7be1241bda7a95b226a7f6098432a73695e82e6963543f"
+    },
+    "finance.expenses.edit": {
+      "category": "Action",
+      "context": "Together 0.2.1 Our Finances",
+      "review": "approved",
+      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
+      "textSHA256": "d25db9b2d6fc1b7d6510d70c7dc98ac4365a7c5e09771fe5a54e5121469e6558"
+    },
+    "finance.amount.currency": {
+      "category": "Status",
+      "context": "Together 0.2.1 Our Finances",
+      "review": "approved",
+      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
+      "textSHA256": "9677f386bdcdd9c4d0a9a6ca485a420470bbd60813608a4176c837f5b1d2ad2e"
+    },
+    "finance.amount.original": {
+      "category": "Status",
+      "context": "Together 0.2.1 Our Finances",
+      "review": "approved",
+      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
+      "textSHA256": "fee8c0943c6c369125c3fe1c9debd4a20ac68c7dde27e5bbc4f9fadf75a9b703"
+    },
+    "finance.amount.actualCNY": {
+      "category": "Status",
+      "context": "Together 0.2.1 Our Finances",
+      "review": "approved",
+      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
+      "textSHA256": "4658bc163bc995551a2d2e3b014d209f7dcabd46395c9778b38dc62f30939847"
+    },
+    "finance.amount.referenceRate": {
+      "category": "Status",
+      "context": "Together 0.2.1 Our Finances",
+      "review": "approved",
+      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
+      "textSHA256": "b03eb5f3375a61311e52495d06dae353039ef15f4365a97e47622cff9ae826be"
+    },
+    "finance.amount.rate": {
+      "category": "Status",
+      "context": "Together 0.2.1 Our Finances",
+      "review": "approved",
+      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
+      "textSHA256": "2934b89625650f883400c90cd285f7625733302030e57b51e2a6b9680b7dac76"
+    },
+    "finance.amount.source": {
+      "category": "Status",
+      "context": "Together 0.2.1 Our Finances",
+      "review": "approved",
+      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
+      "textSHA256": "f66e8279fea22773576b591121c20bc88772e019f8774ee15107084d72fb7c95"
+    },
+    "finance.amount.rateDate": {
+      "category": "Status",
+      "context": "Together 0.2.1 Our Finances",
+      "review": "approved",
+      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
+      "textSHA256": "51cc2c49e001368bdb0a45a84a91405c4c7a82cf6cf7fc556634ae4eed41dc83"
+    },
+    "finance.amount.manualRate": {
+      "category": "Status",
+      "context": "Together 0.2.1 Our Finances",
+      "review": "approved",
+      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
+      "textSHA256": "de1901d60a8478ca72713211d3dfba53f250e72fb2af651ca91bde43b2a2ede5"
+    },
+    "finance.balance.book": {
+      "category": "Status",
+      "context": "Together 0.2.1 Our Finances",
+      "review": "approved",
+      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
+      "textSHA256": "b5c7ff4fa89b94927ec5ab3d537ac6bf35b7bb196f26644ba690ee98c27d90a1"
+    },
+    "finance.balance.verified": {
+      "category": "Status",
+      "context": "Together 0.2.1 Our Finances",
+      "review": "approved",
+      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
+      "textSHA256": "a0404c33ae517757e26a47fa3dd88f353e4e57b3f31473bba3233ffdc8d3d969"
+    },
+    "finance.balance.provisional": {
+      "category": "Status",
+      "context": "Together 0.2.1 Our Finances",
+      "review": "approved",
+      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
+      "textSHA256": "f472f8c5186932ede10645941872049312630e6f33235f518f8f290dd266e378"
+    },
+    "finance.reserves.history": {
+      "category": "Status",
+      "context": "Together 0.2.1 Our Finances",
+      "review": "approved",
+      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
+      "textSHA256": "a2d6ea80939adba8bbcbbd28f1454f5679ecb233be08d2a5cd6c87110e50b6b8"
+    },
+    "finance.reserves.spending": {
+      "category": "Status",
+      "context": "Together 0.2.1 Our Finances",
+      "review": "approved",
+      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
+      "textSHA256": "c7a935157337324e65a5cd5f3553ff3298388f0e7a4181010b637d34f9c516de"
+    },
+    "finance.deposit.member": {
+      "category": "Status",
+      "context": "Together 0.2.1 Our Finances",
+      "review": "approved",
+      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
+      "textSHA256": "c504039f1ffcbce37d22b2d8efe443a94b33c06f7083fcf02354eff2bab41781"
+    },
+    "finance.field.title": {
+      "category": "Status",
+      "context": "Together 0.2.1 Our Finances",
+      "review": "approved",
+      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
+      "textSHA256": "d44e9b3d3b31d37b4f0cd94f7861383519f9ec0cf59b953596627a3e7706bfbc"
+    },
+    "finance.field.date": {
+      "category": "Status",
+      "context": "Together 0.2.1 Our Finances",
+      "review": "approved",
+      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
+      "textSHA256": "1ca2dd0ae3b00b4965aea7257e543b3f3fc0a802e452dad0c0a2a03fa0ac6c0d"
+    },
+    "finance.field.notes": {
+      "category": "Status",
+      "context": "Together 0.2.1 Our Finances",
+      "review": "approved",
+      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
+      "textSHA256": "daede9881787abe74c94e686be78a4eabc85a09688433027ea55ac583919bc1e"
+    },
+    "finance.field.category": {
+      "category": "Status",
+      "context": "Together 0.2.1 Our Finances",
+      "review": "approved",
+      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
+      "textSHA256": "515559957fd3acbdd96991b2e6bc90e608ef779aa8177c97286bfc16f0ceb606"
+    },
+    "finance.field.timeZone": {
+      "category": "Status",
+      "context": "Together 0.2.1 Our Finances",
+      "review": "approved",
+      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
+      "textSHA256": "0e6741b5e32380aa4e5697126d9b1a8f558f4eae457d7aaf55e48aa74aa8b267"
+    },
+    "finance.payment.title": {
+      "category": "Status",
+      "context": "Together 0.2.1 Our Finances",
+      "review": "approved",
+      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
+      "textSHA256": "4e3c13589f98c0e6d397cec03cb049b5d9fd200e7eab7a9d29a621fea8dff2cd"
+    },
+    "finance.payment.reserves": {
+      "category": "Status",
+      "context": "Together 0.2.1 Our Finances",
+      "review": "approved",
+      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
+      "textSHA256": "b35fd01dfc9b16ee62e32292b2f88c766c6c6692b9c7169974bf7830c2ead3be"
+    },
+    "finance.payment.own": {
+      "category": "Status",
+      "context": "Together 0.2.1 Our Finances",
+      "review": "approved",
+      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
+      "textSHA256": "7e9a6bb5df76879d0eee8973277d577c7a2de9e435f08a5c2995b219db5cc008"
+    },
+    "finance.payment.partner": {
+      "category": "Status",
+      "context": "Together 0.2.1 Our Finances",
+      "review": "approved",
+      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
+      "textSHA256": "6d00a770918568b9546b40aa14da6ad9afbc73784af030248740efa44ea00a3e"
+    },
+    "finance.payment.aa": {
+      "category": "Status",
+      "context": "Together 0.2.1 Our Finances",
+      "review": "approved",
+      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
+      "textSHA256": "d439e31e750f2a9608361be578451247c3722165272f659295cd174deeae85c5"
+    },
+    "finance.aa.formula": {
+      "category": "Status",
+      "context": "Together 0.2.1 Our Finances",
+      "review": "approved",
+      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
+      "textSHA256": "4381da5455e90b34e849b80533018b3c09bd82930cceff1ac7c23ac344c62572"
+    },
+    "finance.expenses.total": {
+      "category": "Status",
+      "context": "Together 0.2.1 Our Finances",
+      "review": "approved",
+      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
+      "textSHA256": "315edda866fc6b584b406e9b572f3d48a797316571525128cf18f5a185a956f0"
+    },
+    "finance.expenses.search": {
+      "category": "Status",
+      "context": "Together 0.2.1 Our Finances",
+      "review": "approved",
+      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
+      "textSHA256": "e26216e8e94dfa433ed05e9c9d82f3d2fbccfb03f691491190c430ab739a0f31"
+    },
+    "finance.filter.payment": {
+      "category": "Status",
+      "context": "Together 0.2.1 Our Finances",
+      "review": "approved",
+      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
+      "textSHA256": "4e3c13589f98c0e6d397cec03cb049b5d9fd200e7eab7a9d29a621fea8dff2cd"
+    },
+    "finance.filter.source": {
+      "category": "Status",
+      "context": "Together 0.2.1 Our Finances",
+      "review": "approved",
+      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
+      "textSHA256": "a488e93d69cc12961ea26e97b7d246d03a9af7334d2d84881dd7f702e801bf74"
+    },
+    "finance.filter.status": {
+      "category": "Status",
+      "context": "Together 0.2.1 Our Finances",
+      "review": "approved",
+      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
+      "textSHA256": "aba2334fda5b43c402a2a40b540c238d8999142dfa5ed46bdab9ab99f941cd12"
+    },
+    "finance.filter.all": {
+      "category": "Status",
+      "context": "Together 0.2.1 Our Finances",
+      "review": "approved",
+      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
+      "textSHA256": "5c55a67935af8f4508ba05d6d81c9eb240a2ea0ba886d8428b985e305470da3f"
+    },
+    "finance.source.all": {
+      "category": "Status",
+      "context": "Together 0.2.1 Our Finances",
+      "review": "approved",
+      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
+      "textSHA256": "5c55a67935af8f4508ba05d6d81c9eb240a2ea0ba886d8428b985e305470da3f"
+    },
+    "finance.source.standalone": {
+      "category": "Status",
+      "context": "Together 0.2.1 Our Finances",
+      "review": "approved",
+      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
+      "textSHA256": "804428f49d223b266ef1ea77a4168c3caa9fcd8f539e924fd7156e2bbc95dc4e"
+    },
+    "finance.source.date": {
+      "category": "Status",
+      "context": "Together 0.2.1 Our Finances",
+      "review": "approved",
+      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
+      "textSHA256": "3e00e0217039b300879ff61d0e2237b196f35353df258fa58ce6011cdb62e49f"
+    },
+    "finance.source.bill": {
+      "category": "Status",
+      "context": "Together 0.2.1 Our Finances",
+      "review": "approved",
+      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
+      "textSHA256": "6fdb22e034e8c877b569050f5b1fb8623e2ec48fa4403eb9d206c9af8bd076b2"
+    },
+    "finance.status.provisional": {
+      "category": "Status",
+      "context": "Together 0.2.1 Our Finances",
+      "review": "approved",
+      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
+      "textSHA256": "33df16b4afab2d5faa163834cb2257029c21cdcf3d6b488f6ac1d72351057523"
+    },
+    "finance.status.reconciled": {
+      "category": "Status",
+      "context": "Together 0.2.1 Our Finances",
+      "review": "approved",
+      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
+      "textSHA256": "b69f0137d3b95a23573a6b90b3ee85338183ce1a1aa8f850b4daeca8f1e364f4"
+    },
+    "finance.status.skipped": {
+      "category": "Status",
+      "context": "Together 0.2.1 Our Finances",
+      "review": "approved",
+      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
+      "textSHA256": "4f48e3c4dbf4f094d4d38ad63ff670a538480aef317fd40e9f5415c9d31b5f3f"
+    },
+    "finance.status.active": {
+      "category": "Status",
+      "context": "Together 0.2.1 Our Finances",
+      "review": "approved",
+      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
+      "textSHA256": "dc9591e56d502b436c29bdd2819998a8460b951a7baff457484a930492c1a9d7"
+    },
+    "finance.status.paused": {
+      "category": "Status",
+      "context": "Together 0.2.1 Our Finances",
+      "review": "approved",
+      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
+      "textSHA256": "eb0c326b60ae897a19080c0b21565029be8da614a7dd6ecad97da24f4cb8fc90"
+    },
+    "finance.status.terminated": {
+      "category": "Status",
+      "context": "Together 0.2.1 Our Finances",
+      "review": "approved",
+      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
+      "textSHA256": "71e03cd890f413e3fa01ba2d862de853756a1e6eeef48074837c6acc8d4cc0de"
+    },
+    "finance.status.deleted": {
+      "category": "Status",
+      "context": "Together 0.2.1 Our Finances",
+      "review": "approved",
+      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
+      "textSHA256": "077a6d37719a0e21e68abe1bf3ec7b83cd05069cec86570c16de88640ffc519f"
+    },
+    "finance.status.revoked": {
+      "category": "Status",
+      "context": "Together 0.2.1 Our Finances",
+      "review": "approved",
+      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
+      "textSHA256": "fef96e34f77b742b32120dac448c1d90f3a2ee2c9bb6942fec13b70d7816cd06"
+    },
+    "finance.bill.day": {
+      "category": "Status",
+      "context": "Together 0.2.1 Our Finances",
+      "review": "approved",
+      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
+      "textSHA256": "f41cffc6524d2cfccf7ece1a5bc286f7237f74914287cb985d0c0b61e1e8cd7c"
+    },
+    "finance.bill.monthlyDay": {
+      "category": "Status",
+      "context": "Together 0.2.1 Our Finances",
+      "review": "approved",
+      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
+      "textSHA256": "9be14172daf76fb1335f2d8a057e92aebbba52bb387906d6e976613f09cd500e"
+    },
+    "finance.bill.customStart": {
+      "category": "Status",
+      "context": "Together 0.2.1 Our Finances",
+      "review": "approved",
+      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
+      "textSHA256": "c68fc3a4d0e380e6e1591340fbb83fa282341d14633d3b6e07002dc430cc2e8a"
+    },
+    "finance.bill.startMonth": {
+      "category": "Status",
+      "context": "Together 0.2.1 Our Finances",
+      "review": "approved",
+      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
+      "textSHA256": "7e9fe95379cd4d4e682c735e194e9e0e371529f250bc5e0e8520ab1911590233"
+    },
+    "finance.bill.specificTime": {
+      "category": "Status",
+      "context": "Together 0.2.1 Our Finances",
+      "review": "approved",
+      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
+      "textSHA256": "d94299280e7e1fb3cb48b2af6a79ef2f63bca4807788f13e8f38e771592944c8"
+    },
+    "finance.bill.time": {
+      "category": "Status",
+      "context": "Together 0.2.1 Our Finances",
+      "review": "approved",
+      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
+      "textSHA256": "5f922c0319fb16681a51ce641eac5a3f53ea9e4906ef744a7dfe7bc6e9c90b93"
+    },
+    "finance.cycle.current": {
+      "category": "Status",
+      "context": "Together 0.2.1 Our Finances",
+      "review": "approved",
+      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
+      "textSHA256": "27135515ae0af456780edae11b6f47dbcb1d24e22bb59c2faef5468d70b480c1"
+    },
+    "finance.cycle.scope": {
+      "category": "Status",
+      "context": "Together 0.2.1 Our Finances",
+      "review": "approved",
+      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
+      "textSHA256": "aa1de8ce3093017bdd39c13e01374a80c0a0e9e24fe0af18c7152e47d0fc23d0"
+    },
+    "finance.cycle.shared": {
+      "category": "Status",
+      "context": "Together 0.2.1 Our Finances",
+      "review": "approved",
+      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
+      "textSHA256": "bbbe663028b3cd152881b01cbd17d301098905512fe626782d1f14edc92b138f"
+    },
+    "finance.cycle.personal": {
+      "category": "Status",
+      "context": "Together 0.2.1 Our Finances",
+      "review": "approved",
+      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
+      "textSHA256": "7cfc63ba4d9078cb3f1e6d364f93f6b295f93460ce0330957e551594c0614581"
+    },
+    "finance.cycle.startDay": {
+      "category": "Status",
+      "context": "Together 0.2.1 Our Finances",
+      "review": "approved",
+      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
+      "textSHA256": "917e5584b5de2d3cb6f1c2bb9c1182f4352d48c38571a82d983835d5c98e7d99"
+    },
+    "finance.cycle.salaryDay": {
+      "category": "Status",
+      "context": "Together 0.2.1 Our Finances",
+      "review": "approved",
+      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
+      "textSHA256": "e20f99f31239991199bc6d4a70724b7ad4529263702d24f615ac790fb9528d64"
+    },
+    "finance.cycle.depositDay": {
+      "category": "Status",
+      "context": "Together 0.2.1 Our Finances",
+      "review": "approved",
+      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
+      "textSHA256": "45de0dc6507eaecf8336b0eaf333e01f9a7e9086ae1f15d4681f8f34cac36679"
+    },
+    "finance.cycle.summary": {
+      "category": "Status",
+      "context": "Together 0.2.1 Our Finances",
+      "review": "approved",
+      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
+      "textSHA256": "041460d81718a4069c044cb1e96caa0460383dc02755976a4324593f0a7d80a3"
+    },
+    "finance.cards.bank": {
+      "category": "Status",
+      "context": "Together 0.2.1 Our Finances",
+      "review": "approved",
+      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
+      "textSHA256": "641a9c1dbd555899ba755c4fa11bc1d305194bf07647d15eff23c6b61374a5bf"
+    },
+    "finance.cards.name": {
+      "category": "Status",
+      "context": "Together 0.2.1 Our Finances",
+      "review": "approved",
+      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
+      "textSHA256": "a41ec76ecac2ec5853a7d5069fe53766354d09b6e53a7a0b62d9b7651294b3ae"
+    },
+    "finance.cards.holder": {
+      "category": "Status",
+      "context": "Together 0.2.1 Our Finances",
+      "review": "approved",
+      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
+      "textSHA256": "b2bd2ee5fb35bd135eaa053e12cbfe22a024be180c12dfdd300cf072a845281c"
+    },
+    "finance.cards.kind": {
+      "category": "Status",
+      "context": "Together 0.2.1 Our Finances",
+      "review": "approved",
+      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
+      "textSHA256": "71ce8b6758f2b21c1815fba2d6ce31d842391a3bb3e678132915e9872e298e31"
+    },
+    "finance.cards.debit": {
+      "category": "Status",
+      "context": "Together 0.2.1 Our Finances",
+      "review": "approved",
+      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
+      "textSHA256": "31fc5f8a25795e9f70acb6e3ca670d5c1796d720b6bed733f8874ca5da730342"
+    },
+    "finance.cards.credit": {
+      "category": "Status",
+      "context": "Together 0.2.1 Our Finances",
+      "review": "approved",
+      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
+      "textSHA256": "bf4fe76a26686e0e18787e5056ca9b8a6c235e5923b5f030cff2e429eeb29b65"
+    },
+    "finance.cards.lastFour": {
+      "category": "Status",
+      "context": "Together 0.2.1 Our Finances",
+      "review": "approved",
+      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
+      "textSHA256": "38aa98e736e7acecce214782525a0aa081e282f5890be3615d31ff78c21778cb"
+    },
+    "finance.cards.optionalCurrency": {
+      "category": "Status",
+      "context": "Together 0.2.1 Our Finances",
+      "review": "approved",
+      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
+      "textSHA256": "6bce29468d4b01a9abb07d658ad93c56bbe5e0babe65669de7b1844a278273a0"
+    },
+    "finance.cards.shared": {
+      "category": "Status",
+      "context": "Together 0.2.1 Our Finances",
+      "review": "approved",
+      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
+      "textSHA256": "c8b2f5e519d7dd89be2620b1f7ea89eae519317241e30d18da99be1897fc7690"
+    },
+    "finance.cards.none": {
+      "category": "Status",
+      "context": "Together 0.2.1 Our Finances",
+      "review": "approved",
+      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
+      "textSHA256": "70d9626ae2fb15c80b5a25221d3db6b0aa899c2a3262fc67954f6dd7f20b1c7c"
+    },
+    "finance.currency.search": {
+      "category": "Status",
+      "context": "Together 0.2.1 Our Finances",
+      "review": "approved",
+      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
+      "textSHA256": "9c07ae4a59d00a52af2f37fd61a5d612e4e2257cdab6c8fcaf8852e1c89a4e1f"
+    },
+    "finance.notifications.enable": {
+      "category": "Status",
+      "context": "Together 0.2.1 Our Finances",
+      "review": "approved",
+      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
+      "textSHA256": "d21bdf5568c29c13e454b080bd1758e54cc2ad86fea009d1cfc5d2609c3e2008"
+    },
+    "finance.banner.deposits": {
+      "category": "Status",
+      "context": "Together 0.2.1 Our Finances",
+      "review": "approved",
+      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
+      "textSHA256": "19358d181c90760c6f13d714ab3f1eac1d5d0c9238812e7b228cfc78568b6ad9"
+    },
+    "finance.banner.changes": {
+      "category": "Status",
+      "context": "Together 0.2.1 Our Finances",
+      "review": "approved",
+      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
+      "textSHA256": "96e15c0f1718b91f4b2dad8efea63f61591612922220b3625d82088f301c16d8"
+    },
+    "finance.reminder.forecast": {
+      "category": "Status",
+      "context": "Together 0.2.1 Our Finances",
+      "review": "approved",
+      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
+      "textSHA256": "bb68b54da1008174ace24aba66cd2b7a7402dcac85f9aab3ae818942f6077a9a"
+    },
+    "finance.reminder.review": {
+      "category": "Status",
+      "context": "Together 0.2.1 Our Finances",
+      "review": "approved",
+      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
+      "textSHA256": "ae6a41215b017f998cbe384156b6347646c3b7514e9fdb72d2cab8d8fa4f3635"
+    },
+    "finance.reminder.plannedDeposit": {
+      "category": "Status",
+      "context": "Together 0.2.1 Our Finances",
+      "review": "approved",
+      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
+      "textSHA256": "7d7829d2d2fe37ce2890ea3edb3143d0343449dd3a7844e6bbaf760a5ec934c2"
+    },
+    "finance.reminder.rate": {
+      "category": "Status",
+      "context": "Together 0.2.1 Our Finances",
+      "review": "approved",
+      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
+      "textSHA256": "0fc89cca2b1576e9eb0b2ce8c46c9e45e4919892d59a2f0f117f31fabfac0d11"
+    },
+    "finance.change.effective": {
+      "category": "Status",
+      "context": "Together 0.2.1 Our Finances",
+      "review": "approved",
+      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
+      "textSHA256": "b450c192d788b1ce344100376599e199593e3a480509f2d109ab9ea19c6360f2"
+    },
+    "finance.change.reserveEntry.create": {
+      "category": "Status",
+      "context": "Together 0.2.1 Our Finances",
+      "review": "approved",
+      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
+      "textSHA256": "773badd32bd8e498fbe8e2640723b24b48d797121cdf8f172fbd714a9e2c285f"
+    },
+    "finance.change.reserveEntry.patch": {
+      "category": "Status",
+      "context": "Together 0.2.1 Our Finances",
+      "review": "approved",
+      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
+      "textSHA256": "a1e25720cb64767d6cde27ea07fb567305ba98ce87f48e9d5c53f33e63fe7fdc"
+    },
+    "finance.change.reserveEntry.delete": {
+      "category": "Status",
+      "context": "Together 0.2.1 Our Finances",
+      "review": "approved",
+      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
+      "textSHA256": "43f9718d4bff6ff919191de3322b7588c96f59c9a27002b86727dddd1119e07f"
+    },
+    "finance.change.dateEvent.create": {
+      "category": "Status",
+      "context": "Together 0.2.1 Our Finances",
+      "review": "approved",
+      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
+      "textSHA256": "9d060f4e9bd727b3e253d0a8a2d47105e2fbc502ac6d4ea7a9ec1f075d7f3401"
+    },
+    "finance.change.dateEvent.patch": {
+      "category": "Status",
+      "context": "Together 0.2.1 Our Finances",
+      "review": "approved",
+      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
+      "textSHA256": "e5fe04d4140318bf7eddd21e60ef1fa1369774d79f820cad5a83360551a81864"
+    },
+    "finance.change.dateEvent.delete": {
+      "category": "Status",
+      "context": "Together 0.2.1 Our Finances",
+      "review": "approved",
+      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
+      "textSHA256": "407a2787eadfbd3a44368c299900f5c9d303cbeaa725cf2834b6595cfc91af64"
+    },
+    "finance.change.expense.create": {
+      "category": "Status",
+      "context": "Together 0.2.1 Our Finances",
+      "review": "approved",
+      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
+      "textSHA256": "307474c6a276d386de1ad3965ce865aaed72d0bc9a963e8485be7ad8b3676f5d"
+    },
+    "finance.change.expense.patch": {
+      "category": "Status",
+      "context": "Together 0.2.1 Our Finances",
+      "review": "approved",
+      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
+      "textSHA256": "3f418efebcbc2fc38ba7a85ad9c3f92793c2ccde6e6b72230ea24dd122cad61a"
+    },
+    "finance.change.expense.delete": {
+      "category": "Status",
+      "context": "Together 0.2.1 Our Finances",
+      "review": "approved",
+      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
+      "textSHA256": "4d3a460c422fc40dc90cf292770ad590c56d71f581e958b8a681a400a0647483"
+    },
+    "finance.change.recurringBill.create": {
+      "category": "Status",
+      "context": "Together 0.2.1 Our Finances",
+      "review": "approved",
+      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
+      "textSHA256": "3029f0212e7cfac58848f67f534515e8cc50b6cb5db4c23ba376a448709bbc7f"
+    },
+    "finance.change.recurringBill.patch": {
+      "category": "Status",
+      "context": "Together 0.2.1 Our Finances",
+      "review": "approved",
+      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
+      "textSHA256": "c68e04ab8af66b059e4b35dc53b9b5be8c3b78e34a7efdcdcfbdcf061b140c15"
+    },
+    "finance.change.recurringBill.delete": {
+      "category": "Status",
+      "context": "Together 0.2.1 Our Finances",
+      "review": "approved",
+      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
+      "textSHA256": "5013a3dc9ffe22af259774c2e854188a8f7b4aa0246216c757712276bdbb14fb"
+    },
+    "finance.change.billRevision.create": {
+      "category": "Status",
+      "context": "Together 0.2.1 Our Finances",
+      "review": "approved",
+      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
+      "textSHA256": "7a53f6cf99d3d28ed1aa826cf430ac0c5a94963fcd5d5c4c0bc6bac7f9266f91"
+    },
+    "finance.change.billRevision.patch": {
+      "category": "Status",
+      "context": "Together 0.2.1 Our Finances",
+      "review": "approved",
+      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
+      "textSHA256": "277e3db2c61a53bee80d1355737174f9d9f7f0ca695d8bd6cea4fd77bcd4042b"
+    },
+    "finance.change.billRevision.delete": {
+      "category": "Status",
+      "context": "Together 0.2.1 Our Finances",
+      "review": "approved",
+      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
+      "textSHA256": "0cd7161b4988634680f540265ceabefe4fcf08403f298af9e67aae64ead33bb2"
+    },
+    "finance.change.billOccurrence.create": {
+      "category": "Status",
+      "context": "Together 0.2.1 Our Finances",
+      "review": "approved",
+      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
+      "textSHA256": "0598464da48a41aaed372e9330d4610a910907f69319a04c481e29c524e3cb68"
+    },
+    "finance.change.billOccurrence.patch": {
+      "category": "Status",
+      "context": "Together 0.2.1 Our Finances",
+      "review": "approved",
+      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
+      "textSHA256": "776f75fecef31a29b98ef0a8568631e3987db25b52d99da16a7c8e55a006c099"
+    },
+    "finance.change.billOccurrence.delete": {
+      "category": "Status",
+      "context": "Together 0.2.1 Our Finances",
+      "review": "approved",
+      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
+      "textSHA256": "728bb19f17520d9e432a94950637d4c93b279f35d43329d4d74560bca87a4d6e"
+    },
+    "finance.change.financeSettings.create": {
+      "category": "Status",
+      "context": "Together 0.2.1 Our Finances",
+      "review": "approved",
+      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
+      "textSHA256": "c37efc62383867c8958e9f6a47a3198ac7348475545fc1374400a2213a41c2f8"
+    },
+    "finance.change.financeSettings.patch": {
+      "category": "Status",
+      "context": "Together 0.2.1 Our Finances",
+      "review": "approved",
+      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
+      "textSHA256": "df28af98850624263476aceb46173a36db4f5d352c9a0850ce0090eaf3a25d5e"
+    },
+    "finance.change.financeSettings.delete": {
+      "category": "Status",
+      "context": "Together 0.2.1 Our Finances",
+      "review": "approved",
+      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
+      "textSHA256": "5a3258a3a92f81da6c683a1b68b53589498b6fe2160160ad58afe7ea4beefab7"
+    },
+    "finance.change.paymentMethod.create": {
+      "category": "Status",
+      "context": "Together 0.2.1 Our Finances",
+      "review": "approved",
+      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
+      "textSHA256": "808fb93ce5ecb147ed34282039207e4ec6cadcf82f90c66d30883be5c98e9df2"
+    },
+    "finance.change.paymentMethod.patch": {
+      "category": "Status",
+      "context": "Together 0.2.1 Our Finances",
+      "review": "approved",
+      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
+      "textSHA256": "3c41aa19312422713f2175f3b89ee518375f3d96dde00686b22faee06dbc37e6"
+    },
+    "finance.change.paymentMethod.delete": {
+      "category": "Status",
+      "context": "Together 0.2.1 Our Finances",
+      "review": "approved",
+      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
+      "textSHA256": "03621ea7017c68148f32e177e5aa7ec276cfc6f3653095f2229b186db9dbd881"
+    },
+    "finance.balance.guidance": {
+      "category": "Guidance",
+      "context": "Together 0.2.1 Our Finances",
+      "review": "approved",
+      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
+      "textSHA256": "3f73b0d9346047cb9384505739d2a434ba478588400886db22479153c937dca4"
+    },
+    "finance.reserves.openingGuidance": {
+      "category": "Guidance",
+      "context": "Together 0.2.1 Our Finances",
+      "review": "approved",
+      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
+      "textSHA256": "ec2f8b04ed3ae8c67d2647bd7d4773fb6a1ce6386d390c6973ca59116db764eb"
+    },
+    "finance.amount.rateGuidance": {
+      "category": "Guidance",
+      "context": "Together 0.2.1 Our Finances",
+      "review": "approved",
+      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
+      "textSHA256": "7b8ad9104f7d7d99ff8b2e3b609b8bc8a82f50201d2193455708d38b24f382f8"
+    },
+    "finance.expenses.occurrenceGuidance": {
+      "category": "Guidance",
+      "context": "Together 0.2.1 Our Finances",
+      "review": "approved",
+      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
+      "textSHA256": "1bbd83175d43a15b68a6b51bc2152399df2fef05fce3ba13bcfb6998df9eb63d"
+    },
+    "finance.bill.shortMonth": {
+      "category": "Guidance",
+      "context": "Together 0.2.1 Our Finances",
+      "review": "approved",
+      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
+      "textSHA256": "c1fbd955c72f4d40769af27a342e9f8bf34084c1f323cb99ab8f766e640e3994"
+    },
+    "finance.bill.nextMonthGuidance": {
+      "category": "Guidance",
+      "context": "Together 0.2.1 Our Finances",
+      "review": "approved",
+      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
+      "textSHA256": "73319f5b878f5f4ce38d19fb70b0f4b0721ef5e05a815794a7cccd89d3955552"
+    },
+    "finance.cycle.guidance": {
+      "category": "Guidance",
+      "context": "Together 0.2.1 Our Finances",
+      "review": "approved",
+      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
+      "textSHA256": "a934ea83af92aa07efa5a5dedbfcac421d4f4c38d16c5d258fa87f42688abe5a"
+    },
+    "finance.cycle.planGuidance": {
+      "category": "Guidance",
+      "context": "Together 0.2.1 Our Finances",
+      "review": "approved",
+      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
+      "textSHA256": "d03e5f3c35bad6dc8a1939c744b6e217c39ed36048ce987fc1e79e2e3912d0d0"
+    },
+    "finance.cards.privacy": {
+      "category": "Guidance",
+      "context": "Together 0.2.1 Our Finances",
+      "review": "approved",
+      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
+      "textSHA256": "f7e5d3cfaf0c3ad18a2a4715eae3cadf9d75a1c5a69b57480d877af9d2eed765"
+    },
+    "finance.notifications.forecast": {
+      "category": "Guidance",
+      "context": "Together 0.2.1 Our Finances",
+      "review": "approved",
+      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
+      "textSHA256": "393ec36cd5b2c50be83d864c789fe67a31a1cbe065e4528ef5624715c76882db"
+    },
+    "finance.notifications.review": {
+      "category": "Guidance",
+      "context": "Together 0.2.1 Our Finances",
+      "review": "approved",
+      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
+      "textSHA256": "d4d11c05fc8494559703c0c644c8333ac4bd22baed38c83947d135c438ab73d0"
+    },
+    "finance.empty.reserves": {
+      "category": "Empty State",
+      "context": "Together 0.2.1 Our Finances",
+      "review": "approved",
+      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
+      "textSHA256": "955cdf01ea0a71d57b246a87fd24cc28c9d5b239ed5c78563dbf1d3a672a7c11"
+    },
+    "finance.empty.expenses": {
+      "category": "Empty State",
+      "context": "Together 0.2.1 Our Finances",
+      "review": "approved",
+      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
+      "textSHA256": "f03fb3b526769eed18a1bc9d2496fb17a4bf48c14ef3c140d27a91190518f707"
+    },
+    "finance.empty.bills": {
+      "category": "Empty State",
+      "context": "Together 0.2.1 Our Finances",
+      "review": "approved",
+      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
+      "textSHA256": "af25d3344346187a680764b8fbf1aece7b5a0e2420b80fa4ba42f348a1bd0f3d"
+    },
+    "finance.empty.changes": {
+      "category": "Empty State",
+      "context": "Together 0.2.1 Our Finances",
+      "review": "approved",
+      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
+      "textSHA256": "1e526fca129fb8d8549cf727484e5c2295512f7c78a392c50518ac2a09e15db9"
+    },
+    "finance.error.invalidAmount": {
+      "category": "Error",
+      "context": "Together 0.2.1 Our Finances",
+      "review": "approved",
+      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
+      "textSHA256": "3ec17b3617fa3f1750c55f9f4fe2b9c6375dcd62616f28aa6e6937bf4e41de96"
+    },
+    "finance.error.invalidCurrency": {
+      "category": "Error",
+      "context": "Together 0.2.1 Our Finances",
+      "review": "approved",
+      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
+      "textSHA256": "b09edc06e787d32b25fb7810d38932fb87ee48a4f3cca16c9657b6e9aa51445c"
+    },
+    "finance.error.missingSettlement": {
+      "category": "Error",
+      "context": "Together 0.2.1 Our Finances",
+      "review": "approved",
+      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
+      "textSHA256": "b41ec9e46765b913486b3ab1873fdac08ce1304669a291161ce6221efa83b5f2"
+    },
+    "finance.error.invalidRate": {
+      "category": "Error",
+      "context": "Together 0.2.1 Our Finances",
+      "review": "approved",
+      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
+      "textSHA256": "c73325596303d1b36a4bda642585ab2916f31bdcd493e02c78424df8daa2b47a"
+    },
+    "finance.error.invalidPayment": {
+      "category": "Error",
+      "context": "Together 0.2.1 Our Finances",
+      "review": "approved",
+      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
+      "textSHA256": "4af461ed92df6c01b768496737f78d2a7f64cda2645854f029c336d084838515"
+    },
+    "finance.error.invalidDate": {
+      "category": "Error",
+      "context": "Together 0.2.1 Our Finances",
+      "review": "approved",
+      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
+      "textSHA256": "73134987518876f181d1cd7182f2a6b15884dd0e799a4a04801899e202f984b4"
+    },
+    "finance.error.invalidRecord": {
+      "category": "Error",
+      "context": "Together 0.2.1 Our Finances",
+      "review": "approved",
+      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
+      "textSHA256": "929466dce9a427d8d7bf26ceb59be7fe421115ae2ca0c7274cb3397049b33324"
+    },
+    "finance.error.missingRecord": {
+      "category": "Error",
+      "context": "Together 0.2.1 Our Finances",
+      "review": "approved",
+      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
+      "textSHA256": "482de6f7e286ad523fad3ce389904649f8d107167aba24cfb3e8e892652bdd44"
+    },
+    "finance.error.overflow": {
+      "category": "Error",
+      "context": "Together 0.2.1 Our Finances",
+      "review": "approved",
+      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
+      "textSHA256": "f2f1177616ccf6d41e6a1ff693ac34a490639f70be36966feef868955bf720ad"
+    },
+    "finance.error.peerUpgrade": {
+      "category": "Error",
+      "context": "Together 0.2.1 Our Finances",
+      "review": "approved",
+      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
+      "textSHA256": "c0ffa99c2c79110ad3a294cb3ebcc6a4bf98fd7e0ceee417cf19425a4156c9b2"
+    },
+    "finance.error.invalidCard": {
+      "category": "Error",
+      "context": "Together 0.2.1 Our Finances",
+      "review": "approved",
+      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
+      "textSHA256": "2ceceee6f047a8c76ddddecf1fc3a34d3b4bcb07460779ea35ae09ecaa611f0d"
+    },
+    "finance.notifications.denied": {
+      "category": "Error",
+      "context": "Together 0.2.1 Our Finances",
+      "review": "approved",
+      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
+      "textSHA256": "a261feb97e2330096b05a8bb6819760f85273a7dc993ec1ceda01f01489b300b"
+    },
+    "finance.format.detail": {
+      "category": "Status",
+      "context": "Shared financial data labels",
+      "review": "approved",
+      "reason": "Functional formatting of real records",
+      "textSHA256": "ce126c8e47cf2eb1f477f0d3d79495b328c56d7656dbbfd0e7a4b0b101d011e3"
+    },
+    "finance.change.amount": {
+      "category": "Status",
+      "context": "Actual financial before and after amounts",
+      "review": "approved",
+      "reason": "User-required auditable amount changes",
+      "textSHA256": "3e122095ba883e253224033b53c4f59dea8384ed8a3cf9e0b787ac5c625c874b"
+    },
+    "finance.format.period": {
+      "category": "Status",
+      "context": "Our Finances filters",
+      "review": "approved",
+      "reason": "User-requested factual filtering labels",
+      "textSHA256": "78d5947bd0e07804b7a1ab02ebaad2efda3cdb6c60c0b4b35aa1f887de7912f2"
+    },
+    "finance.filter.period": {
+      "category": "Status",
+      "context": "Our Finances filters",
+      "review": "approved",
+      "reason": "User-requested factual filtering labels",
+      "textSHA256": "c95ff6b500788887770a30a4f58b32ea948ae231427a63e3ec59e31985daa95c"
+    },
+    "finance.period.all": {
+      "category": "Status",
+      "context": "Our Finances filters",
+      "review": "approved",
+      "reason": "User-requested factual filtering labels",
+      "textSHA256": "92c2958ca3b21f7c7009b038ab81e6baed32efc19f0de9585f38958987ddaa87"
+    },
+    "finance.period.shared": {
+      "category": "Status",
+      "context": "Our Finances filters",
+      "review": "approved",
+      "reason": "User-requested factual filtering labels",
+      "textSHA256": "bb07c838f14ce896f13a2d6a78499cdb2a8190f12b0c63d9c2857e68bb1552ef"
+    },
+    "finance.period.personal": {
+      "category": "Status",
+      "context": "Our Finances filters",
+      "review": "approved",
+      "reason": "User-requested factual filtering labels",
+      "textSHA256": "9267d43c88483ffef1129c10bd808fda2a0e64d86def94f3154a3c8133db3902"
+    },
+    "finance.period.partner": {
+      "category": "Status",
+      "context": "Our Finances filters",
+      "review": "approved",
+      "reason": "User-requested factual filtering labels",
+      "textSHA256": "fc91ede8f8f2da1629e956fe9f759192acd8baae602760a3ebe4e7f6a4f82288"
+    },
+    "finance.period.range": {
+      "category": "Status",
+      "context": "Our Finances filters",
+      "review": "approved",
+      "reason": "User-requested factual filtering labels",
+      "textSHA256": "e0f26c8ec4bfaf0d18e25f520fa26f66fc93827e588dc9a435ea76adf6cf4ff6"
+    },
+    "finance.period.from": {
+      "category": "Status",
+      "context": "Our Finances filters",
+      "review": "approved",
+      "reason": "User-requested factual filtering labels",
+      "textSHA256": "760506491eef14679fd921a6f18c6dcc7970cda802e567d0ea692da69c7709a6"
+    },
+    "finance.period.to": {
+      "category": "Status",
+      "context": "Our Finances filters",
+      "review": "approved",
+      "reason": "User-requested factual filtering labels",
+      "textSHA256": "895cd52fbbb64cd430f1099d5bda428d7a3547a2c524cc6c717c17b68a7869e5"
+    },
+    "finance.category.none": {
+      "category": "Status",
+      "context": "Our Finances filters",
+      "review": "approved",
+      "reason": "User-requested factual filtering labels",
+      "textSHA256": "54b89f901274588b3771688dff6fc07fa0fe44c04639ea8a825d0fef952d2272"
+    },
+    "finance.reminder.count": {
+      "category": "Status",
+      "context": "Nonblocking finance reminders disclosure",
+      "review": "approved",
+      "reason": "Required factual reminder count, keeps primary ledger visible",
+      "textSHA256": "f89fd0405c3fe50a1f721aeb9944911884e3382c4383c1f6af49d2938950f2fe"
+    },
+    "finance.release.reserves": {
+      "category": "Navigation",
+      "context": "0.2.1 release notes",
+      "review": "approved",
+      "reason": "Factual features implemented and covered by finance tests; no network acceptance claim",
+      "textSHA256": "2a84cd13ccdac724fa73f88e5df4fb1ae21580182c1666c9553075393b83d4bc"
+    },
+    "finance.release.reservesDetail": {
+      "category": "Guidance",
+      "context": "0.2.1 release notes",
+      "review": "approved",
+      "reason": "Factual features implemented and covered by finance tests; no network acceptance claim",
+      "textSHA256": "0d3d6529db5504d4ac0bd87c5bbb1c43ff153b64295355dddaaba99a9b8ab283"
+    },
+    "finance.release.expenses": {
+      "category": "Navigation",
+      "context": "0.2.1 release notes",
+      "review": "approved",
+      "reason": "Factual features implemented and covered by finance tests; no network acceptance claim",
+      "textSHA256": "d311416fa3aadb4d8cbf54c9a8d48cef3a272ef469a075328909de18e34f6fb9"
+    },
+    "finance.release.expensesDetail": {
+      "category": "Guidance",
+      "context": "0.2.1 release notes",
+      "review": "approved",
+      "reason": "Factual features implemented and covered by finance tests; no network acceptance claim",
+      "textSHA256": "8b57ede7d7598f0b40840a52a593a37d01e257fad9f93bd15c91844a569ed7ff"
+    },
+    "finance.release.bills": {
+      "category": "Navigation",
+      "context": "0.2.1 release notes",
+      "review": "approved",
+      "reason": "Factual features implemented and covered by finance tests; no network acceptance claim",
+      "textSHA256": "b96378daf44715b5ad9fdd213cb9d8cdc5bc1efb75597a5d614c5773679637ee"
+    },
+    "finance.release.billsDetail": {
+      "category": "Guidance",
+      "context": "0.2.1 release notes",
+      "review": "approved",
+      "reason": "Factual features implemented and covered by finance tests; no network acceptance claim",
+      "textSHA256": "6a8d37046897c472a2e0998c586093408b4e449884b61ce58c34505c09ea1475"
+    },
+    "finance.release.sync": {
+      "category": "Navigation",
+      "context": "0.2.1 release notes",
+      "review": "approved",
+      "reason": "Factual features implemented and covered by finance tests; no network acceptance claim",
+      "textSHA256": "3ac8d242fa4aa166f2c75ae40cfef7d593a11e99f771a0c5ef47f3af92c3dc31"
+    },
+    "finance.release.syncDetail": {
+      "category": "Guidance",
+      "context": "0.2.1 release notes",
+      "review": "approved",
+      "reason": "Factual features implemented and covered by finance tests; no network acceptance claim",
+      "textSHA256": "21ca479fb13783ef621ae021ee6466e43b6842870057ef3f20ec36471eb83655"
+    },
+    "finance.aa.rounding": {
+      "category": "Guidance",
+      "context": "AA odd-minor-unit allocation",
+      "review": "approved",
+      "reason": "Explains user-required deterministic exact totals",
+      "textSHA256": "470b776477965fa9ea5500437dd4de7405d6ba5720dd5b6e679e3cc219e6b27b"
+    },
+    "finance.error.recordChanged": {
+      "category": "Error",
+      "context": "Concurrent finance update while reviewing an open editor",
+      "review": "approved",
+      "reason": "Required recovery instead of confirming unseen changes",
+      "textSHA256": "ffd460ee149b11805dff813c8279936177f5c917928ae1e129279df5b4a1eee6"
+    },
+    "finance.reminder.overdue": {
+      "category": "Status",
+      "context": "Older provisional bills are not described as yesterday",
+      "review": "approved",
+      "reason": "Factual recovery reminder for missed occurrences",
+      "textSHA256": "4edcf252f305e5366562fdf9b640a0246e7c399af81c4e58d9f4576d0180d104"
     }
   }
 }
