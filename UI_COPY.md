@@ -2,7 +2,7 @@
 
 ## Source and categories
 
-Formal static product copy lives in `0.0.1/Sources/TogetherCore/Resources/UI.xcstrings`, with review metadata in `qa/ui_copy_review.json`. Swift code references stable keys via `Copy.text`; never add a visible literal without adding its catalog entry and review record. ReleaseNotes structured copy is also scanned. User-authored tasks, wishes, gifts, nicknames and private memories are never audit inputs.
+Formal static product copy lives in `0.2.1/Sources/TogetherCore/Resources/UI.xcstrings`, with review metadata in `qa/ui_copy_review.json`. Swift code references stable keys via `Copy.text`; never add a visible literal without adding its catalog entry and review record. ReleaseNotes structured copy is also scanned. User-authored tasks, wishes, gifts, nicknames and private memories are never audit inputs.
 
 Native permission copy uses `TogetherApp/Resources/InfoPlist.xcstrings` and the same review index. The generated base Info.plist keeps the matching fallback; changing it requires changing the catalog and review too.
 
@@ -27,3 +27,7 @@ The latest navigation correction uses user-requested Plans / Wishes as verticall
 Catalog import labels existing copy as legacy inventory; policy exceptions and long entries retain a review reason. New unreviewed keys fail the audit. Review metadata must identify category, context, review state, reason and the SHA-256 of the exact reviewed text. Changing the value under an existing key without updating its review fails; keeping an old key does not authorize new wording. Setting approved is not a substitute for user approval where the change is important. Candidate visual images do not approve copy.
 
 Run `make copy-qa` (or `python3 scripts/audit_ui_copy.py --json qa/results/copy.json`). The report lists path, key, issue type, severity and suggested action. Copy audit, business tests and visual review are separate gates. Fixture strings are deliberately excluded by path, not by broadly suppressing words found in live product code.
+
+## Our Finances copy
+
+The `finance.*` catalog entries are functional names, actions, filters, true ledger states, reminder prompts, audit formats and recoverable errors from the approved 0.2.1 scope. ISO 4217 currency names/precision are bundled from SIX List One (2026-09-17); eight common names are localized, others retain official names. No invented amounts or emotional finance copy. `待核对` is provisional bookkeeping; `已核对` is user reconciliation, never bank confirmation. Original/CNY/rate values, category names and actor names are user or derived data and remain outside static-copy lint. Dynamic enum prefixes require concrete catalog coverage tests; a prefix is not an invented visible entry. Existing long-copy warnings remain for human review.

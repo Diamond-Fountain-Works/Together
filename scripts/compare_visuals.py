@@ -35,7 +35,7 @@ def main():
   base=BASE/key
   if not base.exists() or sha(base)!=entry['sha256']:results.append({'case':key,'severity':'FAIL','reason':'approved baseline modified or missing'});continue
   results.append({'case':key,**compare(base,candidate)})
- status='NOT RUN' if not results else 'FAIL' if any(r['severity']=='FAIL' for r in results) else 'REVIEW REQUIRED' if any(r['severity']!='PASS' for r in results) else 'PASS'
+ status='NOT RUN' if run.get('status')=='NOT RUN' and not current or not results else 'FAIL' if any(r['severity']=='FAIL' for r in results) else 'REVIEW REQUIRED' if any(r['severity']!='PASS' for r in results) else 'PASS'
  report={'status':status,'resultBundle':run.get('resultBundle'),'comparisons':results,'requiredCaptureCount':len(required),'capturedCount':len(current & set(required)),'missingPages':config['unimplementedPages'],'approvalPolicy':'Only a user-approved reviewed image hash may enter approved/.'}
  out=ROOT/'qa/results/visual.json';out.parent.mkdir(parents=True,exist_ok=True);out.write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n');print('Visual QA:',status,len(results),'captures')
  return 1 if status in ['FAIL','NOT RUN'] else 2 if status=='REVIEW REQUIRED' else 0

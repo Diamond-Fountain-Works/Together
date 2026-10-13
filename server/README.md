@@ -59,3 +59,9 @@ TOGETHER_RUN_RELAY_TESTS=1 TOGETHER_RELAY_TEST_URL=https://together-connection.t
 ```
 
 Only generated fixture content is sent in this check; production data and Keychain identity are not opened. Server membership metadata follows the normal authorized route lifecycle; no fixture business text/media is persisted on the relay.
+
+## Finance-compatible deployment (2026-10-14)
+
+The existing Worker was updated in place to accept device descriptors 2 and 3. No Durable Object namespace, migration tag, routing origin or authorized pair was deleted. Deployment version `a6b04834-5c48-4a24-b8ef-f1b318759579`; `/health` returned HTTP 200 with `deviceProtocols: [2,3]`. Service HTTP protocol/version remains 1; this does not mean the App is version 1.
+
+Two actual native clients on this Mac passed the public HTTPS/WSS tests: finance/tasks/wishes/profiles/original media, durable receipt, offline edits/reconnect, disk persistence; separately, a saved version-2 route reconnected with both version-3 identities using the same key/space/route without a new invitation. This is **not** physical two-Mac/different-Wi-Fi acceptance. One user's other Mac previously could not reach workers.dev, so reachability remains a release prerequisite. No offline mailbox or server-side expense store was added. Logs: `qa/results/finance-server-deploy.log`, `finance-public-relay.log`.

@@ -23,9 +23,11 @@ try:
         while not available() and time.monotonic()<until and owned_server.poll() is None:time.sleep(.25)
     env=os.environ.copy()
     if available():env['TOGETHER_RUN_RELAY_TESTS']='1'
-    run('business',['swift','test'],project,env)
+    if project.name=='0.2.1':run('business',[sys.executable,'scripts/run_finance_migration_test.py','--all-tests'],ROOT,env)
+    else:run('business',['swift','test'],project,env)
     text=(out/'business.log').read_text()
     report['business']['passedCount']=int(re.search(r'Test run with (\d+) tests.*passed',text).group(1)) if re.search(r'Test run with (\d+) tests.*passed',text) else None
+    report['dataMigration']={'status':'PASS' if 'actualLegacyStoreKeepsIdentityDataAndFinancialRestart() passed' in text else 'NOT RUN','sourceVersion':'0.0.1','targetVersion':project.name,'isolation':'private temporary store created with original source'}
     report['relayIntegration']={'status':'PASS' if available() and 'invitationMutualConfirmEncryptedLogMediaReconnectAndPersistentMigration() passed' in text else 'NOT RUN' if not available() else 'FAIL'}
     run('build',['./script/build_and_run.sh','--build-only'],project)
     if '--skip-ui' in sys.argv:

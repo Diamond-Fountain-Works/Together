@@ -1,3 +1,50 @@
+## Current 0.2.1 run (2026-10-14)
+
+Business + actual legacy-store upgrade: **77 PASS, 0 FAIL, 0 SKIP** with local relay enabled. Workers: **8 PASS**; quality tools: **6 PASS**. Native Debug and Universal Release/DMG built; public native relay integration: **2 PASS** on this Mac, including preserved V2 route -> V3 upgrade.
+
+Copy: **WARN, 0 errors / 58 warnings** (long legacy guidance and translation-context duplicates). XCUITest: **14 NOT RUN** because macOS automation mode initialization timed out before any case. Detail renderer: **14 usable / 4 incomplete**; manual Settings/close/day-wheel/currency/save checks recorded. **Visual REVIEW REQUIRED**, no approved baseline. OS notification delivery and physical dual-Mac/different-WiFi acceptance pending. Installed 0.0.1 Build 1 binary hash remains unchanged. No production database was opened by test fixtures. See qa/results/finance-delivery.json, summary.json, finance-public-relay.log and finance-package.log.
+
+# Together 0.2.1 — Finance Acceptance
+
+## Separate evidence
+
+Report native build, monetary/domain unit tests, real local Workers integration, actual old-code store upgrade, UI behavior, copy, own-view rendering and physical dual-Mac networking separately. Production Application Support and /Applications are not test fixtures.
+
+`TOGETHER_RUN_RELAY_TESTS=1 python3 scripts/run_finance_migration_test.py --all-tests` creates a private real 0.0.1 store and runs new code against it plus local native WebSocket clients. `make qa` records reproducible results. Each run's actual logs, return codes and counts belong in qa/results; no earlier PASS replaces current evidence.
+
+## Finance automated coverage
+
+- Decimal/checked integers, actual CNY priority, FX snapshot validation, ISO precision, AA stable odd-unit allocation and conserved totals.
+- Opening/deposits/revokes, four funding methods, negative balances, shared/date/standalone unique Expenses, per-category/period/participant statistics.
+- 31-day clamp and leap year, DST and continuous shared/personal cycles; no bill means no generation/reminder.
+- Next natural-month amount/payment revisions, sparse concurrent field edits, per-period override, late offline revisions, historical FX immutability.
+- Due Provisional, pre-due forecast without actual record, confirm/edit/skip without second expense, pause/resume/termination preserving past history, future candidates suppressed, offline simultaneous logical instance deduplication.
+- Signed invalid/foreign-owner changes rejected, rule history immutable, cards last-four only/private not logged/source independent; genuine before/after changes and local reminder presentation persistence.
+- Two real native local WebSocket clients: invite/consent, finance/profile/tasks/wishes/media, offline edits, reconnect, disk reopen. Separate V2 saved route -> V3 reconnect uses the same key/route/space without new pairing.
+- Actual old source writes a store; new source verifies all original signed-operation byte hashes, key files/public fingerprint, peer/route, task recurrence, wish fulfillment, avatar, gift content and once-only reveal state; finance/private card/review state survive restart.
+
+## UI and rendering
+
+Native UI tests add tabs/one create action/actual expense/invalid inputs/currency reset, provisional confirmation, settings dismissal and 18 finance screenshot cases. Original product behavior tests remain. XCUITest automation initialization failures are environment NOT RUN, not passes. Fallback `scripts/capture_finance_views.py` captures only a Debug fixture's own AppKit content view in light/dark, empty/populated, offline and compact/reduced conditions. This is separate from UI behavior tests and uses no production data. Candidate hashes require human approval; the script never replaces approved baseline images.
+
+Manually check the currency wheel with scroll, trackpad and arrow keys; no old amount reuse. Check tab transitions, long names/amounts, compact layout, primary buttons and closable sheets. Review changes in exact locations, not adjectives. System notification delivery while the App is closed requires opt-in permission and manual hardware/OS acceptance; core schedule/calendar logic is tested independently.
+
+## Physical two-Mac test — NOT INFERRED from localhost or one Mac
+
+1. Install the same reviewed 0.2.1 build on both Macs only after explicit installation approval. Verify saved data/pins before and after. Do not reset a store to fix a failure.
+2. Different Wi-Fi, no Tailscale. Both must first reach `https://together-connection.together-connection-service.workers.dev/health` in Safari and see protocol 3 listed. A failed DNS/TLS/HTTP route must be repaired before pairing acceptance. The other Mac previously could not reach this origin.
+3. Existing paired machines relaunch: no new invitation, same fingerprints/space/route. New users perform normal invitation and mutual verification. Mixed V2/V3 clients show upgrade error, retain offline data.
+4. Each add a deposit offline, then reconnect; both records and derived balances match. Online add a deposit and observe one non-bank Banner on the peer. Reconnect/restart does not re-notify that operation.
+5. Create shared/own/partner/AA expenses (including odd cents and JPY), DateEvent and standalone records. Verify total = personal shares + reserves and repeated frames do not inflate it. Concurrent title/notes and same-amount edits converge.
+6. Add a monthly bill with original currency/actual CNY, day 31, defined zone. Change default before/after due; only next natural month changes. Simulate date with test clock only in isolated fixture, never change the real system clock/data for tests.
+7. Let both Apps generate the same occurrence; one Expense, one shared balance deduction. Confirm keeps amount, edit adjusts same ID, skip reverses its impact, next month remains active. Pause/terminate only future occurrences.
+8. Verify cycle boundaries in two zones, personal/shared differences, reference rates never rewrite history, shared/private card visibility, and locally-only planned dates do not create deposits.
+9. Close/reopen both; finance, original Tasks/Wishes/Gifts, media, keys, route and local notification state remain. Check light/dark/reduced motion/window resize on each.
+
+## Preserved 0.0.1 test history
+
+The following historical records describe prior runs, not proof that this new version passed those UI or physical tests.
+
 # Together 0.0.1 测试与验收
 
 ## 分开报告

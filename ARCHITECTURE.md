@@ -1,3 +1,33 @@
+# Together 0.2.1 Architecture
+
+## Finance boundary and storage
+
+`0.2.1/Sources/TogetherCore/Finances` owns Money, calendar, models, projector, services and audit/reminders. `TogetherApp/Views/Finances` owns the three-tab workspace and common editors. No second expense store. Reserve balances, allocations, bill next occurrence and statistics are derived. LocalFinancialReviewState is recipient-local; private cards use LocalRecord and are never transmitted. Shared cycle/personal cycle/shared card metadata uses the existing log.
+
+SwiftData physical schema remains byte-compatible in definition: OperationRecord (signed JSON), LocalRecord (local JSON), EntityRecord (rebuildable projection JSON). No destructive migration or schema deletion. The real old-source fixture stores profiles/avatar, tasks/recurrence, wishes/fulfillment, gifts/presentation, peer/route and identity; the new source opens it, validates original byte hashes and retains it after adding/reopening finance records. This verifies the compatible path, not a production-store migration performed on the user's Mac.
+
+## Money and dates
+
+Currency precision is the bundled SIX ISO 4217 List One, published 2026-09-17; 165 codes with numeric minor-unit precision 0–4. Input parsing is explicit, no binary floating-point accumulation. Monetary payloads encode minor units as decimal strings; amount snapshots keep original currency, actual/reference basis, frozen final CNY and optional immutable exchange quote. CNY uses Decimal plain rounding (half away from zero); non-CNY original entry must fit its currency precision. Individual magnitude is bounded at 90,000,000,000,000 minor units; checked Int64 sums report overflow rather than wrap. Actual CNY overrides a reference rate. Reference snapshots validate the calculated final amount. There is no network exchange-rate dependency.
+
+CivilDate is year/month/day, FinanceMonth is Gregorian YYYY-MM. Bill rules explicitly store IANA zone, original recurrence day and optional minute; short months clamp each month independently. Financial cycles use half-open [start,end), next anchor is the clamped following month, and personal settings are keyed by owner UUID. Natural-month revisions are independent of financial cycles. Lifecycle revisions retain created instant and calendar date, so pausing future rules does not reverse a due instance. App startup and the existing 30-second clock reconcile missed occurrences; opt-in local UNCalendarNotificationTrigger reminders survive closing the App, subject to OS authorization.
+
+## Log and convergence
+
+New entity types: reserveEntry, dateEvent, expense, recurringBill, billRevision, billOccurrence, financeSettings, paymentMethod. Operation envelope/signature/authentication and transport are reused. Amount/payment snapshots are atomic fields; notes/title/category edits send only changed fields. Delete is a permanent Tombstone. Bill revisions are immutable auditable operations; invalid current-month defaults are diagnosed. A forecast override is not an actual Expense. Generated IDs are SHA-256 stable UUIDs of `finance-bill:<UPPERCASE bill UUID>:<YYYY-MM>`, with existing StableID version/variant normalization. Both devices may log a generation, but projection/statistics contain one logical instance. Late valid rule/forecast operations deterministically resolve unreviewed instances; reconciliation freezes accepted values. Future inactive candidates are skipped without changing already reviewed actual history.
+
+FinanceChange derives real before/after data from validated operation history and caches it between changes. Remote Banner IDs and dismissed reminder IDs persist locally, not as partner approvals. No independent mutable remaining/balance counters. Cards never change funding source; owner permission protects personal settings and card writes. Already shared history stays auditable when sharing is disabled.
+
+## Protocol compatibility and Android boundary
+
+Production 0.2.1 DeviceDescriptor uses protocolVersion 3 with the same private key, UUIDs and space. Relay hello is signed with its descriptor; V2/V3 mismatch is rejected before operation exchange. Pinned identity matching ignores only the supported version upgrade, not device/user/public key/initial space. Saved V2 routes can reconnect with both upgraded V3 clients without an invitation. Workers routing accepts both versions and leaves existing Durable Objects intact; the legacy TCP adapter also rejects mixed clients.
+
+The wire data is Codable JSON, not SwiftData objects. FinanceMoney minor-unit strings, ISO codes, CivilDate, user UUID allocation, explicit bill/month and rule effective month are platform-independent. Existing LogValue.data wraps canonical UTF-8 finance JSON in base64; a future Kotlin client must follow the existing signed-envelope canonicalization and uppercase UUID StableID scheme. See FINANCE_PROTOCOL.md. No Android code or C2 mailbox added.
+
+## Retained architecture history
+
+The remaining sections document preserved 0.0.1 services; updated version/finance semantics above take precedence.
+
 # Together 0.0.1 架构
 
 ## 保留的数据与业务层

@@ -1,5 +1,5 @@
 {
-  "projectDirectory": "0.0.1",
+  "projectDirectory": "0.2.1",
   "scheme": "Together",
   "uiTestTarget": "TogetherUITests",
   "windowPoints": [
@@ -21,7 +21,11 @@
       "completed",
       "wishes",
       "gifts",
-      "settings"
+      "settings",
+      "reserves",
+      "expenses",
+      "bills",
+      "finance-settings"
     ],
     "modes": [
       "light",
@@ -42,7 +46,9 @@
     ],
     "additionalCases": [
       "tasks-populated-light-compact-reduced.png",
-      "wishes-populated-dark-compact-reduced.png"
+      "wishes-populated-dark-compact-reduced.png",
+      "expenses-populated-light-compact-reduced.png",
+      "expenses-populated-dark-compact-reduced.png"
     ]
   }
 }
