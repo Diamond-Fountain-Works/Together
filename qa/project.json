@@ -1,0 +1,48 @@
+{
+  "projectDirectory": "0.0.1",
+  "scheme": "Together",
+  "uiTestTarget": "TogetherUITests",
+  "windowPoints": [
+    1100,
+    760
+  ],
+  "locale": "zh_CN",
+  "fixtureTime": "2026-10-09T04:00:00Z",
+  "unimplementedPages": [
+    "Our Story",
+    "Time Capsule"
+  ],
+  "pythonMinimum": "3.10",
+  "candidateMatrix": {
+    "ordinaryPages": [
+      "home",
+      "tasks",
+      "upcoming",
+      "completed",
+      "wishes",
+      "gifts",
+      "settings"
+    ],
+    "modes": [
+      "light",
+      "dark"
+    ],
+    "states": [
+      "empty",
+      "populated"
+    ],
+    "network": "disconnected",
+    "reveal": [
+      "sealed",
+      "opened"
+    ],
+    "motion": [
+      "normal",
+      "reduced"
+    ],
+    "additionalCases": [
+      "tasks-populated-light-compact-reduced.png",
+      "wishes-populated-dark-compact-reduced.png"
+    ]
+  }
+}

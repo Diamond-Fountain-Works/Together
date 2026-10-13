@@ -1,0 +1,5066 @@
+{
+  "sourceLanguage": "zh-Hans",
+  "version": "1.0",
+  "strings": {
+    "copy.guidance.6b5df256e07f": {
+      "comment": "Guidance; 0.0.1/Sources/TogetherApp/ViewModels/ApplicationModel.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "保存原图失败：%@"
+          }
+        }
+      }
+    },
+    "copy.status.d01432dc56c6": {
+      "comment": "Status; 0.0.1/Sources/TogetherApp/ViewModels/ApplicationModel.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "照片尚未完成校验，请等待同步。"
+          }
+        }
+      }
+    },
+    "copy.action.2cd0f3be8738": {
+      "comment": "Action; 0.0.1/Sources/TogetherApp/ViewModels/ApplicationModel.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "取消"
+          }
+        }
+      }
+    },
+    "copy.action.08ff51a8822a": {
+      "comment": "Action; 0.0.1/Sources/TogetherApp/ViewModels/ApplicationModel.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "保留原图继续"
+          }
+        }
+      }
+    },
+    "copy.guidance.fdb33a105fcd": {
+      "comment": "Guidance; 0.0.1/Sources/TogetherApp/ViewModels/ApplicationModel.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "照片可能含拍摄位置（GPS）等元数据。Together 不会自动压缩或去除元数据；请确认这张原图适合与对方共享。"
+          }
+        }
+      }
+    },
+    "copy.status.aed97e682ab9": {
+      "comment": "Status; 0.0.1/Sources/TogetherApp/ViewModels/ApplicationModel.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "原图会完整保留并分享给伴侣"
+          }
+        }
+      }
+    },
+    "copy.status.bf8ae92630fb": {
+      "comment": "Status; 0.0.1/Sources/TogetherApp/ViewModels/ApplicationModel.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "礼物来源无法验证。"
+          }
+        }
+      }
+    },
+    "copy.status.77965761b32c": {
+      "comment": "Status; 0.0.1/Sources/TogetherApp/ViewModels/ApplicationModel.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "礼物附件还在同步，完成校验后就能打开。"
+          }
+        }
+      }
+    },
+    "copy.action.74a883a037bc": {
+      "comment": "Action; 0.0.1/Sources/TogetherApp/App/TogetherApp.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Settings"
+          }
+        }
+      }
+    },
+    "copy.action.561b17edc33d": {
+      "comment": "Action; 0.0.1/Sources/TogetherApp/App/TogetherApp.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "What's New"
+          }
+        }
+      }
+    },
+    "copy.action.58383b09e244": {
+      "comment": "Action; 0.0.1/Sources/TogetherApp/App/TogetherApp.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Together Advisor"
+          }
+        }
+      }
+    },
+    "copy.action.1555373b2da2": {
+      "comment": "Action; 0.0.1/Sources/TogetherApp/App/TogetherApp.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Love Gift History"
+          }
+        }
+      }
+    },
+    "copy.action.fb24523a7f34": {
+      "comment": "Action; 0.0.1/Sources/TogetherApp/App/TogetherApp.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Send Love Gift…"
+          }
+        }
+      }
+    },
+    "copy.empty_state.dc40645ba097": {
+      "comment": "Empty State; 0.0.1/Sources/TogetherApp/App/TogetherApp.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "请检查本机存储权限。原有数据不会被重置。"
+          }
+        }
+      }
+    },
+    "copy.empty_state.d1dea5d8aa17": {
+      "comment": "Empty State; 0.0.1/Sources/TogetherApp/App/TogetherApp.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "无法打开本地空间"
+          }
+        }
+      }
+    },
+    "copy.status.ee17b0047b75": {
+      "comment": "Status; 0.0.1/Sources/TogetherApp/Views/HomeView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@"
+          }
+        }
+      }
+    },
+    "copy.status.a1794783aab7": {
+      "comment": "Status; 0.0.1/Sources/TogetherApp/Views/HomeView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Offline"
+          }
+        }
+      }
+    },
+    "copy.status.0d21bd52022c": {
+      "comment": "Status; 0.0.1/Sources/TogetherApp/Views/HomeView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Online"
+          }
+        }
+      }
+    },
+    "copy.status.710764256c01": {
+      "comment": "Status; 0.0.1/Sources/TogetherApp/Views/HomeView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "资料同步中"
+          }
+        }
+      }
+    },
+    "copy.status.43461ae7bd32": {
+      "comment": "Status; 0.0.1/Sources/TogetherApp/Views/HomeView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "尚未配对"
+          }
+        }
+      }
+    },
+    "copy.guidance.2d4ab3c1d821": {
+      "comment": "Guidance; 0.0.1/Sources/TogetherApp/Views/HomeView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "有 %@ 条操作冲突，请在 Wishes 或 Connection 查看。"
+          }
+        }
+      }
+    },
+    "copy.status.ce04cf69d965": {
+      "comment": "Status; 0.0.1/Sources/TogetherApp/Views/HomeView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "+%@"
+          }
+        }
+      }
+    },
+    "copy.guidance.3e122095ba88": {
+      "comment": "Status; actual verified member names or roles in Home and Our Plans",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ → %@"
+          }
+        }
+      }
+    },
+    "copy.empty_state.e7213b155304": {
+      "comment": "Empty State; 0.0.1/Sources/TogetherApp/Views/HomeView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "还没有愿望额度记录。"
+          }
+        }
+      }
+    },
+    "copy.status.bc19db225c8b": {
+      "comment": "Status; 0.0.1/Sources/TogetherApp/Views/HomeView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "配对后，可以开始记录你们的愿望约定。"
+          }
+        }
+      }
+    },
+    "copy.status.a7363b44d657": {
+      "comment": "Status; 0.0.1/Sources/TogetherApp/Views/HomeView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Recent Wish Grants"
+          }
+        }
+      }
+    },
+    "copy.navigation.5f1a2542e4e4": {
+      "comment": "Navigation; 0.0.1/Sources/TogetherApp/Views/HomeView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Upcoming"
+          }
+        }
+      }
+    },
+    "copy.status.cad05cf5be73": {
+      "comment": "Status; 0.0.1/Sources/TogetherApp/Views/HomeView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "尚未兑现"
+          }
+        }
+      }
+    },
+    "copy.status.76c58c4d611e": {
+      "comment": "Status; 0.0.1/Sources/TogetherApp/Views/HomeView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "未来 7 天"
+          }
+        }
+      }
+    },
+    "copy.status.7f750504c5ba": {
+      "comment": "Status; 0.0.1/Sources/TogetherApp/Views/HomeView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "待完成"
+          }
+        }
+      }
+    },
+    "copy.navigation.3a78695388b3": {
+      "comment": "Navigation; 0.0.1/Sources/TogetherApp/Views/HomeView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Home"
+          }
+        }
+      }
+    },
+    "copy.action.f867f3417859": {
+      "comment": "Action; 0.0.1/Sources/TogetherApp/Views/RootView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "好"
+          }
+        }
+      }
+    },
+    "copy.action.718e58cc20d6": {
+      "comment": "Action; 0.0.1/Sources/TogetherApp/Views/RootView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "New Task"
+          }
+        }
+      }
+    },
+    "copy.status.330e6de0a0e3": {
+      "comment": "Status; 0.0.1/Sources/TogetherApp/Views/RootView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Together"
+          }
+        }
+      }
+    },
+    "copy.guidance.5e362a89fa84": {
+      "comment": "Guidance; 0.0.1/Sources/TogetherApp/Views/Settings/SettingsView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Together %@ · Build 1"
+          }
+        }
+      }
+    },
+    "copy.empty_state.6b4beaf7f321": {
+      "comment": "Empty State; 0.0.1/Sources/TogetherApp/Views/Settings/SettingsView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "照片和语音保存在本机。中继仅转发加密帧，本机文件不另加密。"
+          }
+        }
+      }
+    },
+    "copy.guidance.9dd62bb75ce0": {
+      "comment": "Guidance; 0.0.1/Sources/TogetherApp/Views/Settings/SettingsView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "业务数据保存在这台 Mac 的 SwiftData 数据库。只有已配对且在线的设备能交换操作日志。"
+          }
+        }
+      }
+    },
+    "copy.status.610b105f07da": {
+      "comment": "Status; 0.0.1/Sources/TogetherApp/Views/Settings/SettingsView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Local-first"
+          }
+        }
+      }
+    },
+    "copy.guidance.e2ee62dfbb66": {
+      "comment": "Guidance; 0.0.1/Sources/TogetherApp/Views/Settings/SettingsView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "动画遵循系统 Reduce Motion。开启后页面和列表会直接切换或弱化过渡。"
+          }
+        }
+      }
+    },
+    "copy.guidance.60acc53f13a5": {
+      "comment": "Guidance; 0.0.1/Sources/TogetherApp/Views/Settings/SettingsView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dark"
+          }
+        }
+      }
+    },
+    "copy.guidance.dbcd5e7bb7a0": {
+      "comment": "Guidance; 0.0.1/Sources/TogetherApp/Views/Settings/SettingsView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Light"
+          }
+        }
+      }
+    },
+    "copy.guidance.217cfe7db1e3": {
+      "comment": "Guidance; 0.0.1/Sources/TogetherApp/Views/Settings/SettingsView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "跟随系统"
+          }
+        }
+      }
+    },
+    "copy.guidance.86a63f23a076": {
+      "comment": "Guidance; 0.0.1/Sources/TogetherApp/Views/Settings/SettingsView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "外观"
+          }
+        }
+      }
+    },
+    "copy.status.3a7f9c11d059": {
+      "comment": "Status; 0.0.1/Sources/TogetherApp/Views/Settings/SettingsView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Appearance & Accessibility"
+          }
+        }
+      }
+    },
+    "copy.status.bffe51e12e5e": {
+      "comment": "Status; 0.0.1/Sources/TogetherApp/Views/Settings/SettingsView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "对方的资料仅可查看"
+          }
+        }
+      }
+    },
+    "copy.action.c0a70fcb56f0": {
+      "comment": "Action; 0.0.1/Sources/TogetherApp/Views/Settings/SettingsView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "保存资料"
+          }
+        }
+      }
+    },
+    "copy.status.cd960931fa8a": {
+      "comment": "Status; 0.0.1/Sources/TogetherApp/Views/Settings/SettingsView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "标签用于显示，不能改变编辑和确认权限。"
+          }
+        }
+      }
+    },
+    "copy.guidance.af004a022055": {
+      "comment": "Guidance; 0.0.1/Sources/TogetherApp/Views/Settings/SettingsView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "关系标签尚未设置或无法识别，请重新选择。已有资料、配对和礼物额度会保留。"
+          }
+        }
+      }
+    },
+    "copy.guidance.3ae0703dd5cd": {
+      "comment": "Guidance; 0.0.1/Sources/TogetherApp/Views/Settings/SettingsView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "显示标签"
+          }
+        }
+      }
+    },
+    "copy.guidance.7a1e2b964b67": {
+      "comment": "Guidance; 0.0.1/Sources/TogetherApp/Views/Settings/SettingsView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "昵称"
+          }
+        }
+      }
+    },
+    "copy.status.af495a06b2de": {
+      "comment": "Status; 0.0.1/Sources/TogetherApp/Views/Settings/SettingsView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "保留原始图片 · 裁剪只改变显示区域"
+          }
+        }
+      }
+    },
+    "copy.action.a91feb645e62": {
+      "comment": "Action; 0.0.1/Sources/TogetherApp/Views/Settings/SettingsView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "移除头像"
+          }
+        }
+      }
+    },
+    "copy.action.b49918dc7f72": {
+      "comment": "Action; 0.0.1/Sources/TogetherApp/Views/Settings/SettingsView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "上传并裁剪头像"
+          }
+        }
+      }
+    },
+    "copy.navigation.7289f8ec5827": {
+      "comment": "Navigation; 0.0.1/Sources/TogetherApp/Views/Settings/SettingsView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Your Profile"
+          }
+        }
+      }
+    },
+    "copy.error.e74585c32e7b": {
+      "comment": "Error; 0.0.1/Sources/TogetherApp/Views/Settings/AvatarCropView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "头像来源已失效。"
+          }
+        }
+      }
+    },
+    "copy.action.bfb466cc16ce": {
+      "comment": "Action; 0.0.1/Sources/TogetherApp/Views/Settings/AvatarCropView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "使用这个头像"
+          }
+        }
+      }
+    },
+    "copy.status.8284260058dd": {
+      "comment": "Status; 0.0.1/Sources/TogetherApp/Views/Settings/AvatarCropView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "上下"
+          }
+        }
+      }
+    },
+    "copy.status.191e26b5d741": {
+      "comment": "Status; 0.0.1/Sources/TogetherApp/Views/Settings/AvatarCropView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "左右"
+          }
+        }
+      }
+    },
+    "copy.status.b762aec769a3": {
+      "comment": "Status; 0.0.1/Sources/TogetherApp/Views/Settings/AvatarCropView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "缩放"
+          }
+        }
+      }
+    },
+    "copy.status.e23f8f7eb807": {
+      "comment": "Status; 0.0.1/Sources/TogetherApp/Views/Settings/AvatarCropView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "只调整展示区域，原图保持完整。"
+          }
+        }
+      }
+    },
+    "copy.status.6cd7c4f0f4c3": {
+      "comment": "Status; 0.0.1/Sources/TogetherApp/Views/Settings/AvatarCropView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "选择头像区域"
+          }
+        }
+      }
+    },
+    "copy.action.36f33adaf094": {
+      "comment": "Action; 0.0.1/Sources/TogetherApp/Views/Tasks/TaskEditorView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "确认"
+          }
+        }
+      }
+    },
+    "copy.action.882574c28ed5": {
+      "comment": "Action; 0.0.1/Sources/TogetherApp/Views/Tasks/TaskEditorView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "稍后设置"
+          }
+        }
+      }
+    },
+    "copy.guidance.08a8bfd082bf": {
+      "comment": "Guidance; 0.0.1/Sources/TogetherApp/Views/Tasks/TaskEditorView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "选择下一次开始的时间。稍后设置时，当前已完成任务会保留，不会生成新的实例。"
+          }
+        }
+      }
+    },
+    "copy.status.626ba31a7939": {
+      "comment": "Status; 0.0.1/Sources/TogetherApp/Views/Tasks/TaskEditorView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Set Next Time"
+          }
+        }
+      }
+    },
+    "copy.action.a3030bf8f16d": {
+      "comment": "Action; 0.0.1/Sources/TogetherApp/Views/Tasks/TaskEditorView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "保存"
+          }
+        }
+      }
+    },
+    "copy.empty_state.73069fd00aeb": {
+      "comment": "Empty State; 0.0.1/Sources/TogetherApp/Views/Tasks/TaskEditorView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "完成后可选择下一次日期，也可以稍后设置；没有日期时不会自动生成。"
+          }
+        }
+      }
+    },
+    "copy.status.ef29accda79a": {
+      "comment": "Status; 0.0.1/Sources/TogetherApp/Views/Tasks/TaskEditorView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "以原定计划日期计算下一实例，不会随完成时间漂移。"
+          }
+        }
+      }
+    },
+    "copy.guidance.37ebdc8c2ff9": {
+      "comment": "Guidance; 0.0.1/Sources/TogetherApp/Views/Tasks/TaskEditorView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "months / Monthly"
+          }
+        }
+      }
+    },
+    "copy.guidance.977e8de6b21d": {
+      "comment": "Guidance; 0.0.1/Sources/TogetherApp/Views/Tasks/TaskEditorView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "weeks / Weekly"
+          }
+        }
+      }
+    },
+    "copy.guidance.5a730047d83f": {
+      "comment": "Guidance; 0.0.1/Sources/TogetherApp/Views/Tasks/TaskEditorView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "days / Daily"
+          }
+        }
+      }
+    },
+    "copy.guidance.80b19d68b149": {
+      "comment": "Guidance; 0.0.1/Sources/TogetherApp/Views/Tasks/TaskEditorView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "单位"
+          }
+        }
+      }
+    },
+    "copy.guidance.dabbb0b4041f": {
+      "comment": "Guidance; 0.0.1/Sources/TogetherApp/Views/Tasks/TaskEditorView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Flexible Recurring"
+          }
+        }
+      }
+    },
+    "copy.guidance.7c1555a09cc0": {
+      "comment": "Guidance; 0.0.1/Sources/TogetherApp/Views/Tasks/TaskEditorView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Regular Recurring"
+          }
+        }
+      }
+    },
+    "copy.guidance.ebdc3594be5c": {
+      "comment": "Guidance; 0.0.1/Sources/TogetherApp/Views/Tasks/TaskEditorView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "不重复"
+          }
+        }
+      }
+    },
+    "copy.guidance.609cf2fdf6ff": {
+      "comment": "Guidance; 0.0.1/Sources/TogetherApp/Views/Tasks/TaskEditorView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "重复"
+          }
+        }
+      }
+    },
+    "copy.guidance.15f26621cdce": {
+      "comment": "Guidance; 0.0.1/Sources/TogetherApp/Views/Tasks/TaskEditorView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "截止时间"
+          }
+        }
+      }
+    },
+    "copy.status.f358a5db68a2": {
+      "comment": "Status; 0.0.1/Sources/TogetherApp/Views/Tasks/TaskEditorView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "暂不分配"
+          }
+        }
+      }
+    },
+    "copy.guidance.a525346277ed": {
+      "comment": "Guidance; 0.0.1/Sources/TogetherApp/Views/Tasks/TaskEditorView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "负责人"
+          }
+        }
+      }
+    },
+    "copy.guidance.daede9881787": {
+      "comment": "Guidance; 0.0.1/Sources/TogetherApp/Views/Tasks/TaskEditorView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "备注"
+          }
+        }
+      }
+    },
+    "copy.guidance.c3405f8c7d9d": {
+      "comment": "Guidance; 0.0.1/Sources/TogetherApp/Views/Tasks/TaskEditorView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "标题"
+          }
+        }
+      }
+    },
+    "copy.navigation.dda79d5a0e25": {
+      "comment": "Navigation; 0.0.1/Sources/TogetherApp/Views/Tasks/TaskEditorView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Edit Task"
+          }
+        }
+      }
+    },
+    "copy.action.2f9daa828907": {
+      "comment": "Action; 0.0.1/Sources/TogetherApp/Views/Tasks/TasksView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "删除"
+          }
+        }
+      }
+    },
+    "copy.action.29dfebea0fda": {
+      "comment": "Action; 0.0.1/Sources/TogetherApp/Views/Tasks/TasksView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "删除任务"
+          }
+        }
+      }
+    },
+    "copy.action.051836569928": {
+      "comment": "Action; 0.0.1/Sources/TogetherApp/Views/Tasks/TasksView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "编辑"
+          }
+        }
+      }
+    },
+    "copy.guidance.26272e530d64": {
+      "comment": "Guidance; 0.0.1/Sources/TogetherApp/Views/Tasks/TasksView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "每 %@ %@"
+          }
+        }
+      }
+    },
+    "copy.status.9622d2850be8": {
+      "comment": "Status; 0.0.1/Sources/TogetherApp/Views/Tasks/TasksView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Flexible"
+          }
+        }
+      }
+    },
+    "copy.empty_state.2b9aaa6ee4f4": {
+      "comment": "Empty State; 0.0.1/Sources/TogetherApp/Views/Tasks/TasksView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "新建任务，安排一件想一起完成的小事。"
+          }
+        }
+      }
+    },
+    "copy.empty_state.70f5f07c479d": {
+      "comment": "Empty State; 0.0.1/Sources/TogetherApp/Views/Tasks/TasksView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "这里还没有任务"
+          }
+        }
+      }
+    },
+    "copy.guidance.5d02c355dcc5": {
+      "comment": "Guidance; 0.0.1/Sources/TogetherApp/Views/Tasks/TasksView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "搜索任务"
+          }
+        }
+      }
+    },
+    "copy.guidance.f28461bb49c8": {
+      "comment": "Guidance; 0.0.1/Sources/TogetherApp/Views/Tasks/TasksView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "已完成"
+          }
+        }
+      }
+    },
+    "copy.guidance.5c55a67935af": {
+      "comment": "Guidance; 0.0.1/Sources/TogetherApp/Views/Tasks/TasksView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "全部"
+          }
+        }
+      }
+    },
+    "copy.guidance.b5f15473fdc0": {
+      "comment": "Guidance; 0.0.1/Sources/TogetherApp/Views/Tasks/TasksView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "筛选"
+          }
+        }
+      }
+    },
+    "copy.navigation.2d9f8587bda1": {
+      "comment": "Navigation; 0.0.1/Sources/TogetherApp/Views/Tasks/TasksView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Shared Tasks"
+          }
+        }
+      }
+    },
+    "copy.navigation.22a970d2e5b1": {
+      "comment": "Navigation; 0.0.1/Sources/TogetherApp/Views/Tasks/TasksView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Completed"
+          }
+        }
+      }
+    },
+    "copy.status.c7225dbf105e": {
+      "comment": "Status; 0.0.1/Sources/TogetherApp/Views/Connection/ConnectionView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "附件"
+          }
+        }
+      }
+    },
+    "copy.status.1c39d7d54b8f": {
+      "comment": "Status; 0.0.1/Sources/TogetherApp/Views/Connection/ConnectionView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Media Transfers"
+          }
+        }
+      }
+    },
+    "copy.action.dcfe516d1114": {
+      "comment": "Action; 0.0.1/Sources/TogetherApp/Views/Connection/ConnectionView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "同步"
+          }
+        }
+      }
+    },
+    "copy.action.68891ab35cab": {
+      "comment": "Action; 0.0.1/Sources/TogetherApp/Views/Connection/ConnectionView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "重新连接"
+          }
+        }
+      }
+    },
+    "copy.status.15a314eb8b4d": {
+      "comment": "Status; 0.0.1/Sources/TogetherApp/Views/Connection/ConnectionView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "You're Together. ♡"
+          }
+        }
+      }
+    },
+    "copy.action.d8392ef9f3fb": {
+      "comment": "Action; 0.0.1/Sources/TogetherApp/Views/Connection/ConnectionView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Join Invitation"
+          }
+        }
+      }
+    },
+    "copy.guidance.c8b56dca7aed": {
+      "comment": "Guidance; 0.0.1/Sources/TogetherApp/Views/Connection/ConnectionView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "邀请码"
+          }
+        }
+      }
+    },
+    "copy.action.52c229c10699": {
+      "comment": "Action; 0.0.1/Sources/TogetherApp/Views/Connection/ConnectionView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Copy Invitation"
+          }
+        }
+      }
+    },
+    "copy.action.1032f5e75333": {
+      "comment": "Action; 0.0.1/Sources/TogetherApp/Views/Connection/ConnectionView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Invite My Partner"
+          }
+        }
+      }
+    },
+    "copy.guidance.0c2e0cb3cd53": {
+      "comment": "Guidance; 0.0.1/Sources/TogetherApp/Views/Connection/ConnectionView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "旧配对的数据和设备密钥已保留。请与原设备通过邀请码确认新连接。"
+          }
+        }
+      }
+    },
+    "copy.action.2fd9629c1a44": {
+      "comment": "Action; 0.0.1/Sources/TogetherApp/Views/Connection/ConnectionView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Confirm Partner"
+          }
+        }
+      }
+    },
+    "copy.guidance.9132a75101e9": {
+      "comment": "Guidance; 0.0.1/Sources/TogetherApp/Views/Connection/ConnectionView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "已核对身份"
+          }
+        }
+      }
+    },
+    "copy.status.3ebca10fcb10": {
+      "comment": "Status; 0.0.1/Sources/TogetherApp/Views/Connection/ConnectionView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "核对两台 Mac 的校验码和设备指纹，再确认配对。"
+          }
+        }
+      }
+    },
+    "copy.guidance.4d93993d5b23": {
+      "comment": "Guidance; 0.0.1/Sources/TogetherApp/Views/Connection/ConnectionView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "连接服务未配置。请使用包含服务地址的 Together 发布版本；本地数据仍可使用。"
+          }
+        }
+      }
+    },
+    "copy.navigation.639a40e82b9a": {
+      "comment": "Navigation; 0.0.1/Sources/TogetherApp/Views/Connection/ConnectionView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Connection"
+          }
+        }
+      }
+    },
+    "copy.action.042811378798": {
+      "comment": "Action; 0.0.1/Sources/TogetherApp/Views/Wishes/WishesView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "尚未完成"
+          }
+        }
+      }
+    },
+    "copy.action.dad277e51ae2": {
+      "comment": "Action; 0.0.1/Sources/TogetherApp/Views/Wishes/WishesView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "确认兑现"
+          }
+        }
+      }
+    },
+    "copy.action.484f849e7525": {
+      "comment": "Action; 0.0.1/Sources/TogetherApp/Views/Wishes/WishesView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "申请完成"
+          }
+        }
+      }
+    },
+    "copy.action.2b5c98884cf4": {
+      "comment": "Action; 0.0.1/Sources/TogetherApp/Views/Wishes/WishesView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "填写一个愿望"
+          }
+        }
+      }
+    },
+    "copy.guidance.fc1abea23df7": {
+      "comment": "Guidance; 0.0.1/Sources/TogetherApp/Views/Wishes/WishesView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "调整 %@%@：%@%@"
+          }
+        }
+      }
+    },
+    "copy.guidance.11c84b5da239": {
+      "comment": "Guidance; 0.0.1/Sources/TogetherApp/Views/Wishes/WishesView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "有效额度 %@ · 已兑现 %@ · 待兑现 %@ · 可填写 %@"
+          }
+        }
+      }
+    },
+    "copy.action.b1318a136ca8": {
+      "comment": "Action; 0.0.1/Sources/TogetherApp/Views/Wishes/WishesView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "审计调整额度"
+          }
+        }
+      }
+    },
+    "copy.action.3d4a799b170e": {
+      "comment": "Action; 0.0.1/Sources/TogetherApp/Views/Wishes/WishesView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "填写愿望"
+          }
+        }
+      }
+    },
+    "copy.guidance.4b7a5cfdcc8b": {
+      "comment": "Guidance; 0.0.1/Sources/TogetherApp/Views/Wishes/WishesView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ 答应实现 %@ %@ 个愿望"
+          }
+        }
+      }
+    },
+    "copy.status.b29a53070d95": {
+      "comment": "Status; 0.0.1/Sources/TogetherApp/Views/Wishes/WishesView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "需要处理的离线冲突"
+          }
+        }
+      }
+    },
+    "copy.empty_state.2dfc21ff5af0": {
+      "comment": "Empty State; 0.0.1/Sources/TogetherApp/Views/Wishes/WishesView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "还没有额度记录。"
+          }
+        }
+      }
+    },
+    "copy.status.47ada653c100": {
+      "comment": "Status; 0.0.1/Sources/TogetherApp/Views/Wishes/WishesView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Grant History"
+          }
+        }
+      }
+    },
+    "copy.guidance.8cb0896e503a": {
+      "comment": "Guidance; 0.0.1/Sources/TogetherApp/Views/Wishes/WishesView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ 条 Grant History"
+          }
+        }
+      }
+    },
+    "copy.guidance.6d9b6810ab00": {
+      "comment": "Guidance; 0.0.1/Sources/TogetherApp/Views/Wishes/WishesView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ 为 %@ 兑现的愿望"
+          }
+        }
+      }
+    },
+    "copy.guidance.26fcce639830": {
+      "comment": "Guidance; 0.0.1/Sources/TogetherApp/Views/Wishes/WishesView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "先在 Connection 配对另一台 Mac，再记录双方的愿望约定。"
+          }
+        }
+      }
+    },
+    "copy.action.2c183d9579b2": {
+      "comment": "Action; 0.0.1/Sources/TogetherApp/Views/Wishes/WishesView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "新增愿望额度"
+          }
+        }
+      }
+    },
+    "copy.navigation.403cc21502eb": {
+      "comment": "Navigation; 0.0.1/Sources/TogetherApp/Views/Wishes/WishesView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wishes"
+          }
+        }
+      }
+    },
+    "copy.action.2388bd52fae3": {
+      "comment": "Action; 0.0.1/Sources/TogetherApp/Views/Wishes/WishEditors.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "提交调整"
+          }
+        }
+      }
+    },
+    "copy.guidance.cb63ca2a4003": {
+      "comment": "Guidance; 0.0.1/Sources/TogetherApp/Views/Wishes/WishEditors.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "必须填写调整原因"
+          }
+        }
+      }
+    },
+    "copy.status.01b6f9e2d127": {
+      "comment": "Status; 0.0.1/Sources/TogetherApp/Views/Wishes/WishEditors.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "原记录会保留。这次修正将作为独立操作进入历史。"
+          }
+        }
+      }
+    },
+    "copy.action.2b072511a379": {
+      "comment": "Action; 0.0.1/Sources/TogetherApp/Views/Wishes/WishEditors.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "保存愿望"
+          }
+        }
+      }
+    },
+    "copy.guidance.d4dfacae27fe": {
+      "comment": "Guidance; 0.0.1/Sources/TogetherApp/Views/Wishes/WishEditors.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "具体描述"
+          }
+        }
+      }
+    },
+    "copy.guidance.c28964cec0df": {
+      "comment": "Guidance; 0.0.1/Sources/TogetherApp/Views/Wishes/WishEditors.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "愿望标题"
+          }
+        }
+      }
+    },
+    "copy.status.3cfd61f73f08": {
+      "comment": "Status; 0.0.1/Sources/TogetherApp/Views/Wishes/WishEditors.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "这个愿望会占用这一批额度。兑现者申请完成后，需要你确认。"
+          }
+        }
+      }
+    },
+    "copy.error.f542f9884467": {
+      "comment": "Error; 0.0.1/Sources/TogetherApp/Views/Wishes/WishEditors.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "请先配对另一位成员。"
+          }
+        }
+      }
+    },
+    "copy.action.68db52a61059": {
+      "comment": "Action; 0.0.1/Sources/TogetherApp/Views/Wishes/WishEditors.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "记录约定"
+          }
+        }
+      }
+    },
+    "copy.guidance.08dcdf90fcc3": {
+      "comment": "Guidance; 0.0.1/Sources/TogetherApp/Views/Wishes/WishEditors.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "兑现者"
+          }
+        }
+      }
+    },
+    "copy.action.8719fc9a0abf": {
+      "comment": "Action; 0.0.1/Sources/TogetherApp/Views/Gifts/GiftHistoryView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "撤销礼物"
+          }
+        }
+      }
+    },
+    "copy.action.926a50b98ece": {
+      "comment": "Action; 0.0.1/Sources/TogetherApp/Views/Gifts/GiftHistoryView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "撤销"
+          }
+        }
+      }
+    },
+    "copy.action.3f4d60ed6945": {
+      "comment": "Action; 0.0.1/Sources/TogetherApp/Views/Gifts/GiftHistoryView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "同步附件"
+          }
+        }
+      }
+    },
+    "copy.action.db8db0530432": {
+      "comment": "Action; 0.0.1/Sources/TogetherApp/Views/Gifts/GiftHistoryView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "查看"
+          }
+        }
+      }
+    },
+    "copy.status.a0a4c71b52cc": {
+      "comment": "Status; 0.0.1/Sources/TogetherApp/Views/Gifts/GiftHistoryView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "未打开"
+          }
+        }
+      }
+    },
+    "copy.status.57dc4c554054": {
+      "comment": "Status; 0.0.1/Sources/TogetherApp/Views/Gifts/GiftHistoryView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "一张照片礼物"
+          }
+        }
+      }
+    },
+    "copy.status.17441747251a": {
+      "comment": "Status; 0.0.1/Sources/TogetherApp/Views/Gifts/GiftHistoryView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "一段语音礼物"
+          }
+        }
+      }
+    },
+    "copy.status.034fc48ba584": {
+      "comment": "Status; 0.0.1/Sources/TogetherApp/Views/Gifts/GiftHistoryView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "TA"
+          }
+        }
+      }
+    },
+    "copy.empty_state.bea225cddc76": {
+      "comment": "Empty State; 0.0.1/Sources/TogetherApp/Views/Gifts/GiftHistoryView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "爱意会在这里留下来"
+          }
+        }
+      }
+    },
+    "copy.action.c0b3fbff51cc": {
+      "comment": "Action; 0.0.1/Sources/TogetherApp/Views/Gifts/GiftHistoryView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "完成"
+          }
+        }
+      }
+    },
+    "copy.guidance.f7fe73b265ee": {
+      "comment": "Guidance; 0.0.1/Sources/TogetherApp/Views/Gifts/AudioComponents.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ / %@"
+          }
+        }
+      }
+    },
+    "copy.status.584fc5fc5dce": {
+      "comment": "Status; 0.0.1/Sources/TogetherApp/Views/Gifts/AudioComponents.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "语音播放进度"
+          }
+        }
+      }
+    },
+    "copy.action.436e61016e26": {
+      "comment": "Action; 0.0.1/Sources/TogetherApp/Views/Gifts/AudioComponents.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Play"
+          }
+        }
+      }
+    },
+    "copy.action.858e4ba7a29f": {
+      "comment": "Action; 0.0.1/Sources/TogetherApp/Views/Gifts/AudioComponents.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pause"
+          }
+        }
+      }
+    },
+    "copy.status.76137a92a3f3": {
+      "comment": "Status; 0.0.1/Sources/TogetherApp/Views/Gifts/AudioComponents.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "音频无法播放。"
+          }
+        }
+      }
+    },
+    "copy.guidance.0bade33ffdbe": {
+      "comment": "Guidance; 0.0.1/Sources/TogetherApp/Views/Gifts/AudioComponents.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "无法播放这段音频：%@"
+          }
+        }
+      }
+    },
+    "copy.error.d0eefe11ae2b": {
+      "comment": "Error; 0.0.1/Sources/TogetherApp/Views/Gifts/AudioComponents.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "音频时长无效。"
+          }
+        }
+      }
+    },
+    "copy.error.5ef4f050153c": {
+      "comment": "Error; 0.0.1/Sources/TogetherApp/Views/Gifts/AudioComponents.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "无法开始录音，请检查麦克风和可用磁盘空间。"
+          }
+        }
+      }
+    },
+    "copy.guidance.8cbde1ab6315": {
+      "comment": "Guidance; 0.0.1/Sources/TogetherApp/Views/Gifts/AudioComponents.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "麦克风权限未开启。可在系统设置 → 隐私与安全性 → 麦克风允许 Together，或导入已有音频。"
+          }
+        }
+      }
+    },
+    "copy.guidance.4673175cd9f2": {
+      "comment": "Guidance; 0.0.1/Sources/TogetherApp/Views/Gifts/AudioComponents.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "请从构建的 Together.app 使用录音；命令行可执行文件未包含麦克风权限说明。"
+          }
+        }
+      }
+    },
+    "copy.action.3b1ccae783f1": {
+      "comment": "Action; 0.0.1/Sources/TogetherApp/Views/Gifts/GiftRevealView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "保存原图"
+          }
+        }
+      }
+    },
+    "copy.emotional.99e20304bca5": {
+      "comment": "Emotional; 0.0.1/Sources/TogetherApp/Views/Gifts/GiftRevealView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "TA 还顺便附上了一张让你眼前一亮的照片，希望你能喜欢 ❤️"
+          }
+        }
+      }
+    },
+    "copy.emotional.c6b12f8ce310": {
+      "comment": "Emotional; 0.0.1/Sources/TogetherApp/Views/Gifts/GiftRevealView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "TA 还留下一段想让你亲耳听到的声音 ♡"
+          }
+        }
+      }
+    },
+    "copy.action.3fd47edce45b": {
+      "comment": "Action; 0.0.1/Sources/TogetherApp/Views/Gifts/GiftRevealView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "关闭"
+          }
+        }
+      }
+    },
+    "copy.empty_state.7ff1ed89807d": {
+      "comment": "Empty State; 0.0.1/Sources/TogetherApp/Views/Gifts/GiftRevealView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "这份礼物已撤销"
+          }
+        }
+      }
+    },
+    "copy.emotional.13049016bf03": {
+      "comment": "Emotional; 0.0.1/Sources/TogetherApp/Views/Gifts/GiftRevealView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "今天的爱意已经送出啦，明天再给 TA 一个小惊喜吧 ♡"
+          }
+        }
+      }
+    },
+    "copy.emotional.b26ee65bfb3b": {
+      "comment": "Emotional; 0.0.1/Sources/TogetherApp/Views/Gifts/GiftRevealView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "收到啦 ❤️"
+          }
+        }
+      }
+    },
+    "copy.emotional.8bd6be42784c": {
+      "comment": "Emotional; 0.0.1/Sources/TogetherApp/Views/Gifts/GiftRevealView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "回赠一份爱意 ♡"
+          }
+        }
+      }
+    },
+    "copy.action.eca2213cf87f": {
+      "comment": "Action; 0.0.1/Sources/TogetherApp/Views/Gifts/GiftRevealView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "下一份"
+          }
+        }
+      }
+    },
+    "copy.action.d77339465930": {
+      "comment": "Action; 0.0.1/Sources/TogetherApp/Views/Gifts/GiftRevealView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "上一份"
+          }
+        }
+      }
+    },
+    "copy.emotional.0fe0176cc04d": {
+      "comment": "Emotional; 0.0.1/Sources/TogetherApp/Views/Gifts/GiftRevealView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Open Your Gift ♡"
+          }
+        }
+      }
+    },
+    "copy.status.99d1094feca8": {
+      "comment": "Status; 0.0.1/Sources/TogetherApp/Views/Gifts/GiftRevealView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "一份只属于你的心意。准备好了，就轻轻打开吧。"
+          }
+        }
+      }
+    },
+    "copy.emotional.c35685beea5a": {
+      "comment": "Emotional; 0.0.1/Sources/TogetherApp/Views/Gifts/GiftRevealView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Just for you ♡"
+          }
+        }
+      }
+    },
+    "copy.emotional.07940efad8c3": {
+      "comment": "Emotional; 0.0.1/Sources/TogetherApp/Views/Gifts/GiftRevealView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "有 %@ 份爱意正在等你拆开 ❤️"
+          }
+        }
+      }
+    },
+    "copy.status.74f95c4c0298": {
+      "comment": "Status; 0.0.1/Sources/TogetherApp/Views/Gifts/GiftEditorView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "查看原始图片"
+          }
+        }
+      }
+    },
+    "copy.guidance.c17ea66392d2": {
+      "comment": "Guidance; 0.0.1/Sources/TogetherApp/Views/Gifts/GiftEditorView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "共享日期按 %@ 计算。发送后当天额度立即占用；对方离线时显示 Pending Sync。"
+          }
+        }
+      }
+    },
+    "copy.emotional.1a1a433b6d1e": {
+      "comment": "Emotional; 0.0.1/Sources/TogetherApp/Views/Gifts/GiftEditorView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Send with Love ♡"
+          }
+        }
+      }
+    },
+    "copy.action.14e50ef4f212": {
+      "comment": "Action; 0.0.1/Sources/TogetherApp/Views/Gifts/GiftEditorView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Save Draft & Finish"
+          }
+        }
+      }
+    },
+    "copy.action.5329e3f0ee46": {
+      "comment": "Action; 0.0.1/Sources/TogetherApp/Views/Gifts/GiftEditorView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "保存草稿"
+          }
+        }
+      }
+    },
+    "copy.action.1e157fdf0388": {
+      "comment": "Action; 0.0.1/Sources/TogetherApp/Views/Gifts/GiftEditorView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Skip for Now"
+          }
+        }
+      }
+    },
+    "copy.status.6a8ae976f27c": {
+      "comment": "Status; 0.0.1/Sources/TogetherApp/Views/Gifts/GiftEditorView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Local · 草稿只保存在这台 Mac"
+          }
+        }
+      }
+    },
+    "copy.emotional.3ceeec638ae6": {
+      "comment": "Emotional; 0.0.1/Sources/TogetherApp/Views/Gifts/GiftEditorView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "尚未配对，这份爱意只保存为本地草稿。配对后由你确认发送。"
+          }
+        }
+      }
+    },
+    "copy.action.be99f82cf39f": {
+      "comment": "Action; 0.0.1/Sources/TogetherApp/Views/Gifts/GiftEditorView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "删除照片"
+          }
+        }
+      }
+    },
+    "copy.action.b7e6276e7f9a": {
+      "comment": "Action; 0.0.1/Sources/TogetherApp/Views/Gifts/GiftEditorView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "删除语音"
+          }
+        }
+      }
+    },
+    "copy.action.dcf59b082865": {
+      "comment": "Action; 0.0.1/Sources/TogetherApp/Views/Gifts/GiftEditorView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "停止并保存"
+          }
+        }
+      }
+    },
+    "copy.action.8d12fc0d4eb2": {
+      "comment": "Action; 0.0.1/Sources/TogetherApp/Views/Gifts/GiftEditorView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "暂停"
+          }
+        }
+      }
+    },
+    "copy.action.7c9691192f1b": {
+      "comment": "Action; 0.0.1/Sources/TogetherApp/Views/Gifts/GiftEditorView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "继续"
+          }
+        }
+      }
+    },
+    "copy.status.5254d30be60f": {
+      "comment": "Status; 0.0.1/Sources/TogetherApp/Views/Gifts/GiftEditorView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "正在录音"
+          }
+        }
+      }
+    },
+    "copy.status.598133b569df": {
+      "comment": "Status; 0.0.1/Sources/TogetherApp/Views/Gifts/GiftEditorView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "录音已暂停"
+          }
+        }
+      }
+    },
+    "copy.status.2afb58834f9b": {
+      "comment": "Status; 0.0.1/Sources/TogetherApp/Views/Gifts/GiftEditorView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ / 4000"
+          }
+        }
+      }
+    },
+    "copy.action.5edc672292ef": {
+      "comment": "Action; 0.0.1/Sources/TogetherApp/Views/Gifts/GiftEditorView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Add Photo"
+          }
+        }
+      }
+    },
+    "copy.status.43974b287b93": {
+      "comment": "Status; 0.0.1/Sources/TogetherApp/Views/Gifts/GiftEditorView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Add Voice"
+          }
+        }
+      }
+    },
+    "copy.action.4b5e4c962305": {
+      "comment": "Action; 0.0.1/Sources/TogetherApp/Views/Gifts/GiftEditorView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "导入音频"
+          }
+        }
+      }
+    },
+    "copy.action.e37fc2d39902": {
+      "comment": "Action; 0.0.1/Sources/TogetherApp/Views/Gifts/GiftEditorView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "录制语音"
+          }
+        }
+      }
+    },
+    "copy.status.2c30c0227788": {
+      "comment": "Status; 0.0.1/Sources/TogetherApp/Views/Gifts/GiftEditorView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "写下一句只属于 TA 的话…"
+          }
+        }
+      }
+    },
+    "copy.emotional.a75b098be556": {
+      "comment": "Emotional; 0.0.1/Sources/TogetherApp/Views/Gifts/GiftEditorView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "今天已经给 TA 送过一份爱意啦，明天再来吧 ❤️"
+          }
+        }
+      }
+    },
+    "copy.emotional.acd76b74d637": {
+      "comment": "Emotional; 0.0.1/Sources/TogetherApp/Views/Gifts/GiftEditorView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A little love, just for you. ❤️"
+          }
+        }
+      }
+    },
+    "copy.status.a9ee56abd8fc": {
+      "comment": "Status; 0.0.1/Sources/TogetherApp/ReleaseNotes/WhatsNewView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "发布说明暂时无法读取，请检查应用资源。"
+          }
+        }
+      }
+    },
+    "copy.status.c74259555cfc": {
+      "comment": "Status; 0.0.1/Sources/TogetherApp/ReleaseNotes/WhatsNewView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Together %@"
+          }
+        }
+      }
+    },
+    "copy.action.e3b0859f5da0": {
+      "comment": "Action; 0.0.1/Sources/TogetherApp/Onboarding/InitialSetupView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Connect My Partner"
+          }
+        }
+      }
+    },
+    "copy.status.854395e0abf2": {
+      "comment": "Status; 0.0.1/Sources/TogetherApp/Onboarding/InitialSetupView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "已配对。双方的资料和原始头像会在连接后同步。"
+          }
+        }
+      }
+    },
+    "copy.guidance.34509ac3c987": {
+      "comment": "Guidance; 0.0.1/Sources/TogetherApp/Onboarding/InitialSetupView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "创建邀请码或输入伴侣的邀请码，双方核对身份后确认。也可以先离线使用。"
+          }
+        }
+      }
+    },
+    "copy.guidance.591976fa354e": {
+      "comment": "Guidance; 0.0.1/Sources/TogetherApp/Onboarding/InitialSetupView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Display Name（必填）"
+          }
+        }
+      }
+    },
+    "copy.action.c33392c5ea4a": {
+      "comment": "Action; 0.0.1/Sources/TogetherApp/Onboarding/InitialSetupView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "调整裁剪位置"
+          }
+        }
+      }
+    },
+    "copy.action.7a7ceed76b69": {
+      "comment": "Action; 0.0.1/Sources/TogetherApp/Onboarding/InitialSetupView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "选择照片（可跳过）"
+          }
+        }
+      }
+    },
+    "copy.status.dbfd5d14c799": {
+      "comment": "Status; 0.0.1/Sources/TogetherApp/Onboarding/InitialSetupView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "选一张你喜欢的照片，作为你们共享空间里的头像。"
+          }
+        }
+      }
+    },
+    "copy.status.1bb474fad984": {
+      "comment": "Status; 0.0.1/Sources/TogetherApp/Onboarding/InitialSetupView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "选择你的显示身份。这不会改变资料和业务操作的权限。"
+          }
+        }
+      }
+    },
+    "copy.guidance.e39e76771c11": {
+      "comment": "Guidance; 0.0.1/Sources/TogetherApp/Onboarding/InitialSetupView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A little space, just for the two of you."
+          }
+        }
+      }
+    },
+    "copy.status.937a1f36deff": {
+      "comment": "Status; 0.0.1/Sources/TogetherApp/Onboarding/InitialSetupView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Welcome to Together ♡"
+          }
+        }
+      }
+    },
+    "copy.action.31fbef162594": {
+      "comment": "Action; 0.0.1/Sources/TogetherApp/Onboarding/InitialSetupView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Continue"
+          }
+        }
+      }
+    },
+    "copy.action.0b4fa4b9e083": {
+      "comment": "Action; 0.0.1/Sources/TogetherApp/Onboarding/InitialSetupView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "I'll Do This Later"
+          }
+        }
+      }
+    },
+    "copy.action.a57b08a480b8": {
+      "comment": "Action; 0.0.1/Sources/TogetherApp/Onboarding/InitialSetupView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Previous"
+          }
+        }
+      }
+    },
+    "copy.status.3a4fb6e6ee20": {
+      "comment": "Status; 0.0.1/Sources/TogetherApp/Onboarding/InitialSetupView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ / 5"
+          }
+        }
+      }
+    },
+    "copy.action.1ff57a29d7c9": {
+      "comment": "Action; 0.0.1/Sources/TogetherApp/Onboarding/AdvisorView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Next"
+          }
+        }
+      }
+    },
+    "copy.action.a6c7a84baa67": {
+      "comment": "Action; 0.0.1/Sources/TogetherApp/Onboarding/AdvisorView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Finish"
+          }
+        }
+      }
+    },
+    "copy.action.28d03596d24e": {
+      "comment": "Action; 0.0.1/Sources/TogetherApp/Onboarding/AdvisorView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Skip"
+          }
+        }
+      }
+    },
+    "copy.guidance.59f48b3f4a8e": {
+      "comment": "Guidance; 0.0.1/Sources/TogetherApp/Onboarding/AdvisorView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Never Show Again"
+          }
+        }
+      }
+    },
+    "copy.guidance.e88ca18d56f1": {
+      "comment": "Guidance; 0.0.1/Sources/TogetherApp/Onboarding/AdvisorView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "创建邀请码，让伴侣加入；双方核对校验码并确认后自动同步。"
+          }
+        }
+      }
+    },
+    "copy.status.f7c98742cb56": {
+      "comment": "Status; 0.0.1/Sources/TogetherApp/Onboarding/AdvisorView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Connecting Two Macs"
+          }
+        }
+      }
+    },
+    "copy.guidance.b61a3a85f709": {
+      "comment": "Guidance; 0.0.1/Sources/TogetherApp/Onboarding/AdvisorView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "每人每天可以送一份文字、语音或照片礼物。共享时区决定每日额度。对方启动并同步完成后可以拆礼物，也能回赠自己当天的一份爱意。"
+          }
+        }
+      }
+    },
+    "copy.status.46f890d7fe72": {
+      "comment": "Status; 0.0.1/Sources/TogetherApp/Onboarding/AdvisorView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Daily Love Gifts"
+          }
+        }
+      }
+    },
+    "copy.guidance.a0fdf83d30c9": {
+      "comment": "Guidance; 0.0.1/Sources/TogetherApp/Onboarding/AdvisorView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "在 Settings 修改自己的昵称与头像。保留原图，裁剪只调整显示区域，连接后分块同步。"
+          }
+        }
+      }
+    },
+    "copy.status.0657ef66163c": {
+      "comment": "Status; 0.0.1/Sources/TogetherApp/Onboarding/AdvisorView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Profiles & Avatars"
+          }
+        }
+      }
+    },
+    "copy.guidance.0a03873c8d2f": {
+      "comment": "Guidance; 0.0.1/Sources/TogetherApp/Onboarding/AdvisorView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "按日期记录每一批额度。受益人填写愿望，兑现者申请完成，再由受益人确认。"
+          }
+        }
+      }
+    },
+    "copy.guidance.66dd26b15065": {
+      "comment": "Guidance; 0.0.1/Sources/TogetherApp/Onboarding/AdvisorView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Regular 按原定日历计划重复。Flexible 完成后选择下一次日期，或稍后再设。"
+          }
+        }
+      }
+    },
+    "copy.status.762adf000094": {
+      "comment": "Status; 0.0.1/Sources/TogetherApp/Onboarding/AdvisorView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Recurring Tasks"
+          }
+        }
+      }
+    },
+    "copy.guidance.9da8edd95702": {
+      "comment": "Guidance; 0.0.1/Sources/TogetherApp/Onboarding/AdvisorView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "创建待办，分配负责人和截止日期。双方离线也能修改，重新连接后合并。"
+          }
+        }
+      }
+    },
+    "copy.guidance.a98b94457fae": {
+      "comment": "Guidance; 0.0.1/Sources/TogetherApp/Onboarding/AdvisorView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Together 是你们的本地共享空间。小事、愿望和约定都先保存在各自 Mac 上。"
+          }
+        }
+      }
+    },
+    "copy.navigation.0e2226b5235f": {
+      "comment": "Navigation; 0.0.1/Sources/TogetherApp/Onboarding/AdvisorView.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Welcome"
+          }
+        }
+      }
+    },
+    "copy.error.cb51a0083b9b": {
+      "comment": "Error; 0.0.1/Sources/TogetherCore/Synchronization/ReplicaEngine.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "只有 Flexible Recurring 任务可以设置下一次时间。"
+          }
+        }
+      }
+    },
+    "copy.error.c9e9d90c0c38": {
+      "comment": "Error; 0.0.1/Sources/TogetherCore/Synchronization/ReplicaEngine.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "任务已删除或不存在。"
+          }
+        }
+      }
+    },
+    "copy.error.47ef85d323e2": {
+      "comment": "Error; 0.0.1/Sources/TogetherCore/Synchronization/ReplicaEngine.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "对端礼物确认与持久化记录不匹配。"
+          }
+        }
+      }
+    },
+    "copy.error.2b3beaac2d7a": {
+      "comment": "Error; 0.0.1/Sources/TogetherCore/Synchronization/ReplicaEngine.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "附件来源无效。"
+          }
+        }
+      }
+    },
+    "copy.error.4868d57ad1cb": {
+      "comment": "Error; 0.0.1/Sources/TogetherCore/Synchronization/ReplicaEngine.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "附件尚未保存或校验完成。"
+          }
+        }
+      }
+    },
+    "copy.error.9ba418316fbb": {
+      "comment": "Error; 0.0.1/Sources/TogetherCore/Synchronization/ReplicaEngine.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "请填写情话或添加一个有效附件；文字最多 4,000 字。"
+          }
+        }
+      }
+    },
+    "copy.error.68590b799484": {
+      "comment": "Error; 0.0.1/Sources/TogetherCore/Synchronization/ReplicaEngine.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "系统日期早于上次发送日期，请检查 Mac 的日期与时间。"
+          }
+        }
+      }
+    },
+    "copy.error.cfd25e4c08e5": {
+      "comment": "Error; 0.0.1/Sources/TogetherCore/Synchronization/ReplicaEngine.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "尚未配对，只能保存本地草稿。配对后请确认发送。"
+          }
+        }
+      }
+    },
+    "copy.error.0017db608c93": {
+      "comment": "Error; 0.0.1/Sources/TogetherCore/Synchronization/ReplicaEngine.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "情话最多 4,000 字。"
+          }
+        }
+      }
+    },
+    "copy.error.6e724e7a6794": {
+      "comment": "Error; 0.0.1/Sources/TogetherCore/Synchronization/ReplicaEngine.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "请先从草稿中移除附件。"
+          }
+        }
+      }
+    },
+    "copy.error.f358769c9343": {
+      "comment": "Error; 0.0.1/Sources/TogetherCore/Synchronization/ReplicaEngine.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "头像资源尚未就绪。"
+          }
+        }
+      }
+    },
+    "copy.error.9d0b8ee35f75": {
+      "comment": "Error; 0.0.1/Sources/TogetherCore/Synchronization/ReplicaEngine.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "头像压缩后必须小于 128 KiB。"
+          }
+        }
+      }
+    },
+    "copy.error.76ef9b5cd8a8": {
+      "comment": "Error; 0.0.1/Sources/TogetherCore/Synchronization/ReplicaEngine.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "收到未授权设备或无效签名的操作。"
+          }
+        }
+      }
+    },
+    "copy.error.10abb8d8d023": {
+      "comment": "Error; 0.0.1/Sources/TogetherCore/Synchronization/ReplicaEngine.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "操作批次超过此版本的限制。"
+          }
+        }
+      }
+    },
+    "copy.error.f39021f401d6": {
+      "comment": "Error; 0.0.1/Sources/TogetherCore/Synchronization/ReplicaEngine.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "中继绑定与已确认设备不匹配。"
+          }
+        }
+      }
+    },
+    "copy.error.9dfbef876584": {
+      "comment": "Error; 0.0.1/Sources/TogetherCore/Synchronization/ReplicaEngine.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "此空间已绑定另一台设备，不能自动替换授权。"
+          }
+        }
+      }
+    },
+    "copy.error.b3dc19939872": {
+      "comment": "Error; 0.0.1/Sources/TogetherCore/Synchronization/ReplicaEngine.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "对端身份或协议无效，请确保两端均使用当前 Together。"
+          }
+        }
+      }
+    },
+    "copy.error.7187d4f67320": {
+      "comment": "Error; 0.0.1/Sources/TogetherCore/Synchronization/Projector.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "不支持的实体操作"
+          }
+        }
+      }
+    },
+    "copy.error.bc0dfeab7ee4": {
+      "comment": "Error; 0.0.1/Sources/TogetherCore/Synchronization/Projector.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "字段值无效或不可修改"
+          }
+        }
+      }
+    },
+    "copy.error.3d3054c36e6d": {
+      "comment": "Error; 0.0.1/Sources/TogetherCore/Synchronization/Projector.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "只能编辑属于自己的个人资料"
+          }
+        }
+      }
+    },
+    "copy.error.90a1871c6212": {
+      "comment": "Error; 0.0.1/Sources/TogetherCore/Synchronization/Projector.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "创建数据不完整或权限不匹配"
+          }
+        }
+      }
+    },
+    "copy.error.13426e0cbffb": {
+      "comment": "Error; 0.0.1/Sources/TogetherCore/Networking/PeerService.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "配对确认前不能交换业务数据。"
+          }
+        }
+      }
+    },
+    "copy.error.e720b5e93f34": {
+      "comment": "Error; 0.0.1/Sources/TogetherCore/Networking/PeerService.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "未保存此设备的授权。"
+          }
+        }
+      }
+    },
+    "copy.error.a23516e042fa": {
+      "comment": "Error; 0.0.1/Sources/TogetherCore/Networking/PeerService.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "尚未验证设备挑战。"
+          }
+        }
+      }
+    },
+    "copy.error.3dcfa2668f3f": {
+      "comment": "Error; 0.0.1/Sources/TogetherCore/Networking/PeerService.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "连接挑战或消息签名不匹配。"
+          }
+        }
+      }
+    },
+    "copy.error.ed91b063c711": {
+      "comment": "Error; 0.0.1/Sources/TogetherCore/Networking/PeerService.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "对端不是已授权设备。"
+          }
+        }
+      }
+    },
+    "copy.error.131e158009bb": {
+      "comment": "Error; 0.0.1/Sources/TogetherCore/Networking/PeerService.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "握手身份、地址或签名无效。"
+          }
+        }
+      }
+    },
+    "copy.error.f459dd8f6b10": {
+      "comment": "Error; 0.0.1/Sources/TogetherCore/Networking/PeerService.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "连接或配对确认超时，请重新连接。"
+          }
+        }
+      }
+    },
+    "copy.error.0d3785894f32": {
+      "comment": "Error; 0.0.1/Sources/TogetherCore/Networking/PeerService.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "配对连接已经失效。"
+          }
+        }
+      }
+    },
+    "copy.error.6d1b80ef0dbf": {
+      "comment": "Error; 0.0.1/Sources/TogetherCore/Networking/PeerService.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "请输入有效的 Tailscale IP 或 MagicDNS 名称与端口。"
+          }
+        }
+      }
+    },
+    "copy.error.87e5c62d9ed5": {
+      "comment": "Error; 0.0.1/Sources/TogetherCore/Networking/PeerService.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "请先开启本机监听。"
+          }
+        }
+      }
+    },
+    "copy.error.1a248a72dc76": {
+      "comment": "Error; 0.0.1/Sources/TogetherCore/Networking/PeerService.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "监听地址必须是本机 Tailscale IP；本机开发可使用 127.0.0.1。"
+          }
+        }
+      }
+    },
+    "copy.error.4e3a074f1822": {
+      "comment": "Error; 0.0.1/Sources/TogetherCore/Networking/SyncTransport.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "旧版传输未连接。"
+          }
+        }
+      }
+    },
+    "copy.error.32068192f569": {
+      "comment": "Error; 0.0.1/Sources/TogetherCore/Networking/SyncTransport.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "旧版传输地址无效。"
+          }
+        }
+      }
+    },
+    "copy.error.c71af0e23a33": {
+      "comment": "Error; 0.0.1/Sources/TogetherCore/Networking/SyncTransport.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "中继未连接或单帧过大。"
+          }
+        }
+      }
+    },
+    "copy.error.99e51d775e05": {
+      "comment": "Error; 0.0.1/Sources/TogetherCore/Networking/SyncTransport.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "中继消息超过单帧限制。"
+          }
+        }
+      }
+    },
+    "copy.error.5de002320d44": {
+      "comment": "Error; 0.0.1/Sources/TogetherCore/Networking/SyncTransport.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "中继消息格式不受支持。"
+          }
+        }
+      }
+    },
+    "copy.error.3df54032c0e6": {
+      "comment": "Error; 0.0.1/Sources/TogetherCore/Networking/SyncTransport.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "中继传输地址无效。"
+          }
+        }
+      }
+    },
+    "copy.error.4f82626d4550": {
+      "comment": "Error; 0.0.1/Sources/TogetherCore/Networking/OperationLogSyncSession.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "业务同步消息类型无效。"
+          }
+        }
+      }
+    },
+    "copy.error.b4c3e6bb90c0": {
+      "comment": "Error; 0.0.1/Sources/TogetherCore/Networking/OperationLogSyncSession.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "媒体校验确认不匹配。"
+          }
+        }
+      }
+    },
+    "copy.error.b9a05e7703e0": {
+      "comment": "Error; 0.0.1/Sources/TogetherCore/Networking/OperationLogSyncSession.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "媒体完成消息不匹配。"
+          }
+        }
+      }
+    },
+    "copy.error.6f3929a4168f": {
+      "comment": "Error; 0.0.1/Sources/TogetherCore/Networking/OperationLogSyncSession.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "媒体分块来源或请求无效。"
+          }
+        }
+      }
+    },
+    "copy.error.cb489af1d4f7": {
+      "comment": "Error; 0.0.1/Sources/TogetherCore/Networking/OperationLogSyncSession.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "媒体请求不属于当前空间。"
+          }
+        }
+      }
+    },
+    "copy.error.4ae3bb8028b1": {
+      "comment": "Error; 0.0.1/Sources/TogetherCore/Networking/OperationLogSyncSession.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "日志规模超过当前版本限制。"
+          }
+        }
+      }
+    },
+    "copy.error.86b11800f661": {
+      "comment": "Error; 0.0.1/Sources/TogetherCore/Networking/OperationLogSyncSession.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "同步来源未获授权。"
+          }
+        }
+      }
+    },
+    "copy.error.4a35195eabf0": {
+      "comment": "Error; 0.0.1/Sources/TogetherCore/Networking/WireProtocol.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "消息超过此版本大小限制。"
+          }
+        }
+      }
+    },
+    "copy.error.b6b84daef222": {
+      "comment": "Error; 0.0.1/Sources/TogetherCore/Networking/WireProtocol.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "无效或过大的网络帧。"
+          }
+        }
+      }
+    },
+    "copy.error.ad7fe3539a96": {
+      "comment": "Error; 0.0.1/Sources/TogetherCore/Networking/WireProtocol.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "网络缓冲区超过限制。"
+          }
+        }
+      }
+    },
+    "copy.error.eb6f75e7a5e4": {
+      "comment": "Error; 0.0.1/Sources/TogetherCore/Networking/WireProtocol.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "两端协议版本不兼容，请将两台 Mac 都更新到当前 Together。"
+          }
+        }
+      }
+    },
+    "copy.error.1c08ba569027": {
+      "comment": "Error; 0.0.1/Sources/TogetherCore/Networking/WireProtocol.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "设备名未解析到 Tailscale 地址，已拒绝连接。"
+          }
+        }
+      }
+    },
+    "copy.error.44c1b6033067": {
+      "comment": "Error; 0.0.1/Sources/TogetherCore/Networking/WireProtocol.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "MagicDNS 无法解析，请确认 Tailscale 已连接。"
+          }
+        }
+      }
+    },
+    "copy.error.0f7bf987d382": {
+      "comment": "Error; 0.0.1/Sources/TogetherCore/Networking/WireProtocol.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "请输入 Tailscale IP 或 MagicDNS 设备名。"
+          }
+        }
+      }
+    },
+    "copy.error.0a7d59aa530e": {
+      "comment": "Error; 0.0.1/Sources/TogetherCore/Networking/Relay/RelayCrypto.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "消息重复、乱序或不属于当前加密会话。"
+          }
+        }
+      }
+    },
+    "copy.error.91f104dcd050": {
+      "comment": "Error; 0.0.1/Sources/TogetherCore/Networking/Relay/RelayCrypto.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "会话需要更新密钥或消息需要分块。"
+          }
+        }
+      }
+    },
+    "copy.error.c9b56a8dcd51": {
+      "comment": "Error; 0.0.1/Sources/TogetherCore/Networking/Relay/RelayCrypto.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "对端密钥与已配对设备不一致，无法迁移。"
+          }
+        }
+      }
+    },
+    "copy.error.1bb768d4d83d": {
+      "comment": "Error; 0.0.1/Sources/TogetherCore/Networking/Relay/RelayCrypto.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "配对握手签名或设备身份无效。"
+          }
+        }
+      }
+    },
+    "copy.error.079c79144a2f": {
+      "comment": "Error; 0.0.1/Sources/TogetherCore/Networking/Relay/PairingService.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "同步队列已满，重连后将继续交换缺失操作。"
+          }
+        }
+      }
+    },
+    "copy.error.c26239f9baf2": {
+      "comment": "Error; 0.0.1/Sources/TogetherCore/Networking/Relay/PairingService.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "中继会话消息类型无效。"
+          }
+        }
+      }
+    },
+    "copy.error.23e90630fb77": {
+      "comment": "Error; 0.0.1/Sources/TogetherCore/Networking/Relay/PairingService.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "双方确认前不能同步内容。"
+          }
+        }
+      }
+    },
+    "copy.error.1e116ef339c5": {
+      "comment": "Error; 0.0.1/Sources/TogetherCore/Networking/Relay/PairingService.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "对方配对确认签名不匹配。"
+          }
+        }
+      }
+    },
+    "copy.error.92daf69006a1": {
+      "comment": "Error; 0.0.1/Sources/TogetherCore/Networking/Relay/PairingService.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "本机会话未初始化。"
+          }
+        }
+      }
+    },
+    "copy.error.3ec52db5902b": {
+      "comment": "Error; 0.0.1/Sources/TogetherCore/Networking/Relay/PairingService.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "对端握手未通过设备验证。"
+          }
+        }
+      }
+    },
+    "copy.error.a23d12dc2813": {
+      "comment": "Error; 0.0.1/Sources/TogetherCore/Networking/Relay/PairingService.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "保存的中继绑定不匹配。"
+          }
+        }
+      }
+    },
+    "copy.error.a82bbbd12564": {
+      "comment": "Error; 0.0.1/Sources/TogetherCore/Networking/Relay/PairingService.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "新连接不能替换原共享空间的可信设备。"
+          }
+        }
+      }
+    },
+    "copy.error.74c3af7a9477": {
+      "comment": "Error; 0.0.1/Sources/TogetherCore/Networking/Relay/PairingService.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "中继成员身份无效。"
+          }
+        }
+      }
+    },
+    "copy.error.e380dafc9f31": {
+      "comment": "Error; 0.0.1/Sources/TogetherCore/Networking/Relay/PairingService.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "配对会话已失效，请重新连接。"
+          }
+        }
+      }
+    },
+    "copy.error.ac046ade4c99": {
+      "comment": "Error; 0.0.1/Sources/TogetherCore/Networking/Relay/PairingService.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "此构建未配置连接服务，请联系发布者。"
+          }
+        }
+      }
+    },
+    "copy.error.6ec90dcd380a": {
+      "comment": "Error; 0.0.1/Sources/TogetherCore/Networking/Relay/RelayAPI.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "连接服务暂不可用，请检查网络后重试。"
+          }
+        }
+      }
+    },
+    "copy.error.ade4756a0885": {
+      "comment": "Error; 0.0.1/Sources/TogetherCore/Networking/Relay/RelayAPI.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "配对已失效，请双方重新确认连接。"
+          }
+        }
+      }
+    },
+    "copy.error.394ef482e899": {
+      "comment": "Error; 0.0.1/Sources/TogetherCore/Networking/Relay/RelayAPI.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "设备身份与原配对关系不一致，无法重新绑定。"
+          }
+        }
+      }
+    },
+    "copy.error.d517f113ea56": {
+      "comment": "Error; 0.0.1/Sources/TogetherCore/Networking/Relay/RelayAPI.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "邀请码无效、过期或已使用，请重新邀请。"
+          }
+        }
+      }
+    },
+    "copy.error.4cc53cafce9b": {
+      "comment": "Error; 0.0.1/Sources/TogetherCore/Networking/Relay/RelayAPI.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "尝试次数过多，请稍后再试。"
+          }
+        }
+      }
+    },
+    "copy.error.183f34eaecaa": {
+      "comment": "Error; 0.0.1/Sources/TogetherCore/Networking/Relay/RelayAPI.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "连接服务必须使用有效 HTTPS 地址。"
+          }
+        }
+      }
+    },
+    "copy.status.39c57cab3717": {
+      "comment": "Status; 0.0.1/Sources/TogetherCore/Models/Identity.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "无法读取设备身份密钥，请检查本机 Keychain 权限。"
+          }
+        }
+      }
+    },
+    "copy.error.fecb75aa6313": {
+      "comment": "Error; 0.0.1/Sources/TogetherCore/Models/AvatarProcessor.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "图片压缩后仍超过头像限制，请换一张图片。"
+          }
+        }
+      }
+    },
+    "copy.error.cf2221ca27c2": {
+      "comment": "Error; 0.0.1/Sources/TogetherCore/Models/AvatarProcessor.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "无法裁剪头像。"
+          }
+        }
+      }
+    },
+    "copy.error.b8661cfa7d6d": {
+      "comment": "Error; 0.0.1/Sources/TogetherCore/Models/AvatarProcessor.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "无法读取这张图片。"
+          }
+        }
+      }
+    },
+    "copy.error.f7fc8d38ad57": {
+      "comment": "Error; 0.0.1/Sources/TogetherCore/Wishes/WishProjector.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "不支持的愿望操作"
+          }
+        }
+      }
+    },
+    "copy.error.2cac0c2b75a0": {
+      "comment": "Error; 0.0.1/Sources/TogetherCore/Wishes/WishProjector.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "仅受益人可以退回申请"
+          }
+        }
+      }
+    },
+    "copy.error.25ca0067a317": {
+      "comment": "Error; 0.0.1/Sources/TogetherCore/Wishes/WishProjector.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "需要兑现者先申请完成"
+          }
+        }
+      }
+    },
+    "copy.error.96926fae02a3": {
+      "comment": "Error; 0.0.1/Sources/TogetherCore/Wishes/WishProjector.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "仅受益人可以确认兑现"
+          }
+        }
+      }
+    },
+    "copy.error.9f0b823c8528": {
+      "comment": "Error; 0.0.1/Sources/TogetherCore/Wishes/WishProjector.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "仅兑现者可以申请完成"
+          }
+        }
+      }
+    },
+    "copy.error.fd385fcd0bf8": {
+      "comment": "Error; 0.0.1/Sources/TogetherCore/Wishes/WishProjector.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "仅受益人可编辑未兑现愿望"
+          }
+        }
+      }
+    },
+    "copy.error.8e322a238953": {
+      "comment": "Error; 0.0.1/Sources/TogetherCore/Wishes/WishProjector.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "冲突愿望不能申请或确认兑现"
+          }
+        }
+      }
+    },
+    "copy.error.8dea963dccc2": {
+      "comment": "Error; 0.0.1/Sources/TogetherCore/Wishes/WishProjector.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "愿望尚未创建或已被拒绝"
+          }
+        }
+      }
+    },
+    "copy.error.6031747cf298": {
+      "comment": "Error; 0.0.1/Sources/TogetherCore/Wishes/WishProjector.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "离线操作超出额度，该愿望未占用有效额度"
+          }
+        }
+      }
+    },
+    "copy.error.780d3e6eefe5": {
+      "comment": "Error; 0.0.1/Sources/TogetherCore/Wishes/WishProjector.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "愿望必须由该批额度的受益人填写"
+          }
+        }
+      }
+    },
+    "copy.error.e318bd530064": {
+      "comment": "Error; 0.0.1/Sources/TogetherCore/Wishes/WishProjector.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "调整后的额度小于已占用额度，需双方处理冲突"
+          }
+        }
+      }
+    },
+    "copy.error.258efd44ba1b": {
+      "comment": "Error; 0.0.1/Sources/TogetherCore/Wishes/WishProjector.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "仅额度记录创建者可提交有效的审计调整"
+          }
+        }
+      }
+    },
+    "copy.error.37cd9c49b83e": {
+      "comment": "Error; 0.0.1/Sources/TogetherCore/Wishes/WishProjector.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "愿望额度记录无效"
+          }
+        }
+      }
+    },
+    "copy.error.77bc37901b5c": {
+      "comment": "Error; 0.0.1/Sources/TogetherCore/Gifts/GiftProjector.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "只能撤销自己发送的礼物，发送内容不可编辑"
+          }
+        }
+      }
+    },
+    "copy.error.eeddcecb3dd8": {
+      "comment": "Error; 0.0.1/Sources/TogetherCore/Gifts/GiftProjector.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "同一发送者当日已有有效礼物，此候选不占用第二份额度"
+          }
+        }
+      }
+    },
+    "copy.error.0382006d422c": {
+      "comment": "Error; 0.0.1/Sources/TogetherCore/Gifts/GiftProjector.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "礼物发送后不可覆盖；同日重复候选已按 Lamport 和设备 ID 处理"
+          }
+        }
+      }
+    },
+    "copy.error.1c7c0658a09a": {
+      "comment": "Error; 0.0.1/Sources/TogetherCore/Gifts/GiftProjector.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "礼物发送者、接收者、共享日期或附件无效"
+          }
+        }
+      }
+    },
+    "copy.error.ab36ada08e6f": {
+      "comment": "Error; 0.0.1/Sources/TogetherCore/Gifts/GiftProjector.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "资源 ID 不可覆盖已有原始文件"
+          }
+        }
+      }
+    },
+    "copy.error.d6baa26d4409": {
+      "comment": "Error; 0.0.1/Sources/TogetherCore/Gifts/GiftProjector.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "媒体清单格式或所有者无效"
+          }
+        }
+      }
+    },
+    "copy.error.250dc8567eab": {
+      "comment": "Error; 0.0.1/Sources/TogetherCore/Gifts/GiftProjector.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "共享时区只能由空间创建者首次确定"
+          }
+        }
+      }
+    },
+    "copy.status.492c7e8b42f9": {
+      "comment": "Status; 0.0.1/Sources/TogetherCore/Persistence/Repository.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "同一操作 ID 对应不同内容，已拒绝写入。"
+          }
+        }
+      }
+    },
+    "copy.error.90bff42b45e2": {
+      "comment": "Error; 0.0.1/Sources/TogetherCore/Persistence/Repository.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "今天已经发送过一份爱意；删除礼物不会恢复额度。"
+          }
+        }
+      }
+    },
+    "copy.error.1bca9cc1647a": {
+      "comment": "Error; 0.0.1/Sources/TogetherCore/Media/MediaStore.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "图片格式不受支持或文件损坏。"
+          }
+        }
+      }
+    },
+    "copy.error.7511cf1b701d": {
+      "comment": "Error; 0.0.1/Sources/TogetherCore/Media/MediaStore.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "音频数据无效。"
+          }
+        }
+      }
+    },
+    "copy.error.06bc40c441d3": {
+      "comment": "Error; 0.0.1/Sources/TogetherCore/Media/MediaStore.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "音频格式不受支持或文件损坏。"
+          }
+        }
+      }
+    },
+    "copy.error.c5029ed5d755": {
+      "comment": "Error; 0.0.1/Sources/TogetherCore/Media/MediaStore.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "原图复制后校验失败，未保存文件。"
+          }
+        }
+      }
+    },
+    "copy.error.98ff4fdf8cf2": {
+      "comment": "Error; 0.0.1/Sources/TogetherCore/Media/MediaStore.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "请选择原始格式和 Together 存储目录以外的保存位置。"
+          }
+        }
+      }
+    },
+    "copy.error.e2faaefef7e8": {
+      "comment": "Error; 0.0.1/Sources/TogetherCore/Media/MediaStore.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "原图未完成校验。"
+          }
+        }
+      }
+    },
+    "copy.error.5287af4a4345": {
+      "comment": "Error; 0.0.1/Sources/TogetherCore/Media/MediaStore.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "无法保存图片预览，请检查可用磁盘空间。"
+          }
+        }
+      }
+    },
+    "copy.error.6c5330714a37": {
+      "comment": "Error; 0.0.1/Sources/TogetherCore/Media/MediaStore.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "无法写入图片预览。"
+          }
+        }
+      }
+    },
+    "copy.error.b8ab045b7f84": {
+      "comment": "Error; 0.0.1/Sources/TogetherCore/Media/MediaStore.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "无法生成图片预览。"
+          }
+        }
+      }
+    },
+    "copy.error.4a1aecaaf6c6": {
+      "comment": "Error; 0.0.1/Sources/TogetherCore/Media/MediaStore.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "头像裁剪位置无效。"
+          }
+        }
+      }
+    },
+    "copy.error.2791905de686": {
+      "comment": "Error; 0.0.1/Sources/TogetherCore/Media/MediaStore.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "图片尚未完成传输。"
+          }
+        }
+      }
+    },
+    "copy.error.8d99c018911d": {
+      "comment": "Error; 0.0.1/Sources/TogetherCore/Media/MediaStore.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "媒体 SHA-256 校验失败，已丢弃未验证文件。"
+          }
+        }
+      }
+    },
+    "copy.error.fd52798bb6ae": {
+      "comment": "Error; 0.0.1/Sources/TogetherCore/Media/MediaStore.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "媒体附件尚未下载完整。"
+          }
+        }
+      }
+    },
+    "copy.error.d6070f8f98bc": {
+      "comment": "Error; 0.0.1/Sources/TogetherCore/Media/MediaStore.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "媒体分块乱序，请重试传输。"
+          }
+        }
+      }
+    },
+    "copy.error.0dba6065a98e": {
+      "comment": "Error; 0.0.1/Sources/TogetherCore/Media/MediaStore.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "媒体分块大小或偏移无效。"
+          }
+        }
+      }
+    },
+    "copy.error.8082ff966e43": {
+      "comment": "Error; 0.0.1/Sources/TogetherCore/Media/MediaStore.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "媒体文件尚未完成校验或传输偏移无效。"
+          }
+        }
+      }
+    },
+    "copy.error.49c38693e018": {
+      "comment": "Error; 0.0.1/Sources/TogetherCore/Media/MediaStore.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "无法创建媒体文件，请检查可用磁盘空间。"
+          }
+        }
+      }
+    },
+    "copy.error.ba11f6786c12": {
+      "comment": "Error; 0.0.1/Sources/TogetherCore/Media/MediaStore.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "文件是空的。"
+          }
+        }
+      }
+    },
+    "copy.error.a11b49b139cc": {
+      "comment": "Error; 0.0.1/Sources/TogetherCore/Media/MediaStore.swift",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "不支持这种媒体格式，请选择 JPEG、PNG、HEIC 或常见音频文件。"
+          }
+        }
+      }
+    },
+    "role.boyfriend": {
+      "comment": "Status; User-approved relationship copy",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Boyfriend / 男朋友"
+          }
+        }
+      }
+    },
+    "role.girlfriend": {
+      "comment": "Status; User-approved relationship copy",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Girlfriend / 女朋友"
+          }
+        }
+      }
+    },
+    "role.unknown": {
+      "comment": "Status; User-approved relationship copy",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "未设置"
+          }
+        }
+      }
+    },
+    "role.affection.boyfriend": {
+      "comment": "Status; User-approved relationship copy",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "小男友"
+          }
+        }
+      }
+    },
+    "role.affection.girlfriend": {
+      "comment": "Status; User-approved relationship copy",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "小女友"
+          }
+        }
+      }
+    },
+    "role.pronoun.boyfriend": {
+      "comment": "Status; User-approved relationship copy",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "他"
+          }
+        }
+      }
+    },
+    "role.pronoun.girlfriend": {
+      "comment": "Status; User-approved relationship copy",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "她"
+          }
+        }
+      }
+    },
+    "gift.prompt.unknown": {
+      "comment": "Emotional; User-approved relationship copy",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "今天有什么想对 TA 说的话吗？❤️"
+          }
+        }
+      }
+    },
+    "gift.prompt.known": {
+      "comment": "Emotional; User-approved relationship copy",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "今天有什么想和%@说的情话吗？❤️"
+          }
+        }
+      }
+    },
+    "gift.title.unknown.text": {
+      "comment": "Emotional; User-approved relationship copy",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "这是 TA 专门送给你的一份爱意 ♡"
+          }
+        }
+      }
+    },
+    "gift.title.unknown.attachment": {
+      "comment": "Emotional; User-approved relationship copy",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "这是 TA 专门送给你的一份小礼物 ♡"
+          }
+        }
+      }
+    },
+    "gift.title.known.text": {
+      "comment": "Emotional; User-approved relationship copy",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "这是%@专门送给你的情话 ♡"
+          }
+        }
+      }
+    },
+    "gift.title.known.attachment": {
+      "comment": "Emotional; User-approved relationship copy",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "这是%@专门送给你的小礼物 ♡"
+          }
+        }
+      }
+    },
+    "gift.intro.unknown": {
+      "comment": "Emotional; User-approved relationship copy",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "TA 悄悄为你准备了一份爱意 ❤️"
+          }
+        }
+      }
+    },
+    "gift.intro.known": {
+      "comment": "Emotional; User-approved relationship copy",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@充满爱地给你送来了一份小礼物 ❤️"
+          }
+        }
+      }
+    },
+    "gift.avatar.unknown": {
+      "comment": "Emotional; User-approved relationship copy",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "让 TA 一眼心动的照片 ♡"
+          }
+        }
+      }
+    },
+    "gift.avatar.known": {
+      "comment": "Emotional; User-approved relationship copy",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "让%@一眼心动的照片 ♡"
+          }
+        }
+      }
+    },
+    "gift.ending.unknown": {
+      "comment": "Emotional; User-approved relationship copy",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "收到这份爱意了吗？快去找 TA 聊聊天吧 ❤️"
+          }
+        }
+      }
+    },
+    "gift.ending.known": {
+      "comment": "Emotional; User-approved relationship copy",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "收到这份爱意了吗？快去找%@聊聊天吧 ❤️"
+          }
+        }
+      }
+    },
+    "copy.navigation.262f6f609a46": {
+      "comment": "Navigation; Release notes",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Initial Setup"
+          }
+        }
+      }
+    },
+    "copy.guidance.794e033239cb": {
+      "comment": "Guidance; Release notes",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "独立首次设置：主动选择身份、设置昵称与头像、配对伴侣，以及准备第一份爱意。"
+          }
+        }
+      }
+    },
+    "copy.navigation.9a9a3b610caa": {
+      "comment": "Navigation; Release notes",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Partner Profiles"
+          }
+        }
+      }
+    },
+    "copy.guidance.7a19a9a8be8c": {
+      "comment": "Guidance; Release notes",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "原始头像完整保留，非破坏性裁剪，验证设备身份后分块同步。"
+          }
+        }
+      }
+    },
+    "copy.guidance.0499ce373e16": {
+      "comment": "Guidance; Release notes",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "每人每天一份爱意，离线保存草稿与礼物；本地提交立即占用每日额度。"
+          }
+        }
+      }
+    },
+    "copy.navigation.ffa265da5685": {
+      "comment": "Navigation; Release notes",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Voice & Photo Attachments"
+          }
+        }
+      }
+    },
+    "copy.guidance.34fd9adbfb04": {
+      "comment": "Guidance; Release notes",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "录制或导入一段语音，附上一张原图；分块传输、断点续传和 SHA-256 校验。"
+          }
+        }
+      }
+    },
+    "copy.navigation.340939c9078a": {
+      "comment": "Navigation; Release notes",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gift Reveal Experience"
+          }
+        }
+      }
+    },
+    "copy.guidance.bf06a49a28d0": {
+      "comment": "Guidance; Release notes",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "原生拆礼物、收到啦、回赠和历史记录；启动时自动展示一次，普通使用中保留未读提示。"
+          }
+        }
+      }
+    },
+    "copy.navigation.d772489d4bc7": {
+      "comment": "Navigation; Release notes",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Shared Time Zone for Daily Gifts"
+          }
+        }
+      }
+    },
+    "copy.guidance.6557cfb539f2": {
+      "comment": "Guidance; Release notes",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "双方使用固定的共享日历时区计算每日额度，跨午夜自动刷新。"
+          }
+        }
+      }
+    },
+    "copy.navigation.5b6f22c22862": {
+      "comment": "Navigation; Release notes",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Shared Tasks & Wishes"
+          }
+        }
+      }
+    },
+    "copy.guidance.c588ddd439e0": {
+      "comment": "Guidance; Release notes",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "任务与 Regular / Flexible 重复规则、按约定日保存愿望额度，以及申请和确认兑现。"
+          }
+        }
+      }
+    },
+    "copy.navigation.3d15d745fa90": {
+      "comment": "Navigation; Release notes",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Two Macs, One Space"
+          }
+        }
+      }
+    },
+    "copy.guidance.4dec32d6c19c": {
+      "comment": "Guidance; Release notes",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "邀请码配对、双方身份确认及原生中继连接。正式服务部署和跨 Wi-Fi 验收状态见项目测试报告。"
+          }
+        }
+      }
+    },
+    "copy.guidance.150668f089db": {
+      "comment": "Guidance; Release notes",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "独立更新说明、分步引导、Light / Dark Mode 和系统 Reduce Motion 支持。"
+          }
+        }
+      }
+    },
+    "error.invalid_shared_timezone": {
+      "comment": "Error; existing date validation",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "共享时区无效。"
+          }
+        }
+      }
+    },
+    "nav.home": {
+      "comment": "Navigation; stable sidebar label",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Home"
+          }
+        }
+      }
+    },
+    "nav.tasks": {
+      "comment": "Navigation; stable sidebar label",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tasks"
+          }
+        }
+      }
+    },
+    "nav.upcoming": {
+      "comment": "Navigation; stable sidebar label",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Upcoming"
+          }
+        }
+      }
+    },
+    "nav.wishes": {
+      "comment": "Navigation; stable sidebar label",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wishes"
+          }
+        }
+      }
+    },
+    "nav.completed": {
+      "comment": "Navigation; stable sidebar label",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Completed"
+          }
+        }
+      }
+    },
+    "nav.connection": {
+      "comment": "Navigation; stable sidebar label",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Connection"
+          }
+        }
+      }
+    },
+    "nav.settings": {
+      "comment": "Navigation; stable sidebar label",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Settings"
+          }
+        }
+      }
+    },
+    "copy.guidance.1f0a01abb190": {
+      "comment": "Guidance; existing native date/control label",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "无法完成操作"
+          }
+        }
+      }
+    },
+    "copy.guidance.01b9bfedf5b1": {
+      "comment": "Guidance; existing native date/control label",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "下一次时间"
+          }
+        }
+      }
+    },
+    "copy.guidance.1f29b74ad60c": {
+      "comment": "Guidance; existing native date/control label",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "到期"
+          }
+        }
+      }
+    },
+    "copy.guidance.abb2240a2b17": {
+      "comment": "Guidance; existing native date/control label",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "删除这个任务？历史操作仍会保留。"
+          }
+        }
+      }
+    },
+    "copy.guidance.a318c24216de": {
+      "comment": "Guidance; existing native date/control label",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "+"
+          }
+        }
+      }
+    },
+    "copy.guidance.e275ab5889fc": {
+      "comment": "Guidance; existing native date/control label",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "约定日历日期"
+          }
+        }
+      }
+    },
+    "copy.guidance.0c6275143832": {
+      "comment": "Guidance; existing native date/control label",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "受益人"
+          }
+        }
+      }
+    },
+    "copy.guidance.244e9103eea5": {
+      "comment": "Guidance; existing native date/control label",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "撤销这份礼物？当天额度不会返还，对方曾另存的副本不会被清除。"
+          }
+        }
+      }
+    },
+    "copy.guidance.1652b36ef8c9": {
+      "comment": "Guidance; existing control/confirmation template",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Every %@"
+          }
+        }
+      }
+    },
+    "copy.guidance.18308177f358": {
+      "comment": "Guidance; existing control/confirmation template",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "调整数量：%@%@"
+          }
+        }
+      }
+    },
+    "copy.guidance.07f35068c6b0": {
+      "comment": "Guidance; existing control/confirmation template",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "本次增加 %@ 个愿望"
+          }
+        }
+      }
+    },
+    "copy.guidance.0a1bb44784ae": {
+      "comment": "Guidance; existing accessibility/help text",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "未配对成员"
+          }
+        }
+      }
+    },
+    "copy.guidance.91b5dcb6e512": {
+      "comment": "Guidance; existing accessibility/help text",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "切换完成状态"
+          }
+        }
+      }
+    },
+    "copy.guidance.cdbeaea998d1": {
+      "comment": "Guidance; existing accessibility/help text",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "尚未到下一次计划时间"
+          }
+        }
+      }
+    },
+    "status.connection.unpaired": {
+      "comment": "Status; Existing UI enum/derived status and fallback",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unpaired"
+          }
+        }
+      }
+    },
+    "status.connection.waiting": {
+      "comment": "Status; Existing UI enum/derived status and fallback",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Waiting for Partner"
+          }
+        }
+      }
+    },
+    "status.connection.connected": {
+      "comment": "Status; Existing UI enum/derived status and fallback",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Connected"
+          }
+        }
+      }
+    },
+    "status.connection.syncing": {
+      "comment": "Status; Existing UI enum/derived status and fallback",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Syncing"
+          }
+        }
+      }
+    },
+    "status.connection.offline": {
+      "comment": "Status; Existing UI enum/derived status and fallback",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Offline"
+          }
+        }
+      }
+    },
+    "status.connection.error": {
+      "comment": "Status; Existing UI enum/derived status and fallback",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Error"
+          }
+        }
+      }
+    },
+    "status.gift.local": {
+      "comment": "Status; Existing UI enum/derived status and fallback",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Local"
+          }
+        }
+      }
+    },
+    "status.gift.pendingSync": {
+      "comment": "Status; Existing UI enum/derived status and fallback",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pending Sync"
+          }
+        }
+      }
+    },
+    "status.gift.synced": {
+      "comment": "Status; Existing UI enum/derived status and fallback",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Synced"
+          }
+        }
+      }
+    },
+    "status.media.local": {
+      "comment": "Status; Existing UI enum/derived status and fallback",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Local"
+          }
+        }
+      }
+    },
+    "status.media.pending": {
+      "comment": "Status; Existing UI enum/derived status and fallback",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pending"
+          }
+        }
+      }
+    },
+    "status.media.transferring": {
+      "comment": "Status; Existing UI enum/derived status and fallback",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Transferring"
+          }
+        }
+      }
+    },
+    "status.media.verified": {
+      "comment": "Status; Existing UI enum/derived status and fallback",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Verified"
+          }
+        }
+      }
+    },
+    "status.media.failed": {
+      "comment": "Status; Existing UI enum/derived status and fallback",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Failed"
+          }
+        }
+      }
+    },
+    "status.wish.open": {
+      "comment": "Status; Existing UI enum/derived status and fallback",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "待兑现"
+          }
+        }
+      }
+    },
+    "status.wish.requested": {
+      "comment": "Status; Existing UI enum/derived status and fallback",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "等待受益人确认"
+          }
+        }
+      }
+    },
+    "status.wish.fulfilled": {
+      "comment": "Status; Existing UI enum/derived status and fallback",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "已确认兑现"
+          }
+        }
+      }
+    },
+    "status.wish.conflict": {
+      "comment": "Status; Existing UI enum/derived status and fallback",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "额度冲突"
+          }
+        }
+      }
+    },
+    "status.member.other": {
+      "comment": "Status; Existing UI enum/derived status and fallback",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "另一位成员"
+          }
+        }
+      }
+    },
+    "status.profile.self": {
+      "comment": "Status; Existing UI enum/derived status and fallback",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "我"
+          }
+        }
+      }
+    },
+    "status.grant.total": {
+      "comment": "Status; Existing UI enum/derived status and fallback",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Total Granted"
+          }
+        }
+      }
+    },
+    "status.grant.fulfilled": {
+      "comment": "Status; Existing UI enum/derived status and fallback",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fulfilled"
+          }
+        }
+      }
+    },
+    "status.grant.remaining": {
+      "comment": "Status; Existing UI enum/derived status and fallback",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Remaining"
+          }
+        }
+      }
+    },
+    "status.recurrence.day": {
+      "comment": "Status; Existing UI enum/derived status and fallback",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "day"
+          }
+        }
+      }
+    },
+    "status.recurrence.week": {
+      "comment": "Status; Existing UI enum/derived status and fallback",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "week"
+          }
+        }
+      }
+    },
+    "status.recurrence.month": {
+      "comment": "Status; Existing UI enum/derived status and fallback",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "month"
+          }
+        }
+      }
+    },
+    "setup.title.welcome": {
+      "comment": "Navigation",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Welcome"
+          }
+        }
+      }
+    },
+    "setup.title.role": {
+      "comment": "Navigation",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Choose Your Role"
+          }
+        }
+      }
+    },
+    "setup.title.profile": {
+      "comment": "Navigation",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Set Your Profile"
+          }
+        }
+      }
+    },
+    "setup.title.connect": {
+      "comment": "Navigation",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Connect Your Partner"
+          }
+        }
+      }
+    },
+    "setup.title.gift": {
+      "comment": "Navigation",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Your First Love Gift"
+          }
+        }
+      }
+    },
+    "status.media.savingOriginal": {
+      "comment": "Status",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "正在保存原始文件…"
+          }
+        }
+      }
+    },
+    "status.media.preview": {
+      "comment": "Status",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "图片预览"
+          }
+        }
+      }
+    },
+    "status.avatar.savingOriginal": {
+      "comment": "Status",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "正在保存原图…"
+          }
+        }
+      }
+    },
+    "status.profile.waitingPartner": {
+      "comment": "Status; Existing Home partner profile fallback",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "等待另一位加入"
+          }
+        }
+      }
+    },
+    "status.profile.waitingSync": {
+      "comment": "Status; Existing Home paired profile missing",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "等待资料同步"
+          }
+        }
+      }
+    },
+    "nav.plans": {
+      "comment": "Navigation; Left sidebar Plans entry and task workspace title; vertically above Wishes",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Plans"
+          }
+        }
+      }
+    },
+    "plans.filter.pending": {
+      "comment": "Navigation; Unified task filter; exact user-requested label",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pending"
+          }
+        }
+      }
+    },
+    "plans.filter.label": {
+      "comment": "Guidance; Accessible name for the native task filter",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Task Filter"
+          }
+        }
+      }
+    },
+    "plans.action.addWishes": {
+      "comment": "Action; WishGrant creation; exact user-requested action",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Add Wishes"
+          }
+        }
+      }
+    },
+    "plans.empty.pending": {
+      "comment": "Empty State; Pending task list; exact user-requested functional wording",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No tasks yet"
+          }
+        }
+      }
+    },
+    "plans.empty.upcoming": {
+      "comment": "Empty State; Future-dated uncompleted task list; factual empty state",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No upcoming tasks"
+          }
+        }
+      }
+    },
+    "plans.empty.completed": {
+      "comment": "Empty State; Completed task list; factual empty state",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No completed tasks"
+          }
+        }
+      }
+    },
+    "plans.empty.search": {
+      "comment": "Empty State; Search with no matching real task records",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No matching tasks"
+          }
+        }
+      }
+    },
+    "plans.action.clearSearch": {
+      "comment": "Action; Restore the shared task list after an empty search",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Clear Search"
+          }
+        }
+      }
+    },
+    "plans.action.viewPending": {
+      "comment": "Action; Navigate from an empty future/completed list without a duplicate create button",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "View Pending"
+          }
+        }
+      }
+    },
+    "plans.empty.unpairedWishes": {
+      "comment": "Empty State; Unpaired Wishes context with an actual Connection action",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "连接伴侣后添加愿望"
+          }
+        }
+      }
+    },
+    "plans.grant.quantity": {
+      "comment": "Status; Real quantity on a dated grant ledger entry",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "+%@ Wishes"
+          }
+        }
+      }
+    },
+    "plans.grant.balance": {
+      "comment": "Status; Derived grant balance; no editable cached remaining amount",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "已兑现 %@ · 剩余 %@"
+          }
+        }
+      }
+    },
+    "plans.grant.details": {
+      "comment": "Navigation; Detail of an existing WishGrant; contains existing WishItem actions",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "愿望额度"
+          }
+        }
+      }
+    },
+    "identity.migration.title": {
+      "comment": "Navigation; Explicit one-time legacy identity storage migration",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "迁移设备身份"
+          }
+        }
+      }
+    },
+    "identity.migration.guidance": {
+      "comment": "Guidance; User requested ordinary file identity storage; legacy key requires consent",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "迁移已有密钥到本机文件，保留现有配对。"
+          }
+        }
+      }
+    },
+    "identity.migration.action": {
+      "comment": "Action; User-initiated existing key export; never automatic Keychain access",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "迁移并继续"
+          }
+        }
+      }
+    },
+    "identity.action.retry": {
+      "comment": "Action; Retry loading local identity after a recoverable storage failure",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "重试"
+          }
+        }
+      }
+    },
+    "identity.error.legacyMissing": {
+      "comment": "Error; Refuse silent key rotation when legacy identity is unavailable",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "未找到原身份密钥，已保留现有数据。请确认钥匙串中的原条目后重试。"
+          }
+        }
+      }
+    },
+    "identity.error.invalidFile": {
+      "comment": "Error; Do not overwrite a corrupt identity with a new key",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "身份文件损坏或格式不正确。请恢复原文件后重试；现有数据已保留。"
+          }
+        }
+      }
+    },
+    "identity.error.mismatch": {
+      "comment": "Error; Verify prior local operation signatures before committing migrated keys",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "密钥与原同步记录不匹配。请恢复正确的身份密钥后重试。"
+          }
+        }
+      }
+    },
+    "identity.error.keychainMigration": {
+      "comment": "Error; Recover from denied explicit one-time Keychain migration",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "无法迁出原身份密钥。请允许此条目的访问后重试。"
+          }
+        }
+      }
+    },
+    "plans.mode.label": {
+      "comment": "Guidance; accessible name for the native Tasks / Wishes mode switch",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Plans Mode"
+          }
+        }
+      }
+    }
+  }
+}

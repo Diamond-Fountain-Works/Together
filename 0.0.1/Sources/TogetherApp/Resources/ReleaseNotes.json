@@ -1,0 +1,52 @@
+[
+  {
+    "version": "0.0.1",
+    "highlights": [
+      {
+        "icon": "heart.fill",
+        "titleKey": "copy.navigation.262f6f609a46",
+        "detailsKey": "copy.guidance.794e033239cb"
+      },
+      {
+        "icon": "person.crop.circle",
+        "titleKey": "copy.navigation.9a9a3b610caa",
+        "detailsKey": "copy.guidance.7a19a9a8be8c"
+      },
+      {
+        "icon": "envelope",
+        "titleKey": "copy.status.46f890d7fe72",
+        "detailsKey": "copy.guidance.0499ce373e16"
+      },
+      {
+        "icon": "waveform",
+        "titleKey": "copy.navigation.ffa265da5685",
+        "detailsKey": "copy.guidance.34fd9adbfb04"
+      },
+      {
+        "icon": "gift",
+        "titleKey": "copy.navigation.340939c9078a",
+        "detailsKey": "copy.guidance.bf06a49a28d0"
+      },
+      {
+        "icon": "globe",
+        "titleKey": "copy.navigation.d772489d4bc7",
+        "detailsKey": "copy.guidance.6557cfb539f2"
+      },
+      {
+        "icon": "checklist",
+        "titleKey": "copy.navigation.5b6f22c22862",
+        "detailsKey": "copy.guidance.c588ddd439e0"
+      },
+      {
+        "icon": "link",
+        "titleKey": "copy.navigation.3d15d745fa90",
+        "detailsKey": "copy.guidance.4dec32d6c19c"
+      },
+      {
+        "icon": "sparkles",
+        "titleKey": "copy.action.58383b09e244",
+        "detailsKey": "copy.guidance.150668f089db"
+      }
+    ]
+  }
+]

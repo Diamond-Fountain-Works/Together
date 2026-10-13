@@ -1,0 +1,20 @@
+{
+  "origin": "https://together-connection.together-connection-service.workers.dev",
+  "workerName": "together-connection",
+  "versionId": "d214ea2f-5034-4b1a-9f31-dca118b1b245",
+  "protocolVersion": 1,
+  "delivery": "realtime-only",
+  "deployedOn": "2026-10-10",
+  "healthCheck": "HTTP 200",
+  "crossWiFiTwoMacAcceptance": "NOT RUN",
+  "independentSecurityReview": "REVIEW REQUIRED",
+  "nativePublicIntegration": "PASS",
+  "integrationCoverage": [
+    "mutual signed confirmation",
+    "profiles and wishes",
+    "encrypted tasks and gifts",
+    "original avatar/photo/audio chunk hashes",
+    "recipient receipt",
+    "offline reconnect and persistent route"
+  ]
+}

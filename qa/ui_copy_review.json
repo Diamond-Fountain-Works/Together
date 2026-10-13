@@ -1,0 +1,3233 @@
+{
+  "version": 2,
+  "entries": {
+    "copy.guidance.6b5df256e07f": {
+      "category": "Guidance",
+      "context": "0.0.1/Sources/TogetherApp/ViewModels/ApplicationModel.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "6b5df256e07f3bc8c329e14c5c6b80bedb232e94894a392c0b0322a3a4d6ba75"
+    },
+    "copy.status.d01432dc56c6": {
+      "category": "Status",
+      "context": "0.0.1/Sources/TogetherApp/ViewModels/ApplicationModel.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "d01432dc56c61e7020c620f9720655eccacfffc006d8435cf14a2250daa056e9"
+    },
+    "copy.action.2cd0f3be8738": {
+      "category": "Action",
+      "context": "0.0.1/Sources/TogetherApp/ViewModels/ApplicationModel.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "2cd0f3be8738a86cede1a1452f874f31d569864bbb00cacd4130990f4610cb5c"
+    },
+    "copy.action.08ff51a8822a": {
+      "category": "Action",
+      "context": "0.0.1/Sources/TogetherApp/ViewModels/ApplicationModel.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "08ff51a8822afe6ed94ad6a44131b5ee87765f6707247375ad251a4a58f1a100"
+    },
+    "copy.guidance.fdb33a105fcd": {
+      "category": "Guidance",
+      "context": "0.0.1/Sources/TogetherApp/ViewModels/ApplicationModel.swift",
+      "review": "review_required",
+      "reason": "Existing product inventory; long guidance requires human copy review.",
+      "textSHA256": "fdb33a105fcd30af8f5ed6353b2371a5ce0f88c85b6771d59fd24153194d5bba"
+    },
+    "copy.status.aed97e682ab9": {
+      "category": "Status",
+      "context": "0.0.1/Sources/TogetherApp/ViewModels/ApplicationModel.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "aed97e682ab9ffae7a3232c247aab94ca1c10e6a9b4b9fb5ffcd6e80caa95522"
+    },
+    "copy.status.bf8ae92630fb": {
+      "category": "Status",
+      "context": "0.0.1/Sources/TogetherApp/ViewModels/ApplicationModel.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "bf8ae92630fbcc00128657396f912917434386f2263f6968855ccf71801d223a"
+    },
+    "copy.status.77965761b32c": {
+      "category": "Status",
+      "context": "0.0.1/Sources/TogetherApp/ViewModels/ApplicationModel.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "77965761b32c3003e1ce06206352c0526886d82c7e515495d5e12f00029ab7c1"
+    },
+    "copy.action.74a883a037bc": {
+      "category": "Action",
+      "context": "0.0.1/Sources/TogetherApp/App/TogetherApp.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "74a883a037bc227f91891ab654a753d3a99f31ab06ae5b5d2b6e594a692b41f8"
+    },
+    "copy.action.561b17edc33d": {
+      "category": "Action",
+      "context": "0.0.1/Sources/TogetherApp/App/TogetherApp.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "561b17edc33d80fa40813252d0c44c05d4e009e6c15bbf86cabe5b7a5193fa97"
+    },
+    "copy.action.58383b09e244": {
+      "category": "Action",
+      "context": "0.0.1/Sources/TogetherApp/App/TogetherApp.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "58383b09e24457e2f1b013a3233aef989c111602a2c2140a7e5f5127ef22846b"
+    },
+    "copy.action.1555373b2da2": {
+      "category": "Action",
+      "context": "0.0.1/Sources/TogetherApp/App/TogetherApp.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "1555373b2da2826293c534fc9f3ab8518fc1cf30d5d4da03fc284350ff952195"
+    },
+    "copy.action.fb24523a7f34": {
+      "category": "Action",
+      "context": "0.0.1/Sources/TogetherApp/App/TogetherApp.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "fb24523a7f34214aa97f23177d8e9027f45045531aa5817f5bad219b6e70b776"
+    },
+    "copy.empty_state.dc40645ba097": {
+      "category": "Empty State",
+      "context": "0.0.1/Sources/TogetherApp/App/TogetherApp.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "dc40645ba097d19bf741b703ed94ec268265bcaa127c9473edd4fd078c2bbed5"
+    },
+    "copy.empty_state.d1dea5d8aa17": {
+      "category": "Empty State",
+      "context": "0.0.1/Sources/TogetherApp/App/TogetherApp.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "d1dea5d8aa17fb59adc479ee0db00bc5d73109ee2aad7fdbac7eda0de003c086"
+    },
+    "copy.status.ee17b0047b75": {
+      "category": "Status",
+      "context": "0.0.1/Sources/TogetherApp/Views/HomeView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "ee17b0047b7589b9069938d8417376f794a6d345a5f001b3b6fd12eea53343b6"
+    },
+    "copy.status.a1794783aab7": {
+      "category": "Status",
+      "context": "0.0.1/Sources/TogetherApp/Views/HomeView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "a1794783aab72d205dc532b1170d1be63ebdce8816b57c21acb451c15dab969a"
+    },
+    "copy.status.0d21bd52022c": {
+      "category": "Status",
+      "context": "0.0.1/Sources/TogetherApp/Views/HomeView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "0d21bd52022ca7f7e97109d28d327da1e68cc0bedd9713b2dc2b49d3aa104392"
+    },
+    "copy.status.710764256c01": {
+      "category": "Status",
+      "context": "0.0.1/Sources/TogetherApp/Views/HomeView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "710764256c0148b73bd307b4d313b0251940203067134fb06c67d62b208a14f5"
+    },
+    "copy.status.43461ae7bd32": {
+      "category": "Status",
+      "context": "0.0.1/Sources/TogetherApp/Views/HomeView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "43461ae7bd320d9132a54ca7fc63fb90dfa063cffe0283a7ab4672cde651e4eb"
+    },
+    "copy.guidance.2d4ab3c1d821": {
+      "category": "Guidance",
+      "context": "0.0.1/Sources/TogetherApp/Views/HomeView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "2d4ab3c1d821391c591000a849cbbc025eb493bef152913dd39fd213e393f38d"
+    },
+    "copy.status.ce04cf69d965": {
+      "category": "Status",
+      "context": "0.0.1/Sources/TogetherApp/Views/HomeView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "ce04cf69d965e30c423b3893403b8768305567ba9e460f086c0b07248f23239e"
+    },
+    "copy.guidance.3e122095ba88": {
+      "category": "Status",
+      "context": "Actual verified member names or roles in Home and Our Plans",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "3e122095ba883e253224033b53c4f59dea8384ed8a3cf9e0b787ac5c625c874b"
+    },
+    "copy.empty_state.e7213b155304": {
+      "category": "Empty State",
+      "context": "0.0.1/Sources/TogetherApp/Views/HomeView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "e7213b155304f2c7f0841dd7155a2cf2df0fa07e7369c3ddb01e4585a4783f80"
+    },
+    "copy.status.bc19db225c8b": {
+      "category": "Status",
+      "context": "0.0.1/Sources/TogetherApp/Views/HomeView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "bc19db225c8b2f7e551bc683095fdc33efa5186074fc5ade91336ae4c9d250c9"
+    },
+    "copy.status.a7363b44d657": {
+      "category": "Status",
+      "context": "0.0.1/Sources/TogetherApp/Views/HomeView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "a7363b44d6576ffcc7b6914858d803d218d841f2eb7a8453eaf00048d462f9f5"
+    },
+    "copy.navigation.5f1a2542e4e4": {
+      "category": "Navigation",
+      "context": "0.0.1/Sources/TogetherApp/Views/HomeView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "5f1a2542e4e4ca5ed784e15fb756dbfc32f4b68ae08bc1d44f957761566c8c41"
+    },
+    "copy.status.cad05cf5be73": {
+      "category": "Status",
+      "context": "0.0.1/Sources/TogetherApp/Views/HomeView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "cad05cf5be7323b335b4ea9c15578d5e0cbb4779945771317f8f55fcbd18286c"
+    },
+    "copy.status.76c58c4d611e": {
+      "category": "Status",
+      "context": "0.0.1/Sources/TogetherApp/Views/HomeView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "76c58c4d611e1306bb413ae36c79b312b7d8aa610583859c229621932089f260"
+    },
+    "copy.status.7f750504c5ba": {
+      "category": "Status",
+      "context": "0.0.1/Sources/TogetherApp/Views/HomeView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "7f750504c5bac7d8914076b6f4611a3d87b7a00c490568b7460ce5f2e07700de"
+    },
+    "copy.navigation.3a78695388b3": {
+      "category": "Navigation",
+      "context": "0.0.1/Sources/TogetherApp/Views/HomeView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "3a78695388b38b5cceefaf6796b0137877514593543b91af2752d5a17e3d736c"
+    },
+    "copy.action.f867f3417859": {
+      "category": "Action",
+      "context": "0.0.1/Sources/TogetherApp/Views/RootView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "f867f34178594f891eb70a4260f62b1d9289cfa60394f9fee1cbbe4a8b4bf436"
+    },
+    "copy.action.718e58cc20d6": {
+      "category": "Action",
+      "context": "0.0.1/Sources/TogetherApp/Views/RootView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "718e58cc20d67514dea0426127fd63722739eaff85a3d93fb0718a1434a4edda"
+    },
+    "copy.status.330e6de0a0e3": {
+      "category": "Status",
+      "context": "0.0.1/Sources/TogetherApp/Views/RootView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "330e6de0a0e3008fc7b01075f2723ee7e7c28b509fb95aa418de2748ff667615"
+    },
+    "copy.guidance.5e362a89fa84": {
+      "category": "Guidance",
+      "context": "0.0.1/Sources/TogetherApp/Views/Settings/SettingsView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "5e362a89fa849d79cb2822fc65ea52236117b69802a06f9ea16df70950724b63"
+    },
+    "copy.empty_state.6b4beaf7f321": {
+      "category": "Guidance",
+      "context": "Settings privacy",
+      "review": "review_required",
+      "reason": "Security boundary needs independent review; do not promote protocol review as complete.",
+      "textSHA256": "1626ff1f973c0d46fcf0165677b58675921d4bb5f109b4cc7233810e66522a61"
+    },
+    "copy.guidance.9dd62bb75ce0": {
+      "category": "Guidance",
+      "context": "0.0.1/Sources/TogetherApp/Views/Settings/SettingsView.swift",
+      "review": "review_required",
+      "reason": "Existing product inventory; long guidance requires human copy review.",
+      "textSHA256": "9dd62bb75ce048cd9ee8ef980e10ca0913c61aa8fe8f906cb81a2c5af7d3f113"
+    },
+    "copy.status.610b105f07da": {
+      "category": "Status",
+      "context": "0.0.1/Sources/TogetherApp/Views/Settings/SettingsView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "610b105f07da700bc79d63b87db47ee698303d88ccae9689cfdf0a929e8cb3b8"
+    },
+    "copy.guidance.e2ee62dfbb66": {
+      "category": "Guidance",
+      "context": "0.0.1/Sources/TogetherApp/Views/Settings/SettingsView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "e2ee62dfbb66f41379dce35a9149c807250c59f1299f03206e1782b665969854"
+    },
+    "copy.guidance.60acc53f13a5": {
+      "category": "Guidance",
+      "context": "0.0.1/Sources/TogetherApp/Views/Settings/SettingsView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "60acc53f13a5d1bf115878c4a785e9a43e8286c4139a8402a6ac7d23966f9153"
+    },
+    "copy.guidance.dbcd5e7bb7a0": {
+      "category": "Guidance",
+      "context": "0.0.1/Sources/TogetherApp/Views/Settings/SettingsView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "dbcd5e7bb7a0f538810de44c3efbd813037ee3fa358747bb71fa58e157af45f7"
+    },
+    "copy.guidance.217cfe7db1e3": {
+      "category": "Guidance",
+      "context": "0.0.1/Sources/TogetherApp/Views/Settings/SettingsView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "217cfe7db1e3d10a734f5a0342df7977e5c1eb3c8906b28716732f72330cf181"
+    },
+    "copy.guidance.86a63f23a076": {
+      "category": "Guidance",
+      "context": "0.0.1/Sources/TogetherApp/Views/Settings/SettingsView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "86a63f23a076b11ec0243cce0399ae90d8f0b36f2941d4dad7b08c0133a04d24"
+    },
+    "copy.status.3a7f9c11d059": {
+      "category": "Status",
+      "context": "0.0.1/Sources/TogetherApp/Views/Settings/SettingsView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "3a7f9c11d059270ea98b711870db71dd619507da0a94b2ad23ff6ecf9e511133"
+    },
+    "copy.status.bffe51e12e5e": {
+      "category": "Status",
+      "context": "0.0.1/Sources/TogetherApp/Views/Settings/SettingsView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "bffe51e12e5e2e45eeaeb49343a20e649ad7e5d817530387ca5daa5678dba2db"
+    },
+    "copy.action.c0a70fcb56f0": {
+      "category": "Action",
+      "context": "0.0.1/Sources/TogetherApp/Views/Settings/SettingsView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "c0a70fcb56f02b96d407ae3ac2d38974d48b63777faebd1d5360ba8f11e00c51"
+    },
+    "copy.status.cd960931fa8a": {
+      "category": "Status",
+      "context": "0.0.1/Sources/TogetherApp/Views/Settings/SettingsView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "cd960931fa8a974da3d2b8352672bc144823e938140a18c2d2f6630f59fe3f3e"
+    },
+    "copy.guidance.af004a022055": {
+      "category": "Guidance",
+      "context": "0.0.1/Sources/TogetherApp/Views/Settings/SettingsView.swift",
+      "review": "review_required",
+      "reason": "Existing product inventory; long guidance requires human copy review.",
+      "textSHA256": "af004a02205543bf06bd2c0babb206cfc9854a3a4d9f518fb1363aedb54226ab"
+    },
+    "copy.guidance.3ae0703dd5cd": {
+      "category": "Guidance",
+      "context": "0.0.1/Sources/TogetherApp/Views/Settings/SettingsView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "3ae0703dd5cdd7d9de6d1ba80903ce24725998b846d2497ad6e195c4ab630faf"
+    },
+    "copy.guidance.7a1e2b964b67": {
+      "category": "Guidance",
+      "context": "0.0.1/Sources/TogetherApp/Views/Settings/SettingsView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "7a1e2b964b67224c75ff57ffd9fc81f91042cde766bcabfe83cfc5c42d2988eb"
+    },
+    "copy.status.af495a06b2de": {
+      "category": "Status",
+      "context": "0.0.1/Sources/TogetherApp/Views/Settings/SettingsView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "af495a06b2de8159b658bd0b67318bb6a9d29e6d3ff61b5dd1479aa6465fe898"
+    },
+    "copy.action.a91feb645e62": {
+      "category": "Action",
+      "context": "0.0.1/Sources/TogetherApp/Views/Settings/SettingsView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "a91feb645e625c970d0d88f847b95e9c1654d6f654298d46235925abd0657751"
+    },
+    "copy.action.b49918dc7f72": {
+      "category": "Action",
+      "context": "0.0.1/Sources/TogetherApp/Views/Settings/SettingsView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "b49918dc7f728dc12ee4f5f7aff4cef6a95f70a36b59b6773f01f81a299169e2"
+    },
+    "copy.navigation.7289f8ec5827": {
+      "category": "Navigation",
+      "context": "0.0.1/Sources/TogetherApp/Views/Settings/SettingsView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "7289f8ec5827754604c2752298bafbf499acbbdbe571f6ccd08197e7ee88fdfd"
+    },
+    "copy.error.e74585c32e7b": {
+      "category": "Error",
+      "context": "0.0.1/Sources/TogetherApp/Views/Settings/AvatarCropView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "e74585c32e7b58753994496fe7616cd98bbe9bc671ebd2089296b907eb7fde88"
+    },
+    "copy.action.bfb466cc16ce": {
+      "category": "Action",
+      "context": "0.0.1/Sources/TogetherApp/Views/Settings/AvatarCropView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "bfb466cc16ce8c8ab32f279d836e31d2347a93ebf691dc32b15b697dec4c3b9f"
+    },
+    "copy.status.8284260058dd": {
+      "category": "Status",
+      "context": "0.0.1/Sources/TogetherApp/Views/Settings/AvatarCropView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "8284260058ddb4d780c7b22d3fccb4a70d63d81b1ab9ea0e1081b994bf3900a3"
+    },
+    "copy.status.191e26b5d741": {
+      "category": "Status",
+      "context": "0.0.1/Sources/TogetherApp/Views/Settings/AvatarCropView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "191e26b5d741e457a0c94b3e6605f7bb9c007028a5f1bb08978d40f2725f6668"
+    },
+    "copy.status.b762aec769a3": {
+      "category": "Status",
+      "context": "0.0.1/Sources/TogetherApp/Views/Settings/AvatarCropView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "b762aec769a35fff251ab2891c32a7bc01fa6204cf09c38be2b15dafb55e7702"
+    },
+    "copy.status.e23f8f7eb807": {
+      "category": "Status",
+      "context": "0.0.1/Sources/TogetherApp/Views/Settings/AvatarCropView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "e23f8f7eb80733e1243155772954c60570e5b2c1907f1ed36d3af5b524e67932"
+    },
+    "copy.status.6cd7c4f0f4c3": {
+      "category": "Status",
+      "context": "0.0.1/Sources/TogetherApp/Views/Settings/AvatarCropView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "6cd7c4f0f4c3368e8e1689ca275ff876935f756273fe99d07e30501dc5ee7c6e"
+    },
+    "copy.action.36f33adaf094": {
+      "category": "Action",
+      "context": "0.0.1/Sources/TogetherApp/Views/Tasks/TaskEditorView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "36f33adaf0942634a8ece1eec4a6f30d44dec73e1ef8704b29d983a57f2e09ae"
+    },
+    "copy.action.882574c28ed5": {
+      "category": "Action",
+      "context": "0.0.1/Sources/TogetherApp/Views/Tasks/TaskEditorView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "882574c28ed5e0a6181ab8f427942db8b28de344fc705bd8da9f3f95d45084e9"
+    },
+    "copy.guidance.08a8bfd082bf": {
+      "category": "Guidance",
+      "context": "0.0.1/Sources/TogetherApp/Views/Tasks/TaskEditorView.swift",
+      "review": "review_required",
+      "reason": "Existing product inventory; long guidance requires human copy review.",
+      "textSHA256": "08a8bfd082bfca60f76f4f8325a0f5318713296eded9138c9343a7458ff13410"
+    },
+    "copy.status.626ba31a7939": {
+      "category": "Status",
+      "context": "0.0.1/Sources/TogetherApp/Views/Tasks/TaskEditorView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "626ba31a7939e36dff5314d06f47b891f73ae830f3da6134e554a5f196a74470"
+    },
+    "copy.action.a3030bf8f16d": {
+      "category": "Action",
+      "context": "0.0.1/Sources/TogetherApp/Views/Tasks/TaskEditorView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "a3030bf8f16dc63c6b277564c68f78a3be5abe5f2907c51826dee7184ff793fd"
+    },
+    "copy.empty_state.73069fd00aeb": {
+      "category": "Empty State",
+      "context": "0.0.1/Sources/TogetherApp/Views/Tasks/TaskEditorView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "73069fd00aebd516addbe4b7ade4cd6058915f2f3f4994c3bd2ee2bb3462b837"
+    },
+    "copy.status.ef29accda79a": {
+      "category": "Status",
+      "context": "0.0.1/Sources/TogetherApp/Views/Tasks/TaskEditorView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "ef29accda79af3cb0a20007cc7b8d9504943acb674d088fd87d1f591cc6f4829"
+    },
+    "copy.guidance.37ebdc8c2ff9": {
+      "category": "Guidance",
+      "context": "0.0.1/Sources/TogetherApp/Views/Tasks/TaskEditorView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "37ebdc8c2ff92155eca6bbba5d34b7650c6cdb70c8390e445c979566343e2cf9"
+    },
+    "copy.guidance.977e8de6b21d": {
+      "category": "Guidance",
+      "context": "0.0.1/Sources/TogetherApp/Views/Tasks/TaskEditorView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "977e8de6b21d8d4b0799a2703adce2c1b8fc4f7a220b795959de5da76dc345a9"
+    },
+    "copy.guidance.5a730047d83f": {
+      "category": "Guidance",
+      "context": "0.0.1/Sources/TogetherApp/Views/Tasks/TaskEditorView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "5a730047d83f73f57729568a6f36c717bc9185b6b585e110b0d3a8883d14469d"
+    },
+    "copy.guidance.80b19d68b149": {
+      "category": "Guidance",
+      "context": "0.0.1/Sources/TogetherApp/Views/Tasks/TaskEditorView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "80b19d68b1494dac82aa7f5433d676df3cd6ac45139a44b3790674b265dbae3f"
+    },
+    "copy.guidance.dabbb0b4041f": {
+      "category": "Guidance",
+      "context": "0.0.1/Sources/TogetherApp/Views/Tasks/TaskEditorView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "dabbb0b4041f83584244b3e57dee1471b426258d8addffe24807a5b6a703bc15"
+    },
+    "copy.guidance.7c1555a09cc0": {
+      "category": "Guidance",
+      "context": "0.0.1/Sources/TogetherApp/Views/Tasks/TaskEditorView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "7c1555a09cc0d88f19aa2f0ef582e272af38f25a77fe0da43539fa8eee5e17d8"
+    },
+    "copy.guidance.ebdc3594be5c": {
+      "category": "Guidance",
+      "context": "0.0.1/Sources/TogetherApp/Views/Tasks/TaskEditorView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "ebdc3594be5c41f326904e3473f52cbcdab5b2dff50e7afe427322db4718d562"
+    },
+    "copy.guidance.609cf2fdf6ff": {
+      "category": "Guidance",
+      "context": "0.0.1/Sources/TogetherApp/Views/Tasks/TaskEditorView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "609cf2fdf6ffcc614b99ca051b0611be0705c403db6c8f222e17070726cb0d06"
+    },
+    "copy.guidance.15f26621cdce": {
+      "category": "Guidance",
+      "context": "0.0.1/Sources/TogetherApp/Views/Tasks/TaskEditorView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "15f26621cdce96553e1906ec8b74ad2872f8f55f486ead3220f73ac62173b18f"
+    },
+    "copy.status.f358a5db68a2": {
+      "category": "Status",
+      "context": "0.0.1/Sources/TogetherApp/Views/Tasks/TaskEditorView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "f358a5db68a2f3c3bee99878dc5380cdb991a6e96e958e654c75cae4cb86c08e"
+    },
+    "copy.guidance.a525346277ed": {
+      "category": "Guidance",
+      "context": "0.0.1/Sources/TogetherApp/Views/Tasks/TaskEditorView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "a525346277ed54bd52d3cd3cd128174e3a99decdd474364256a4b4ad014c378a"
+    },
+    "copy.guidance.daede9881787": {
+      "category": "Guidance",
+      "context": "0.0.1/Sources/TogetherApp/Views/Tasks/TaskEditorView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "daede9881787abe74c94e686be78a4eabc85a09688433027ea55ac583919bc1e"
+    },
+    "copy.guidance.c3405f8c7d9d": {
+      "category": "Guidance",
+      "context": "0.0.1/Sources/TogetherApp/Views/Tasks/TaskEditorView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "c3405f8c7d9d392aa3e2d073d5793bce795353c5f7ef0d27f3d6c1c8d2832681"
+    },
+    "copy.navigation.dda79d5a0e25": {
+      "category": "Navigation",
+      "context": "0.0.1/Sources/TogetherApp/Views/Tasks/TaskEditorView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "dda79d5a0e25242baf8713dc75fb231f9540d348327c2d47a395de592d95a2f4"
+    },
+    "copy.action.2f9daa828907": {
+      "category": "Action",
+      "context": "0.0.1/Sources/TogetherApp/Views/Tasks/TasksView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "2f9daa828907b93ff8a00d41a16828e0c6388bf3a95dadf816c8ee9c3bdac37d"
+    },
+    "copy.action.29dfebea0fda": {
+      "category": "Action",
+      "context": "0.0.1/Sources/TogetherApp/Views/Tasks/TasksView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "29dfebea0fdac1f6f358efd38d736a80603baabfb67b527073f78a29b89711c5"
+    },
+    "copy.action.051836569928": {
+      "category": "Action",
+      "context": "0.0.1/Sources/TogetherApp/Views/Tasks/TasksView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "051836569928a9f91145a70e00b212b62a06c21a97d2d828cb75acd3fbe851b9"
+    },
+    "copy.guidance.26272e530d64": {
+      "category": "Guidance",
+      "context": "0.0.1/Sources/TogetherApp/Views/Tasks/TasksView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "26272e530d64f349741b5865208449e2f3dc4c17d9a136977bd56decc61002b1"
+    },
+    "copy.status.9622d2850be8": {
+      "category": "Status",
+      "context": "0.0.1/Sources/TogetherApp/Views/Tasks/TasksView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "9622d2850be8f41ad8688c247d756ca4894d4b488e8f5599579b549b4f6eddde"
+    },
+    "copy.empty_state.2b9aaa6ee4f4": {
+      "category": "Empty State",
+      "context": "0.0.1/Sources/TogetherApp/Views/Tasks/TasksView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "2b9aaa6ee4f4f0ebe87b93524f30b1c5612d5884137066c3065cdf40e5dfcccb"
+    },
+    "copy.empty_state.70f5f07c479d": {
+      "category": "Empty State",
+      "context": "0.0.1/Sources/TogetherApp/Views/Tasks/TasksView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "70f5f07c479d6f737c270ea1c9d6a9363045df2b831f985a44ac8b189c2a0995"
+    },
+    "copy.guidance.5d02c355dcc5": {
+      "category": "Guidance",
+      "context": "0.0.1/Sources/TogetherApp/Views/Tasks/TasksView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "5d02c355dcc5bc82aabf5d65c84b4c09d6e1c47483ba617719a0117c424dd1d0"
+    },
+    "copy.guidance.f28461bb49c8": {
+      "category": "Guidance",
+      "context": "0.0.1/Sources/TogetherApp/Views/Tasks/TasksView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "f28461bb49c8564716309d575f90f72cf15b5c4667e40c2d037434bedb54a01a"
+    },
+    "copy.guidance.5c55a67935af": {
+      "category": "Guidance",
+      "context": "0.0.1/Sources/TogetherApp/Views/Tasks/TasksView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "5c55a67935af8f4508ba05d6d81c9eb240a2ea0ba886d8428b985e305470da3f"
+    },
+    "copy.guidance.b5f15473fdc0": {
+      "category": "Guidance",
+      "context": "0.0.1/Sources/TogetherApp/Views/Tasks/TasksView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "b5f15473fdc0fefe54938ded6af1586874e43b8b6012627bf5fb325f75912cc3"
+    },
+    "copy.navigation.2d9f8587bda1": {
+      "category": "Navigation",
+      "context": "0.0.1/Sources/TogetherApp/Views/Tasks/TasksView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "2d9f8587bda16095ecc820ebc8b57cbec60e69201cc01ed992eba7ad0d66cb23"
+    },
+    "copy.navigation.22a970d2e5b1": {
+      "category": "Navigation",
+      "context": "0.0.1/Sources/TogetherApp/Views/Tasks/TasksView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "22a970d2e5b1cc233e462be7c7b64e135a275bb09d83d87683bf4236c43113a1"
+    },
+    "copy.status.c7225dbf105e": {
+      "category": "Status",
+      "context": "0.0.1/Sources/TogetherApp/Views/Connection/ConnectionView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "c7225dbf105eeed5ba8d667dd1d85f7bbbc4c6befe31fb95ec976779c0c9b22e"
+    },
+    "copy.status.1c39d7d54b8f": {
+      "category": "Status",
+      "context": "0.0.1/Sources/TogetherApp/Views/Connection/ConnectionView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "1c39d7d54b8f7711dda2ee2a44b2c9bd2327e9eccf7ea45dcab040fef16891fc"
+    },
+    "copy.action.dcfe516d1114": {
+      "category": "Action",
+      "context": "0.0.1/Sources/TogetherApp/Views/Connection/ConnectionView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "dcfe516d1114e14f107af32b3b8d7f2dbbd0447258318d29e9f266f6bbb49c29"
+    },
+    "copy.action.68891ab35cab": {
+      "category": "Action",
+      "context": "0.0.1/Sources/TogetherApp/Views/Connection/ConnectionView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "68891ab35cab9663e59db9570e78c7f546c02dc0611b29314abe0e0436c911d2"
+    },
+    "copy.status.15a314eb8b4d": {
+      "category": "Status",
+      "context": "0.0.1/Sources/TogetherApp/Views/Connection/ConnectionView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "15a314eb8b4d8fecde5d3e1d8338dfbc38d690ae2dfa4c28b1a328069e5712c7"
+    },
+    "copy.action.d8392ef9f3fb": {
+      "category": "Action",
+      "context": "0.0.1/Sources/TogetherApp/Views/Connection/ConnectionView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "d8392ef9f3fb08b39008a16d4b7f4a3f6dc23ebb4d0ca5029dd3a432046fb13c"
+    },
+    "copy.guidance.c8b56dca7aed": {
+      "category": "Guidance",
+      "context": "0.0.1/Sources/TogetherApp/Views/Connection/ConnectionView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "c8b56dca7aed559b89b96c1075acca37649a51dbba8e326468b33ef3283f4d53"
+    },
+    "copy.action.52c229c10699": {
+      "category": "Action",
+      "context": "0.0.1/Sources/TogetherApp/Views/Connection/ConnectionView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "52c229c10699a31ccb7d37ee21ee44b148eb70a6d382588e979046868ceaf129"
+    },
+    "copy.action.1032f5e75333": {
+      "category": "Action",
+      "context": "0.0.1/Sources/TogetherApp/Views/Connection/ConnectionView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "1032f5e75333b92b49c13a09d880fe74d63627ed1ecf7e9c2acfe846007551a6"
+    },
+    "copy.guidance.0c2e0cb3cd53": {
+      "category": "Guidance",
+      "context": "0.0.1/Sources/TogetherApp/Views/Connection/ConnectionView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "0c2e0cb3cd53b9bf880edac490205be6295218872e1d94bf1a44076d2198ae47"
+    },
+    "copy.action.2fd9629c1a44": {
+      "category": "Action",
+      "context": "0.0.1/Sources/TogetherApp/Views/Connection/ConnectionView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "2fd9629c1a44523db6e5e02b6b282935221475852c20021dbc9ae9d42d7a1341"
+    },
+    "copy.guidance.9132a75101e9": {
+      "category": "Guidance",
+      "context": "0.0.1/Sources/TogetherApp/Views/Connection/ConnectionView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "9132a75101e9e300f2243d382c40c9ed68dc613b5880132cc9b6ed9cd4f1bf82"
+    },
+    "copy.status.3ebca10fcb10": {
+      "category": "Status",
+      "context": "0.0.1/Sources/TogetherApp/Views/Connection/ConnectionView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "3ebca10fcb10b7fdace440caa90c37a0491ef60b371307e165d609f76978b224"
+    },
+    "copy.guidance.4d93993d5b23": {
+      "category": "Guidance",
+      "context": "0.0.1/Sources/TogetherApp/Views/Connection/ConnectionView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "4d93993d5b23ad2646e4d078910bb36e7017e5b4e7a16c8bcbe92c3f0dac0a14"
+    },
+    "copy.navigation.639a40e82b9a": {
+      "category": "Navigation",
+      "context": "0.0.1/Sources/TogetherApp/Views/Connection/ConnectionView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "639a40e82b9a96f0cbeed5f006cf5634c8d1b990b3c83753c00a910fc268d2a6"
+    },
+    "copy.action.042811378798": {
+      "category": "Action",
+      "context": "0.0.1/Sources/TogetherApp/Views/Wishes/WishesView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "0428113787982a1517224974547099173260e0121d0515027067a18698ad5248"
+    },
+    "copy.action.dad277e51ae2": {
+      "category": "Action",
+      "context": "0.0.1/Sources/TogetherApp/Views/Wishes/WishesView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "dad277e51ae218609e997d382efa0c0ca507ddcd338fadebf8af6ce6abcc2c6c"
+    },
+    "copy.action.484f849e7525": {
+      "category": "Action",
+      "context": "0.0.1/Sources/TogetherApp/Views/Wishes/WishesView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "484f849e75257ff3fda3fdeff65e12910b3ca175deb96134d8ec13fadbe5fb43"
+    },
+    "copy.action.2b5c98884cf4": {
+      "category": "Action",
+      "context": "0.0.1/Sources/TogetherApp/Views/Wishes/WishesView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "2b5c98884cf4a312c055238aaeb783cedef5def90768a890ead5ceebb7641002"
+    },
+    "copy.guidance.fc1abea23df7": {
+      "category": "Guidance",
+      "context": "0.0.1/Sources/TogetherApp/Views/Wishes/WishesView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "fc1abea23df755ec920c1ffa065944c831b7167094ade5cf2653d2dbd9c43e1b"
+    },
+    "copy.guidance.11c84b5da239": {
+      "category": "Guidance",
+      "context": "0.0.1/Sources/TogetherApp/Views/Wishes/WishesView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "11c84b5da2393a445bc83bd1b1df13192855fcc4dcc4139db5c26ae48c360b9c"
+    },
+    "copy.action.b1318a136ca8": {
+      "category": "Action",
+      "context": "0.0.1/Sources/TogetherApp/Views/Wishes/WishesView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "b1318a136ca8d383b659d3b76e5f7f07b1eb096b386494ff32bf17a105f1cda4"
+    },
+    "copy.action.3d4a799b170e": {
+      "category": "Action",
+      "context": "0.0.1/Sources/TogetherApp/Views/Wishes/WishesView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "3d4a799b170ee67d2f0d5fcbefa5ae26d63abe705e8ab074edc1774a9eb54b06"
+    },
+    "copy.guidance.4b7a5cfdcc8b": {
+      "category": "Guidance",
+      "context": "0.0.1/Sources/TogetherApp/Views/Wishes/WishesView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "4b7a5cfdcc8b52414a14abc68a3cd9dd8b3881ca51632b49affee5b328b9f70c"
+    },
+    "copy.status.b29a53070d95": {
+      "category": "Status",
+      "context": "0.0.1/Sources/TogetherApp/Views/Wishes/WishesView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "b29a53070d957741d089feb882c951365ce7e19f18eebcc6293adc973db588d3"
+    },
+    "copy.empty_state.2dfc21ff5af0": {
+      "category": "Empty State",
+      "context": "0.0.1/Sources/TogetherApp/Views/Wishes/WishesView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "2dfc21ff5af0ad5d259cc61436eff654ce937e2697c08f1f354144087118e348"
+    },
+    "copy.status.47ada653c100": {
+      "category": "Status",
+      "context": "0.0.1/Sources/TogetherApp/Views/Wishes/WishesView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "47ada653c10068a9979000ca8665705dfa81d6837aee16ffb5f77acf43ca763b"
+    },
+    "copy.guidance.8cb0896e503a": {
+      "category": "Guidance",
+      "context": "0.0.1/Sources/TogetherApp/Views/Wishes/WishesView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "8cb0896e503aec41c639f597bb0ef1e50f5c0835d534cffdd0778f1e1f90189e"
+    },
+    "copy.guidance.6d9b6810ab00": {
+      "category": "Guidance",
+      "context": "0.0.1/Sources/TogetherApp/Views/Wishes/WishesView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "6d9b6810ab001677d370ed0591c8786601a1f1c74242b1caeba8fc03edb35d4c"
+    },
+    "copy.guidance.26fcce639830": {
+      "category": "Guidance",
+      "context": "0.0.1/Sources/TogetherApp/Views/Wishes/WishesView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "26fcce6398303f5b56092d39ef216460d2940318ed4a21164122a0113fe9f0cc"
+    },
+    "copy.action.2c183d9579b2": {
+      "category": "Action",
+      "context": "0.0.1/Sources/TogetherApp/Views/Wishes/WishesView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "2c183d9579b22bd4c45631834d27bfd0562e112e5c79c0534db97cd065332a5e"
+    },
+    "copy.navigation.403cc21502eb": {
+      "category": "Navigation",
+      "context": "0.0.1/Sources/TogetherApp/Views/Wishes/WishesView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "403cc21502ebdc1e5204b05b193d722bb4bf4fb8146ee0b0b71e8e111bd21ee3"
+    },
+    "copy.action.2388bd52fae3": {
+      "category": "Action",
+      "context": "0.0.1/Sources/TogetherApp/Views/Wishes/WishEditors.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "2388bd52fae36920d79c6ad186a98adb0f5942ad0a7b8a5fd1f3b921275365eb"
+    },
+    "copy.guidance.cb63ca2a4003": {
+      "category": "Guidance",
+      "context": "0.0.1/Sources/TogetherApp/Views/Wishes/WishEditors.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "cb63ca2a4003e35995863e59a21e6a9ebb95f7e758dd79fd4fc44c4ac613b0da"
+    },
+    "copy.status.01b6f9e2d127": {
+      "category": "Status",
+      "context": "0.0.1/Sources/TogetherApp/Views/Wishes/WishEditors.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "01b6f9e2d1274b54acdd9de9543cce8ae675cef5c082e9fa35d68f62821e41e6"
+    },
+    "copy.action.2b072511a379": {
+      "category": "Action",
+      "context": "0.0.1/Sources/TogetherApp/Views/Wishes/WishEditors.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "2b072511a37926a32e04d8db5516636bb560573af513b08551088e405da3f188"
+    },
+    "copy.guidance.d4dfacae27fe": {
+      "category": "Guidance",
+      "context": "0.0.1/Sources/TogetherApp/Views/Wishes/WishEditors.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "d4dfacae27fec614d034dd154707e0ad9d97390c70d6cb497cfb3c343e151fad"
+    },
+    "copy.guidance.c28964cec0df": {
+      "category": "Guidance",
+      "context": "0.0.1/Sources/TogetherApp/Views/Wishes/WishEditors.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "c28964cec0df6f3eee24ad8d87e4eb8c1630e265f042fde1f945d02d8e061b77"
+    },
+    "copy.status.3cfd61f73f08": {
+      "category": "Status",
+      "context": "0.0.1/Sources/TogetherApp/Views/Wishes/WishEditors.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "3cfd61f73f08a47d44e331c9fa1ee31ed86a259e03dc36fa5b2c4d26e768c81b"
+    },
+    "copy.error.f542f9884467": {
+      "category": "Error",
+      "context": "0.0.1/Sources/TogetherApp/Views/Wishes/WishEditors.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "f542f9884467b77b8580cc771a73ff14a62cc7d58145c0379b09d28aac331e98"
+    },
+    "copy.action.68db52a61059": {
+      "category": "Action",
+      "context": "0.0.1/Sources/TogetherApp/Views/Wishes/WishEditors.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "68db52a61059b7db7908bd34ba38858821d658292a4f1800dc7853711a996a2f"
+    },
+    "copy.guidance.08dcdf90fcc3": {
+      "category": "Guidance",
+      "context": "0.0.1/Sources/TogetherApp/Views/Wishes/WishEditors.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "08dcdf90fcc3abb377b868ec6189ebff91fb1ed5b28529ef927740aa84f95436"
+    },
+    "copy.action.8719fc9a0abf": {
+      "category": "Action",
+      "context": "0.0.1/Sources/TogetherApp/Views/Gifts/GiftHistoryView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "8719fc9a0abf6c97884c50acae2f0a1b7ff8fa94af0615fd62f515c98cdb0a5b"
+    },
+    "copy.action.926a50b98ece": {
+      "category": "Action",
+      "context": "0.0.1/Sources/TogetherApp/Views/Gifts/GiftHistoryView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "926a50b98ece2667069d47bd532e8ae1fb23218868a8f289c09937478f717c7a"
+    },
+    "copy.action.3f4d60ed6945": {
+      "category": "Action",
+      "context": "0.0.1/Sources/TogetherApp/Views/Gifts/GiftHistoryView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "3f4d60ed694518da0dd7ddd78e7914cc944521c9d8123d26a23f738968e7ec01"
+    },
+    "copy.action.db8db0530432": {
+      "category": "Action",
+      "context": "0.0.1/Sources/TogetherApp/Views/Gifts/GiftHistoryView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "db8db0530432bd1596cd1ef21016dfc12392548a4b82019f1b1d7a315e0a55c0"
+    },
+    "copy.status.a0a4c71b52cc": {
+      "category": "Status",
+      "context": "0.0.1/Sources/TogetherApp/Views/Gifts/GiftHistoryView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "a0a4c71b52ccec8f1688f5a8529ee744f454e22764a0eb8eb42aa6cf5da29a34"
+    },
+    "copy.status.57dc4c554054": {
+      "category": "Status",
+      "context": "0.0.1/Sources/TogetherApp/Views/Gifts/GiftHistoryView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "57dc4c55405454f89bf771b9db0f1affdd1df81a5e844d6955690f4bfee50f9c"
+    },
+    "copy.status.17441747251a": {
+      "category": "Status",
+      "context": "0.0.1/Sources/TogetherApp/Views/Gifts/GiftHistoryView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "17441747251a4fddf595e33abce9aa86654c1c84631eb9dcca2c58f551d020a8"
+    },
+    "copy.status.034fc48ba584": {
+      "category": "Status",
+      "context": "0.0.1/Sources/TogetherApp/Views/Gifts/GiftHistoryView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "034fc48ba584fc2a8b0b40c727e4ce36b79845d7ed910c63abfb2c22e630382c"
+    },
+    "copy.empty_state.bea225cddc76": {
+      "category": "Empty State",
+      "context": "0.0.1/Sources/TogetherApp/Views/Gifts/GiftHistoryView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "bea225cddc769de94cf337d9c52924a24864d37bb5116802cecdf58e6ee7f354"
+    },
+    "copy.action.c0b3fbff51cc": {
+      "category": "Action",
+      "context": "0.0.1/Sources/TogetherApp/Views/Gifts/GiftHistoryView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "c0b3fbff51ccc40b8bf1a81666e7ecced016187cbe2ac6f1d627e0d7a287e04d"
+    },
+    "copy.guidance.f7fe73b265ee": {
+      "category": "Guidance",
+      "context": "0.0.1/Sources/TogetherApp/Views/Gifts/AudioComponents.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "f7fe73b265eec57ec1dedea93e65d87cc05b5055c45ab015245589b6439ba8bb"
+    },
+    "copy.status.584fc5fc5dce": {
+      "category": "Status",
+      "context": "0.0.1/Sources/TogetherApp/Views/Gifts/AudioComponents.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "584fc5fc5dce288da663984d697a21121228b941f9f700dccfd0a86714d26bdd"
+    },
+    "copy.action.436e61016e26": {
+      "category": "Action",
+      "context": "0.0.1/Sources/TogetherApp/Views/Gifts/AudioComponents.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "436e61016e26fcb773b9725745cbbf0afe7f001ea26041a814a7712c2925c442"
+    },
+    "copy.action.858e4ba7a29f": {
+      "category": "Action",
+      "context": "0.0.1/Sources/TogetherApp/Views/Gifts/AudioComponents.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "858e4ba7a29fd38b630ed73a79e2738333b3fc6778fafa90252f5556c1262fdc"
+    },
+    "copy.status.76137a92a3f3": {
+      "category": "Status",
+      "context": "0.0.1/Sources/TogetherApp/Views/Gifts/AudioComponents.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "76137a92a3f389ecd42f214c8fd9ea5490ecfb14f30e4896228c93f5819fd6e2"
+    },
+    "copy.guidance.0bade33ffdbe": {
+      "category": "Guidance",
+      "context": "0.0.1/Sources/TogetherApp/Views/Gifts/AudioComponents.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "0bade33ffdbeeabad125d39ea4c8180d73aa4a1b53750f525b13c2c979692485"
+    },
+    "copy.error.d0eefe11ae2b": {
+      "category": "Error",
+      "context": "0.0.1/Sources/TogetherApp/Views/Gifts/AudioComponents.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "d0eefe11ae2b4a4b652ce34de01147c4f238f2796b9863f2de342e6b735a0a35"
+    },
+    "copy.error.5ef4f050153c": {
+      "category": "Error",
+      "context": "0.0.1/Sources/TogetherApp/Views/Gifts/AudioComponents.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "5ef4f050153ce58aafb73709ccf006ecbf959bdcc0449db5f046316fabee52e2"
+    },
+    "copy.guidance.8cbde1ab6315": {
+      "category": "Guidance",
+      "context": "0.0.1/Sources/TogetherApp/Views/Gifts/AudioComponents.swift",
+      "review": "review_required",
+      "reason": "Existing product inventory; long guidance requires human copy review.",
+      "textSHA256": "8cbde1ab6315a351465f7db171bedcd9e050157c9fba22192ccfe5dbc3cce3b9"
+    },
+    "copy.guidance.4673175cd9f2": {
+      "category": "Guidance",
+      "context": "0.0.1/Sources/TogetherApp/Views/Gifts/AudioComponents.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "4673175cd9f2cd049da38a8a3dc2a7c5ec8fb9a515ac6a7fb81d46ab1c94cb93"
+    },
+    "copy.action.3b1ccae783f1": {
+      "category": "Action",
+      "context": "0.0.1/Sources/TogetherApp/Views/Gifts/GiftRevealView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "3b1ccae783f1422b872f5bacead41c3e652ea309f27c2c017db01c65190ca233"
+    },
+    "copy.emotional.99e20304bca5": {
+      "category": "Emotional",
+      "context": "0.0.1/Sources/TogetherApp/Views/Gifts/GiftRevealView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "99e20304bca5bd03106f71a53700c9e7eda9215182527ac53e5f1a7cfd50d69d"
+    },
+    "copy.emotional.c6b12f8ce310": {
+      "category": "Emotional",
+      "context": "0.0.1/Sources/TogetherApp/Views/Gifts/GiftRevealView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "c6b12f8ce310c3a70c05bd99c9888a4fdf1a286f7dba283c36dbabc1bb12baaa"
+    },
+    "copy.action.3fd47edce45b": {
+      "category": "Action",
+      "context": "0.0.1/Sources/TogetherApp/Views/Gifts/GiftRevealView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "3fd47edce45b3603d4192f61dbf3e51162589b0951042a18d244132ac92e7bb7"
+    },
+    "copy.empty_state.7ff1ed89807d": {
+      "category": "Empty State",
+      "context": "0.0.1/Sources/TogetherApp/Views/Gifts/GiftRevealView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "7ff1ed89807d4495c422c8e6949dba5583b5a6fd920b263339e88042a13a1054"
+    },
+    "copy.emotional.13049016bf03": {
+      "category": "Emotional",
+      "context": "0.0.1/Sources/TogetherApp/Views/Gifts/GiftRevealView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "13049016bf033fefe8c1051527ba27d6eeeaab6641d69344026c09d5cd1a3bfc"
+    },
+    "copy.emotional.b26ee65bfb3b": {
+      "category": "Emotional",
+      "context": "0.0.1/Sources/TogetherApp/Views/Gifts/GiftRevealView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "b26ee65bfb3b16afdfec7a7bdecabb9fccac7db544bbe426ec7135a08ec5e970"
+    },
+    "copy.emotional.8bd6be42784c": {
+      "category": "Emotional",
+      "context": "0.0.1/Sources/TogetherApp/Views/Gifts/GiftRevealView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "8bd6be42784cb5e9f321d5a3dd412cf2bbc388e16c5f0dc428bd006e59f612fa"
+    },
+    "copy.action.eca2213cf87f": {
+      "category": "Action",
+      "context": "0.0.1/Sources/TogetherApp/Views/Gifts/GiftRevealView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "eca2213cf87fab6956ad9956c0762fa9ce90bb9528a73925a05f21781256ec38"
+    },
+    "copy.action.d77339465930": {
+      "category": "Action",
+      "context": "0.0.1/Sources/TogetherApp/Views/Gifts/GiftRevealView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "d77339465930b54707a5e82588bf9ed6933541d2fe0b7139424c45f65dfcf118"
+    },
+    "copy.emotional.0fe0176cc04d": {
+      "category": "Emotional",
+      "context": "0.0.1/Sources/TogetherApp/Views/Gifts/GiftRevealView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "0fe0176cc04df7420ddfafc3092a46460ea436f1f4d9760ff4ad7fd794378ed0"
+    },
+    "copy.status.99d1094feca8": {
+      "category": "Status",
+      "context": "0.0.1/Sources/TogetherApp/Views/Gifts/GiftRevealView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "99d1094feca8aa8fb9e707968a6da5287c91ec858f7e555096eea05871fb7bcb"
+    },
+    "copy.emotional.c35685beea5a": {
+      "category": "Emotional",
+      "context": "0.0.1/Sources/TogetherApp/Views/Gifts/GiftRevealView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "c35685beea5afdd59418615310a4257e3ad2a2a03d9987d98139b671a5b884a0"
+    },
+    "copy.emotional.07940efad8c3": {
+      "category": "Emotional",
+      "context": "0.0.1/Sources/TogetherApp/Views/Gifts/GiftRevealView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "07940efad8c3257053cb0c76ae25e136b60eb2df5fb5f9f43d274972440bf867"
+    },
+    "copy.status.74f95c4c0298": {
+      "category": "Status",
+      "context": "0.0.1/Sources/TogetherApp/Views/Gifts/GiftEditorView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "74f95c4c029846d084f34d78dc79e6b312bc3722c6e290d7dc6d24784af83cd4"
+    },
+    "copy.guidance.c17ea66392d2": {
+      "category": "Guidance",
+      "context": "0.0.1/Sources/TogetherApp/Views/Gifts/GiftEditorView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "c17ea66392d212ff71cfa6275d69948c688181e5aef362c797a79c6167a3814a"
+    },
+    "copy.emotional.1a1a433b6d1e": {
+      "category": "Emotional",
+      "context": "0.0.1/Sources/TogetherApp/Views/Gifts/GiftEditorView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "1a1a433b6d1e22c91d4ba93cfedd81716bf7ceb86b9e7f40bc77f21a6492030f"
+    },
+    "copy.action.14e50ef4f212": {
+      "category": "Action",
+      "context": "0.0.1/Sources/TogetherApp/Views/Gifts/GiftEditorView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "14e50ef4f212e5d3f17fab37707be4701792aaf112daca12a85ee5792d171612"
+    },
+    "copy.action.5329e3f0ee46": {
+      "category": "Action",
+      "context": "0.0.1/Sources/TogetherApp/Views/Gifts/GiftEditorView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "5329e3f0ee463df52ef9d8aa674f3566eb94179284be708ce8e74c4a69d65f89"
+    },
+    "copy.action.1e157fdf0388": {
+      "category": "Action",
+      "context": "0.0.1/Sources/TogetherApp/Views/Gifts/GiftEditorView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "1e157fdf0388139294b153c6503596f7696d95fb66b23c6105de32dfaff0740e"
+    },
+    "copy.status.6a8ae976f27c": {
+      "category": "Status",
+      "context": "0.0.1/Sources/TogetherApp/Views/Gifts/GiftEditorView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "6a8ae976f27cb232e28da93dd0ee130e33b9a2620b5ea18cb8705df8b6dd1a1d"
+    },
+    "copy.emotional.3ceeec638ae6": {
+      "category": "Emotional",
+      "context": "0.0.1/Sources/TogetherApp/Views/Gifts/GiftEditorView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "3ceeec638ae685f172730425604c0379d06cf1c79d3511cc346f97d03bc98b6f"
+    },
+    "copy.action.be99f82cf39f": {
+      "category": "Action",
+      "context": "0.0.1/Sources/TogetherApp/Views/Gifts/GiftEditorView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "be99f82cf39fedeb739031cf19a23c094df7995a1717f3deb4230a0a879a3377"
+    },
+    "copy.action.b7e6276e7f9a": {
+      "category": "Action",
+      "context": "0.0.1/Sources/TogetherApp/Views/Gifts/GiftEditorView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "b7e6276e7f9a7a14ccf8ea22c313004033cab24d0f000038ad58f0ac69193578"
+    },
+    "copy.action.dcf59b082865": {
+      "category": "Action",
+      "context": "0.0.1/Sources/TogetherApp/Views/Gifts/GiftEditorView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "dcf59b082865b3cba9d5411b8c1641ba33c7e039a925715194665c35c86bc35f"
+    },
+    "copy.action.8d12fc0d4eb2": {
+      "category": "Action",
+      "context": "0.0.1/Sources/TogetherApp/Views/Gifts/GiftEditorView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "8d12fc0d4eb26021d93db693a076e474b8fc6e01f8808666744816c8ba72b746"
+    },
+    "copy.action.7c9691192f1b": {
+      "category": "Action",
+      "context": "0.0.1/Sources/TogetherApp/Views/Gifts/GiftEditorView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "7c9691192f1b73408bbe4c0cb6d00db94375ca9d8fce0a0d5985e7a5178f083f"
+    },
+    "copy.status.5254d30be60f": {
+      "category": "Status",
+      "context": "0.0.1/Sources/TogetherApp/Views/Gifts/GiftEditorView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "5254d30be60fcb12a4f73c9a24458a6a364e60f5b6fe50abcbf5853097752140"
+    },
+    "copy.status.598133b569df": {
+      "category": "Status",
+      "context": "0.0.1/Sources/TogetherApp/Views/Gifts/GiftEditorView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "598133b569df277bfea5179f47d20d30ce9c3a18da54ba764f8f89b67b033284"
+    },
+    "copy.status.2afb58834f9b": {
+      "category": "Status",
+      "context": "0.0.1/Sources/TogetherApp/Views/Gifts/GiftEditorView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "2afb58834f9b7ccdb630b108be9b0744167d00c2c2aa189937e6ac49bc0af019"
+    },
+    "copy.action.5edc672292ef": {
+      "category": "Action",
+      "context": "0.0.1/Sources/TogetherApp/Views/Gifts/GiftEditorView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "5edc672292ef70c6d8c0b8d022d5229b6fd081db7c6a8ca3f9fdf276db30af5f"
+    },
+    "copy.status.43974b287b93": {
+      "category": "Status",
+      "context": "0.0.1/Sources/TogetherApp/Views/Gifts/GiftEditorView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "43974b287b93fd928afecfbd196b00fec4db296cd25824c108292a9b73d8aa52"
+    },
+    "copy.action.4b5e4c962305": {
+      "category": "Action",
+      "context": "0.0.1/Sources/TogetherApp/Views/Gifts/GiftEditorView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "4b5e4c9623054a3ef28e249d18900855b15b792f86fe84ef728a46cda7d5992e"
+    },
+    "copy.action.e37fc2d39902": {
+      "category": "Action",
+      "context": "0.0.1/Sources/TogetherApp/Views/Gifts/GiftEditorView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "e37fc2d399020d9ab6b553cb7e7adaee01e662a2e4eba5b5824216a8fa688076"
+    },
+    "copy.status.2c30c0227788": {
+      "category": "Status",
+      "context": "0.0.1/Sources/TogetherApp/Views/Gifts/GiftEditorView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "2c30c02277888bdd4091a1d4cb08ad3acb9995c06728f78a019ca18e5f5ea58d"
+    },
+    "copy.emotional.a75b098be556": {
+      "category": "Emotional",
+      "context": "0.0.1/Sources/TogetherApp/Views/Gifts/GiftEditorView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "a75b098be556ef7c762ee3b5363e0accc4d976b357e843e23b48a40699fe53a4"
+    },
+    "copy.emotional.acd76b74d637": {
+      "category": "Emotional",
+      "context": "0.0.1/Sources/TogetherApp/Views/Gifts/GiftEditorView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "acd76b74d637d53b2f7153662c44a7c3675a1197103232432e96f86afb38e1ee"
+    },
+    "copy.status.a9ee56abd8fc": {
+      "category": "Status",
+      "context": "0.0.1/Sources/TogetherApp/ReleaseNotes/WhatsNewView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "a9ee56abd8fcda94de4601cadb544bf5e34cca7532d0a43b374c3d6d4e1142b1"
+    },
+    "copy.status.c74259555cfc": {
+      "category": "Status",
+      "context": "0.0.1/Sources/TogetherApp/ReleaseNotes/WhatsNewView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "c74259555cfc67a688486cfee02cc426d221b3eea50aa2c588a7839219e0b970"
+    },
+    "copy.action.e3b0859f5da0": {
+      "category": "Action",
+      "context": "0.0.1/Sources/TogetherApp/Onboarding/InitialSetupView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "e3b0859f5da0d57bbc79029694909caf730e97a5b19ab0301b08da435a2a76e6"
+    },
+    "copy.status.854395e0abf2": {
+      "category": "Status",
+      "context": "0.0.1/Sources/TogetherApp/Onboarding/InitialSetupView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "854395e0abf2c251e617c949fedacb699a1abe376b2793c8691c2162b954ed1f"
+    },
+    "copy.guidance.34509ac3c987": {
+      "category": "Guidance",
+      "context": "0.0.1/Sources/TogetherApp/Onboarding/InitialSetupView.swift",
+      "review": "review_required",
+      "reason": "Existing product inventory; long guidance requires human copy review.",
+      "textSHA256": "34509ac3c987786ebefb63748fc528b9b76403ef14f40b93caec54a77682ee39"
+    },
+    "copy.guidance.591976fa354e": {
+      "category": "Guidance",
+      "context": "0.0.1/Sources/TogetherApp/Onboarding/InitialSetupView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "591976fa354efab1c50365f9942a498efd0e6f36938a61de9758fda93632f327"
+    },
+    "copy.action.c33392c5ea4a": {
+      "category": "Action",
+      "context": "0.0.1/Sources/TogetherApp/Onboarding/InitialSetupView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "c33392c5ea4ad65d391adf918a64f70df2c56b1d16be300ec1c55e04c33dd6ac"
+    },
+    "copy.action.7a7ceed76b69": {
+      "category": "Action",
+      "context": "0.0.1/Sources/TogetherApp/Onboarding/InitialSetupView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "7a7ceed76b6975b168242da38e126239d7e1031678881b7995b8081f0df72eb7"
+    },
+    "copy.status.dbfd5d14c799": {
+      "category": "Status",
+      "context": "0.0.1/Sources/TogetherApp/Onboarding/InitialSetupView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "dbfd5d14c799e2076fb729554acb0fc985eaee9518b434074cf178e6d274340f"
+    },
+    "copy.status.1bb474fad984": {
+      "category": "Status",
+      "context": "0.0.1/Sources/TogetherApp/Onboarding/InitialSetupView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "1bb474fad984d12c7153a3b2ba715bcfaaa762fd3a6ca3e1c2607ade4ee2daca"
+    },
+    "copy.guidance.e39e76771c11": {
+      "category": "Guidance",
+      "context": "0.0.1/Sources/TogetherApp/Onboarding/InitialSetupView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "e39e76771c1192f065b8a6faa42325c7bebc21c41c32bf13126a1412aa637667"
+    },
+    "copy.status.937a1f36deff": {
+      "category": "Status",
+      "context": "0.0.1/Sources/TogetherApp/Onboarding/InitialSetupView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "937a1f36deffe6f7f88d674afc62e575da19d5499848469be3c7de2147c98c64"
+    },
+    "copy.action.31fbef162594": {
+      "category": "Action",
+      "context": "0.0.1/Sources/TogetherApp/Onboarding/InitialSetupView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "31fbef162594de01bab0cd525c51f74de7bcb15063029fa1a54b2cf5944c80d8"
+    },
+    "copy.action.0b4fa4b9e083": {
+      "category": "Action",
+      "context": "0.0.1/Sources/TogetherApp/Onboarding/InitialSetupView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "0b4fa4b9e083361c915d9726d17520bb6fa348c7155c95befb9403cc23002c1f"
+    },
+    "copy.action.a57b08a480b8": {
+      "category": "Action",
+      "context": "0.0.1/Sources/TogetherApp/Onboarding/InitialSetupView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "a57b08a480b822a0a572b993391c292ede593bf8000b406675b180bbb16260fa"
+    },
+    "copy.status.3a4fb6e6ee20": {
+      "category": "Status",
+      "context": "0.0.1/Sources/TogetherApp/Onboarding/InitialSetupView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "3a4fb6e6ee20e43a0783d8341ab4f48bbe4641dcad3290f0a38dd08a3fedecc7"
+    },
+    "copy.action.1ff57a29d7c9": {
+      "category": "Action",
+      "context": "0.0.1/Sources/TogetherApp/Onboarding/AdvisorView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "1ff57a29d7c9d11bdf61c1b80f2b289b44c1ea844824d4b94a0d52b6ba5fc858"
+    },
+    "copy.action.a6c7a84baa67": {
+      "category": "Action",
+      "context": "0.0.1/Sources/TogetherApp/Onboarding/AdvisorView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "a6c7a84baa6750fce33f7512acd6793e53def1d228b5f2efb8074b42648424fc"
+    },
+    "copy.action.28d03596d24e": {
+      "category": "Action",
+      "context": "0.0.1/Sources/TogetherApp/Onboarding/AdvisorView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "28d03596d24eeb4eab2d6fe21ca1cb95be7cb1fa6f92933db05e2cc4f4cdfa06"
+    },
+    "copy.guidance.59f48b3f4a8e": {
+      "category": "Guidance",
+      "context": "0.0.1/Sources/TogetherApp/Onboarding/AdvisorView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "59f48b3f4a8ee8f45d92bdbd735fa782cf2da82637deab2aa59b76c30a095e8a"
+    },
+    "copy.guidance.e88ca18d56f1": {
+      "category": "Guidance",
+      "context": "0.0.1/Sources/TogetherApp/Onboarding/AdvisorView.swift",
+      "review": "approved",
+      "reason": "Required invitation workflow replaces external Tailscale setup guidance.",
+      "textSHA256": "6f782044f6d3493cbd333af95398f7d1d04cdecc0bbaea1106baf60ca790c4ff"
+    },
+    "copy.status.f7c98742cb56": {
+      "category": "Status",
+      "context": "0.0.1/Sources/TogetherApp/Onboarding/AdvisorView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "f7c98742cb568c2930d70ba7a3532f5151aa20d3c2a256ad1f09025a7ebf66e1"
+    },
+    "copy.guidance.b61a3a85f709": {
+      "category": "Guidance",
+      "context": "0.0.1/Sources/TogetherApp/Onboarding/AdvisorView.swift",
+      "review": "review_required",
+      "reason": "Existing product inventory; long guidance requires human copy review.",
+      "textSHA256": "b61a3a85f70971db68a3a6cfc32682fca5d7e623c7ec7efea31b272abdec93fd"
+    },
+    "copy.status.46f890d7fe72": {
+      "category": "Status",
+      "context": "0.0.1/Sources/TogetherApp/Onboarding/AdvisorView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "46f890d7fe72f9f313b9bd67dca7f8b26333b575947bcad8f7c8afeb88f419ec"
+    },
+    "copy.guidance.a0fdf83d30c9": {
+      "category": "Guidance",
+      "context": "0.0.1/Sources/TogetherApp/Onboarding/AdvisorView.swift",
+      "review": "review_required",
+      "reason": "Existing product inventory; long guidance requires human copy review.",
+      "textSHA256": "a0fdf83d30c9d41602b32c54feded73eb67e40af1268253352e4cd414bbf4158"
+    },
+    "copy.status.0657ef66163c": {
+      "category": "Status",
+      "context": "0.0.1/Sources/TogetherApp/Onboarding/AdvisorView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "0657ef66163c55a87db56555fc31401c514d935226cbe274f1d8b1c86b3042fc"
+    },
+    "copy.guidance.0a03873c8d2f": {
+      "category": "Guidance",
+      "context": "0.0.1/Sources/TogetherApp/Onboarding/AdvisorView.swift",
+      "review": "review_required",
+      "reason": "Existing product inventory; long guidance requires human copy review.",
+      "textSHA256": "0a03873c8d2fbb461bbc38a23b402c20c6d545f1fe0a9b7cfa3cff480478d9b2"
+    },
+    "copy.guidance.66dd26b15065": {
+      "category": "Guidance",
+      "context": "0.0.1/Sources/TogetherApp/Onboarding/AdvisorView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "66dd26b150658d1fdcac041ffc785780a67fc85ce696f272b6bde60214d73986"
+    },
+    "copy.status.762adf000094": {
+      "category": "Status",
+      "context": "0.0.1/Sources/TogetherApp/Onboarding/AdvisorView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "762adf00009417ba52f97995d31731c59edd7cfb9002420a930ebab0a6388605"
+    },
+    "copy.guidance.9da8edd95702": {
+      "category": "Guidance",
+      "context": "0.0.1/Sources/TogetherApp/Onboarding/AdvisorView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "9da8edd95702107cfa6a9aa0e1d2215b05296b1a75c12653c848b8c8b561792a"
+    },
+    "copy.guidance.a98b94457fae": {
+      "category": "Guidance",
+      "context": "0.0.1/Sources/TogetherApp/Onboarding/AdvisorView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "a98b94457faed8f84bf4257e2ae8518809244f3a85cede1e226cfc0c4793e4ec"
+    },
+    "copy.navigation.0e2226b5235f": {
+      "category": "Navigation",
+      "context": "0.0.1/Sources/TogetherApp/Onboarding/AdvisorView.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "0e2226b5235f0ff94a276eb4d07a3bfea74b7e3b8b85e9efca6c18430f041bf8"
+    },
+    "copy.error.cb51a0083b9b": {
+      "category": "Error",
+      "context": "0.0.1/Sources/TogetherCore/Synchronization/ReplicaEngine.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "cb51a0083b9b4277ee1a2c0e2d48f927030d9b3d23c6a60ed6c6ae22d45512ff"
+    },
+    "copy.error.c9e9d90c0c38": {
+      "category": "Error",
+      "context": "0.0.1/Sources/TogetherCore/Synchronization/ReplicaEngine.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "c9e9d90c0c38e58ef0c6afc4ce7caf9b6cfb524f04d8f8c506d5fffec2d1418d"
+    },
+    "copy.error.47ef85d323e2": {
+      "category": "Error",
+      "context": "0.0.1/Sources/TogetherCore/Synchronization/ReplicaEngine.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "47ef85d323e24b1cdfb9cc757b01545b8d5d13eb0ab7433fc48d1c4a82e24f16"
+    },
+    "copy.error.2b3beaac2d7a": {
+      "category": "Error",
+      "context": "0.0.1/Sources/TogetherCore/Synchronization/ReplicaEngine.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "2b3beaac2d7ace3b332dd6b7e514d388cbec11e9c1b2fa9902f71bc9ebbb5ba6"
+    },
+    "copy.error.4868d57ad1cb": {
+      "category": "Error",
+      "context": "0.0.1/Sources/TogetherCore/Synchronization/ReplicaEngine.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "4868d57ad1cb9129a4d5ef47b4e00d3ba4b130c1afc6333f46ad7482e7cf19bd"
+    },
+    "copy.error.9ba418316fbb": {
+      "category": "Error",
+      "context": "0.0.1/Sources/TogetherCore/Synchronization/ReplicaEngine.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "9ba418316fbbaf3b0b23e091de4c0b514f099feb1f884199833ae3030e40973e"
+    },
+    "copy.error.68590b799484": {
+      "category": "Error",
+      "context": "0.0.1/Sources/TogetherCore/Synchronization/ReplicaEngine.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "68590b79948483f850a2f249d9862449638ec5c7c619a26d19ed15f506cbb435"
+    },
+    "copy.error.cfd25e4c08e5": {
+      "category": "Error",
+      "context": "0.0.1/Sources/TogetherCore/Synchronization/ReplicaEngine.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "cfd25e4c08e57dc08368f5cc017d8826868434a0de6442deefc605412507245e"
+    },
+    "copy.error.0017db608c93": {
+      "category": "Error",
+      "context": "0.0.1/Sources/TogetherCore/Synchronization/ReplicaEngine.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "0017db608c93966a043206e57243655f478205ee8a4f8ed7c55fbaca6b7bf36f"
+    },
+    "copy.error.6e724e7a6794": {
+      "category": "Error",
+      "context": "0.0.1/Sources/TogetherCore/Synchronization/ReplicaEngine.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "6e724e7a6794c33eb5ee8a7f054ac2ec47ae41f03a000667a4cf909d1f3a12fa"
+    },
+    "copy.error.f358769c9343": {
+      "category": "Error",
+      "context": "0.0.1/Sources/TogetherCore/Synchronization/ReplicaEngine.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "f358769c93436370b83d949301e63f5d790660db333ed888f524eeeda9638c45"
+    },
+    "copy.error.9d0b8ee35f75": {
+      "category": "Error",
+      "context": "0.0.1/Sources/TogetherCore/Synchronization/ReplicaEngine.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "9d0b8ee35f75c080afdb37bd8c76af3b631f0f8debe2f772f61f56d94fe268cf"
+    },
+    "copy.error.76ef9b5cd8a8": {
+      "category": "Error",
+      "context": "0.0.1/Sources/TogetherCore/Synchronization/ReplicaEngine.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "76ef9b5cd8a8d06d14fa5d711384198d45c4a2642dd8b9ca6ddc6c848fdd2bdd"
+    },
+    "copy.error.10abb8d8d023": {
+      "category": "Error",
+      "context": "0.0.1/Sources/TogetherCore/Synchronization/ReplicaEngine.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "10abb8d8d0237ec8d7b39c77d80cc3435937be28db349d320a9eb36e957d0b17"
+    },
+    "copy.error.f39021f401d6": {
+      "category": "Error",
+      "context": "0.0.1/Sources/TogetherCore/Synchronization/ReplicaEngine.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "f39021f401d63f012d4007a1c8682a7df88e4433afa78197b7407399487d10e0"
+    },
+    "copy.error.9dfbef876584": {
+      "category": "Error",
+      "context": "0.0.1/Sources/TogetherCore/Synchronization/ReplicaEngine.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "9dfbef876584b8ce0c4ce65c547596ddc1a6917e7d0da5e45a0284ed2828e42e"
+    },
+    "copy.error.b3dc19939872": {
+      "category": "Error",
+      "context": "0.0.1/Sources/TogetherCore/Synchronization/ReplicaEngine.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "b3dc1993987262d2eb85633cfe58146fa2c12fe24d96e1ea8d799521483e06b7"
+    },
+    "copy.error.7187d4f67320": {
+      "category": "Error",
+      "context": "0.0.1/Sources/TogetherCore/Synchronization/Projector.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "7187d4f67320898a32cdb1065ce44ed1833d5eacc1437c1a220ebeff9638e07c"
+    },
+    "copy.error.bc0dfeab7ee4": {
+      "category": "Error",
+      "context": "0.0.1/Sources/TogetherCore/Synchronization/Projector.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "bc0dfeab7ee4048ac10e4db2b912d2a42383a4ab15fa45da2ef15dff56c14533"
+    },
+    "copy.error.3d3054c36e6d": {
+      "category": "Error",
+      "context": "0.0.1/Sources/TogetherCore/Synchronization/Projector.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "3d3054c36e6dc0642c566b47aebc26899c073653a0b11112be83e315e7bfb926"
+    },
+    "copy.error.90a1871c6212": {
+      "category": "Error",
+      "context": "0.0.1/Sources/TogetherCore/Synchronization/Projector.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "90a1871c621213a4b81e30a726526775653575f863ed75692eb3f25f549c0f74"
+    },
+    "copy.error.13426e0cbffb": {
+      "category": "Error",
+      "context": "0.0.1/Sources/TogetherCore/Networking/PeerService.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "13426e0cbffba47fb53c37df7252690852350626bfb562259ae3d96dfeda5315"
+    },
+    "copy.error.e720b5e93f34": {
+      "category": "Error",
+      "context": "0.0.1/Sources/TogetherCore/Networking/PeerService.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "e720b5e93f34217e15664eeffcbb2f1f98d84794602c3c8a4b0ebc1ece424cd6"
+    },
+    "copy.error.a23516e042fa": {
+      "category": "Error",
+      "context": "0.0.1/Sources/TogetherCore/Networking/PeerService.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "a23516e042fa132f3901deb5b8d178407b4f60eb214d8734a7f867fb12fa2ef9"
+    },
+    "copy.error.3dcfa2668f3f": {
+      "category": "Error",
+      "context": "0.0.1/Sources/TogetherCore/Networking/PeerService.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "3dcfa2668f3fc762a970d32bcc515368fe5f27013992a757db58547a0a635465"
+    },
+    "copy.error.ed91b063c711": {
+      "category": "Error",
+      "context": "0.0.1/Sources/TogetherCore/Networking/PeerService.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "ed91b063c711880af1d85a367b6a59891d7e6ed8916ad1031980954e7f8f4cf5"
+    },
+    "copy.error.131e158009bb": {
+      "category": "Error",
+      "context": "0.0.1/Sources/TogetherCore/Networking/PeerService.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "131e158009bbf35289f1632c4a207c64a97790c12b10c9ac4ba7ac965cafd6be"
+    },
+    "copy.error.f459dd8f6b10": {
+      "category": "Error",
+      "context": "0.0.1/Sources/TogetherCore/Networking/PeerService.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "f459dd8f6b104f9d06f52fe0e748f802b7d64d0896828c688d72fae1678d03e6"
+    },
+    "copy.error.0d3785894f32": {
+      "category": "Error",
+      "context": "0.0.1/Sources/TogetherCore/Networking/PeerService.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "0d3785894f3265d631cc366789e234ec8766ad4fb78081a4e1348d4fe12e0ac3"
+    },
+    "copy.error.6d1b80ef0dbf": {
+      "category": "Error",
+      "context": "0.0.1/Sources/TogetherCore/Networking/PeerService.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "6d1b80ef0dbf78ca79ff591af09dada763a514667c25723342118a176d24cd8d"
+    },
+    "copy.error.87e5c62d9ed5": {
+      "category": "Error",
+      "context": "0.0.1/Sources/TogetherCore/Networking/PeerService.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "87e5c62d9ed5f546841f1403f849eacad3e814838db0d932c33fbf97a6439e37"
+    },
+    "copy.error.1a248a72dc76": {
+      "category": "Error",
+      "context": "0.0.1/Sources/TogetherCore/Networking/PeerService.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "1a248a72dc76d8b13dea0a779004210b30bab053e8605f4940cc5402fc5c17a8"
+    },
+    "copy.error.4e3a074f1822": {
+      "category": "Error",
+      "context": "0.0.1/Sources/TogetherCore/Networking/SyncTransport.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "4e3a074f182200bef6b70c942f44c4cdfdc4cccc0e36b8f789a5abe057f5a8dc"
+    },
+    "copy.error.32068192f569": {
+      "category": "Error",
+      "context": "0.0.1/Sources/TogetherCore/Networking/SyncTransport.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "32068192f5696bdc4a60579f66832f7a419fb7e028d2741721dd1dd33c744121"
+    },
+    "copy.error.c71af0e23a33": {
+      "category": "Error",
+      "context": "0.0.1/Sources/TogetherCore/Networking/SyncTransport.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "c71af0e23a339fc376f989cb301e696ffc9989065d5e9d642657cd5f8d62788b"
+    },
+    "copy.error.99e51d775e05": {
+      "category": "Error",
+      "context": "0.0.1/Sources/TogetherCore/Networking/SyncTransport.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "99e51d775e05aaa0abef46476cd8695ffa7bd48d2ec66651b014ea472c9576ff"
+    },
+    "copy.error.5de002320d44": {
+      "category": "Error",
+      "context": "0.0.1/Sources/TogetherCore/Networking/SyncTransport.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "5de002320d442f5bb230632a7066078748b709db243ca885f096beee7be53858"
+    },
+    "copy.error.3df54032c0e6": {
+      "category": "Error",
+      "context": "0.0.1/Sources/TogetherCore/Networking/SyncTransport.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "3df54032c0e643df7f71499f7a83554c97fdcf300b07b92c801d525a8e471654"
+    },
+    "copy.error.4f82626d4550": {
+      "category": "Error",
+      "context": "0.0.1/Sources/TogetherCore/Networking/OperationLogSyncSession.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "4f82626d45500f1580b44d1aa10a1ddf62aed4d6fb04be51ccf638fb13421514"
+    },
+    "copy.error.b4c3e6bb90c0": {
+      "category": "Error",
+      "context": "0.0.1/Sources/TogetherCore/Networking/OperationLogSyncSession.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "b4c3e6bb90c05e877fb13141e6481987dfcb7b729803ad6d09e365a72d30b828"
+    },
+    "copy.error.b9a05e7703e0": {
+      "category": "Error",
+      "context": "0.0.1/Sources/TogetherCore/Networking/OperationLogSyncSession.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "b9a05e7703e0fb4f8e7c41ded549946f7f4f9b6c5697bf5e9f068cd01df5f486"
+    },
+    "copy.error.6f3929a4168f": {
+      "category": "Error",
+      "context": "0.0.1/Sources/TogetherCore/Networking/OperationLogSyncSession.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "6f3929a4168f66d98db8109ea2e65a8293ac02ac0f0c4490d72f6c90d025018c"
+    },
+    "copy.error.cb489af1d4f7": {
+      "category": "Error",
+      "context": "0.0.1/Sources/TogetherCore/Networking/OperationLogSyncSession.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "cb489af1d4f7fad9c9cb67c86a75cbaa7dc88bed0c6f6ba0fe3bed5a36e282d4"
+    },
+    "copy.error.4ae3bb8028b1": {
+      "category": "Error",
+      "context": "0.0.1/Sources/TogetherCore/Networking/OperationLogSyncSession.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "4ae3bb8028b1572d023c5121f7cb34f7dd0642cd57038bb26696639fc8209fad"
+    },
+    "copy.error.86b11800f661": {
+      "category": "Error",
+      "context": "0.0.1/Sources/TogetherCore/Networking/OperationLogSyncSession.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "86b11800f661373c8e074561cddfde3db9952b9ccfae4646525510760d184c47"
+    },
+    "copy.error.4a35195eabf0": {
+      "category": "Error",
+      "context": "0.0.1/Sources/TogetherCore/Networking/WireProtocol.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "4a35195eabf0e477d414e1b370d6df8f09909179c98989c17ae4df66da2726bd"
+    },
+    "copy.error.b6b84daef222": {
+      "category": "Error",
+      "context": "0.0.1/Sources/TogetherCore/Networking/WireProtocol.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "b6b84daef222b90291bfe390e2cd73ca695268d4d5bc581d5efe5e7892356caf"
+    },
+    "copy.error.ad7fe3539a96": {
+      "category": "Error",
+      "context": "0.0.1/Sources/TogetherCore/Networking/WireProtocol.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "ad7fe3539a96a057d5a07028bb565fb8e9326bd6db0202c2c14e39bcb6bb0dd1"
+    },
+    "copy.error.eb6f75e7a5e4": {
+      "category": "Error",
+      "context": "0.0.1/Sources/TogetherCore/Networking/WireProtocol.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "eb6f75e7a5e4027ac91d54cbc929a85446eeb8b24b007ee95e3e9a8b8baf5e09"
+    },
+    "copy.error.1c08ba569027": {
+      "category": "Error",
+      "context": "0.0.1/Sources/TogetherCore/Networking/WireProtocol.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "1c08ba56902737a2fe7b370b3d1e01ae9c238658f7c7a1a4c724b7d2af5d6ea1"
+    },
+    "copy.error.44c1b6033067": {
+      "category": "Error",
+      "context": "0.0.1/Sources/TogetherCore/Networking/WireProtocol.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "44c1b6033067fdc7390d0630ceba226bf7244e155637a9ebead63fdbc401d854"
+    },
+    "copy.error.0f7bf987d382": {
+      "category": "Error",
+      "context": "0.0.1/Sources/TogetherCore/Networking/WireProtocol.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "0f7bf987d3824d893605831b7e0bd3210bf613f55f73cdf6e69ab2a2d726194c"
+    },
+    "copy.error.0a7d59aa530e": {
+      "category": "Error",
+      "context": "0.0.1/Sources/TogetherCore/Networking/Relay/RelayCrypto.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "0a7d59aa530ebbfa54d8a506cb3bcf2be80e7ed30ec4bf422cf47e2cb77183eb"
+    },
+    "copy.error.91f104dcd050": {
+      "category": "Error",
+      "context": "0.0.1/Sources/TogetherCore/Networking/Relay/RelayCrypto.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "91f104dcd050df5435aeffa0c7393a3f1ec431ed0e77bf2e1877e0a3a1069998"
+    },
+    "copy.error.c9b56a8dcd51": {
+      "category": "Error",
+      "context": "0.0.1/Sources/TogetherCore/Networking/Relay/RelayCrypto.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "c9b56a8dcd51e5ceabab7aca6df5023bc55d64cf88dad7aeac80ad2d32a716e2"
+    },
+    "copy.error.1bb768d4d83d": {
+      "category": "Error",
+      "context": "0.0.1/Sources/TogetherCore/Networking/Relay/RelayCrypto.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "1bb768d4d83dfa826ca5f98d8137679bd0e0c96e12e85b12e0dd6b8da96f45a1"
+    },
+    "copy.error.079c79144a2f": {
+      "category": "Error",
+      "context": "0.0.1/Sources/TogetherCore/Networking/Relay/PairingService.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "079c79144a2f1ace52f9dfe71ee9cde80c85e1bd3584d6f1ed0d1dc59bf43c03"
+    },
+    "copy.error.c26239f9baf2": {
+      "category": "Error",
+      "context": "0.0.1/Sources/TogetherCore/Networking/Relay/PairingService.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "c26239f9baf25d639afb9135b2927a237fb3db2d143b727cb3cc75bd02abd87a"
+    },
+    "copy.error.23e90630fb77": {
+      "category": "Error",
+      "context": "0.0.1/Sources/TogetherCore/Networking/Relay/PairingService.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "23e90630fb7767e65070d216a1454ebafbb39059ae0b0a20ea3e9228b0c1b323"
+    },
+    "copy.error.1e116ef339c5": {
+      "category": "Error",
+      "context": "0.0.1/Sources/TogetherCore/Networking/Relay/PairingService.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "1e116ef339c5db701f1af221c6c31ece0d562586cddca33857308a14b02a0b58"
+    },
+    "copy.error.92daf69006a1": {
+      "category": "Error",
+      "context": "0.0.1/Sources/TogetherCore/Networking/Relay/PairingService.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "92daf69006a1be0ceebdfcadd67c7c07be34b3bd1245443902bdd47fe5e68321"
+    },
+    "copy.error.3ec52db5902b": {
+      "category": "Error",
+      "context": "0.0.1/Sources/TogetherCore/Networking/Relay/PairingService.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "3ec52db5902b3d402f374d784568f327c4ef5eeaa060dfbd43dd82f7464a445e"
+    },
+    "copy.error.a23d12dc2813": {
+      "category": "Error",
+      "context": "0.0.1/Sources/TogetherCore/Networking/Relay/PairingService.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "a23d12dc2813abcc96059e4b5756fb5683ecf6148ea9a2344bf46ff2cff85f2f"
+    },
+    "copy.error.a82bbbd12564": {
+      "category": "Error",
+      "context": "0.0.1/Sources/TogetherCore/Networking/Relay/PairingService.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "a82bbbd12564dad9977b8d6664799f5403282640cabec2504531dc6e83da2ddf"
+    },
+    "copy.error.74c3af7a9477": {
+      "category": "Error",
+      "context": "0.0.1/Sources/TogetherCore/Networking/Relay/PairingService.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "74c3af7a9477a0ef336d1e9bbf07a20d3e02a744ce3a4ee0fdaca3001de65e18"
+    },
+    "copy.error.e380dafc9f31": {
+      "category": "Error",
+      "context": "0.0.1/Sources/TogetherCore/Networking/Relay/PairingService.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "e380dafc9f31b1f8150c10b7d4b94082d958a50f1ee1d4b639c7b35eea66453f"
+    },
+    "copy.error.ac046ade4c99": {
+      "category": "Error",
+      "context": "0.0.1/Sources/TogetherCore/Networking/Relay/PairingService.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "ac046ade4c99a3d7afdf1395eea84ff3739da311ce0d197f70899b7157c5e55f"
+    },
+    "copy.error.6ec90dcd380a": {
+      "category": "Error",
+      "context": "0.0.1/Sources/TogetherCore/Networking/Relay/RelayAPI.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "6ec90dcd380aee5b5558197555396ffc412ad69f79a7bb12e08e599b22167a2a"
+    },
+    "copy.error.ade4756a0885": {
+      "category": "Error",
+      "context": "0.0.1/Sources/TogetherCore/Networking/Relay/RelayAPI.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "ade4756a0885027ebaa8c088cb5242044f95b29ed3a4cabf94b1527ea9275f1e"
+    },
+    "copy.error.394ef482e899": {
+      "category": "Error",
+      "context": "0.0.1/Sources/TogetherCore/Networking/Relay/RelayAPI.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "394ef482e8993120ceebcb26e630a388ac4699994f49f71545aedd33ad899e4d"
+    },
+    "copy.error.d517f113ea56": {
+      "category": "Error",
+      "context": "0.0.1/Sources/TogetherCore/Networking/Relay/RelayAPI.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "d517f113ea561ed8330814920bd8c45b17f24d9176cc1ed4f2f379a34c74e4b2"
+    },
+    "copy.error.4cc53cafce9b": {
+      "category": "Error",
+      "context": "0.0.1/Sources/TogetherCore/Networking/Relay/RelayAPI.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "4cc53cafce9b1902ea417661a245336b22c669b7dca4b5bf8253a78f7e43ef82"
+    },
+    "copy.error.183f34eaecaa": {
+      "category": "Error",
+      "context": "0.0.1/Sources/TogetherCore/Networking/Relay/RelayAPI.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "183f34eaecaaac38fb4d8b580addc5deedb0db4407b404b4f1bd351481b3a3e5"
+    },
+    "copy.status.39c57cab3717": {
+      "category": "Status",
+      "context": "0.0.1/Sources/TogetherCore/Models/Identity.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "39c57cab37176b65473a6ec4fc99e83125439dfbf90fc6cf2be9a4ed4bdedddf"
+    },
+    "copy.error.fecb75aa6313": {
+      "category": "Error",
+      "context": "0.0.1/Sources/TogetherCore/Models/AvatarProcessor.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "fecb75aa6313bde605474d271d6738979d007e49f01a222fa1fcc4c997f93696"
+    },
+    "copy.error.cf2221ca27c2": {
+      "category": "Error",
+      "context": "0.0.1/Sources/TogetherCore/Models/AvatarProcessor.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "cf2221ca27c2dc1c53445976a6dd8d73f9f7b23aa37d9357042c0e5200fd17df"
+    },
+    "copy.error.b8661cfa7d6d": {
+      "category": "Error",
+      "context": "0.0.1/Sources/TogetherCore/Models/AvatarProcessor.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "b8661cfa7d6d10fe56a869d43a2eacccdd955560ebc1948c3e295bf4590cb548"
+    },
+    "copy.error.f7fc8d38ad57": {
+      "category": "Error",
+      "context": "0.0.1/Sources/TogetherCore/Wishes/WishProjector.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "f7fc8d38ad573ecc2f470e0109f5d90afbc163b95aea5bd52ce71578a78632d4"
+    },
+    "copy.error.2cac0c2b75a0": {
+      "category": "Error",
+      "context": "0.0.1/Sources/TogetherCore/Wishes/WishProjector.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "2cac0c2b75a05adb3f1e38e5130726dafd0e4b6081d065292b42430cc27c432c"
+    },
+    "copy.error.25ca0067a317": {
+      "category": "Error",
+      "context": "0.0.1/Sources/TogetherCore/Wishes/WishProjector.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "25ca0067a317df6ed0daadd34df9648e2e2f597607def33580df56097d09be80"
+    },
+    "copy.error.96926fae02a3": {
+      "category": "Error",
+      "context": "0.0.1/Sources/TogetherCore/Wishes/WishProjector.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "96926fae02a3cd2bd6b954d5da194c536587178f104c815827d3dbfe6c97cd23"
+    },
+    "copy.error.9f0b823c8528": {
+      "category": "Error",
+      "context": "0.0.1/Sources/TogetherCore/Wishes/WishProjector.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "9f0b823c85287d044e4333fabaf2c47fca45d5bf064346e6a590580adce45337"
+    },
+    "copy.error.fd385fcd0bf8": {
+      "category": "Error",
+      "context": "0.0.1/Sources/TogetherCore/Wishes/WishProjector.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "fd385fcd0bf8a53576ed9ec58e401cd66c1847c2f5093fbb17bb2e958c6ad515"
+    },
+    "copy.error.8e322a238953": {
+      "category": "Error",
+      "context": "0.0.1/Sources/TogetherCore/Wishes/WishProjector.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "8e322a238953428099bee5663fc7e73741db0a25897aa15e968b1f1a20bc4d66"
+    },
+    "copy.error.8dea963dccc2": {
+      "category": "Error",
+      "context": "0.0.1/Sources/TogetherCore/Wishes/WishProjector.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "8dea963dccc27cc01e241a5f77a0658443a04e7627913415a0a9c43a25527cdf"
+    },
+    "copy.error.6031747cf298": {
+      "category": "Error",
+      "context": "0.0.1/Sources/TogetherCore/Wishes/WishProjector.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "6031747cf298860af49ca4415717dc296ebaead23e21c02ee136e2d9b91a75ad"
+    },
+    "copy.error.780d3e6eefe5": {
+      "category": "Error",
+      "context": "0.0.1/Sources/TogetherCore/Wishes/WishProjector.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "780d3e6eefe57688054ce6259c2f2a4d3746cc25e548c2506e12f43bf025150a"
+    },
+    "copy.error.e318bd530064": {
+      "category": "Error",
+      "context": "0.0.1/Sources/TogetherCore/Wishes/WishProjector.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "e318bd530064f137926cfe33c86399c8c14e7e4428533eaccb2a3b8afb48c270"
+    },
+    "copy.error.258efd44ba1b": {
+      "category": "Error",
+      "context": "0.0.1/Sources/TogetherCore/Wishes/WishProjector.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "258efd44ba1b3da24b882588928086247da472105cc537077862db6e18ddf3ea"
+    },
+    "copy.error.37cd9c49b83e": {
+      "category": "Error",
+      "context": "0.0.1/Sources/TogetherCore/Wishes/WishProjector.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "37cd9c49b83e9375d8d41db9bba91e88ef1777d214af9155cb0d267098851aee"
+    },
+    "copy.error.77bc37901b5c": {
+      "category": "Error",
+      "context": "0.0.1/Sources/TogetherCore/Gifts/GiftProjector.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "77bc37901b5c903dbb3455db750cedb061b82c6d334beabafa15c069c2a3919c"
+    },
+    "copy.error.eeddcecb3dd8": {
+      "category": "Error",
+      "context": "0.0.1/Sources/TogetherCore/Gifts/GiftProjector.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "eeddcecb3dd89e67cfa0b55e3426a28bcb148d344212240fccd7da2635df3359"
+    },
+    "copy.error.0382006d422c": {
+      "category": "Error",
+      "context": "0.0.1/Sources/TogetherCore/Gifts/GiftProjector.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "0382006d422c10f2ebdb7134f548e0badabf433bd1fb1ccaf06f97f21165e69a"
+    },
+    "copy.error.1c7c0658a09a": {
+      "category": "Error",
+      "context": "0.0.1/Sources/TogetherCore/Gifts/GiftProjector.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "1c7c0658a09af0a26d31e2f8aae79fefb7e0c846b37fed00f868c620f32094e9"
+    },
+    "copy.error.ab36ada08e6f": {
+      "category": "Error",
+      "context": "0.0.1/Sources/TogetherCore/Gifts/GiftProjector.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "ab36ada08e6f10fc4af3465f1bc845fe342936edb370096d41dcdbb54589e640"
+    },
+    "copy.error.d6baa26d4409": {
+      "category": "Error",
+      "context": "0.0.1/Sources/TogetherCore/Gifts/GiftProjector.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "d6baa26d440935056ba1e491e445ff96633401cbfde6885ad523c2152f6a252f"
+    },
+    "copy.error.250dc8567eab": {
+      "category": "Error",
+      "context": "0.0.1/Sources/TogetherCore/Gifts/GiftProjector.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "250dc8567eab1507886f9585a5061d0948e701fc8b685985d784b42f385d23fb"
+    },
+    "copy.status.492c7e8b42f9": {
+      "category": "Status",
+      "context": "0.0.1/Sources/TogetherCore/Persistence/Repository.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "492c7e8b42f9036420f73c3a9c62fc322d083817f761e6a4767411a4230bf52c"
+    },
+    "copy.error.90bff42b45e2": {
+      "category": "Error",
+      "context": "0.0.1/Sources/TogetherCore/Persistence/Repository.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "90bff42b45e2f4cd482f98afcc4d53c7366af7f61866efc461325f4f3ccdee77"
+    },
+    "copy.error.1bca9cc1647a": {
+      "category": "Error",
+      "context": "0.0.1/Sources/TogetherCore/Media/MediaStore.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "1bca9cc1647a8a262bedc0b5a1b9118bb563cbd1b337e9155b9094511c25d73a"
+    },
+    "copy.error.7511cf1b701d": {
+      "category": "Error",
+      "context": "0.0.1/Sources/TogetherCore/Media/MediaStore.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "7511cf1b701d6cc3bd2ea7e3ba7b5031bcb74204a71e1c18ff299751674e5cc3"
+    },
+    "copy.error.06bc40c441d3": {
+      "category": "Error",
+      "context": "0.0.1/Sources/TogetherCore/Media/MediaStore.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "06bc40c441d38d3ed7e5bee429691ec8c5447bb064adda6337112d6fbfc796b0"
+    },
+    "copy.error.c5029ed5d755": {
+      "category": "Error",
+      "context": "0.0.1/Sources/TogetherCore/Media/MediaStore.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "c5029ed5d755187c35848ea01279fa3c14cc422f7c97f79fb69c5924dfb152c0"
+    },
+    "copy.error.98ff4fdf8cf2": {
+      "category": "Error",
+      "context": "0.0.1/Sources/TogetherCore/Media/MediaStore.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "98ff4fdf8cf2bfeeef294167237574227391146efdd0c1605c36325e0a82836b"
+    },
+    "copy.error.e2faaefef7e8": {
+      "category": "Error",
+      "context": "0.0.1/Sources/TogetherCore/Media/MediaStore.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "e2faaefef7e8522b69e3d6b09be8665369a3e98aa30aa7e4adf327d9c9bfa350"
+    },
+    "copy.error.5287af4a4345": {
+      "category": "Error",
+      "context": "0.0.1/Sources/TogetherCore/Media/MediaStore.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "5287af4a4345c30f737830330303473f3f1e530b205216dfc765b6993831316e"
+    },
+    "copy.error.6c5330714a37": {
+      "category": "Error",
+      "context": "0.0.1/Sources/TogetherCore/Media/MediaStore.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "6c5330714a3764587f6fa100bc7e1738f3d6356567643fa8356372c74c0c1d5b"
+    },
+    "copy.error.b8ab045b7f84": {
+      "category": "Error",
+      "context": "0.0.1/Sources/TogetherCore/Media/MediaStore.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "b8ab045b7f84364555c8a2bc978c79b996712d9a18964c658e5e95aca522de28"
+    },
+    "copy.error.4a1aecaaf6c6": {
+      "category": "Error",
+      "context": "0.0.1/Sources/TogetherCore/Media/MediaStore.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "4a1aecaaf6c6e700fda402687fba45970e3194bbafd665fef29e772472b9eaec"
+    },
+    "copy.error.2791905de686": {
+      "category": "Error",
+      "context": "0.0.1/Sources/TogetherCore/Media/MediaStore.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "2791905de6866ba8e83a2e0d2bc7d7fbb55f157e9ab47b863ef71837efb1ad20"
+    },
+    "copy.error.8d99c018911d": {
+      "category": "Error",
+      "context": "0.0.1/Sources/TogetherCore/Media/MediaStore.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "8d99c018911dbb24d973e293a186407b4bb36e07f3b80fafcdda33263dd69be5"
+    },
+    "copy.error.fd52798bb6ae": {
+      "category": "Error",
+      "context": "0.0.1/Sources/TogetherCore/Media/MediaStore.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "fd52798bb6ae2916981d80802a2cce765c85983577c9eefbd507e85d5234e063"
+    },
+    "copy.error.d6070f8f98bc": {
+      "category": "Error",
+      "context": "0.0.1/Sources/TogetherCore/Media/MediaStore.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "d6070f8f98bcb5a4480e5ecf0cd1126cf628fd46aee40ee8310e1ac9a7c0bbcf"
+    },
+    "copy.error.0dba6065a98e": {
+      "category": "Error",
+      "context": "0.0.1/Sources/TogetherCore/Media/MediaStore.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "0dba6065a98e8e3f795cf82398660581115a344986c8aeb421720deafddd4829"
+    },
+    "copy.error.8082ff966e43": {
+      "category": "Error",
+      "context": "0.0.1/Sources/TogetherCore/Media/MediaStore.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "8082ff966e436d938d92af8ff65393528fcb4646a5e18e0ed1142f41b3adc315"
+    },
+    "copy.error.49c38693e018": {
+      "category": "Error",
+      "context": "0.0.1/Sources/TogetherCore/Media/MediaStore.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "49c38693e018d525587a5a36e176c15100e535d6d5ddc5ec1cfd4462d6cf066b"
+    },
+    "copy.error.ba11f6786c12": {
+      "category": "Error",
+      "context": "0.0.1/Sources/TogetherCore/Media/MediaStore.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "ba11f6786c12ce0777e153a288574a519880c89af6bed957b5756d1ca8d26877"
+    },
+    "copy.error.a11b49b139cc": {
+      "category": "Error",
+      "context": "0.0.1/Sources/TogetherCore/Media/MediaStore.swift",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "a11b49b139cc1b3f4476203c288a59a9987bc1dfb1c6e57bddcca27a16ef2fc7"
+    },
+    "role.boyfriend": {
+      "category": "Status",
+      "context": "User-approved relationship copy",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "61d855988b03a0a1bc07b991ec72d47085e6442fcc62b1aadd4ed317bd0e031a"
+    },
+    "role.girlfriend": {
+      "category": "Status",
+      "context": "User-approved relationship copy",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "361ff71a23e1ab0ecdbbd49f8694fbb4d85f7b4c0d9f2809092d3b281240e03c"
+    },
+    "role.unknown": {
+      "category": "Status",
+      "context": "User-approved relationship copy",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "2f5f1d6fbfb061ed02def5f4a3a151303da034681e38179744c7d1b1401f1caf"
+    },
+    "role.affection.boyfriend": {
+      "category": "Status",
+      "context": "User-approved relationship copy",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "d65eca6f59c7de9e89f318c6e6e4b5fffa0993da5848b93b04630828757218d2"
+    },
+    "role.affection.girlfriend": {
+      "category": "Status",
+      "context": "User-approved relationship copy",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "077d6cd5afbde31100098b06d4869b9269b8bb231fe75f21e51fdc22b3abfb67"
+    },
+    "role.pronoun.boyfriend": {
+      "category": "Status",
+      "context": "User-approved relationship copy",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "8b7b91e0001c6971c65812693c87ee82229fe846648a544419c3b19473173d3f"
+    },
+    "role.pronoun.girlfriend": {
+      "category": "Status",
+      "context": "User-approved relationship copy",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "2ab425e0c6b932cbcf03e5394ad2ec49eefb1d10ed3740e6d3c6eaade71233c6"
+    },
+    "gift.prompt.unknown": {
+      "category": "Emotional",
+      "context": "User-approved relationship copy",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "a248339fcf7be73c7e5c33e1bea369e0dfb4fc049202202a19d7e87725760dbd"
+    },
+    "gift.prompt.known": {
+      "category": "Emotional",
+      "context": "User-approved relationship copy",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "851182ed6b640d1ca712af81a33664afe380df85f6d5c277e36a267fab21bddc"
+    },
+    "gift.title.unknown.text": {
+      "category": "Emotional",
+      "context": "User-approved relationship copy",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "8935db691b300c89f790d74e85f8fe291274138ac87909e8e370410e2877cdd1"
+    },
+    "gift.title.unknown.attachment": {
+      "category": "Emotional",
+      "context": "User-approved relationship copy",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "a4cd1e0dd2339916d43a0a1d0dc1c06fe753d9256ae84588c583c98922e25ce4"
+    },
+    "gift.title.known.text": {
+      "category": "Emotional",
+      "context": "User-approved relationship copy",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "6649544e239156ea73caf9fc920c9a3a0c593de7b11daebdc4ad4368f3b57777"
+    },
+    "gift.title.known.attachment": {
+      "category": "Emotional",
+      "context": "User-approved relationship copy",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "84bfc23d9c5707df3a168d255b4abe485163cd759b560051b49623cc62e49474"
+    },
+    "gift.intro.unknown": {
+      "category": "Emotional",
+      "context": "User-approved relationship copy",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "9c54adea41d414cda8d0d624e4e096782b5b35fbff1fabdb7696e7f73676587a"
+    },
+    "gift.intro.known": {
+      "category": "Emotional",
+      "context": "User-approved relationship copy",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "60d61a30bf5f100d9fe109b168d200b33e56018fde5a7975b6c8adf6aabdbff9"
+    },
+    "gift.avatar.unknown": {
+      "category": "Emotional",
+      "context": "User-approved relationship copy",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "32bbd2ca828e77d16c61e044636148bdd83c65d225191e21e595c2b61be74224"
+    },
+    "gift.avatar.known": {
+      "category": "Emotional",
+      "context": "User-approved relationship copy",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "d32f0f19499640b8a0db2d6895fa903b84e343e693f984b64d0f8bcd3429c4d8"
+    },
+    "gift.ending.unknown": {
+      "category": "Emotional",
+      "context": "User-approved relationship copy",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "e897ce0b55cf65fcd5a1ed9dc4660d2b185858e572db489ce360228424124928"
+    },
+    "gift.ending.known": {
+      "category": "Emotional",
+      "context": "User-approved relationship copy",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "eb753175f3592f33160b2a7ba647db75a0eea9695c651fd9e66b11631a09ec10"
+    },
+    "copy.navigation.262f6f609a46": {
+      "category": "Navigation",
+      "context": "Release notes",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "262f6f609a466a24f8ff26fe7c214ac4cf2592474f9e235708fd1f2f5c4c8dd3"
+    },
+    "copy.guidance.794e033239cb": {
+      "category": "Guidance",
+      "context": "Release notes",
+      "review": "review_required",
+      "reason": "Existing product inventory; long guidance requires human copy review.",
+      "textSHA256": "794e033239cbb41f5fce09daa661b1be02965382f7d045bc371d4db3b6fc6a76"
+    },
+    "copy.navigation.9a9a3b610caa": {
+      "category": "Navigation",
+      "context": "Release notes",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "9a9a3b610caaf88c008b3657027c421b8970d017db2f7db58e067f992f3e3da4"
+    },
+    "copy.guidance.7a19a9a8be8c": {
+      "category": "Guidance",
+      "context": "Release notes",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "7a19a9a8be8c8646f37939e7d566798c7b23e2722c740131470a291e720cccc4"
+    },
+    "copy.guidance.0499ce373e16": {
+      "category": "Guidance",
+      "context": "Release notes",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "0499ce373e16c77a0826756026b0830cf205220dc2ba6097cd0870c83362eba0"
+    },
+    "copy.navigation.ffa265da5685": {
+      "category": "Navigation",
+      "context": "Release notes",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "ffa265da568523037020748dab6840b89b4f781690c711c34142ad307963ebcd"
+    },
+    "copy.guidance.34fd9adbfb04": {
+      "category": "Guidance",
+      "context": "Release notes",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "34fd9adbfb046eff5907c9076876649b9c0e8103424f840c05795e0ead49ab2a"
+    },
+    "copy.navigation.340939c9078a": {
+      "category": "Navigation",
+      "context": "Release notes",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "340939c9078af7ad87979f5e5808ce6173e9ee20e484a50055e65723d55aeaba"
+    },
+    "copy.guidance.bf06a49a28d0": {
+      "category": "Guidance",
+      "context": "Release notes",
+      "review": "review_required",
+      "reason": "Existing product inventory; long guidance requires human copy review.",
+      "textSHA256": "bf06a49a28d0f626c8060d486df9c95f9830e5d732ed194aad6cb72e16822f3c"
+    },
+    "copy.navigation.d772489d4bc7": {
+      "category": "Navigation",
+      "context": "Release notes",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "d772489d4bc75af6bf857dd28b798e30449774bb138b5cb1bbaeb9f204f4fda4"
+    },
+    "copy.guidance.6557cfb539f2": {
+      "category": "Guidance",
+      "context": "Release notes",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "6557cfb539f27b8e0e2f8dea050547fa40b37e6343f143331e2dc892f02d2ee0"
+    },
+    "copy.navigation.5b6f22c22862": {
+      "category": "Navigation",
+      "context": "Release notes",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "5b6f22c22862af3731c393424bb34976b93d22e132fa0894f4dfe6e0add1e58a"
+    },
+    "copy.guidance.c588ddd439e0": {
+      "category": "Guidance",
+      "context": "Release notes",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "c588ddd439e0d74ba7ee8b9948f15bb06353131622642da838624b2ef23d4cfc"
+    },
+    "copy.navigation.3d15d745fa90": {
+      "category": "Navigation",
+      "context": "Release notes",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "3d15d745fa9078a39b3b752d08f25735ce3a3ba6637821ec87a00bd88d8e0b37"
+    },
+    "copy.guidance.4dec32d6c19c": {
+      "category": "Guidance",
+      "context": "Release notes",
+      "review": "review_required",
+      "reason": "Existing product inventory; long guidance requires human copy review.",
+      "textSHA256": "4dec32d6c19cd7b0a276bd8ffe2cb2b9af81b8343cd91ae0f158f9e28182b2b9"
+    },
+    "copy.guidance.150668f089db": {
+      "category": "Guidance",
+      "context": "Release notes",
+      "review": "approved",
+      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
+      "textSHA256": "150668f089dbc43b2e63c180348f578ecf3047088c9405a6a9605579f25e0863"
+    },
+    "error.invalid_shared_timezone": {
+      "category": "Error",
+      "context": "Shared date validation",
+      "review": "approved",
+      "reason": "Existing validation error.",
+      "textSHA256": "2b7251c43f25fb1c1c4992df8b643267d06536400d03d400fb21b4c5d14120af"
+    },
+    "nav.home": {
+      "category": "Navigation",
+      "context": "Sidebar",
+      "review": "approved",
+      "reason": "Existing requested navigation.",
+      "textSHA256": "3a78695388b38b5cceefaf6796b0137877514593543b91af2752d5a17e3d736c"
+    },
+    "nav.tasks": {
+      "category": "Navigation",
+      "context": "Sidebar",
+      "review": "approved",
+      "reason": "Existing requested navigation.",
+      "textSHA256": "b3a60e61a5233d0506ac737405a2a45280349683cac68722f18d0b73eb495ef4"
+    },
+    "nav.upcoming": {
+      "category": "Navigation",
+      "context": "Sidebar",
+      "review": "approved",
+      "reason": "Existing requested navigation.",
+      "textSHA256": "5f1a2542e4e4ca5ed784e15fb756dbfc32f4b68ae08bc1d44f957761566c8c41"
+    },
+    "nav.wishes": {
+      "category": "Navigation",
+      "context": "Sidebar",
+      "review": "approved",
+      "reason": "Existing requested navigation.",
+      "textSHA256": "403cc21502ebdc1e5204b05b193d722bb4bf4fb8146ee0b0b71e8e111bd21ee3"
+    },
+    "nav.completed": {
+      "category": "Navigation",
+      "context": "Sidebar",
+      "review": "approved",
+      "reason": "Existing requested navigation.",
+      "textSHA256": "22a970d2e5b1cc233e462be7c7b64e135a275bb09d83d87683bf4236c43113a1"
+    },
+    "nav.connection": {
+      "category": "Navigation",
+      "context": "Sidebar",
+      "review": "approved",
+      "reason": "Existing requested navigation.",
+      "textSHA256": "639a40e82b9a96f0cbeed5f006cf5634c8d1b990b3c83753c00a910fc268d2a6"
+    },
+    "nav.settings": {
+      "category": "Navigation",
+      "context": "Sidebar",
+      "review": "approved",
+      "reason": "Existing requested navigation.",
+      "textSHA256": "74a883a037bc227f91891ab654a753d3a99f31ab06ae5b5d2b6e594a692b41f8"
+    },
+    "copy.guidance.1f0a01abb190": {
+      "category": "Guidance",
+      "context": "0.0.1/Sources/TogetherApp/Views/RootView.swift",
+      "review": "approved",
+      "reason": "Existing label, catalog migration only.",
+      "textSHA256": "1f0a01abb1908f192935d2bdbd32b9a7b9560ba4af2758c03209b6125548bbbc"
+    },
+    "copy.guidance.01b9bfedf5b1": {
+      "category": "Guidance",
+      "context": "0.0.1/Sources/TogetherApp/Views/Tasks/TaskEditorView.swift",
+      "review": "approved",
+      "reason": "Existing label, catalog migration only.",
+      "textSHA256": "01b9bfedf5b1471612411ca02dc7d9a26e0327609f8f5bb6a58a0d0b92eb7257"
+    },
+    "copy.guidance.1f29b74ad60c": {
+      "category": "Guidance",
+      "context": "0.0.1/Sources/TogetherApp/Views/Tasks/TaskEditorView.swift",
+      "review": "approved",
+      "reason": "Existing label, catalog migration only.",
+      "textSHA256": "1f29b74ad60c3ae180cd3b6f3faf95ba572d399da3137de56c729031896bcbae"
+    },
+    "copy.guidance.abb2240a2b17": {
+      "category": "Guidance",
+      "context": "0.0.1/Sources/TogetherApp/Views/Tasks/TasksView.swift",
+      "review": "approved",
+      "reason": "Existing label, catalog migration only.",
+      "textSHA256": "abb2240a2b17a1f92958a559fb685ac93ad9cbedf6cf1e25e2e6bfae6447d82a"
+    },
+    "copy.guidance.a318c24216de": {
+      "category": "Guidance",
+      "context": "0.0.1/Sources/TogetherApp/Views/Wishes/WishEditors.swift",
+      "review": "approved",
+      "reason": "Existing label, catalog migration only.",
+      "textSHA256": "a318c24216defe206feeb73ef5be00033fa9c4a74d0b967f6532a26ca5906d3b"
+    },
+    "copy.guidance.e275ab5889fc": {
+      "category": "Guidance",
+      "context": "0.0.1/Sources/TogetherApp/Views/Wishes/WishEditors.swift",
+      "review": "approved",
+      "reason": "Existing label, catalog migration only.",
+      "textSHA256": "e275ab5889fc312be45b927fff086b05c595047e36d086d12b3455ce15dcca9f"
+    },
+    "copy.guidance.0c6275143832": {
+      "category": "Guidance",
+      "context": "0.0.1/Sources/TogetherApp/Views/Wishes/WishEditors.swift",
+      "review": "approved",
+      "reason": "Existing label, catalog migration only.",
+      "textSHA256": "0c6275143832371f4bd60bbdb725d0f115f54c6e4806d83fefc8f3db8e4859bb"
+    },
+    "copy.guidance.244e9103eea5": {
+      "category": "Guidance",
+      "context": "0.0.1/Sources/TogetherApp/Views/Gifts/GiftHistoryView.swift",
+      "review": "approved",
+      "reason": "Existing label, catalog migration only.",
+      "textSHA256": "244e9103eea530950d686183d0758a0a22bfb7a57c21f10cae1b770f95da6cc2"
+    },
+    "copy.guidance.1652b36ef8c9": {
+      "category": "Guidance",
+      "context": "0.0.1/Sources/TogetherApp/Views/Tasks/TaskEditorView.swift",
+      "review": "approved",
+      "reason": "Existing functional template, catalog migration only.",
+      "textSHA256": "1652b36ef8c968b38cb2f865e9c504369c1cef2d082f9252fb7331ce47ef8e1d"
+    },
+    "copy.guidance.18308177f358": {
+      "category": "Guidance",
+      "context": "0.0.1/Sources/TogetherApp/Views/Wishes/WishEditors.swift",
+      "review": "approved",
+      "reason": "Existing functional template, catalog migration only.",
+      "textSHA256": "18308177f35841d52f3aeb6809283634c72c6b0a6ef91a970daa3b038b4f11e5"
+    },
+    "copy.guidance.07f35068c6b0": {
+      "category": "Guidance",
+      "context": "0.0.1/Sources/TogetherApp/Views/Wishes/WishEditors.swift",
+      "review": "approved",
+      "reason": "Existing functional template, catalog migration only.",
+      "textSHA256": "07f35068c6b0e79f74acec657925ce3df74df9fc48a9fb738c70c0145af1839c"
+    },
+    "copy.guidance.0a1bb44784ae": {
+      "category": "Guidance",
+      "context": "0.0.1/Sources/TogetherApp/DesignSystem/TogetherTheme.swift",
+      "review": "approved",
+      "reason": "Existing accessibility/help copy.",
+      "textSHA256": "0a1bb44784ae424daa9e54ffe09dd1e39d80c20bff47a07f360b0bd8bb671f33"
+    },
+    "copy.guidance.91b5dcb6e512": {
+      "category": "Guidance",
+      "context": "0.0.1/Sources/TogetherApp/Views/Tasks/TasksView.swift",
+      "review": "approved",
+      "reason": "Existing accessibility/help copy.",
+      "textSHA256": "91b5dcb6e51257d398c0639175a3457a36217811146f49f04303792f452efe11"
+    },
+    "copy.guidance.cdbeaea998d1": {
+      "category": "Guidance",
+      "context": "0.0.1/Sources/TogetherApp/Views/Tasks/TasksView.swift",
+      "review": "approved",
+      "reason": "Existing accessibility/help copy.",
+      "textSHA256": "cdbeaea998d1c6a6697c45c551e2a2697664853037169aac9823f1164c63a11a"
+    },
+    "status.connection.unpaired": {
+      "category": "Status",
+      "context": "Existing UI enum/derived status and fallback",
+      "review": "approved",
+      "reason": "Existing factual status or neutral fallback moved to catalog; semantics unchanged.",
+      "textSHA256": "b78426f40a794c5d4f58849e51fbd9dd6373e475c3623d55987e3f3802190e72"
+    },
+    "status.connection.waiting": {
+      "category": "Status",
+      "context": "Existing UI enum/derived status and fallback",
+      "review": "approved",
+      "reason": "Existing factual status or neutral fallback moved to catalog; semantics unchanged.",
+      "textSHA256": "a0c7c957ce93f6d0ef21f2a423aa3c7d0de996828ce040b80860b5d29bc2931a"
+    },
+    "status.connection.connected": {
+      "category": "Status",
+      "context": "Existing UI enum/derived status and fallback",
+      "review": "approved",
+      "reason": "Existing factual status or neutral fallback moved to catalog; semantics unchanged.",
+      "textSHA256": "22965568d22a14ee17af055d2870b50afcfe9fd94a83eec3196e266932297bb2"
+    },
+    "status.connection.syncing": {
+      "category": "Status",
+      "context": "Existing UI enum/derived status and fallback",
+      "review": "approved",
+      "reason": "Existing factual status or neutral fallback moved to catalog; semantics unchanged.",
+      "textSHA256": "5c8b9e1ce0a2bc3181602873e9c5ec0208909539a46c5f1947427657b01a6713"
+    },
+    "status.connection.offline": {
+      "category": "Status",
+      "context": "Existing UI enum/derived status and fallback",
+      "review": "approved",
+      "reason": "Existing factual status or neutral fallback moved to catalog; semantics unchanged.",
+      "textSHA256": "a1794783aab72d205dc532b1170d1be63ebdce8816b57c21acb451c15dab969a"
+    },
+    "status.connection.error": {
+      "category": "Status",
+      "context": "Existing UI enum/derived status and fallback",
+      "review": "approved",
+      "reason": "Existing factual status or neutral fallback moved to catalog; semantics unchanged.",
+      "textSHA256": "54a0e8c17ebb21a11f8a25b8042786ef7efe52441e6cc87e92c67e0c4c0c6e78"
+    },
+    "status.gift.local": {
+      "category": "Status",
+      "context": "Existing UI enum/derived status and fallback",
+      "review": "approved",
+      "reason": "Existing factual status or neutral fallback moved to catalog; semantics unchanged.",
+      "textSHA256": "8c31e6e7223097e2e4847773c47a4efab6aaf79deeecc92a7759891c74976dde"
+    },
+    "status.gift.pendingSync": {
+      "category": "Status",
+      "context": "Existing UI enum/derived status and fallback",
+      "review": "approved",
+      "reason": "Existing factual status or neutral fallback moved to catalog; semantics unchanged.",
+      "textSHA256": "c1b0cbe131cd43be24264e3f4af2b277f125af12a46ba8f33118d33b73d1a559"
+    },
+    "status.gift.synced": {
+      "category": "Status",
+      "context": "Existing UI enum/derived status and fallback",
+      "review": "approved",
+      "reason": "Existing factual status or neutral fallback moved to catalog; semantics unchanged.",
+      "textSHA256": "5da22fe4f7ac1d40a15e2d1c3770f98e5344a0d3118d34feb7466e265224d048"
+    },
+    "status.media.local": {
+      "category": "Status",
+      "context": "Existing UI enum/derived status and fallback",
+      "review": "approved",
+      "reason": "Existing factual status or neutral fallback moved to catalog; semantics unchanged.",
+      "textSHA256": "8c31e6e7223097e2e4847773c47a4efab6aaf79deeecc92a7759891c74976dde"
+    },
+    "status.media.pending": {
+      "category": "Status",
+      "context": "Existing UI enum/derived status and fallback",
+      "review": "approved",
+      "reason": "Existing factual status or neutral fallback moved to catalog; semantics unchanged.",
+      "textSHA256": "331551b0de4157c9abc7b72b61b96a2a928fd6db3cdf029c1fc44b08ad633aa6"
+    },
+    "status.media.transferring": {
+      "category": "Status",
+      "context": "Existing UI enum/derived status and fallback",
+      "review": "approved",
+      "reason": "Existing factual status or neutral fallback moved to catalog; semantics unchanged.",
+      "textSHA256": "5e16e20d6e130f916eb84197c8b5c4cb5c3040cd7d9a51a9c26a29937c079fad"
+    },
+    "status.media.verified": {
+      "category": "Status",
+      "context": "Existing UI enum/derived status and fallback",
+      "review": "approved",
+      "reason": "Existing factual status or neutral fallback moved to catalog; semantics unchanged.",
+      "textSHA256": "4f7838402f37674e8ebedb6cf048c0aea66bacdb25607aa3eee4b53093d83f5c"
+    },
+    "status.media.failed": {
+      "category": "Status",
+      "context": "Existing UI enum/derived status and fallback",
+      "review": "approved",
+      "reason": "Existing factual status or neutral fallback moved to catalog; semantics unchanged.",
+      "textSHA256": "031a8f0f659df890dfd53c92e45295b0f14c997185bae46e168831e403b273f7"
+    },
+    "status.wish.open": {
+      "category": "Status",
+      "context": "Existing UI enum/derived status and fallback",
+      "review": "approved",
+      "reason": "Existing factual status or neutral fallback moved to catalog; semantics unchanged.",
+      "textSHA256": "4ae5ac1507bd206fb78adcf2e4ef316336397e9a1c704540010f7dcb3a91dc45"
+    },
+    "status.wish.requested": {
+      "category": "Status",
+      "context": "Existing UI enum/derived status and fallback",
+      "review": "approved",
+      "reason": "Existing factual status or neutral fallback moved to catalog; semantics unchanged.",
+      "textSHA256": "4bddd07b0ad0c35bec1e4f147cd966fc1a2f7543a570c31252abc4eebfdceb56"
+    },
+    "status.wish.fulfilled": {
+      "category": "Status",
+      "context": "Existing UI enum/derived status and fallback",
+      "review": "approved",
+      "reason": "Existing factual status or neutral fallback moved to catalog; semantics unchanged.",
+      "textSHA256": "c915704fcfa07ecb55289b486cfd685509343e88209e66bb6c32ef89a4f9cba9"
+    },
+    "status.wish.conflict": {
+      "category": "Status",
+      "context": "Existing UI enum/derived status and fallback",
+      "review": "approved",
+      "reason": "Existing factual status or neutral fallback moved to catalog; semantics unchanged.",
+      "textSHA256": "9a670a1bec4e4d157d680e3bf0a6f3f9f39109acfd1575fe034344aae2495163"
+    },
+    "status.member.other": {
+      "category": "Status",
+      "context": "Existing UI enum/derived status and fallback",
+      "review": "approved",
+      "reason": "Existing factual status or neutral fallback moved to catalog; semantics unchanged.",
+      "textSHA256": "b0f5eb18a569ce05299a9cc3444bb3708208620d113e73f993366fd7a12e8d62"
+    },
+    "status.profile.self": {
+      "category": "Status",
+      "context": "Existing UI enum/derived status and fallback",
+      "review": "approved",
+      "reason": "Existing factual status or neutral fallback moved to catalog; semantics unchanged.",
+      "textSHA256": "b70bb4acc0484cf040de4c07c60f9db722283da2c4a672c39291de621e92c33f"
+    },
+    "status.grant.total": {
+      "category": "Status",
+      "context": "Existing UI enum/derived status and fallback",
+      "review": "approved",
+      "reason": "Existing factual status or neutral fallback moved to catalog; semantics unchanged.",
+      "textSHA256": "91a6705d5caecacf3f32f5275722c6339337b3b8025e723d7b88e98f095b1610"
+    },
+    "status.grant.fulfilled": {
+      "category": "Status",
+      "context": "Existing UI enum/derived status and fallback",
+      "review": "approved",
+      "reason": "Existing factual status or neutral fallback moved to catalog; semantics unchanged.",
+      "textSHA256": "b7c6220ada3d1bc4d2365d306a468e5ad4f5df7cc2d432284d9bbb3d8dad0003"
+    },
+    "status.grant.remaining": {
+      "category": "Status",
+      "context": "Existing UI enum/derived status and fallback",
+      "review": "approved",
+      "reason": "Existing factual status or neutral fallback moved to catalog; semantics unchanged.",
+      "textSHA256": "f3e4352a5df650e5a198f98bba91af0e6d2102fe2a3d9825db4df85aebfbe39f"
+    },
+    "status.recurrence.day": {
+      "category": "Status",
+      "context": "Existing UI enum/derived status and fallback",
+      "review": "approved",
+      "reason": "Existing factual status or neutral fallback moved to catalog; semantics unchanged.",
+      "textSHA256": "944c27e5b97ab7793e4b6e9ff29384890ece0c7c04d2e2bf81c5f763469cc66b"
+    },
+    "status.recurrence.week": {
+      "category": "Status",
+      "context": "Existing UI enum/derived status and fallback",
+      "review": "approved",
+      "reason": "Existing factual status or neutral fallback moved to catalog; semantics unchanged.",
+      "textSHA256": "6df37daaa46ce714fa410768b63f415dfad094df33eb34ac1af332074fd15a1c"
+    },
+    "status.recurrence.month": {
+      "category": "Status",
+      "context": "Existing UI enum/derived status and fallback",
+      "review": "approved",
+      "reason": "Existing factual status or neutral fallback moved to catalog; semantics unchanged.",
+      "textSHA256": "a5c7d1719e284f2c9485405d44f62d152cde9e6ede83e1a79a2442b65f6a8735"
+    },
+    "setup.title.welcome": {
+      "category": "Navigation",
+      "context": "Existing setup heading or file processing status",
+      "review": "approved",
+      "reason": "Existing functional copy moved to catalog; no added promotional prose.",
+      "textSHA256": "0e2226b5235f0ff94a276eb4d07a3bfea74b7e3b8b85e9efca6c18430f041bf8"
+    },
+    "setup.title.role": {
+      "category": "Navigation",
+      "context": "Existing setup heading or file processing status",
+      "review": "approved",
+      "reason": "Existing functional copy moved to catalog; no added promotional prose.",
+      "textSHA256": "88e93ca740bc6ae5323ac2e5e7636aff3353ad5b9a14d05f1262eae0b2c65175"
+    },
+    "setup.title.profile": {
+      "category": "Navigation",
+      "context": "Existing setup heading or file processing status",
+      "review": "approved",
+      "reason": "Existing functional copy moved to catalog; no added promotional prose.",
+      "textSHA256": "502dd934cfd2673706805c6ac0b29212638c607284ea244a065105c4c2f1c896"
+    },
+    "setup.title.connect": {
+      "category": "Navigation",
+      "context": "Existing setup heading or file processing status",
+      "review": "approved",
+      "reason": "Existing functional copy moved to catalog; no added promotional prose.",
+      "textSHA256": "423eaa0fa56b2be386947be85241ac32216dace4e7a0afc7d216daf168ef31ed"
+    },
+    "setup.title.gift": {
+      "category": "Navigation",
+      "context": "Existing setup heading or file processing status",
+      "review": "approved",
+      "reason": "Existing functional copy moved to catalog; no added promotional prose.",
+      "textSHA256": "9052f4f6eba4e301d6f135a41ca09908563916767c2b4c3c16ebf18c1161d05f"
+    },
+    "status.media.savingOriginal": {
+      "category": "Status",
+      "context": "Existing setup heading or file processing status",
+      "review": "approved",
+      "reason": "Existing functional copy moved to catalog; no added promotional prose.",
+      "textSHA256": "2f673b8db68fa43a088e67ead3324ef97a454c89c50fc2039d2aa0d883de11d0"
+    },
+    "status.media.preview": {
+      "category": "Status",
+      "context": "Existing setup heading or file processing status",
+      "review": "approved",
+      "reason": "Existing functional copy moved to catalog; no added promotional prose.",
+      "textSHA256": "ba8b49f3fd10b338559a1b659696b17c69a9958cb3ab2e01a0a83985e3e75904"
+    },
+    "status.avatar.savingOriginal": {
+      "category": "Status",
+      "context": "Existing setup heading or file processing status",
+      "review": "approved",
+      "reason": "Existing functional copy moved to catalog; no added promotional prose.",
+      "textSHA256": "72e62820576573c7cabb13bec16ee1d4dd1c1f2dd84c83241e0cb95f02149016"
+    },
+    "status.profile.waitingPartner": {
+      "category": "Status",
+      "context": "Existing Home partner profile fallback",
+      "review": "approved",
+      "reason": "Factual existing state, moved to catalog",
+      "textSHA256": "a736ac6ed87558de594545b86f524853fb6658d3adbf2a9f7dd9511e9744fef5"
+    },
+    "status.profile.waitingSync": {
+      "category": "Status",
+      "context": "Existing Home paired profile missing",
+      "review": "approved",
+      "reason": "Factual existing state, moved to catalog",
+      "textSHA256": "dfd2edf9958f905037ccfb5c622aaa63d0a717c3bdc9a2af393e33f96aac8268"
+    },
+    "NSMicrophoneUsageDescription": {
+      "category": "Guidance",
+      "context": "App bundle microphone permission",
+      "review": "approved",
+      "reason": "Existing required privacy disclosure; retained verbatim.",
+      "budgetException": "System permission disclosure must explain purpose and destination.",
+      "textSHA256": "d171519abf353cb3ce1ff27d42639620f65edf2db9cb16ecceaed461e81c5fec"
+    },
+    "nav.plans": {
+      "category": "Navigation",
+      "context": "Left sidebar Plans entry and task workspace title; vertically above Wishes",
+      "review": "approved",
+      "reason": "User explicitly requested Plans and Wishes as two vertically stacked left sidebar entries.",
+      "textSHA256": "dfe8b2f0de26bb87c6d6066acf6668807a27d8270cc08ade10018769ee380101"
+    },
+    "plans.filter.pending": {
+      "category": "Navigation",
+      "context": "Unified task filter; exact user-requested label",
+      "review": "approved",
+      "reason": "User explicitly requested Pending as the task filter. Independent from media pending because future localized wording describes different business states.",
+      "textSHA256": "331551b0de4157c9abc7b72b61b96a2a928fd6db3cdf029c1fc44b08ad633aa6"
+    },
+    "plans.filter.label": {
+      "category": "Guidance",
+      "context": "Accessible name for the native task filter",
+      "review": "approved",
+      "reason": "User-requested Our Plans refactor / ordinary local identity storage; functional labels and necessary recovery only.",
+      "textSHA256": "796b1710a12c0d3652f8ccb2e89175d950a8df90d8cf52fc3a765fc915c19a2b"
+    },
+    "plans.action.addWishes": {
+      "category": "Action",
+      "context": "WishGrant creation; exact user-requested action",
+      "review": "approved",
+      "reason": "User-requested Our Plans refactor / ordinary local identity storage; functional labels and necessary recovery only.",
+      "textSHA256": "9fe7d94199bc008a0b98ef2e981eab55875e9b87c86ba5122e014b051a05e14e"
+    },
+    "plans.empty.pending": {
+      "category": "Empty State",
+      "context": "Pending task list; exact user-requested functional wording",
+      "review": "approved",
+      "reason": "User-requested Our Plans refactor / ordinary local identity storage; functional labels and necessary recovery only.",
+      "textSHA256": "cca8d533c8d58553c1e1668a3f9cb3635a77385540ca509175583b6bdcd0e8c5"
+    },
+    "plans.empty.upcoming": {
+      "category": "Empty State",
+      "context": "Future-dated uncompleted task list; factual empty state",
+      "review": "approved",
+      "reason": "User-requested Our Plans refactor / ordinary local identity storage; functional labels and necessary recovery only.",
+      "textSHA256": "cdac7568ae9de324bfb5c2b5e2e70a7b97128a3f7941ac284e5cb749f32997f3"
+    },
+    "plans.empty.completed": {
+      "category": "Empty State",
+      "context": "Completed task list; factual empty state",
+      "review": "approved",
+      "reason": "User-requested Our Plans refactor / ordinary local identity storage; functional labels and necessary recovery only.",
+      "textSHA256": "d98023b7e6344224e31fec18017a36fd90aed08f3bb29c322bcb7aa58adbd856"
+    },
+    "plans.empty.search": {
+      "category": "Empty State",
+      "context": "Search with no matching real task records",
+      "review": "approved",
+      "reason": "User-requested Our Plans refactor / ordinary local identity storage; functional labels and necessary recovery only.",
+      "textSHA256": "ff36d18d4c7dfdc753ae30dcdb3b3267e949c5dce532748a8687bec882fbe671"
+    },
+    "plans.action.clearSearch": {
+      "category": "Action",
+      "context": "Restore the shared task list after an empty search",
+      "review": "approved",
+      "reason": "User-requested Our Plans refactor / ordinary local identity storage; functional labels and necessary recovery only.",
+      "textSHA256": "81c2c4f30a4bec68d57b2e50bdc40208d252cb30a5a69defce2ccfd1bb8a2708"
+    },
+    "plans.action.viewPending": {
+      "category": "Action",
+      "context": "Navigate from an empty future/completed list without a duplicate create button",
+      "review": "approved",
+      "reason": "User-requested Our Plans refactor / ordinary local identity storage; functional labels and necessary recovery only.",
+      "textSHA256": "0488de8a887aa0105423bd172e308c9f1a52c21a5689ecdb3edec26d1dbc6f0a"
+    },
+    "plans.empty.unpairedWishes": {
+      "category": "Empty State",
+      "context": "Unpaired Wishes context with an actual Connection action",
+      "review": "approved",
+      "reason": "User-requested Our Plans refactor / ordinary local identity storage; functional labels and necessary recovery only.",
+      "textSHA256": "c2e05b8333b20874b1a490103bc60e0f4a924985eb9cb0ee1c77d5938b1f227e"
+    },
+    "plans.grant.quantity": {
+      "category": "Status",
+      "context": "Real quantity on a dated grant ledger entry",
+      "review": "approved",
+      "reason": "User-requested Our Plans refactor / ordinary local identity storage; functional labels and necessary recovery only.",
+      "textSHA256": "8278c1dac90116cbf42f1e5f427c6adaac388b8e42d3e35bf99563e991dfec8b"
+    },
+    "plans.grant.balance": {
+      "category": "Status",
+      "context": "Derived grant balance; no editable cached remaining amount",
+      "review": "approved",
+      "reason": "User-requested Our Plans refactor / ordinary local identity storage; functional labels and necessary recovery only.",
+      "textSHA256": "c455340a146404dc79c6cc8ebd861f080b16c8331331fa2cc614ff9c0d519852"
+    },
+    "plans.grant.details": {
+      "category": "Navigation",
+      "context": "Detail of an existing WishGrant; contains existing WishItem actions",
+      "review": "approved",
+      "reason": "User-requested Our Plans refactor / ordinary local identity storage; functional labels and necessary recovery only.",
+      "textSHA256": "dc702a7ff1c319b5dd0cec76e6148bf5fee6bbcee2bb90c74a21fd7d05bbc901"
+    },
+    "identity.migration.title": {
+      "category": "Navigation",
+      "context": "Explicit one-time legacy identity storage migration",
+      "review": "approved",
+      "reason": "User-requested Our Plans refactor / ordinary local identity storage; functional labels and necessary recovery only.",
+      "textSHA256": "21c41ef5515604b82a3e3ef3a72f12216530742adfe1555d87fdc324cbc3c4b4"
+    },
+    "identity.migration.guidance": {
+      "category": "Guidance",
+      "context": "User requested ordinary file identity storage; legacy key requires consent",
+      "review": "approved",
+      "reason": "User-requested Our Plans refactor / ordinary local identity storage; functional labels and necessary recovery only.",
+      "textSHA256": "e3c10b4ef10470c4c2cc6771083d8536fb0dd040658c07fc663a54da72865ac0"
+    },
+    "identity.migration.action": {
+      "category": "Action",
+      "context": "User-initiated existing key export; never automatic Keychain access",
+      "review": "approved",
+      "reason": "User-requested Our Plans refactor / ordinary local identity storage; functional labels and necessary recovery only.",
+      "textSHA256": "2c4bef6ac19f06bc6bcac0837861d72a5914e23beebc3eba72251a8bd29280c7"
+    },
+    "identity.action.retry": {
+      "category": "Action",
+      "context": "Retry loading local identity after a recoverable storage failure",
+      "review": "approved",
+      "reason": "User-requested Our Plans refactor / ordinary local identity storage; functional labels and necessary recovery only.",
+      "textSHA256": "b8784c8dd5636ff231b121892144e4a3977d5b874f21934c53f850cde7bac0ea"
+    },
+    "identity.error.legacyMissing": {
+      "category": "Error",
+      "context": "Refuse silent key rotation when legacy identity is unavailable",
+      "review": "approved",
+      "reason": "User-requested Our Plans refactor / ordinary local identity storage; functional labels and necessary recovery only.",
+      "textSHA256": "f5a254bf80d30f69621af4b4b4ee76a65a937363625e9ecf59451a742cdeeaf4"
+    },
+    "identity.error.invalidFile": {
+      "category": "Error",
+      "context": "Do not overwrite a corrupt identity with a new key",
+      "review": "approved",
+      "reason": "User-requested Our Plans refactor / ordinary local identity storage; functional labels and necessary recovery only.",
+      "textSHA256": "e67a420d85aec6fdcaf204883a47603505b2505271acc037484e7de8d21b3a50"
+    },
+    "identity.error.mismatch": {
+      "category": "Error",
+      "context": "Verify prior local operation signatures before committing migrated keys",
+      "review": "approved",
+      "reason": "User-requested Our Plans refactor / ordinary local identity storage; functional labels and necessary recovery only.",
+      "textSHA256": "d9018f35413098801b076554810266f0f75c23f9921994b4b42c0c435020eb1d"
+    },
+    "identity.error.keychainMigration": {
+      "category": "Error",
+      "context": "Recover from denied explicit one-time Keychain migration",
+      "review": "approved",
+      "reason": "User-requested Our Plans refactor / ordinary local identity storage; functional labels and necessary recovery only.",
+      "textSHA256": "226ca82877ff821abc4bb173963ea73ba7f3fd3c0bea041c4df8a80baa3d05c6"
+    },
+    "plans.mode.label": {
+      "category": "Guidance",
+      "context": "Native Tasks / Wishes mode switch accessible name",
+      "review": "approved",
+      "reason": "Necessary accessible label for the user-requested workspace switch.",
+      "textSHA256": "9a56884b21a85ce7a86dcc00e55df9763be254c17451178e7b36a7e8d9f0ed2a"
+    }
+  }
+}

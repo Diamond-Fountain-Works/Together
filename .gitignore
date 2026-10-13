@@ -1,0 +1,16 @@
+.DS_Store
+**/.build/
+**/.derivedData/
+**/dist/
+**/.swiftpm/
+.codex/
+server/node_modules/
+server/.wrangler/
+server/.dev.vars
+server/.env
+server/*.log
+qa/results/
+qa/visual/candidates/
+**/__pycache__/
+.qa-venv/
+.qa-runtime/

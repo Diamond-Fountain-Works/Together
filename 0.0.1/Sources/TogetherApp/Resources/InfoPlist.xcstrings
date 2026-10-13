@@ -1,0 +1,17 @@
+{
+  "sourceLanguage": "zh-Hans",
+  "version": "1.0",
+  "strings": {
+    "NSMicrophoneUsageDescription": {
+      "comment": "Guidance; native microphone permission disclosure",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Together 使用麦克风为伴侣录制每日爱意礼物。录音只保存在你的 Mac 并同步给已配对的伴侣。"
+          }
+        }
+      }
+    }
+  }
+}
