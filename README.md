@@ -34,6 +34,8 @@ make package
 
 `make qa` starts its own loopback Worker with private state, creates an old database from pinned Git source, runs Swift/relay/protocol/copy/security tests, builds Debug, runs native UI tests and compares screenshots. Production stores, media, identities and pairing records are not test fixtures. `./scripts/qa.sh --skip-ui` is for headless CI and reports UI/visual **NOT RUN**. [CI scope](docs/qa/CI.md) separates hosted checks from local desktop and real two-Mac acceptance.
 
+`make visual-review` builds the [local screenshot review](docs/qa/VISUAL_REVIEW.md) from frozen captures and approved hashes. It supports side-by-side, wipe/overlay, zoom, Frame evidence and local human feedback; it never approves baselines or merges a PR.
+
 `make package` emits a Universal Release app/verified DMG in `apps/apple/macOS/dist/`; it does not install, publish a binary or deploy. Version/Build: `apps/apple/macOS/Configuration/ReleaseVersion.json`. Bundle ID remains `com.together.app`; production Application Support, identity files and logs keep their paths. Ad-hoc signing is not Developer ID distribution, notarization or automatic updates.
 
 ## Networking and compatibility

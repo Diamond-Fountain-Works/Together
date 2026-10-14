@@ -11,6 +11,7 @@ def run(name,command,cwd=ROOT,env=None):
     return r.returncode
 try:
     run('quality-tools',[sys.executable,'scripts/test_quality_tools.py'])
+    run('visual-review-tools',[sys.executable,'scripts/test_visual_review.py'])
     run('repository-safety-tools',[sys.executable,'scripts/test_repository_safety.py'])
     run('repository-safety',[sys.executable,'scripts/audit_repository_safety.py','--json','qa/results/repository-safety.json'])
     run('protocol-conformance',[sys.executable,'-m','unittest','discover','-s','tests/conformance','-v'])

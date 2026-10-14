@@ -2,7 +2,7 @@
 
 ## Source and categories
 
-Formal static product copy lives in `0.2.1/Sources/packages/together-core-swift/Sources/TogetherCore/Resources/UI.xcstrings`, with review metadata in `qa/ui_copy_review.json`. Swift code references stable keys via `Copy.text`; never add a visible literal without adding its catalog entry and review record. ReleaseNotes structured copy is also scanned. User-authored tasks, wishes, gifts, nicknames and private memories are never audit inputs.
+Formal static product copy lives in `packages/together-core-swift/Sources/TogetherCore/Resources/UI.xcstrings`, with review metadata in `qa/ui_copy_review.json`. Swift code references stable keys via `Copy.text`; never add a visible literal without adding its catalog entry and review record. ReleaseNotes structured copy is also scanned. User-authored tasks, wishes, gifts, nicknames and private memories are never audit inputs.
 
 Native permission copy uses `apps/apple/macOS/Sources/TogetherApp/Resources/InfoPlist.xcstrings` and the same review index. The generated base Info.plist keeps the matching fallback; changing it requires changing the catalog and review too.
 

@@ -1,4 +1,4 @@
-.PHONY: qa copy-qa build test package install server-test ui-test visual-qa protocol-test security-qa
+.PHONY: qa copy-qa build test package install server-test ui-test visual-qa visual-review protocol-test security-qa
 qa:
 	./scripts/qa.sh
 copy-qa:
@@ -17,6 +17,8 @@ ui-test:
 	python3 scripts/run_ui_tests.py
 visual-qa:
 	.qa-runtime/bin/python scripts/compare_visuals.py
+visual-review:
+	.qa-runtime/bin/python scripts/build_visual_review.py
 protocol-test:
 	.qa-runtime/bin/python -m unittest discover -s tests/conformance -v
 	swift test --package-path packages/together-core-swift --filter ProtocolConformanceTests

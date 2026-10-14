@@ -78,6 +78,7 @@ jobs:
       - name: QA tools and publication gate
         run: |
           python3 scripts/test_quality_tools.py
+          python3 scripts/test_visual_review.py
           python3 scripts/test_repository_safety.py
           python3 scripts/audit_repository_safety.py --json qa/results/repository-safety.json
       - name: Copy audit (warnings remain visible)

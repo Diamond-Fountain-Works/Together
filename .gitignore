@@ -45,3 +45,4 @@ qa/visual/candidates/
 **/*.app/
 .local-only/
 qa/reports/local/
+output/playwright/
