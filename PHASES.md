@@ -1,3 +1,13 @@
+# Current stage gate — 2026-10-14
+
+Build 4 local-install preparation is complete: 14 UI PASS / 0 FAIL / 1 explicit absent-Our-Story SKIP; human-approved visual comparison 68/68 PASS; compatible old-store fixture and actual private-copy/restart PASS. Copy 0 Error / 13 individually reviewed warnings is nonblocking. This does not complete independent protocol review, notarized public distribution or physical dual-Mac Wi-Fi acceptance. The authoritative result is qa/FINAL_QA_BUILD4.md.
+
+The next authorized stage is repository safety, organization baseline upload and a separately reviewed Monorepo refactor. No App installation, production-data write, device-key rotation, C2 migration or Worker deployment is authorized by this stage.
+
+Invitation requirement gap: product target is a one-use **8-hour** invitation; implementation currently expires after **10 minutes**. User explicitly chose to preserve that legacy behavior for this restructuring. A separate network-change Issue/PR must update server/client copy/protocol/tests together and verify time/one-use rules before any authorized production deployment.
+
+## Historical implementation record (point-in-time)
+
 # 0.2.1 implementation record
 
 Safe checkpoint: external Git directory `~/.cache/Together/finance-development.git`, branch `feature/our-finances-v0.2.1`, original commit `4231afb3a5e911f1095f6c5314c95a0630c736ca`. Root home Git main is untouched. `0.0.1` source unchanged; new work is in `0.2.1`. Installed App remains unchanged.
