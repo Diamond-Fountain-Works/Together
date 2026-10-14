@@ -1,0 +1,13 @@
+{
+  "appVersionSource": "apps/apple/macOS/Configuration/ReleaseVersion.json",
+  "syncProtocolVersion": 3,
+  "relayServiceProtocolVersion": 1,
+  "databaseSchemaVersion": 1,
+  "storageSchemaMeaning": "Existing OperationRecord/LocalRecord/EntityRecord SwiftData storage generation, unchanged by refactor",
+  "invitation": {
+    "implementedLifetimeMilliseconds": 600000,
+    "requiredLifetimeMilliseconds": 28800000,
+    "status": "implementation_gap",
+    "issue": "https://github.com/Diamond-Fountain-Works/Together/issues/1"
+  }
+}

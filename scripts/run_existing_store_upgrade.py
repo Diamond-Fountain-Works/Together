@@ -7,7 +7,8 @@ private text/keys. Requires a quiescent source; concurrent changes abort the tes
 from pathlib import Path
 import argparse, hashlib, json, os, shutil, subprocess, tempfile, time
 
-root = Path(__file__).resolve().parents[1]
+from project_paths import ROOT as root, CORE
+from legacy_source import materialized_legacy_fixture
 parser = argparse.ArgumentParser()
 parser.add_argument('--app', help='Optional Debug .app for two isolated real process launches')
 args = parser.parse_args()
@@ -50,7 +51,8 @@ try:
             if (source/name).exists(): shutil.copytree(source/name, copied/name)
         if fingerprint() != before: raise RuntimeError('Source changed during copy; repeat after closing the production app')
         cache = Path.home()/'.cache/Together/LegacyMigration-SPM'
-        run(['swift','run','--scratch-path',str(cache),'LegacyFixture','--audit-copy',str(copied)],root/'qa/migration/legacy_fixture')
+        with materialized_legacy_fixture() as legacy:
+            run(['swift','run','--scratch-path',str(cache),'LegacyFixture','--audit-copy',str(copied)],legacy)
         if args.app:
             binary = Path(args.app).resolve()/'Contents/MacOS/Together'
             for launch in range(2):
@@ -71,7 +73,7 @@ try:
                             try:process.wait(timeout=5)
                             except subprocess.TimeoutExpired:process.kill();process.wait()
         env = os.environ.copy();env['TOGETHER_EXISTING_COPY_FIXTURE']=str(copied)
-        run(['swift','test','--filter','ExistingStoreUpgradeTests'],root/'0.2.1',env)
+        run(['swift','test','--filter','ExistingStoreUpgradeTests'],CORE,env)
         expected = json.loads((copied/'existing-expected.json').read_text())
         report.update(status='PASS', preservedOperations=len(expected['operationHashes']), preservedEntityHashes=len(expected['entities']), preservedLocalRecords=len(expected['localRecords']), peerPreserved=expected.get('peer') is not None, relayBindingPreserved=expected.get('binding') is not None, repeatedStoreOpens=3, sourceIdentityFileCount=len(list((source/'Identity').glob('device-*.key'))))
 except Exception as error:
