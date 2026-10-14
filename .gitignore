@@ -4,11 +4,7 @@
 **/dist/
 **/.swiftpm/
 .codex/
-server/node_modules/
-server/.wrangler/
-server/.dev.vars
-server/.env
-server/*.log
+services/relay/*.log
 qa/results/
 qa/visual/candidates/
 **/__pycache__/

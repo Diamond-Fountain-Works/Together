@@ -12,19 +12,19 @@ class QualityToolTests(unittest.TestCase):
             cat.write_text(json.dumps({'strings':{'ok':{'localizations':{'zh-Hans':{'stringUnit':{'value':'保存'}}}}}}))
             review.write_text(json.dumps({'entries':{'ok':{'category':'Action','review':'approved','textSHA256':hashlib.sha256('保存'.encode()).hexdigest()}}}))
             (src/'View.swift').write_text('Text("Unreviewed visible copy")')
-            saved=audit.ROOT,audit.PROJECT,audit.CATALOG,audit.REVIEW
-            audit.ROOT=root;audit.PROJECT=root/'0.0.1';audit.CATALOG=cat;audit.REVIEW=review
+            saved=audit.ROOT,audit.PROJECT,audit.CATALOG,audit.REVIEW,audit.CORE
+            audit.ROOT=root;audit.PROJECT=root/'0.0.1';audit.CATALOG=cat;audit.REVIEW=review;audit.CORE=root/'core'
             try:self.assertTrue(any(i['severity']=='Error' and i['type']=='visible_literal' for i in audit.scan()))
-            finally:audit.ROOT,audit.PROJECT,audit.CATALOG,audit.REVIEW=saved
+            finally:audit.ROOT,audit.PROJECT,audit.CATALOG,audit.REVIEW,audit.CORE=saved
     def test_changed_copy_cannot_reuse_old_approval(self):
         with tempfile.TemporaryDirectory() as folder:
             root=Path(folder);cat=root/'UI.xcstrings';review=root/'review.json'
             cat.write_text(json.dumps({'strings':{'ok':{'localizations':{'zh-Hans':{'stringUnit':{'value':'新的文案'}}}}}}))
             review.write_text(json.dumps({'entries':{'ok':{'category':'Action','review':'approved','textSHA256':hashlib.sha256('保存'.encode()).hexdigest()}}}))
-            saved=audit.ROOT,audit.PROJECT,audit.CATALOG,audit.REVIEW
-            audit.ROOT=root;audit.PROJECT=root/'0.0.1';audit.CATALOG=cat;audit.REVIEW=review
+            saved=audit.ROOT,audit.PROJECT,audit.CATALOG,audit.REVIEW,audit.CORE
+            audit.ROOT=root;audit.PROJECT=root/'0.0.1';audit.CATALOG=cat;audit.REVIEW=review;audit.CORE=root/'core'
             try:self.assertTrue(any(i['type']=='changed_since_review' and i['severity']=='Error' for i in audit.scan()))
-            finally:audit.ROOT,audit.PROJECT,audit.CATALOG,audit.REVIEW=saved
+            finally:audit.ROOT,audit.PROJECT,audit.CATALOG,audit.REVIEW,audit.CORE=saved
     def test_visual_matrix_requires_all_current_cases(self):
         config=json.loads((Path(__file__).resolve().parents[1]/'qa/project.json').read_text())
         cases=expected_cases(config)

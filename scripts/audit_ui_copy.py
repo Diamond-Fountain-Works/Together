@@ -2,9 +2,8 @@
 """Static product-copy gate. Never opens databases, media, user files or fixtures."""
 from pathlib import Path
 import argparse, hashlib, json, re, sys
-ROOT=Path(__file__).resolve().parents[1]
-PROJECT=ROOT/json.loads((ROOT/'qa/project.json').read_text())['projectDirectory']
-CATALOG=PROJECT/'Sources/TogetherCore/Resources/UI.xcstrings'
+from project_paths import ROOT, APP as PROJECT, CORE
+CATALOG=CORE/'Sources/TogetherCore/Resources/UI.xcstrings'
 REVIEW=ROOT/'qa/ui_copy_review.json'
 CATEGORIES={'Navigation','Action','Status','Guidance','Empty State','Error','Emotional'}
 # Swift lexer: understands nested strings in interpolation and ignores comments.
@@ -87,7 +86,7 @@ def scan():
         if text in seen:issue(entry_path,key,'duplicate_copy','Warning',f'Reuse {seen[text]} unless contexts require independent translation.')
         seen[text]=key
     sourceRoot=PROJECT/'Sources'
-    for path in sourceRoot.rglob('*.swift'):
+    for path in [*sourceRoot.rglob('*.swift'), *(CORE/'Sources').rglob('*.swift')]:
         if 'UITesting' in path.parts or path.name in ['Copy.swift','UIFixture.swift']:continue
         source=path.read_text()
         for match in re.finditer(r'Copy\.(?:text|format)\(\s*"([^"]+)"',source):
