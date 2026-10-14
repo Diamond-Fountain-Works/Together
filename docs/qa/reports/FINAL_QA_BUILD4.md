@@ -36,7 +36,7 @@
 
 - Complete UI result: `qa/results/ui-20261014-125814.xcresult`; full log: `qa/results/ui-test.log`.
 - Original comparison logs: `qa/results/ui-abc-finance-test.log` (PASS) and `ui-pinyin-finance-test.log` (FAIL); corrected focused log: `ui-pinyin-wait-fix-test.log` (PASS).
-- [Frozen 68-image gallery and hashes](visual/reviews/build4-final-20261014-1309/REVIEW.md); manifest SHA-256 `9060d1deb2dca8c16b2d5ffbf435ea343f1b20a4b3107b67b81f63bf352c6544`. Explicit user approval was received and recorded in `APPROVAL.json`; all 68 hashes were verified before entering approved/. This approval does not authorize installation.
+- [Frozen 68-image gallery and hashes](../../../qa/visual/reviews/build4-final-20261014-1309/REVIEW.md); manifest SHA-256 `9060d1deb2dca8c16b2d5ffbf435ea343f1b20a4b3107b67b81f63bf352c6544`. Explicit user approval was received and recorded in `APPROVAL.json`; all 68 hashes were verified before entering approved/. This approval does not authorize installation.
 - [All 13 copy decisions](COPY_REVIEW_BUILD4.md). No blanket suppression or manufactured Copy PASS.
 - [Build 4 Universal DMG](../../../0.2.1/dist/Together-0.2.1-Build4-Universal.dmg); SHA-256 `19735b41056a03469eed8eb9efe223d1240477dd33415ace7566ee4a0f35e950`.
 - Machine-readable report: `qa/results/final-upgrade-preparation.json`. Earlier failed runs remain historical evidence, not current acceptance results. SDK CoreDevice/CoreSimulator mismatch warnings remain diagnostic; they did not block this native Mac suite and iOS testing is outside scope.

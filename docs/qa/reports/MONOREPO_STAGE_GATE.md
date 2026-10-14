@@ -1,3 +1,7 @@
+# Pre-refactor audit snapshot
+
+This records the completed Build 4 gate and original paths before moving source. Current paths/results are in [migration](../../architecture/MONOREPO_MIGRATION.md) and [monorepo QA](MONOREPO_QA.md).
+
 # Repository migration stage gate
 
 - Prior stage: Together 0.2.1 Build 4 local candidate complete, current source 0.2.1; exact QA and remaining nonlocal/distribution boundaries in FINAL_QA_BUILD4.md.

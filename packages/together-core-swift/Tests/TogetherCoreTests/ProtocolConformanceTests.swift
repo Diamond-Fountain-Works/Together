@@ -112,8 +112,8 @@ import Testing
         #expect(data.count == media["byteCount"] as! Int)
     }
     @Test func signedReorderedDuplicateAndDeletedLogFixture() throws {
-        let left = try DeviceIdentity(deviceId: a, userId: a, initialSpaceId: space, privateKeyData: Data(SHA256.hash(data: Data("SYNTHETIC log vector LEFT".utf8))), protocolVersion: 3)
-        let right = try DeviceIdentity(deviceId: b, userId: b, initialSpaceId: space, privateKeyData: Data(SHA256.hash(data: Data("SYNTHETIC log vector RIGHT".utf8))), protocolVersion: 3)
+        let left = try DeviceIdentity(deviceId: a, userId: a, initialSpaceId: space, privateKeyData: Data(SHA256.hash(data: Data("SYNTHETIC log vector LEFT".utf8))), timeZoneIdentifier: "Asia/Shanghai", protocolVersion: 3)
+        let right = try DeviceIdentity(deviceId: b, userId: b, initialSpaceId: space, privateKeyData: Data(SHA256.hash(data: Data("SYNTHETIC log vector RIGHT".utf8))), timeZoneIdentifier: "Asia/Shanghai", protocolVersion: 3)
         let context = ReplicaContext(local: left.descriptor, peer: right.descriptor)
         let entity = UUID(uuidString: "00000000-0000-0000-0000-000000000300")!
         var operations: [SignedOperation] = []
