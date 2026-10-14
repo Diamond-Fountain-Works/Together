@@ -11,3 +11,7 @@
 Runner choice follows [GitHub hosted runner documentation](https://docs.github.com/en/actions/reference/runners/github-hosted-runners); `macos-26` is used instead of the Xcode 27 preview label. Native package minimum is Swift 6, deployment macOS 14. Reproducible UI baselines remain tied to their recorded local macOS/Xcode environment, not the runner image.
 
 Local logs live under ignored `qa/results/`. Approved images and metadata live under `qa/visual/approved/`, reviewed synthetic snapshots under `qa/visual/reviews/`; scripts never automatically overwrite them.
+
+Native XCTest exports now use a unique `qa/visual/candidates/<run timestamp>/` directory and per-image SHA-256 in the run report. Comparison rejects replaced or escaped images; a later focused/failed run cannot silently overwrite a full run's evidence. Snapshot timing/hover assertions remain separate from the image-difference threshold and human baseline approval.
+
+The Xcode 26 CI run exposed a fixture-only SwiftPM compatibility issue: `main.swift` also declared `@main`. Renaming the harness entry to `LegacyFixtureMain.swift` fixed it; current product sources and the pinned old-source tree were unchanged. Run `38527602870` then passed both jobs. This is distinct from local Xcode 27 validation and from manual two-Mac tests.
