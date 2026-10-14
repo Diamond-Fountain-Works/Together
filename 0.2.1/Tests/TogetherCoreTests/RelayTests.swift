@@ -87,7 +87,7 @@ import CryptoKit
     }
 }
 
-@Suite("Workers relay integration") @MainActor struct RelayIntegrationTests {
+@Suite("Workers relay integration", .serialized) @MainActor struct RelayIntegrationTests {
     @Test(.enabled(if: ProcessInfo.processInfo.environment["TOGETHER_RUN_RELAY_TESTS"] == "1")) func storedVersionTwoRelayPairUpgradesWithoutNewInvitation() async throws {
         let root = FileManager.default.temporaryDirectory.appendingPathComponent("Together-relay-upgrade-\(UUID())")
         try FileManager.default.createDirectory(at: root, withIntermediateDirectories: true); defer { try? FileManager.default.removeItem(at: root) }
@@ -187,5 +187,15 @@ import CryptoKit
         #expect(reopened.snapshot.finance == b.snapshot.finance && reopened.snapshot.finance.expenses[expense]?.amount.finalCNYMinor == 11801)
         #expect(try reopened.snapshot.finance.statistics().bookBalance == 83323)
         #expect(try reopened.repository.load(RelayBinding.self, key: "relay-binding") != nil)
+        // Repeated one-sided reconnects exercise real WebSocket/hello/consent
+        // ordering, not a mocked sync engine or a widened timeout.
+        for round in 0..<3 {
+            sb.disconnect()
+            _ = try b.createTask(title: "RECONNECT_REGRESSION_\(round)")
+            sb.restore()
+            try await eventually({ sa.isOnline && sb.isOnline && a.snapshot == b.snapshot && a.snapshot.tasks.count == 4 + round }, seconds: networkTimeout)
+            #expect(sa.proposal == nil && sb.proposal == nil && a.context.spaceId == space)
+            #expect(a.peer?.descriptor.publicKey == ib.descriptor.publicKey && b.peer?.descriptor.publicKey == ia.descriptor.publicKey)
+        }
     }
 }

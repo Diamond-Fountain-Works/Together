@@ -26,12 +26,20 @@ import Testing
         #expect(digest(try #require(upgraded.ownProfile?.avatarData)) == expected.avatarHash)
         for signed in upgraded.operations { #expect(try expected.operationHashes[signed.id.uuidString] == digest(CanonicalJSON.encode(signed))) }
         #expect(upgraded.operations.count == expected.operationHashes.count && upgraded.snapshot.finance.expenses.isEmpty)
+        let originalOperations = upgraded.operations, originalSnapshot = upgraded.snapshot
+        try upgraded.merge(originalOperations)
+        try upgraded.merge(originalOperations.reversed())
+        #expect(upgraded.operations == originalOperations && upgraded.snapshot == originalSnapshot)
         let deposit = try upgraded.deposit(FinanceAmount(original: "100", currency: "USD", actualCNY: "701.23"), by: m.userId, on: CivilDate(year: 2026, month: 10, day: 9))
         let expense = try upgraded.createExpense(title: "UPGRADE_FINANCE_FIXTURE", amount: FinanceAmount(original: "70.01"), payment: .init(kind: .equalSplit, userIds: [m.userId, expected.peer.descriptor.userId]), on: CivilDate(year: 2026, month: 10, day: 9))
         var state = try upgraded.financialReviewState(); state.presentedOperationIds.insert(upgraded.operations.last!.id); try upgraded.saveFinancialReviewState(state)
         let privateCard = PaymentMethodProfile(ownerId: m.userId, bankName: "LOCAL_FIXTURE", name: "PRIVATE_FIXTURE", cardKind: .credit, lastFour: "1234")
         try upgraded.savePaymentMethod(privateCard)
-        let reopened = try ReplicaEngine(repository: TogetherRepository(url: url), identity: identity, mediaRoot: root.appendingPathComponent("Media"), dateProvider: clock)
+        // A fresh file-store load, with migration requested again, must use the
+        // existing file before the legacy Keychain reader can ever be called.
+        let reloadedIdentity = try DeviceIdentity.persistent(deviceId: m.deviceId, userId: m.userId, spaceId: m.spaceId, directory: root.appendingPathComponent("Identity"), needsExistingIdentity: true, migrateLegacy: true, timeZoneIdentifier: "Asia/Shanghai", protocolVersion: 3)
+        #expect(reloadedIdentity.descriptor == identity.descriptor)
+        let reopened = try ReplicaEngine(repository: TogetherRepository(url: url), identity: reloadedIdentity, mediaRoot: root.appendingPathComponent("Media"), dateProvider: clock)
         #expect(reopened.snapshot == upgraded.snapshot && reopened.peer == expected.peer)
         #expect(reopened.snapshot.finance.reserves[deposit]?.amount.finalCNYMinor == 70123 && reopened.snapshot.finance.expenses[expense] != nil)
         #expect(try reopened.financialReviewState() == state && reopened.ownPrivatePaymentMethods == [privateCard])

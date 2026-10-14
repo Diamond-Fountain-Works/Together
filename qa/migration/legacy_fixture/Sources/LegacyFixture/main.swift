@@ -6,6 +6,10 @@ import TogetherCore
 /// Builds a real store using the untouched 0.0.1 source, never production data.
 @main struct LegacyFixture {
     @MainActor static func main() throws {
+        if CommandLine.arguments.count == 3, CommandLine.arguments[1] == "--audit-copy" {
+            try ExistingStoreAudit.run(URL(fileURLWithPath: CommandLine.arguments[2], isDirectory: true))
+            return
+        }
         guard CommandLine.arguments.count == 2 else { throw FixtureError.invalidPath }
         let root = URL(fileURLWithPath: CommandLine.arguments[1], isDirectory: true).standardizedFileURL.resolvingSymlinksInPath()
         let temporary = FileManager.default.temporaryDirectory.standardizedFileURL.resolvingSymlinksInPath()

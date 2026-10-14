@@ -58,7 +58,7 @@ import AppKit
                 Button(Copy.text("copy.action.561b17edc33d")) { model?.show(.whatsNew) }.disabled(model == nil)
             }
             CommandGroup(replacing: .appSettings) {
-                Button(Copy.text("copy.action.74a883a037bc")) { model?.section = .settings; NSApp.activate(ignoringOtherApps: true) }.keyboardShortcut(",", modifiers: .command).disabled(model == nil)
+                Button(Copy.text("nav.settings")) { model?.section = .settings; NSApp.activate(ignoringOtherApps: true) }.keyboardShortcut(",", modifiers: .command).disabled(model == nil)
             }
     }
 }

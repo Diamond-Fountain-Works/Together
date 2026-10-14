@@ -110,3 +110,9 @@ RootView 的 NavigationSplitView 主入口依次为 Home / Plans / Wishes，底�
 `Configuration/RelayService.json` 保存公开 HTTPS origin，generate_project 默认读取并生成显式 Configuration/Info.plist 模板，Target 采用该模板；verify_bundle.py 检查实际产物（仅 INFOPLIST_KEY 自定义 build setting 并不足以确保写入），环境变量可覆盖。没有 Cloudflare 密钥/密码。已部署 https://together-connection.together-connection-service.workers.dev，版本和健康检查证据见 server/deployment.json / TEST_PLAN。
 
 原生 public integration 使用两个隔离身份/SwiftData 数据库，经实际 HTTPS/WSS 完成双确认、Profiles/Wishes/Tasks、三内容礼物、8200px 原图头像/照片、音频、校验/确认、离线合并和重开。此机公网路径不是双实体 Mac 跨 Wi-Fi。
+
+## Final QA upgrade rehearsal (Build 3)
+
+No physical SwiftData model, finance rule, wire protocol, pairing or production identity format was changed in final QA. DEBUG-only fixture sizing now waits for a real attached window; XCUITest verifies filtered-list layout before coordinate clicks. Native day/currency rows explicitly cover their full clickable area. Existing-store rehearsal is confined to owner-only temporary copies and reports aggregate hashes/counts, never keys or private contents. See qa/GIT_STORAGE_REVIEW.md for the unchanged external Git directory and proposed durable history migration.
+
+Final QA found and corrected a client handshake lifecycle race, without changing the network architecture or packet format: a changed peer hello clears peer/session state while keeping the local connection's hello stable; a genuine disconnect rotates it once. Stale authentic consents grant no permissions. Path-monitor callbacks and cancelled senders cannot restart an ongoing session. See [qa/NETWORK_RECONNECT_REVIEW.md](qa/NETWORK_RECONNECT_REVIEW.md). Debug copied-store fixtures suppress restore independently of persisted RelayBinding addresses.

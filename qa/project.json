@@ -48,7 +48,19 @@
       "tasks-populated-light-compact-reduced.png",
       "wishes-populated-dark-compact-reduced.png",
       "expenses-populated-light-compact-reduced.png",
-      "expenses-populated-dark-compact-reduced.png"
+      "expenses-populated-dark-compact-reduced.png",
+      "reserves-populated-light-compact-reduced.png",
+      "reserves-populated-dark-compact-reduced.png",
+      "bills-populated-light-compact-reduced.png",
+      "bills-populated-dark-compact-reduced.png",
+      "bill-editor-light-compact-reduced.png",
+      "bill-editor-dark-compact-reduced.png",
+      "currency-picker-light-compact-reduced.png",
+      "currency-picker-dark-compact-reduced.png",
+      "finance-settings-personal-light-compact-reduced.png",
+      "finance-settings-personal-dark-compact-reduced.png",
+      "home-populated-light-compact-reduced.png",
+      "home-populated-dark-compact-reduced.png"
     ]
   }
 }

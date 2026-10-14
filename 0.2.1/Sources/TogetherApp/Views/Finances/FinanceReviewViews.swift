@@ -16,8 +16,8 @@ struct FinanceChangeBanner: View {
                 } else { Text(Copy.format("finance.banner.changes", String(changes.count))) }
             }
             Spacer()
-            Button(Copy.text("finance.action.view")) { model.section = .finances; model.financeTab = .reserves; model.showFinance(.changes); model.dismissFinancialBanner() }
-            Button { model.dismissFinancialBanner() } label: { Image(systemName: "xmark") }.buttonStyle(.plain).accessibilityLabel(Copy.text("finance.action.close"))
+            Button(Copy.text("copy.action.db8db0530432")) { model.section = .finances; model.financeTab = .reserves; model.showFinance(.changes); model.dismissFinancialBanner() }
+            Button { model.dismissFinancialBanner() } label: { Image(systemName: "xmark") }.buttonStyle(.plain).accessibilityLabel(Copy.text("copy.action.3fd47edce45b"))
         }.padding(16).background(.thinMaterial).accessibilityIdentifier("finance.banner")
             .onAppear { model.markFinancialBannerPresented() }.onChange(of: changes.map(\.id)) { _, _ in model.markFinancialBannerPresented() }
     }
@@ -37,7 +37,7 @@ struct FinanceReminderList: View {
                 ForEach(reminders) { reminder in
                     TogetherCard {
                         VStack(alignment: .leading, spacing: 12) {
-                            HStack { Text(title(reminder)).font(.headline).accessibilityIdentifier("finance.reminder." + reminder.id); Spacer(); Button { model.dismissFinancialReminder(reminder.id) } label: { Image(systemName: "xmark") }.buttonStyle(.plain).accessibilityLabel(Copy.text("finance.action.close")) }
+                            HStack { Text(title(reminder)).font(.headline).accessibilityIdentifier("finance.reminder." + reminder.id); Spacer(); Button { model.dismissFinancialReminder(reminder.id) } label: { Image(systemName: "xmark") }.buttonStyle(.plain).accessibilityLabel(Copy.text("copy.action.3fd47edce45b")) }
                             HStack {
                                 Text(verbatim: reminder.title)
                                 Spacer()
@@ -103,7 +103,7 @@ struct FinanceChangeHistoryView: View {
                     }
                 }
             }
-            HStack { Spacer(); Button(Copy.text("finance.action.close")) { model.dismissSheet() }.keyboardShortcut(.cancelAction).accessibilityIdentifier("finance.changes.close") }
+            HStack { Spacer(); Button(Copy.text("copy.action.3fd47edce45b")) { model.dismissSheet() }.keyboardShortcut(.cancelAction).accessibilityIdentifier("finance.changes.close") }
         }.padding(28).frame(width: 700, height: 660)
     }
 }

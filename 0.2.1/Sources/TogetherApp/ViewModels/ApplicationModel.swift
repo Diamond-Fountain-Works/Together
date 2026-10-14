@@ -99,7 +99,14 @@ enum AppSheet: Identifiable {
     }
     func start() {
         guard !started else { return }; started = true
-        network.restore(); checkStartupGifts(); refreshFinancialState(); presentNext()
+        #if DEBUG
+        // A copied store can contain a real RelayBinding; nil serviceURL alone
+        // does not suppress that persisted address. Fixtures must stay offline.
+        if !UIFixture.enabled { network.restore() }
+        #else
+        network.restore()
+        #endif
+        checkStartupGifts(); refreshFinancialState(); presentNext()
         clockTask = Task { @MainActor [weak self] in
             while !Task.isCancelled {
                 guard let self else { return }

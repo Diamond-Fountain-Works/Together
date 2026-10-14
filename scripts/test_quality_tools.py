@@ -28,7 +28,7 @@ class QualityToolTests(unittest.TestCase):
     def test_visual_matrix_requires_all_current_cases(self):
         config=json.loads((Path(__file__).resolve().parents[1]/'qa/project.json').read_text())
         cases=expected_cases(config)
-        self.assertEqual(len(cases),56);self.assertEqual(len(set(cases)),56)
+        self.assertEqual(len(cases),68);self.assertEqual(len(set(cases)),68)
         self.assertIn('reveal-dark-reduced-sealed.png',cases)
         self.assertIn('upcoming-empty-light-disconnected.png',cases)
         self.assertIn('completed-populated-dark-disconnected.png',cases)

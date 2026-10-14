@@ -1,4 +1,4 @@
-# Together 0.2.1 · Build 2
+# Together 0.2.1 · Build 4 QA candidate
 
 原生 macOS 双人协作应用，沿用 SwiftUI、SwiftData、签名 Operation Log、Lamport 合并和现有 Together Relay。当前开发目录为 `0.2.1/`；`0.0.1/` 保留原样。Our Story 尚未实现，没有占位导航。
 
@@ -18,7 +18,7 @@
 
 ## 构建、测试与安装边界
 
-需要 macOS 14+、Xcode。版本/Build 在 `0.2.1/Configuration/ReleaseVersion.json` 管理，Build 由原安装版 1 递增为 2。
+需要 macOS 14+、Xcode。版本/Build 在 `0.2.1/Configuration/ReleaseVersion.json` 管理，Build 2 财务候选包后递增为 3，再因 Release 调试权限修正递增为 4。
 
 ```sh
 make build
@@ -27,13 +27,13 @@ make qa
 make package
 ```
 
-`make package` 构建 Universal Release 并验证 DMG，输出至 `0.2.1/dist/`。本次**不运行 make install、不覆盖 /Applications、不向桌面交付**。已经安装的 Together 仍是 0.0.1 Build 1。当前签名为 ad-hoc，未完成 Developer ID、公证或自动更新。
+`make package` 构建 Universal Release 并验证 DMG，输出至 `0.2.1/dist/`。本次**不运行 make install、不覆盖 /Applications、不向桌面交付**。本轮检查时 `/Applications/Together.app` 不存在；原 Application Support 数据仍在，本轮不会自动安装。当前签名为 ad-hoc，未完成 Developer ID、公证或自动更新。
 
 独立验证：`python3 scripts/run_finance_migration_test.py` 用原 0.0.1 源码创建真实临时数据库，再由 0.2.1 打开。`server/npm run dev` 启动本地 Workers；`TOGETHER_RUN_RELAY_TESTS=1 python3 scripts/run_finance_migration_test.py --all-tests` 同时执行业务、原生 WebSocket 与升级测试。统一 QA 的实际状态在 `qa/results/summary.json`；不能以构建代替 UI 验收。
 
 ## 数据与同步升级
 
-SwiftData 仍只有 OperationRecord / LocalRecord / EntityRecord，物理 Schema 未改变；新增的是 Codable 财务领域实体及可重建投影。生产路径、Bundle ID `com.together.app`、设备私钥、User ID、SharedSpace、原日志和配对关系保持。隔离测试从真实旧代码生成 store，不读取或修改用户数据库。
+SwiftData 仍只有 OperationRecord / LocalRecord / EntityRecord，物理 Schema 未改变；新增的是 Codable 财务领域实体及可重建投影。生产路径、Bundle ID `com.together.app`、设备私钥、User ID、SharedSpace、原日志和配对关系保持。隔离测试覆盖旧代码生成的完整 store 和只读取得的既有数据库副本；所有升级写入限于临时副本。
 
 财务实体需要客户端设备协议 3。双方须升级至 0.2.1；旧协议 2 与新协议 3 的客户端在业务交换前明确拒绝互连。长期公钥及 Relay route 不变，已配对的双方升级后自动恢复，不要求重新配对。服务兼容 2/3 路由，旧客户端之间仍可运行。旧 Tailscale TCP 保留回归，正常流程仍为邀请码 + 原生 WebSocket Relay。
 
@@ -41,6 +41,8 @@ Relay 只实时转发密文，没有离线邮箱；发送方关闭时不能承�
 
 ## 质量证据
 
-规则索引见 AGENTS.md / DESIGN_SYSTEM.md / UI_COPY.md。新增功能与更改文案均注册 String Catalog。XCUITest 使用隔离 DEBUG Fixture；macOS 自动化初始化失败时如实记 NOT RUN。可用 `scripts/capture_finance_views.py --app <Debug Together.app>` 生成自身视图的 AppKit 渲染截图；它们是视觉候选，不是通过的 XCUITest，也不能自动批准基线。Light/Dark、空/有数据、离线、小窗口、Reduce Motion 与人工点击证据分开记录。
+规则索引见 AGENTS.md / DESIGN_SYSTEM.md / UI_COPY.md。新增功能与更改文案均注册 String Catalog。XCUITest 使用隔离 DEBUG Fixture；曾发生的自动化初始化超时与当前实际测试结果分开记录。可用 `scripts/capture_finance_views.py --app <Debug Together.app>` 生成自身视图的 AppKit 渲染截图；它们是视觉候选，不是通过的 XCUITest，也不能自动批准基线。Light/Dark、空/有数据、离线、小窗口、Reduce Motion 与人工点击证据分开记录。
 
 完整规则与双 Mac 验收：REQUIREMENTS.md、ARCHITECTURE.md、TEST_PLAN.md、PHASES.md、CHANGELOG.md；服务部署说明见 server/README.md。
+
+最终验收记录：[qa/FINAL_QA_BUILD4.md](qa/FINAL_QA_BUILD4.md)。Git 历史仍在外置缓存目录，风险及未执行的迁移方案见 [qa/GIT_STORAGE_REVIEW.md](qa/GIT_STORAGE_REVIEW.md)。

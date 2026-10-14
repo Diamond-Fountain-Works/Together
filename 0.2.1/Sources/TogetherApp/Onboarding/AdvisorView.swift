@@ -16,7 +16,7 @@ struct AdvisorView: View {
         AdvisorStep(title: Copy.text("copy.navigation.0e2226b5235f"), text: Copy.text("copy.guidance.a98b94457fae"), icon: "heart.fill"),
         AdvisorStep(title: Copy.text("copy.navigation.2d9f8587bda1"), text: Copy.text("copy.guidance.9da8edd95702"), icon: "checklist"),
         AdvisorStep(title: Copy.text("copy.status.762adf000094"), text: Copy.text("copy.guidance.66dd26b15065"), icon: "repeat"),
-        AdvisorStep(title: Copy.text("copy.navigation.403cc21502eb"), text: Copy.text("copy.guidance.0a03873c8d2f"), icon: "sparkles"),
+        AdvisorStep(title: Copy.text("nav.wishes"), text: Copy.text("copy.guidance.0a03873c8d2f"), icon: "sparkles"),
         AdvisorStep(title: Copy.text("copy.status.0657ef66163c"), text: Copy.text("copy.guidance.a0fdf83d30c9"), icon: "person.crop.circle"),
         AdvisorStep(title: Copy.text("copy.status.46f890d7fe72"), text: Copy.text("copy.guidance.b61a3a85f709"), icon: "envelope.badge.fill"),
         AdvisorStep(title: Copy.text("copy.status.f7c98742cb56"), text: Copy.text("copy.guidance.e88ca18d56f1"), icon: "link")

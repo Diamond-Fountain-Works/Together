@@ -40,6 +40,7 @@ public enum PairingConnectionState: String, Sendable { case unpaired = "Unpaired
     @ObservationIgnored private var enabled = false
     @ObservationIgnored private var helloSentForPeer = false
     @ObservationIgnored private var peerPresent = false
+    @ObservationIgnored private var openingRoute = false
     @ObservationIgnored private var monitor = NWPathMonitor()
     public init(engine: ReplicaEngine, serviceURL: URL?, transport: (any SyncTransport)? = nil) {
         self.engine = engine; self.transport = transport ?? RelayWebSocketTransport()
@@ -52,6 +53,7 @@ public enum PairingConnectionState: String, Sendable { case unpaired = "Unpaired
         self.transport.onError = { [weak self] error in self?.failed(error) }
         monitor.pathUpdateHandler = { [weak self] path in if path.status == .satisfied { Task { @MainActor in
             guard let self, self.enabled, self.binding != nil, !self.isOnline else { return }
+            guard self.transport.state != .connecting, self.transport.state != .connected, !self.openingRoute else { return }
             self.attempt = 0; self.retry?.cancel(); self.retry = nil; self.scheduleReconnect()
         } } }
         monitor.start(queue: DispatchQueue(label: "com.together.relay.path"))
@@ -111,7 +113,8 @@ public enum PairingConnectionState: String, Sendable { case unpaired = "Unpaired
         if let binding { guard binding.peerDeviceId == remote.descriptor.deviceId, binding.peerPublicKey == remote.descriptor.publicKey, binding.localDeviceId == engine.identity.descriptor.deviceId, binding.routeId == route.routeId else { throw TogetherError.invalid(Copy.text("copy.error.a23d12dc2813")) } }
     }
     private func resumeRoute() async {
-        guard enabled, let api, let id = binding?.routeId ?? routeId else { return }
+        guard enabled, !openingRoute, let api, let id = binding?.routeId ?? routeId else { return }
+        openingRoute = true; defer { openingRoute = false }
         do { let route = try await api.route(id); try validateRoute(route); pendingRoute = route; routeId = id; try await openRoute(route) }
         catch { failed(error) }
     }
@@ -120,21 +123,36 @@ public enum PairingConnectionState: String, Sendable { case unpaired = "Unpaired
         resetSession(); serverPaired = route.paired; pendingRoute = route; routeId = route.routeId; state = .waiting
         hello = try RelaySecureSession.hello(identity: engine.identity, ephemeral: ephemeral, routeId: route.routeId, profileName: engine.ownProfile?.displayName ?? "我")
         let ticket = try await api.ticket(route.routeId)
+        guard enabled else { return }
         try await transport.connect(.relay(url: api.websocketURL(route.routeId), ticket: ticket.ticket))
         if let hello { enqueue(try CanonicalJSON.encode(RelayPacket(kind: "hello", hello: hello))) }
     }
-    private func resetSession() {
+    private func clearPeerHandshake() {
         sender?.cancel(); sender = nil; queue = []; queuedBytes = 0; logSession?.invalidate(); logSession = nil
-        secure = nil; hello = nil; ephemeral = Curve25519.KeyAgreement.PrivateKey(); localApproved = false; remoteApproved = false; helloSentForPeer = false; proposal = nil
+        secure = nil; localApproved = false; remoteApproved = false; proposal = nil
+    }
+    private func resetSession() {
+        clearPeerHandshake()
+        hello = nil; ephemeral = Curve25519.KeyAgreement.PrivateKey(); helloSentForPeer = false
     }
     private func receive(_ data: Data) {
         do {
             let object = try JSONSerialization.jsonObject(with: data) as? [String: Any]
             if object?["kind"] as? String == "status" {
+                let wasPresent = peerPresent
                 serverPaired = object?["paired"] as? Bool ?? false
                 peerPresent = object?["online"] as? Bool ?? false
                 if peerPresent, !helloSentForPeer, let hello { helloSentForPeer = true; enqueue(try CanonicalJSON.encode(RelayPacket(kind: "hello", hello: hello))) }
-                if !peerPresent { state = .waiting; logSession?.invalidate(); logSession = nil; remoteApproved = false; helloSentForPeer = false; return }
+                if !peerPresent {
+                    // One rotation at a genuine peer disconnect gives the next
+                    // session fresh keys/nonces. Duplicate status frames must
+                    // not keep changing the hello while the peer reconnects.
+                    if wasPresent {
+                        resetSession()
+                        if let route = pendingRoute { hello = try RelaySecureSession.hello(identity: engine.identity, ephemeral: ephemeral, routeId: route.routeId, profileName: engine.ownProfile?.displayName ?? "我") }
+                    } else { clearPeerHandshake() }
+                    state = .waiting; helloSentForPeer = false; return
+                }
                 try activateIfReady(); return
             }
             if object?["kind"] as? String == "waiting" { state = .waiting; return }
@@ -145,7 +163,10 @@ public enum PairingConnectionState: String, Sendable { case unpaired = "Unpaired
                       route.members.contains(where: { $0.descriptor.deviceId == remote.body.descriptor.deviceId && $0.descriptor.publicKey == remote.body.descriptor.publicKey }) else { throw TogetherError.invalid(Copy.text("copy.error.3ec52db5902b")) }
                 if let secure, secure.remoteHello == remote { return }
                 if secure != nil {
-                    resetSession(); hello = try RelaySecureSession.hello(identity: engine.identity, ephemeral: ephemeral, routeId: route.routeId, profileName: engine.ownProfile?.displayName ?? "我")
+                    // Keep this socket's signed hello stable. Rotating our own
+                    // ephemeral key in response to theirs causes symmetric
+                    // re-key ping-pong and mismatched consent transcripts.
+                    clearPeerHandshake()
                     if let hello { enqueue(try CanonicalJSON.encode(RelayPacket(kind: "hello", hello: hello))) }
                 }
                 guard let hello else { throw TogetherError.invalid(Copy.text("copy.error.92daf69006a1")) }
@@ -159,7 +180,16 @@ public enum PairingConnectionState: String, Sendable { case unpaired = "Unpaired
                 }
                 try activateIfReady()
             case "consent":
-                guard let secure, let consent = packet.consent, consent.verified(by: secure.remoteHello.body.descriptor, transcript: secure.transcript) else { throw TogetherError.invalid(Copy.text("copy.error.1e116ef339c5")) }
+                guard let consent = packet.consent,
+                      let remote = secure?.remoteHello.body.descriptor ?? engine.peer?.descriptor,
+                      consent.verified(by: remote, transcript: consent.body.transcript) else { throw TogetherError.invalid(Copy.text("copy.error.1e116ef339c5")) }
+                guard let secure, consent.body.transcript == secure.transcript else {
+                    // An authenticated old-session consent grants nothing. A
+                    // pinned pair may ignore it while awaiting current proof;
+                    // first pairing still rejects any transcript mismatch.
+                    if binding != nil { return }
+                    throw TogetherError.invalid(Copy.text("copy.error.1e116ef339c5"))
+                }
                 remoteApproved = true; try activateIfReady()
             case "encrypted":
                 guard isOnline, localApproved, remoteApproved, serverPaired, let secure, let logSession else { throw TogetherError.invalid(Copy.text("copy.error.23e90630fb77")) }
@@ -192,7 +222,10 @@ public enum PairingConnectionState: String, Sendable { case unpaired = "Unpaired
             while !Task.isCancelled {
                 guard let self, !self.queue.isEmpty else { self?.sender = nil; return }
                 let data = self.queue.removeFirst(); self.queuedBytes -= data.count
-                do { try await self.transport.send(data) } catch { self.sender = nil; self.failed(error); return }
+                do { try await self.transport.send(data) } catch {
+                    guard !Task.isCancelled else { return }
+                    self.sender = nil; self.failed(error); return
+                }
             }
         }
     }

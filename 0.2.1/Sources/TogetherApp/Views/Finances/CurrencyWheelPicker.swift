@@ -4,41 +4,14 @@ import TogetherCore
 struct CurrencyWheelPicker: View {
     @Binding var selection: String
     @State private var expanded = false
-    @State private var search = ""
-    @State private var centered: String?
-    private var currencies: [FinanceCurrency] { FinanceCurrency.supported.filter { search.isEmpty || $0.code.localizedCaseInsensitiveContains(search) || $0.name.localizedCaseInsensitiveContains(search) } }
     var body: some View {
         Button {
-            search = ""; centered = selection; expanded = true
+            expanded = true
         } label: {
             HStack { Text(verbatim: (FinanceCurrency.find(selection)?.symbol ?? "") + " " + selection); Image(systemName: "chevron.up.chevron.down").font(.caption) }
         }.accessibilityIdentifier("finance.currency.open")
         .popover(isPresented: $expanded) {
-            VStack(spacing: 12) {
-                TextField(Copy.text("finance.currency.search"), text: $search).textFieldStyle(.roundedBorder).accessibilityIdentifier("finance.currency.search")
-                ScrollViewReader { proxy in
-                    ScrollView(.vertical) {
-                        LazyVStack(spacing: 0) {
-                            ForEach(currencies) { currency in
-                                Button { selection = currency.code; centered = currency.code; expanded = false } label: {
-                                    HStack { Text(verbatim: currency.symbol + " " + currency.code); Spacer(); Text(currency.name).foregroundStyle(.secondary) }
-                                        .padding(.horizontal, 12).frame(height: 42)
-                                        .background(selection == currency.code ? TogetherTheme.rose.opacity(0.13) : .clear, in: RoundedRectangle(cornerRadius: 8))
-                                }.buttonStyle(.plain).id(currency.code).accessibilityIdentifier("finance.currency." + currency.code)
-                            }
-                        }.scrollTargetLayout().padding(.vertical, 42)
-                    }.scrollIndicators(.hidden).frame(height: 150)
-                    .scrollTargetBehavior(.viewAligned).scrollPosition(id: $centered, anchor: .center)
-                    .focusable().onMoveCommand { direction in
-                        guard let index = currencies.firstIndex(where: { $0.code == selection }) else { return }
-                        let next = direction == .up ? max(0, index - 1) : direction == .down ? min(currencies.count - 1, index + 1) : index
-                        selection = currencies[next].code; centered = selection; proxy.scrollTo(selection, anchor: .center)
-                    }
-                    .onAppear { proxy.scrollTo(selection, anchor: .center) }
-                    .onChange(of: centered) { _, value in if search.isEmpty, let value, FinanceCurrency.find(value) != nil { selection = value } }
-                }
-                Button(Copy.text("copy.action.c0b3fbff51cc")) { expanded = false }.keyboardShortcut(.defaultAction)
-            }.padding(16).frame(width: 330)
+            CurrencyWheelContent(selection: $selection, isPresented: $expanded)
         }
     }
 }
@@ -53,6 +26,7 @@ struct MonthDayWheelPicker: View {
                         Button { selection = day; centered = day } label: {
                             Text(day, format: .number).font(.title3.monospacedDigit()).frame(maxWidth: .infinity).frame(height: 32)
                                 .background(day == selection ? TogetherTheme.rose.opacity(0.13) : .clear, in: RoundedRectangle(cornerRadius: 6))
+                                .contentShape(Rectangle())
                         }.buttonStyle(.plain).id(day).accessibilityIdentifier("finance.day.\(day)")
                     }
                 }.scrollTargetLayout().padding(.vertical, 32)

@@ -4,17 +4,17 @@
     "highlights": [
       {
         "icon": "tray.full",
-        "titleKey": "finance.release.reserves",
+        "titleKey": "finance.tab.reserves",
         "detailsKey": "finance.release.reservesDetail"
       },
       {
         "icon": "list.bullet.rectangle",
-        "titleKey": "finance.release.expenses",
+        "titleKey": "finance.tab.expenses",
         "detailsKey": "finance.release.expensesDetail"
       },
       {
         "icon": "calendar.badge.clock",
-        "titleKey": "finance.release.bills",
+        "titleKey": "finance.tab.bills",
         "detailsKey": "finance.release.billsDetail"
       },
       {

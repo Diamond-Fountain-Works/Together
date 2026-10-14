@@ -108,7 +108,7 @@ Apple 说明：https://support.apple.com/zh-cn/102445
                 raise RuntimeError("Invalid Applications installation shortcut")
             if (mount / "安装说明.txt").read_text(encoding="utf-8") != instruction:
                 raise RuntimeError("Installation instructions did not survive packaging")
-            run(sys.executable, str(ROOT / "script/verify_bundle.py"), str(mounted_app))
+            run(sys.executable, str(ROOT / "script/verify_bundle.py"), str(mounted_app), "--release")
             if sorted(run("lipo", "-archs", str(mounted_app / "Contents/MacOS/Together")).stdout.split()) != architectures:
                 raise RuntimeError("Packaged architectures differ")
         finally:

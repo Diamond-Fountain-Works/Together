@@ -52,7 +52,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "照片可能含拍摄位置（GPS）等元数据。Together 不会自动压缩或去除元数据；请确认这张原图适合与对方共享。"
+            "value": "原图可能含 GPS 等隐私元数据，Together 不会移除；请确认后共享。"
           }
         }
       }
@@ -86,17 +86,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "礼物附件还在同步，完成校验后就能打开。"
-          }
-        }
-      }
-    },
-    "copy.action.74a883a037bc": {
-      "comment": "Action; 0.0.1/Sources/TogetherApp/App/TogetherApp.swift",
-      "localizations": {
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Settings"
           }
         }
       }
@@ -174,17 +163,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "%@"
-          }
-        }
-      }
-    },
-    "copy.status.a1794783aab7": {
-      "comment": "Status; 0.0.1/Sources/TogetherApp/Views/HomeView.swift",
-      "localizations": {
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Offline"
           }
         }
       }
@@ -288,17 +266,6 @@
         }
       }
     },
-    "copy.navigation.5f1a2542e4e4": {
-      "comment": "Navigation; 0.0.1/Sources/TogetherApp/Views/HomeView.swift",
-      "localizations": {
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Upcoming"
-          }
-        }
-      }
-    },
     "copy.status.cad05cf5be73": {
       "comment": "Status; 0.0.1/Sources/TogetherApp/Views/HomeView.swift",
       "localizations": {
@@ -328,17 +295,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "待完成"
-          }
-        }
-      }
-    },
-    "copy.navigation.3a78695388b3": {
-      "comment": "Navigation; 0.0.1/Sources/TogetherApp/Views/HomeView.swift",
-      "localizations": {
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Home"
           }
         }
       }
@@ -404,7 +360,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "业务数据保存在这台 Mac 的 SwiftData 数据库。只有已配对且在线的设备能交换操作日志。"
+            "value": "数据保存在本机；只有已配对且同时在线的设备能同步。"
           }
         }
       }
@@ -525,7 +481,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "关系标签尚未设置或无法识别，请重新选择。已有资料、配对和礼物额度会保留。"
+            "value": "请重新选择关系标签；资料、配对和礼物额度会保留。"
           }
         }
       }
@@ -701,7 +657,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "选择下一次开始的时间。稍后设置时，当前已完成任务会保留，不会生成新的实例。"
+            "value": "选择下次时间；稍后设置会保留已完成任务，不生成新实例。"
           }
         }
       }
@@ -1003,17 +959,6 @@
         }
       }
     },
-    "copy.guidance.5c55a67935af": {
-      "comment": "Guidance; 0.0.1/Sources/TogetherApp/Views/Tasks/TasksView.swift",
-      "localizations": {
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "全部"
-          }
-        }
-      }
-    },
     "copy.guidance.b5f15473fdc0": {
       "comment": "Guidance; 0.0.1/Sources/TogetherApp/Views/Tasks/TasksView.swift",
       "localizations": {
@@ -1032,17 +977,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "Shared Tasks"
-          }
-        }
-      }
-    },
-    "copy.navigation.22a970d2e5b1": {
-      "comment": "Navigation; 0.0.1/Sources/TogetherApp/Views/Tasks/TasksView.swift",
-      "localizations": {
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Completed"
           }
         }
       }
@@ -1197,17 +1131,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "连接服务未配置。请使用包含服务地址的 Together 发布版本；本地数据仍可使用。"
-          }
-        }
-      }
-    },
-    "copy.navigation.639a40e82b9a": {
-      "comment": "Navigation; 0.0.1/Sources/TogetherApp/Views/Connection/ConnectionView.swift",
-      "localizations": {
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Connection"
           }
         }
       }
@@ -1384,17 +1307,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "新增愿望额度"
-          }
-        }
-      }
-    },
-    "copy.navigation.403cc21502eb": {
-      "comment": "Navigation; 0.0.1/Sources/TogetherApp/Views/Wishes/WishesView.swift",
-      "localizations": {
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Wishes"
           }
         }
       }
@@ -1713,7 +1625,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "麦克风权限未开启。可在系统设置 → 隐私与安全性 → 麦克风允许 Together，或导入已有音频。"
+            "value": "请在系统设置的「隐私与安全性」中允许麦克风，或导入音频。"
           }
         }
       }
@@ -2186,7 +2098,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "创建邀请码或输入伴侣的邀请码，双方核对身份后确认。也可以先离线使用。"
+            "value": "邀请码配对需双方确认，也可先离线使用。"
           }
         }
       }
@@ -2384,7 +2296,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "每人每天可以送一份文字、语音或照片礼物。共享时区决定每日额度。对方启动并同步完成后可以拆礼物，也能回赠自己当天的一份爱意。"
+            "value": "每天送一份文字、语音或照片；对方启动同步后可拆开并回赠。"
           }
         }
       }
@@ -2406,7 +2318,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "在 Settings 修改自己的昵称与头像。保留原图，裁剪只调整显示区域，连接后分块同步。"
+            "value": "在 Settings 换昵称和头像；原图保留并同步，裁剪只改显示。"
           }
         }
       }
@@ -2428,7 +2340,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "按日期记录每一批额度。受益人填写愿望，兑现者申请完成，再由受益人确认。"
+            "value": "按日期增加额度；受益人填写并确认兑现，对方申请完成。"
           }
         }
       }
@@ -4012,7 +3924,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "独立首次设置：主动选择身份、设置昵称与头像、配对伴侣，以及准备第一份爱意。"
+            "value": "选择身份、设置资料、配对伴侣并准备第一份礼物。"
           }
         }
       }
@@ -4089,7 +4001,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "原生拆礼物、收到啦、回赠和历史记录；启动时自动展示一次，普通使用中保留未读提示。"
+            "value": "礼物在启动时自动展示一次，支持回赠和历史查看。"
           }
         }
       }
@@ -4155,7 +4067,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "邀请码配对、双方身份确认及原生中继连接。正式服务部署和跨 Wi-Fi 验收状态见项目测试报告。"
+            "value": "邀请码配对、双方身份确认和加密实时中继。"
           }
         }
       }
@@ -6921,17 +6833,6 @@
         }
       }
     },
-    "finance.settings": {
-      "comment": "Navigation; Together 0.2.1 Our Finances functional UI",
-      "localizations": {
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "财务设置"
-          }
-        }
-      }
-    },
     "finance.events.title": {
       "comment": "Navigation; Together 0.2.1 Our Finances functional UI",
       "localizations": {
@@ -6961,83 +6862,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "财务周期"
-          }
-        }
-      }
-    },
-    "finance.action.cancel": {
-      "comment": "Action; Together 0.2.1 Our Finances functional UI",
-      "localizations": {
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "取消"
-          }
-        }
-      }
-    },
-    "finance.action.save": {
-      "comment": "Action; Together 0.2.1 Our Finances functional UI",
-      "localizations": {
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "保存"
-          }
-        }
-      }
-    },
-    "finance.action.edit": {
-      "comment": "Action; Together 0.2.1 Our Finances functional UI",
-      "localizations": {
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "编辑"
-          }
-        }
-      }
-    },
-    "finance.action.delete": {
-      "comment": "Action; Together 0.2.1 Our Finances functional UI",
-      "localizations": {
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "删除"
-          }
-        }
-      }
-    },
-    "finance.action.revoke": {
-      "comment": "Action; Together 0.2.1 Our Finances functional UI",
-      "localizations": {
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "撤销"
-          }
-        }
-      }
-    },
-    "finance.action.close": {
-      "comment": "Action; Together 0.2.1 Our Finances functional UI",
-      "localizations": {
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "关闭"
-          }
-        }
-      }
-    },
-    "finance.action.view": {
-      "comment": "Action; Together 0.2.1 Our Finances functional UI",
-      "localizations": {
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "查看"
           }
         }
       }
@@ -7416,17 +7240,6 @@
         }
       }
     },
-    "finance.field.notes": {
-      "comment": "Status; Together 0.2.1 Our Finances functional UI",
-      "localizations": {
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "备注"
-          }
-        }
-      }
-    },
     "finance.field.category": {
       "comment": "Status; Together 0.2.1 Our Finances functional UI",
       "localizations": {
@@ -7533,17 +7346,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "搜索支出或分类"
-          }
-        }
-      }
-    },
-    "finance.filter.payment": {
-      "comment": "Status; Together 0.2.1 Our Finances functional UI",
-      "localizations": {
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "付款方式"
           }
         }
       }
@@ -8780,17 +8582,6 @@
         }
       }
     },
-    "finance.release.reserves": {
-      "comment": "Navigation; Implemented finance release notes",
-      "localizations": {
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "United Reserves"
-          }
-        }
-      }
-    },
     "finance.release.reservesDetail": {
       "comment": "Guidance; Implemented finance release notes",
       "localizations": {
@@ -8802,17 +8593,6 @@
         }
       }
     },
-    "finance.release.expenses": {
-      "comment": "Navigation; Implemented finance release notes",
-      "localizations": {
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Expenses"
-          }
-        }
-      }
-    },
     "finance.release.expensesDetail": {
       "comment": "Guidance; Implemented finance release notes",
       "localizations": {
@@ -8820,17 +8600,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "原币与人民币结算，支持个人、共同账户及 AA。"
-          }
-        }
-      }
-    },
-    "finance.release.bills": {
-      "comment": "Navigation; Implemented finance release notes",
-      "localizations": {
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Recurring Bills"
           }
         }
       }

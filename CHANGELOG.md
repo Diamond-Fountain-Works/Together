@@ -77,3 +77,20 @@
 - Added `make install` / scripts/install_local.py for validated local delivery. Current 0.0.1 Build 1 lives at /Applications/Together.app; the 3.80 MiB Universal installer is on Desktop.
 - Verified App identity, full bundle/file hashes against the mounted DMG, code signature, installed-file equality and Desktop image hash before cleanup. Six generated bundles and four obsolete registrations removed; one app/registration remains. Source, QA evidence, distribution DMG and user data retained.
 - Instructions now use Applications as the daily entry; future local delivery is make package followed by make install. No UI or business changes.
+
+## 0.2.1 · Build 3 — Final QA candidate
+
+- Individually reviewed all 58 copy warnings; shortened functional/privacy/recovery descriptions and reused equivalent catalog actions. Retained distinct translation-context and independent security warnings.
+- Added full-row currency/day hit areas, stable test window sizing and Financial Cycle accessibility identification; business models, quotas and sync protocol remain unchanged.
+- Strengthened UI waits and real compact-size assertions; extended native screenshots to bill editors, currency popovers and personal-cycle settings.
+- Added a read-only production-store copy rehearsal, repeated identity/store reopen checks and signed-log deduplication checks. Original user storage and Applications are not modified.
+- Corrected QA pass counts to distinguish skipped Swift Testing cases. Current acceptance evidence is in qa/FINAL_QA_BUILD3.md; this entry alone is not a passed release claim.
+- Final QA additionally reproduced and corrected a reconnect transcript race in the existing PairingService; retained strict signatures, current-session confirmation and AEAD checks. Added three real reconnect regression rounds and isolated local Worker test state. No server deployment, protocol/schema migration or new business feature.
+
+- Shortened financial sheets to fit the 620pt supported compact content area and moved existing expense review/delete actions outside scroll content. Native captures target complete sheets/popovers, preserving visible footer actions.
+
+## 0.2.1 · Build 4 — Release entitlement correction
+
+- Disabled Xcode base-entitlement injection for Release; get-task-allow is absent. Required network, microphone and file-panel access plus hardened runtime are retained.
+- Bundle verifier now rejects debugger access in Release and checks actual required entitlements. Marketing version remains 0.2.1; no business/schema/protocol change.
+- Verified Universal DMG/checksum/mounted bundle; ad-hoc and not notarized. Final candidate is NOT READY FOR LOCAL INSTALL because one native UI capture case still fails and one required screenshot is missing.

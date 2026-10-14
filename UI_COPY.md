@@ -31,3 +31,9 @@ Run `make copy-qa` (or `python3 scripts/audit_ui_copy.py --json qa/results/copy.
 ## Our Finances copy
 
 The `finance.*` catalog entries are functional names, actions, filters, true ledger states, reminder prompts, audit formats and recoverable errors from the approved 0.2.1 scope. ISO 4217 currency names/precision are bundled from SIX List One (2026-09-17); eight common names are localized, others retain official names. No invented amounts or emotional finance copy. `待核对` is provisional bookkeeping; `已核对` is user reconciliation, never bank confirmation. Original/CNY/rate values, category names and actor names are user or derived data and remain outside static-copy lint. Dynamic enum prefixes require concrete catalog coverage tests; a prefix is not an invented visible entry. Existing long-copy warnings remain for human review.
+
+## Build 3 final review
+
+Every original warning is recorded in [qa/COPY_REVIEW_BUILD3.md](qa/COPY_REVIEW_BUILD3.md) and its machine-readable companion. Twelve functional descriptions were shortened without changing business semantics. Equivalent buttons/navigation labels now reuse one catalog key; unused current-version inventory keys were removed, while the original 0.0.1 catalog was preserved. No audit rule or script was disabled.
+
+The remaining 13 warnings stay visible: 12 independent translation contexts (including task/media Pending, currency codes VED/VES and financial change-history phrases), plus the security-boundary disclosure that still requires independent review. This is WARN, not a manufactured PASS. There are no outstanding copy-budget errors or newly unregistered product strings.

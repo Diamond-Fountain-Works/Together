@@ -31,10 +31,10 @@
     },
     "copy.guidance.fdb33a105fcd": {
       "category": "Guidance",
-      "context": "0.0.1/Sources/TogetherApp/ViewModels/ApplicationModel.swift",
-      "review": "review_required",
-      "reason": "Existing product inventory; long guidance requires human copy review.",
-      "textSHA256": "fdb33a105fcd30af8f5ed6353b2371a5ce0f88c85b6771d59fd24153194d5bba"
+      "context": "0.2.1/Sources/TogetherApp/ViewModels/ApplicationModel.swift",
+      "review": "approved",
+      "reason": "Photo import privacy warning preserves metadata and explicit user choice.",
+      "textSHA256": "04f7027f5d2c702a67f75696a7104cc2c84a423e7743b762b058a068be042a84"
     },
     "copy.status.aed97e682ab9": {
       "category": "Status",
@@ -56,13 +56,6 @@
       "review": "approved",
       "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
       "textSHA256": "77965761b32c3003e1ce06206352c0526886d82c7e515495d5e12f00029ab7c1"
-    },
-    "copy.action.74a883a037bc": {
-      "category": "Action",
-      "context": "0.0.1/Sources/TogetherApp/App/TogetherApp.swift",
-      "review": "approved",
-      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
-      "textSHA256": "74a883a037bc227f91891ab654a753d3a99f31ab06ae5b5d2b6e594a692b41f8"
     },
     "copy.action.561b17edc33d": {
       "category": "Action",
@@ -112,13 +105,6 @@
       "review": "approved",
       "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
       "textSHA256": "ee17b0047b7589b9069938d8417376f794a6d345a5f001b3b6fd12eea53343b6"
-    },
-    "copy.status.a1794783aab7": {
-      "category": "Status",
-      "context": "0.0.1/Sources/TogetherApp/Views/HomeView.swift",
-      "review": "approved",
-      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
-      "textSHA256": "a1794783aab72d205dc532b1170d1be63ebdce8816b57c21acb451c15dab969a"
     },
     "copy.status.0d21bd52022c": {
       "category": "Status",
@@ -183,13 +169,6 @@
       "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
       "textSHA256": "a7363b44d6576ffcc7b6914858d803d218d841f2eb7a8453eaf00048d462f9f5"
     },
-    "copy.navigation.5f1a2542e4e4": {
-      "category": "Navigation",
-      "context": "0.0.1/Sources/TogetherApp/Views/HomeView.swift",
-      "review": "approved",
-      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
-      "textSHA256": "5f1a2542e4e4ca5ed784e15fb756dbfc32f4b68ae08bc1d44f957761566c8c41"
-    },
     "copy.status.cad05cf5be73": {
       "category": "Status",
       "context": "0.0.1/Sources/TogetherApp/Views/HomeView.swift",
@@ -210,13 +189,6 @@
       "review": "approved",
       "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
       "textSHA256": "7f750504c5bac7d8914076b6f4611a3d87b7a00c490568b7460ce5f2e07700de"
-    },
-    "copy.navigation.3a78695388b3": {
-      "category": "Navigation",
-      "context": "0.0.1/Sources/TogetherApp/Views/HomeView.swift",
-      "review": "approved",
-      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
-      "textSHA256": "3a78695388b38b5cceefaf6796b0137877514593543b91af2752d5a17e3d736c"
     },
     "copy.action.f867f3417859": {
       "category": "Action",
@@ -255,10 +227,10 @@
     },
     "copy.guidance.9dd62bb75ce0": {
       "category": "Guidance",
-      "context": "0.0.1/Sources/TogetherApp/Views/Settings/SettingsView.swift",
-      "review": "review_required",
-      "reason": "Existing product inventory; long guidance requires human copy review.",
-      "textSHA256": "9dd62bb75ce048cd9ee8ef980e10ca0913c61aa8fe8f906cb81a2c5af7d3f113"
+      "context": "0.2.1/Sources/TogetherApp/Views/Settings/SettingsView.swift",
+      "review": "approved",
+      "reason": "Settings explains storage and realtime-only delivery without implementation jargon.",
+      "textSHA256": "ff47ea1f4f4dd8b54004650a741f3b48bf95d59d6455abd432f382d3d1ccdc8e"
     },
     "copy.status.610b105f07da": {
       "category": "Status",
@@ -332,10 +304,10 @@
     },
     "copy.guidance.af004a022055": {
       "category": "Guidance",
-      "context": "0.0.1/Sources/TogetherApp/Views/Settings/SettingsView.swift",
-      "review": "review_required",
-      "reason": "Existing product inventory; long guidance requires human copy review.",
-      "textSHA256": "af004a02205543bf06bd2c0babb206cfc9854a3a4d9f518fb1363aedb54226ab"
+      "context": "0.2.1/Sources/TogetherApp/Views/Settings/SettingsView.swift",
+      "review": "approved",
+      "reason": "Invalid-label recovery preserves user data and quota.",
+      "textSHA256": "18dfda3345778c4792841918d5e6f18bc508d7b780b234a428ca8d64d48a3090"
     },
     "copy.guidance.3ae0703dd5cd": {
       "category": "Guidance",
@@ -444,10 +416,10 @@
     },
     "copy.guidance.08a8bfd082bf": {
       "category": "Guidance",
-      "context": "0.0.1/Sources/TogetherApp/Views/Tasks/TaskEditorView.swift",
-      "review": "review_required",
-      "reason": "Existing product inventory; long guidance requires human copy review.",
-      "textSHA256": "08a8bfd082bfca60f76f4f8325a0f5318713296eded9138c9343a7458ff13410"
+      "context": "0.2.1/Sources/TogetherApp/Views/Tasks/TaskEditorView.swift",
+      "review": "approved",
+      "reason": "Flexible recurrence guidance accurately distinguishes deferral from scheduling.",
+      "textSHA256": "3b2a4a727a31c394dba396b941b0fe2153c374464cea2f6562d53459d4a086a9"
     },
     "copy.status.626ba31a7939": {
       "category": "Status",
@@ -638,13 +610,6 @@
       "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
       "textSHA256": "f28461bb49c8564716309d575f90f72cf15b5c4667e40c2d037434bedb54a01a"
     },
-    "copy.guidance.5c55a67935af": {
-      "category": "Guidance",
-      "context": "0.0.1/Sources/TogetherApp/Views/Tasks/TasksView.swift",
-      "review": "approved",
-      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
-      "textSHA256": "5c55a67935af8f4508ba05d6d81c9eb240a2ea0ba886d8428b985e305470da3f"
-    },
     "copy.guidance.b5f15473fdc0": {
       "category": "Guidance",
       "context": "0.0.1/Sources/TogetherApp/Views/Tasks/TasksView.swift",
@@ -658,13 +623,6 @@
       "review": "approved",
       "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
       "textSHA256": "2d9f8587bda16095ecc820ebc8b57cbec60e69201cc01ed992eba7ad0d66cb23"
-    },
-    "copy.navigation.22a970d2e5b1": {
-      "category": "Navigation",
-      "context": "0.0.1/Sources/TogetherApp/Views/Tasks/TasksView.swift",
-      "review": "approved",
-      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
-      "textSHA256": "22a970d2e5b1cc233e462be7c7b64e135a275bb09d83d87683bf4236c43113a1"
     },
     "copy.status.c7225dbf105e": {
       "category": "Status",
@@ -763,13 +721,6 @@
       "review": "approved",
       "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
       "textSHA256": "4d93993d5b23ad2646e4d078910bb36e7017e5b4e7a16c8bcbe92c3f0dac0a14"
-    },
-    "copy.navigation.639a40e82b9a": {
-      "category": "Navigation",
-      "context": "0.0.1/Sources/TogetherApp/Views/Connection/ConnectionView.swift",
-      "review": "approved",
-      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
-      "textSHA256": "639a40e82b9a96f0cbeed5f006cf5634c8d1b990b3c83753c00a910fc268d2a6"
     },
     "copy.action.042811378798": {
       "category": "Action",
@@ -882,13 +833,6 @@
       "review": "approved",
       "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
       "textSHA256": "2c183d9579b22bd4c45631834d27bfd0562e112e5c79c0534db97cd065332a5e"
-    },
-    "copy.navigation.403cc21502eb": {
-      "category": "Navigation",
-      "context": "0.0.1/Sources/TogetherApp/Views/Wishes/WishesView.swift",
-      "review": "approved",
-      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
-      "textSHA256": "403cc21502ebdc1e5204b05b193d722bb4bf4fb8146ee0b0b71e8e111bd21ee3"
     },
     "copy.action.2388bd52fae3": {
       "category": "Action",
@@ -1088,10 +1032,10 @@
     },
     "copy.guidance.8cbde1ab6315": {
       "category": "Guidance",
-      "context": "0.0.1/Sources/TogetherApp/Views/Gifts/AudioComponents.swift",
-      "review": "review_required",
-      "reason": "Existing product inventory; long guidance requires human copy review.",
-      "textSHA256": "8cbde1ab6315a351465f7db171bedcd9e050157c9fba22192ccfe5dbc3cce3b9"
+      "context": "0.2.1/Sources/TogetherApp/Views/Gifts/AudioComponents.swift",
+      "review": "approved",
+      "reason": "Permission recovery provides the correct system location and import alternative.",
+      "textSHA256": "1ea2956492919d35d8271d03a42ac8d637f332bdb090bbb09948591941932179"
     },
     "copy.guidance.4673175cd9f2": {
       "category": "Guidance",
@@ -1389,10 +1333,10 @@
     },
     "copy.guidance.34509ac3c987": {
       "category": "Guidance",
-      "context": "0.0.1/Sources/TogetherApp/Onboarding/InitialSetupView.swift",
-      "review": "review_required",
-      "reason": "Existing product inventory; long guidance requires human copy review.",
-      "textSHA256": "34509ac3c987786ebefb63748fc528b9b76403ef14f40b93caec54a77682ee39"
+      "context": "0.2.1/Sources/TogetherApp/Onboarding/InitialSetupView.swift",
+      "review": "approved",
+      "reason": "Initial Setup keeps mutual-confirmation and offline choices.",
+      "textSHA256": "fa8326516bda184e7766668807473db85537506607eb5961bba8aa72925444e2"
     },
     "copy.guidance.591976fa354e": {
       "category": "Guidance",
@@ -1515,10 +1459,10 @@
     },
     "copy.guidance.b61a3a85f709": {
       "category": "Guidance",
-      "context": "0.0.1/Sources/TogetherApp/Onboarding/AdvisorView.swift",
-      "review": "review_required",
-      "reason": "Existing product inventory; long guidance requires human copy review.",
-      "textSHA256": "b61a3a85f70971db68a3a6cfc32682fca5d7e623c7ec7efea31b272abdec93fd"
+      "context": "0.2.1/Sources/TogetherApp/Onboarding/AdvisorView.swift",
+      "review": "approved",
+      "reason": "Advisor covers daily quota, supported contents, startup synchronization and reply.",
+      "textSHA256": "2a2c4ac21ab8ef4e16583d2ac88fa637ded40f356713eed2c50ac4867e7c8978"
     },
     "copy.status.46f890d7fe72": {
       "category": "Status",
@@ -1529,10 +1473,10 @@
     },
     "copy.guidance.a0fdf83d30c9": {
       "category": "Guidance",
-      "context": "0.0.1/Sources/TogetherApp/Onboarding/AdvisorView.swift",
-      "review": "review_required",
-      "reason": "Existing product inventory; long guidance requires human copy review.",
-      "textSHA256": "a0fdf83d30c9d41602b32c54feded73eb67e40af1268253352e4cd414bbf4158"
+      "context": "0.2.1/Sources/TogetherApp/Onboarding/AdvisorView.swift",
+      "review": "approved",
+      "reason": "Advisor distinguishes retained original from non-destructive display crop.",
+      "textSHA256": "d9c47f743da899d3c7c0fca715ff1fe0242d839eb457a00bdd6e785f60d15126"
     },
     "copy.status.0657ef66163c": {
       "category": "Status",
@@ -1543,10 +1487,10 @@
     },
     "copy.guidance.0a03873c8d2f": {
       "category": "Guidance",
-      "context": "0.0.1/Sources/TogetherApp/Onboarding/AdvisorView.swift",
-      "review": "review_required",
-      "reason": "Existing product inventory; long guidance requires human copy review.",
-      "textSHA256": "0a03873c8d2fbb461bbc38a23b402c20c6d545f1fe0a9b7cfa3cff480478d9b2"
+      "context": "0.2.1/Sources/TogetherApp/Onboarding/AdvisorView.swift",
+      "review": "approved",
+      "reason": "Advisor retains dated grants and beneficiary confirmation.",
+      "textSHA256": "0dd6f737f136629d6bb737e85395646045b0e28a48990612f57a08f7cc1bbc19"
     },
     "copy.guidance.66dd26b15065": {
       "category": "Guidance",
@@ -2552,9 +2496,9 @@
     "copy.guidance.794e033239cb": {
       "category": "Guidance",
       "context": "Release notes",
-      "review": "review_required",
-      "reason": "Existing product inventory; long guidance requires human copy review.",
-      "textSHA256": "794e033239cbb41f5fce09daa661b1be02965382f7d045bc371d4db3b6fc6a76"
+      "review": "approved",
+      "reason": "Historical release notes describe implemented onboarding steps concisely.",
+      "textSHA256": "25c36e8b7a008a7f6f332406305304815b01593286cc8536a9b3e878806cd3cb"
     },
     "copy.navigation.9a9a3b610caa": {
       "category": "Navigation",
@@ -2601,9 +2545,9 @@
     "copy.guidance.bf06a49a28d0": {
       "category": "Guidance",
       "context": "Release notes",
-      "review": "review_required",
-      "reason": "Existing product inventory; long guidance requires human copy review.",
-      "textSHA256": "bf06a49a28d0f626c8060d486df9c95f9830e5d732ed194aad6cb72e16822f3c"
+      "review": "approved",
+      "reason": "Historical release notes retain one-time reveal and history, remove repeated feature list.",
+      "textSHA256": "04128bf367eb1064604f2c2fc5cbad3da887cfbc159077c0f4e4473ea00f2ec7"
     },
     "copy.navigation.d772489d4bc7": {
       "category": "Navigation",
@@ -2643,9 +2587,9 @@
     "copy.guidance.4dec32d6c19c": {
       "category": "Guidance",
       "context": "Release notes",
-      "review": "review_required",
-      "reason": "Existing product inventory; long guidance requires human copy review.",
-      "textSHA256": "4dec32d6c19cd7b0a276bd8ffe2cb2b9af81b8343cd91ae0f158f9e28182b2b9"
+      "review": "approved",
+      "reason": "Historical release notes remove engineering-report references from product flow; no offline delivery claim.",
+      "textSHA256": "b595243a148237c693986b533621e1e79e5dfe7451b281025e5a555c766f724e"
     },
     "copy.guidance.150668f089db": {
       "category": "Guidance",
@@ -4412,13 +4356,6 @@
       "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
       "textSHA256": "b96378daf44715b5ad9fdd213cb9d8cdc5bc1efb75597a5d614c5773679637ee"
     },
-    "finance.settings": {
-      "category": "Navigation",
-      "context": "Together 0.2.1 Our Finances",
-      "review": "approved",
-      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
-      "textSHA256": "d55aa6b6aa14329b0bec50f15d596be67f6b84afd48aa6255b119d484ca69745"
-    },
     "finance.events.title": {
       "category": "Navigation",
       "context": "Together 0.2.1 Our Finances",
@@ -4439,55 +4376,6 @@
       "review": "approved",
       "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
       "textSHA256": "8db49d7055bb118dba424177f6e4f8849da994a9dcd31827b8adb1e6508bb9c6"
-    },
-    "finance.action.cancel": {
-      "category": "Action",
-      "context": "Together 0.2.1 Our Finances",
-      "review": "approved",
-      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
-      "textSHA256": "2cd0f3be8738a86cede1a1452f874f31d569864bbb00cacd4130990f4610cb5c"
-    },
-    "finance.action.save": {
-      "category": "Action",
-      "context": "Together 0.2.1 Our Finances",
-      "review": "approved",
-      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
-      "textSHA256": "a3030bf8f16dc63c6b277564c68f78a3be5abe5f2907c51826dee7184ff793fd"
-    },
-    "finance.action.edit": {
-      "category": "Action",
-      "context": "Together 0.2.1 Our Finances",
-      "review": "approved",
-      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
-      "textSHA256": "051836569928a9f91145a70e00b212b62a06c21a97d2d828cb75acd3fbe851b9"
-    },
-    "finance.action.delete": {
-      "category": "Action",
-      "context": "Together 0.2.1 Our Finances",
-      "review": "approved",
-      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
-      "textSHA256": "2f9daa828907b93ff8a00d41a16828e0c6388bf3a95dadf816c8ee9c3bdac37d"
-    },
-    "finance.action.revoke": {
-      "category": "Action",
-      "context": "Together 0.2.1 Our Finances",
-      "review": "approved",
-      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
-      "textSHA256": "926a50b98ece2667069d47bd532e8ae1fb23218868a8f289c09937478f717c7a"
-    },
-    "finance.action.close": {
-      "category": "Action",
-      "context": "Together 0.2.1 Our Finances",
-      "review": "approved",
-      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
-      "textSHA256": "3fd47edce45b3603d4192f61dbf3e51162589b0951042a18d244132ac92e7bb7"
-    },
-    "finance.action.view": {
-      "category": "Action",
-      "context": "Together 0.2.1 Our Finances",
-      "review": "approved",
-      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
-      "textSHA256": "db8db0530432bd1596cd1ef21016dfc12392548a4b82019f1b1d7a315e0a55c0"
     },
     "finance.action.settings": {
       "category": "Action",
@@ -4727,13 +4615,6 @@
       "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
       "textSHA256": "1ca2dd0ae3b00b4965aea7257e543b3f3fc0a802e452dad0c0a2a03fa0ac6c0d"
     },
-    "finance.field.notes": {
-      "category": "Status",
-      "context": "Together 0.2.1 Our Finances",
-      "review": "approved",
-      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
-      "textSHA256": "daede9881787abe74c94e686be78a4eabc85a09688433027ea55ac583919bc1e"
-    },
     "finance.field.category": {
       "category": "Status",
       "context": "Together 0.2.1 Our Finances",
@@ -4803,13 +4684,6 @@
       "review": "approved",
       "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
       "textSHA256": "e26216e8e94dfa433ed05e9c9d82f3d2fbccfb03f691491190c430ab739a0f31"
-    },
-    "finance.filter.payment": {
-      "category": "Status",
-      "context": "Together 0.2.1 Our Finances",
-      "review": "approved",
-      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
-      "textSHA256": "4e3c13589f98c0e6d397cec03cb049b5d9fd200e7eab7a9d29a621fea8dff2cd"
     },
     "finance.filter.source": {
       "category": "Status",
@@ -5595,13 +5469,6 @@
       "reason": "Required factual reminder count, keeps primary ledger visible",
       "textSHA256": "f89fd0405c3fe50a1f721aeb9944911884e3382c4383c1f6af49d2938950f2fe"
     },
-    "finance.release.reserves": {
-      "category": "Navigation",
-      "context": "0.2.1 release notes",
-      "review": "approved",
-      "reason": "Factual features implemented and covered by finance tests; no network acceptance claim",
-      "textSHA256": "2a84cd13ccdac724fa73f88e5df4fb1ae21580182c1666c9553075393b83d4bc"
-    },
     "finance.release.reservesDetail": {
       "category": "Guidance",
       "context": "0.2.1 release notes",
@@ -5609,26 +5476,12 @@
       "reason": "Factual features implemented and covered by finance tests; no network acceptance claim",
       "textSHA256": "0d3d6529db5504d4ac0bd87c5bbb1c43ff153b64295355dddaaba99a9b8ab283"
     },
-    "finance.release.expenses": {
-      "category": "Navigation",
-      "context": "0.2.1 release notes",
-      "review": "approved",
-      "reason": "Factual features implemented and covered by finance tests; no network acceptance claim",
-      "textSHA256": "d311416fa3aadb4d8cbf54c9a8d48cef3a272ef469a075328909de18e34f6fb9"
-    },
     "finance.release.expensesDetail": {
       "category": "Guidance",
       "context": "0.2.1 release notes",
       "review": "approved",
       "reason": "Factual features implemented and covered by finance tests; no network acceptance claim",
       "textSHA256": "8b57ede7d7598f0b40840a52a593a37d01e257fad9f93bd15c91844a569ed7ff"
-    },
-    "finance.release.bills": {
-      "category": "Navigation",
-      "context": "0.2.1 release notes",
-      "review": "approved",
-      "reason": "Factual features implemented and covered by finance tests; no network acceptance claim",
-      "textSHA256": "b96378daf44715b5ad9fdd213cb9d8cdc5bc1efb75597a5d614c5773679637ee"
     },
     "finance.release.billsDetail": {
       "category": "Guidance",

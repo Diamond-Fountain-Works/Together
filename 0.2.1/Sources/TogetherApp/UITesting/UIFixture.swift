@@ -27,6 +27,20 @@ struct UIFixture {
     }
     @MainActor func build() async throws -> ApplicationModel {
         try FileManager.default.createDirectory(at: root, withIntermediateDirectories: true)
+        if root.lastPathComponent.hasPrefix("together-ui-existing-") {
+            // An explicit DEBUG-only upgrade rehearsal. Never resolves the
+            // production Application Support path or starts a relay session.
+            let expected = try CanonicalJSON.decode(ExistingUIStore.self, from: Data(contentsOf: root.appendingPathComponent("existing-expected.json")))
+            let m = expected.metadata
+            let identity = try DeviceIdentity.persistent(deviceId: m.deviceId, userId: m.userId, spaceId: m.spaceId, directory: root.appendingPathComponent("Identity"), needsExistingIdentity: true, migrateLegacy: true, timeZoneIdentifier: expected.timeZone, protocolVersion: 3)
+            let engine = try ReplicaEngine(repository: TogetherRepository(url: root.appendingPathComponent("legacy.store")), identity: identity, mediaRoot: root.appendingPathComponent("Media"), dateProvider: FixedDateProvider(expected.capturedAt))
+            let defaults = UserDefaults(suiteName: "com.together.upgrade-fixture." + UUID().uuidString)!
+            let preferences = LocalAppPreferences(defaults: defaults)
+            preferences.finishAdvisor(neverAgain: true); preferences.finishInitialSetup()
+            let model = ApplicationModel(engine: engine, defaults: defaults, serviceURL: nil, useBundledService: false, filePanelDirectory: root.appendingPathComponent("user-export"))
+            model.currentDate = expected.capturedAt
+            return model
+        }
         let now = ISO8601DateFormatter().date(from: "2026-10-09T04:00:00Z")!, clock = FixedDateProvider(now)
         let ia = try DeviceIdentity(deviceId: UUID(uuidString: "00000000-0000-0000-0000-000000000001")!, userId: UUID(uuidString: "00000000-0000-0000-0000-000000000101")!, initialSpaceId: UUID(uuidString: "00000000-0000-0000-0000-000000000201")!, privateKeyData: Data(repeating: 1, count: 32), timeZoneIdentifier: "Asia/Shanghai", protocolVersion: 3)
         let ib = try DeviceIdentity(deviceId: UUID(uuidString: "00000000-0000-0000-0000-000000000002")!, userId: UUID(uuidString: "00000000-0000-0000-0000-000000000102")!, initialSpaceId: UUID(uuidString: "00000000-0000-0000-0000-000000000202")!, privateKeyData: Data(repeating: 2, count: 32), timeZoneIdentifier: "Asia/Shanghai", protocolVersion: 3)
@@ -124,6 +138,11 @@ struct UIFixture {
         guard let asset = engine.snapshot.mediaAssets[id] else { throw TogetherError.invalid("UI fixture manifest unavailable") }; return asset
     }
 }
+private struct ExistingUIStore: Decodable {
+    let metadata: LocalIdentityMetadata
+    let capturedAt: Date
+    let timeZone: String
+}
 
 struct UIFixtureRoot: View {
     @Binding var model: ApplicationModel?
@@ -148,12 +167,20 @@ struct UIFixtureRoot: View {
     }
 }
 private struct FixtureWindowSize: NSViewRepresentable {
-    func makeNSView(context: Context) -> NSView {
-        let view = NSView()
-        let compact = ProcessInfo.processInfo.environment["TOGETHER_UI_COMPACT"] == "1"
-        DispatchQueue.main.async { view.window?.setContentSize(NSSize(width: compact ? 900 : 1100, height: compact ? 620 : 760)); view.window?.setFrameOrigin(NSPoint(x: 80, y: compact ? 180 : 80)) }
-        return view
-    }
+    func makeNSView(context: Context) -> NSView { SizingView() }
     func updateNSView(_ view: NSView, context: Context) {}
+    private class SizingView: NSView {
+        override func viewDidMoveToWindow() {
+            super.viewDidMoveToWindow()
+            // makeNSView can run before attachment, especially on finance tabs.
+            // Size the actual attached window; never label a 1100pt capture compact.
+            guard let window else { return }
+            let compact = ProcessInfo.processInfo.environment["TOGETHER_UI_COMPACT"] == "1"
+            DispatchQueue.main.async {
+                window.setContentSize(NSSize(width: compact ? 900 : 1100, height: compact ? 620 : 760))
+                window.setFrameOrigin(NSPoint(x: 80, y: compact ? 180 : 80))
+            }
+        }
+    }
 }
 #endif

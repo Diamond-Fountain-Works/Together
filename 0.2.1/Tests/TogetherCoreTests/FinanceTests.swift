@@ -123,7 +123,7 @@ import CryptoKit
     @Test func financeCatalogCoversSupportedCurrenciesAndStatuses() {
         #expect(FinanceCurrency.supported.count >= 160)
         for currency in FinanceCurrency.supported { #expect(Copy.text("finance.currency." + currency.code) != "finance.currency." + currency.code) }
-        for error in [FinanceError.invalidAmount, .invalidCurrency, .missingSettlement, .invalidRate, .invalidPayment, .invalidDate, .invalidRecord, .missingRecord, .overflow, .peerUpgrade, .invalidCard] { #expect(error.localizedDescription != "finance.error." + error.rawValue) }
+        for error in [FinanceError.invalidAmount, .invalidCurrency, .missingSettlement, .invalidRate, .invalidPayment, .invalidDate, .invalidRecord, .missingRecord, .overflow, .peerUpgrade, .invalidCard, .recordChanged] { #expect(error.localizedDescription != "finance.error." + error.rawValue) }
         for status in ExpenseReviewStatus.allCases { #expect(Copy.text("finance.status." + status.rawValue) != "finance.status." + status.rawValue) }
     }
     @Test func privateSettingsAndCardOwnershipCannotBeForged() throws {

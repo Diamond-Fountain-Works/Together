@@ -21,10 +21,12 @@ def compare(base,candidate):
  delta=ImageChops.difference(a,b);pixels=list(delta.get_flattened_data());changed=sum(max(rgb)>16 for rgb in pixels);ratio=changed/len(pixels);box=delta.getbbox()
  return {'severity':'PASS' if changed==0 else 'FAIL' if ratio>0.02 else 'REVIEW REQUIRED','changedRatio':ratio,'bbox':box}
 def main():
- p=argparse.ArgumentParser();p.add_argument('--self-test',action='store_true');a=p.parse_args()
+ p=argparse.ArgumentParser();p.add_argument('--self-test',action='store_true');p.add_argument('--capture-report',default='qa/results/ui.json');a=p.parse_args()
  manifest=BASE/'manifest.json';approved=json.loads(manifest.read_text()).get('images',{}) if manifest.exists() else {};results=[]
  config=json.loads((ROOT/'qa/project.json').read_text());required=expected_cases(config)
- capture=ROOT/'qa/results/ui.json';run=json.loads(capture.read_text()) if capture.exists() else {}
+ capture=(ROOT/a.capture_report).resolve()
+ if ROOT not in capture.parents: p.error('capture report must be inside the project')
+ run=json.loads(capture.read_text()) if capture.exists() else {}
  current=set(run.get('screenshots',[]));missing=sorted(set(required)-current)
  for key in missing:results.append({'case':key,'severity':'FAIL','reason':'missing from current XCTest capture run; old candidates cannot supply evidence'})
  for key in sorted(current & set(required)):

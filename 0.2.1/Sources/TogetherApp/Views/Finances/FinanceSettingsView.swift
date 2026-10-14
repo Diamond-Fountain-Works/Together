@@ -30,8 +30,8 @@ struct FinanceSettingsView: View {
     var body: some View {
         FinanceEditorLayout(title: Copy.text("finance.action.settings"), error: error, save: save, cancel: model.dismissSheet) {
             Text(Copy.text("finance.cycle.title")).font(.headline)
-            Picker(Copy.text("finance.cycle.scope"), selection: $personal) { Text(Copy.text("finance.cycle.shared")).tag(false); Text(Copy.text("finance.cycle.personal")).tag(true) }.pickerStyle(.segmented)
-            HStack { Text(Copy.text("finance.cycle.startDay")); Spacer(); MonthDayWheelPicker(selection: personal ? $personalDay : $sharedDay) }
+            Picker(Copy.text("finance.cycle.scope"), selection: $personal) { Text(Copy.text("finance.cycle.shared")).tag(false); Text(Copy.text("finance.cycle.personal")).tag(true) }.pickerStyle(.segmented).accessibilityIdentifier("finance.cycle.scope")
+            HStack { Text(Copy.text("finance.cycle.startDay")); Spacer(); MonthDayWheelPicker(selection: personal ? $personalDay : $sharedDay).id(personal) }
             TextField(Copy.text("finance.field.timeZone"), text: personal ? $personalZone : $sharedZone).textFieldStyle(.roundedBorder)
             Text(Copy.text("finance.cycle.guidance")).font(.caption).foregroundStyle(.secondary)
             if personal {
@@ -48,7 +48,7 @@ struct FinanceSettingsView: View {
             }
             HStack { Text(Copy.text("finance.cards.title")).font(.headline); Spacer(); Button(Copy.text("finance.cards.new")) { model.replaceSheet(.finance(.card(nil))) }.accessibilityIdentifier("finance.card.new") }
             ForEach(model.engine.visiblePaymentMethods) { card in
-                HStack { VStack(alignment: .leading) { Text(Copy.format("finance.format.detail", card.name, card.lastFour)); Text(Copy.format("finance.format.detail", card.bankName, model.name(card.holderId))).font(.caption).foregroundStyle(.secondary) }; Spacer(); if card.ownerId == model.engine.identity.descriptor.userId { Button(Copy.text("finance.action.edit")) { model.replaceSheet(.finance(.card(card.id))) }; Button(Copy.text("finance.action.delete"), role: .destructive) { model.perform { try model.engine.deletePaymentMethod(card.id) } } } }
+                HStack { VStack(alignment: .leading) { Text(Copy.format("finance.format.detail", card.name, card.lastFour)); Text(Copy.format("finance.format.detail", card.bankName, model.name(card.holderId))).font(.caption).foregroundStyle(.secondary) }; Spacer(); if card.ownerId == model.engine.identity.descriptor.userId { Button(Copy.text("copy.action.051836569928")) { model.replaceSheet(.finance(.card(card.id))) }; Button(Copy.text("copy.action.2f9daa828907"), role: .destructive) { model.perform { try model.engine.deletePaymentMethod(card.id) } } } }
             }
         }
     }

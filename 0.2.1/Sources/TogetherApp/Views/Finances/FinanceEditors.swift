@@ -22,14 +22,18 @@ struct FinanceEditorLayout<Content: View>: View {
     let error: String?
     let save: () -> Void
     let cancel: () -> Void
+    var supplementaryActions: AnyView? = nil
     @ViewBuilder let content: Content
     var body: some View {
         VStack(alignment: .leading, spacing: 18) {
             Text(title).font(.system(size: 26, weight: .semibold, design: .rounded))
             ScrollView { VStack(alignment: .leading, spacing: 18) { content; if let error { Text(error).foregroundStyle(.red).textSelection(.enabled).accessibilityIdentifier("finance.editor.error") } }.padding(.trailing, 4) }
+            if let supplementaryActions { supplementaryActions }
             Divider()
-            HStack { Button(Copy.text("finance.action.cancel"), action: cancel).keyboardShortcut(.cancelAction).accessibilityIdentifier("sheet.cancel"); Spacer(); Button(Copy.text("finance.action.save"), action: save).buttonStyle(.borderedProminent).keyboardShortcut(.defaultAction).accessibilityIdentifier("finance.save") }
-        }.padding(28).frame(width: 625, height: 680)
+            HStack { Button(Copy.text("copy.action.2cd0f3be8738"), action: cancel).keyboardShortcut(.cancelAction).accessibilityIdentifier("sheet.cancel"); Spacer(); Button(Copy.text("copy.action.a3030bf8f16d"), action: save).buttonStyle(.borderedProminent).keyboardShortcut(.defaultAction).accessibilityIdentifier("finance.save") }
+        // Fits the supported 620pt compact content area. Longer fields scroll
+        // while the footer remains above the Dock and outside the scroll view.
+        }.padding(28).frame(width: 625, height: 620)
     }
 }
 struct ReserveEditor: View {
@@ -55,7 +59,7 @@ struct ReserveEditor: View {
             FinanceAmountFields(draft: $amount)
             if !opening { Picker(Copy.text("finance.deposit.member"), selection: $user) { ForEach(model.engine.context.members.sorted { $0.uuidString < $1.uuidString }, id: \.self) { Text(model.name($0)).tag($0) } } }
             DatePicker(Copy.text("finance.field.date"), selection: $date, displayedComponents: .date).environment(\.timeZone, TimeZone(identifier: model.engine.sharedSpace.timeZoneIdentifier)!)
-            TextField(Copy.text("finance.field.notes"), text: $notes, axis: .vertical).textFieldStyle(.roundedBorder)
+            TextField(Copy.text("copy.guidance.daede9881787"), text: $notes, axis: .vertical).textFieldStyle(.roundedBorder)
             if opening { Text(Copy.text("finance.reserves.openingGuidance")).font(.caption).foregroundStyle(.secondary) }
         }
     }
@@ -93,7 +97,7 @@ struct ExpenseEditor: View {
     }
     private var existing: ExpenseEntry? { id.flatMap { model.engine.snapshot.finance.expenses[$0] } }
     var body: some View {
-        FinanceEditorLayout(title: Copy.text(existing == nil ? "finance.action.new.expenses" : "finance.expenses.edit"), error: error, save: save, cancel: model.dismissSheet) {
+        FinanceEditorLayout(title: Copy.text(existing == nil ? "finance.action.new.expenses" : "finance.expenses.edit"), error: error, save: save, cancel: model.dismissSheet, supplementaryActions: existing == nil ? nil : AnyView(reviewActions)) {
             TextField(Copy.text("finance.field.title"), text: $title).textFieldStyle(.roundedBorder).accessibilityIdentifier("finance.expense.title")
             FinanceAmountFields(draft: $amount)
             FinancePaymentFields(model: model, selection: $payment, cardId: $cardId, amount: try? amount.amount())
@@ -103,16 +107,20 @@ struct ExpenseEditor: View {
                 Text(Copy.text("finance.source.standalone")).tag(Optional<UUID>.none)
                 ForEach(model.engine.snapshot.finance.dateEvents.values.filter { $0.deletedAt == nil || $0.id == eventId }.sorted { $0.date > $1.date }) { event in Text(Copy.format("finance.format.detail", event.title, event.date.iso)).tag(Optional(event.id)) }
             }
-            TextField(Copy.text("finance.field.notes"), text: $notes, axis: .vertical).textFieldStyle(.roundedBorder)
+            TextField(Copy.text("copy.guidance.daede9881787"), text: $notes, axis: .vertical).textFieldStyle(.roundedBorder)
             if let existing {
                 Text(Copy.text("finance.status." + existing.status.rawValue)).font(.caption).foregroundStyle(.secondary)
                 if existing.recurringBillId != nil { Text(Copy.text("finance.expenses.occurrenceGuidance")).font(.caption).foregroundStyle(.secondary) }
-                HStack {
-                    if existing.status == .provisional { Button(Copy.text("finance.review.correct")) { review(.reconciled) }.accessibilityIdentifier("finance.review.correct") }
-                    Button(Copy.text("finance.review.skipped")) { review(.skipped) }.accessibilityIdentifier("finance.review.skipped")
-                    Spacer()
-                    if existing.deletedAt == nil { Button(Copy.text("finance.action.delete"), role: .destructive) { do { try model.engine.deleteFinance(existing.id, type: .expense); model.dismissSheet() } catch { self.error = error.localizedDescription } }.accessibilityIdentifier("finance.expense.delete") }
-                }
+            }
+        }
+    }
+    private var reviewActions: some View {
+        HStack {
+            if let existing {
+                if existing.status == .provisional { Button(Copy.text("finance.review.correct")) { review(.reconciled) }.accessibilityIdentifier("finance.review.correct") }
+                Button(Copy.text("finance.review.skipped")) { review(.skipped) }.accessibilityIdentifier("finance.review.skipped")
+                Spacer()
+                if existing.deletedAt == nil { Button(Copy.text("copy.action.2f9daa828907"), role: .destructive) { do { try model.engine.deleteFinance(existing.id, type: .expense); model.dismissSheet() } catch { self.error = error.localizedDescription } }.accessibilityIdentifier("finance.expense.delete") }
             }
         }
     }
@@ -245,8 +253,8 @@ struct DateEventEditor: View {
         }, cancel: model.dismissSheet) {
             TextField(Copy.text("finance.field.title"), text: $title).textFieldStyle(.roundedBorder)
             DatePicker(Copy.text("finance.field.date"), selection: $date, displayedComponents: .date).environment(\.timeZone, TimeZone(identifier: model.engine.sharedSpace.timeZoneIdentifier)!)
-            TextField(Copy.text("finance.field.notes"), text: $notes, axis: .vertical).textFieldStyle(.roundedBorder)
-            if let id { Button(Copy.text("finance.action.delete"), role: .destructive) { model.perform { try model.engine.deleteFinance(id, type: .dateEvent); model.dismissSheet() } }; ForEach(model.engine.snapshot.finance.expenses.values.filter { $0.dateEventId == id }) { entry in Text(verbatim: entry.title + " · " + FinanceMoney.display(entry.amount.finalCNYMinor)).font(.callout) } }
+            TextField(Copy.text("copy.guidance.daede9881787"), text: $notes, axis: .vertical).textFieldStyle(.roundedBorder)
+            if let id { Button(Copy.text("copy.action.2f9daa828907"), role: .destructive) { model.perform { try model.engine.deleteFinance(id, type: .dateEvent); model.dismissSheet() } }; ForEach(model.engine.snapshot.finance.expenses.values.filter { $0.dateEventId == id }) { entry in Text(verbatim: entry.title + " · " + FinanceMoney.display(entry.amount.finalCNYMinor)).font(.callout) } }
         }
     }
 }

@@ -39,3 +39,7 @@ New screenshots go to candidates. Only a human approval tied to the reviewed ima
 ## Our Finances 0.2.1
 
 Exactly three native segmented tabs: United Reserves, Expenses and Recurring Bills. Cycles and payment-tool profiles live in a settings sheet. One context-sensitive primary create action per tab. No bank-connected, approval, debt or AA page. Use monospaced amount digits and semantic negative/pending states; values always come from the ledger. Distinguish book balance, reconciled balance and provisional shared spending; do not imply bank verification. Compact windows may put tabs below the title. Category chips wrap. The searchable currency/day wheels accept pointer, scroll and arrow keys, with native focus; changing currency clears unsettled inputs. Ordinary transitions use Standard 280ms or reduced motion. Reminders and remote-change banners do not present blocking sheets. Cards share existing TogetherCard tokens.
+
+### Native capture scope
+
+Window screenshots cover ordinary pages. For native sheets or popovers that extend outside a compact parent, capture that complete owned element; do not use a clipped parent image as evidence of complete controls. Record frame/scope and keep this distinct from app behavior assertions. Only a human can approve the resulting exact image hashes.

@@ -65,7 +65,7 @@ struct HomeView: View {
                 Text(profile?.displayName ?? fallback).font(.headline)
                 HStack(spacing: 5) {
                     Circle().fill(online ? .green : .secondary).frame(width: 5, height: 5)
-                    Text(profile == nil ? (model.engine.peer == nil ? Copy.text("copy.status.43461ae7bd32") : Copy.text("copy.status.710764256c01")) : (online ? Copy.text("copy.status.0d21bd52022c") : Copy.text("copy.status.a1794783aab7"))).font(.caption).foregroundStyle(.secondary)
+                    Text(profile == nil ? (model.engine.peer == nil ? Copy.text("copy.status.43461ae7bd32") : Copy.text("copy.status.710764256c01")) : (online ? Copy.text("copy.status.0d21bd52022c") : Copy.text("status.connection.offline"))).font(.caption).foregroundStyle(.secondary)
                 }
             }
         }

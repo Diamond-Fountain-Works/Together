@@ -72,6 +72,7 @@ for configuration in ["Debug", "Release"]:
     settings = settings.replace("__MICROPHONE_COPY__", microphone_copy.replace(chr(92), chr(92) * 2).replace(chr(34), chr(92) + chr(34)).replace(chr(10), chr(92) + "n"))
     settings += ' INFOPLIST_FILE = Configuration/Info.plist;'
     if configuration == "Debug": settings += ' SWIFT_OPTIMIZATION_LEVEL = "-Onone"; SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG; ONLY_ACTIVE_ARCH = YES;'
+    else: settings += ' CODE_SIGN_INJECT_BASE_ENTITLEMENTS = NO;'
     target_configs.append(add("target-" + configuration, f'isa = XCBuildConfiguration; name = {configuration}; buildSettings = {{ {settings} }};'))
 project_list = add("project-configs", f'isa = XCConfigurationList; buildConfigurations = ({", ".join(project_configs)}); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release;')
 target_list = add("target-configs", f'isa = XCConfigurationList; buildConfigurations = ({", ".join(target_configs)}); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release;')

@@ -1,4 +1,8 @@
-## Current 0.2.1 run (2026-10-14)
+## Final QA status — 0.2.1 Build 4
+
+See [qa/FINAL_QA_BUILD4.md](qa/FINAL_QA_BUILD4.md). Final business suite: 77 PASS / 0 FAIL / 1 SKIP, with the skipped actual-store-copy case separately PASS. Final full UI suite: 12 PASS / 1 FAIL / 1 SKIP; disappearing input-candidate AX reference persists. Visual 67/68, not approved. Release/DMG PASS, get-task-allow absent, not notarized. NOT READY FOR LOCAL INSTALL.
+
+## Historical Build 2 run (2026-10-14; superseded by Build 3 final QA)
 
 Business + actual legacy-store upgrade: **77 PASS, 0 FAIL, 0 SKIP** with local relay enabled. Workers: **8 PASS**; quality tools: **6 PASS**. Native Debug and Universal Release/DMG built; public native relay integration: **2 PASS** on this Mac, including preserved V2 route -> V3 upgrade.
 
@@ -164,3 +168,16 @@ UI 验证补充：系统曾阻挡测试 Runner 对 Documents 的访问，导致�
 Latest correction uses two vertically stacked left sidebar destinations, removes the horizontal mode Picker, and derives the workspace mode from selected section to avoid conflicting navigation state. The shared views retain stable identity across the two selections. Existing filters, editor, grant ledger and Home routes remain.
 
 43 Core + 7 Workers + 6 tools + 10 UI = 66 PASS / 0 FAIL, 1 UI SKIP. Current complete UI result: `/Users/giga_fortress0/Documents/ProjectsLocal/Together/qa/results/ui-20261010-170246.xcresult`. All 38 current captures available; Visual REVIEW REQUIRED, Copy 0 Error / 35 Warning. Debug, Universal Release and six mounted DMG checks PASS. Before/after review: qa/visual/PLANS_SIDEBAR_REVIEW.md. No approved screenshot was replaced and no user data was modified.
+
+## 0.2.1 Build 3 final QA
+
+- Run `make qa` for separate quality-tool, copy, server, signed-business/migration, native Debug build, XCUITest and visual reports. Swift Testing skipped cases are reported separately from passes.
+- XCUITest must execute all 14 methods; the absent Our Story case is an explicit skip, never a passed placeholder. Currency tests wait for the filtered result set before resolving a moved row. Compact captures assert a real 900pt window. Personal cycle tests wait for its stored day to be visible.
+- The expanded native capture matrix has 68 required images, including the three financial tabs at compact width, bill editors, currency popovers and personal Financial Cycle settings. Four previously incomplete financial settings images are replaced by opaque native XCTest window captures; fallback rasterizations are not used as acceptance evidence.
+- `scripts/run_finance_migration_test.py` uses untouched 0.0.1 source to generate an isolated populated old store, including signed history, profiles/avatar, recurrence/tasks, grant/fulfilled wish, cached gift/presentation state and pinned peer/relay binding. Verify repeated operation replay is a no-op and reopening with an existing identity file never requires Keychain migration again.
+- `scripts/run_existing_store_upgrade.py --app <Debug Together.app>` copies the quiescent existing store, WAL/SHM, identity and media to a private temporary directory. Old-code audit and three new-code reopens compare hashes of all original entities/local records and signed operations; two actual Debug app processes open the same copy. Production source fingerprints must remain identical. No original SwiftData store or Keychain is opened for writing.
+- Native real-WebSocket local Worker integration and optional public Relay tests are one-Mac checks. Real two-Mac/different-Wi-Fi acceptance is separate and still requires both machines to reach `/health` and run protocol-3 clients. No offline delivery claim.
+- `make package` is last, after all native builds/tests, because Debug builds also copy their bundle into project `dist`. Build 3 must have its own DMG, checksum and bundle manifest; do not replace Applications.
+- Human-approved baselines remain immutable. With an empty approval manifest, complete screenshots still require human review; no automatic baseline approval or Visual PASS.
+
+Build 3 supplementary verification: currency fixtures commit exact queries through native paste while preserving the clipboard, rather than switching the user's Pinyin input method. Native sheet/popover captures include complete owned elements even when their bounds extend outside the compact parent window. A focused capture report can be selected with `compare_visuals.py --capture-report qa/results/ui-visual-capture.json`; this does not combine old candidate files into a current run. Client reconnect lifecycle corrections, unchanged crypto checks and real repeated-reconnect evidence are documented in qa/NETWORK_RECONNECT_REVIEW.md.

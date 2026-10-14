@@ -1,4 +1,6 @@
-# Finance visual review — 0.2.1 Build 2
+# Historical finance visual review — 0.2.1 Build 2
+
+Superseded by [BUILD3_SCREENSHOTS.md](BUILD3_SCREENSHOTS.md). The limitations below describe the previous run, not final Build 3 evidence.
 
 Candidates are not approved baselines. No human-approved image was overwritten. The manifest remains empty until explicit image/hash review.
 

@@ -62,7 +62,7 @@ struct UnitedReservesView: View {
                         }
                     }
                     if entry.deletedAt != nil { Text(Copy.text("finance.status.revoked")).font(.caption).foregroundStyle(.secondary) }
-                    else { Menu { Button(Copy.text("finance.action.edit")) { model.showFinance(.deposit(entry.id, entry.kind == .opening)) }; if entry.kind != .opening { Button(Copy.text("finance.action.revoke"), role: .destructive) { model.perform { try model.engine.deleteFinance(entry.id, type: .reserveEntry) } } } } label: { Image(systemName: "ellipsis") }.menuStyle(.borderlessButton).fixedSize() }
+                    else { Menu { Button(Copy.text("copy.action.051836569928")) { model.showFinance(.deposit(entry.id, entry.kind == .opening)) }; if entry.kind != .opening { Button(Copy.text("copy.action.926a50b98ece"), role: .destructive) { model.perform { try model.engine.deleteFinance(entry.id, type: .reserveEntry) } } } } label: { Image(systemName: "ellipsis") }.menuStyle(.borderlessButton).fixedSize() }
                 }
             }.opacity(entry.deletedAt == nil ? 1 : 0.6).accessibilityIdentifier("finance.deposit." + entry.id.uuidString)
         }
@@ -116,7 +116,7 @@ struct ExpensesView: View {
         FinanceCycleSummary(model: model)
         if model.financialDateFilter == "personal" || model.financialDateFilter == "partner" { FinanceCycleSummary(model: model, ownerId: model.financialRangeOwner) }
         HStack {
-            Picker(Copy.text("finance.filter.payment"), selection: $model.financialPaymentFilter) { Text(Copy.text("finance.filter.all")).tag("all"); ForEach(RelativeFinancePayment.allCases) { Text($0.title).tag($0.rawValue) } }.frame(maxWidth: 220)
+            Picker(Copy.text("finance.payment.title"), selection: $model.financialPaymentFilter) { Text(Copy.text("finance.filter.all")).tag("all"); ForEach(RelativeFinancePayment.allCases) { Text($0.title).tag($0.rawValue) } }.frame(maxWidth: 220)
             Picker(Copy.text("finance.filter.source"), selection: $model.financialSourceFilter) { ForEach(["all", "standalone", "date", "bill"], id: \.self) { Text(Copy.text("finance.source." + $0)).tag($0) } }.frame(maxWidth: 170)
             Picker(Copy.text("finance.filter.status"), selection: $model.financialStatusFilter) { Text(Copy.text("finance.filter.all")).tag("all"); ForEach(ExpenseReviewStatus.allCases, id: \.self) { Text(Copy.text("finance.status." + $0.rawValue)).tag($0.rawValue) } }.frame(maxWidth: 150)
         }

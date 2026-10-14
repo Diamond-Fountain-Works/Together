@@ -5,6 +5,16 @@ import CryptoKit
 @MainActor final class TogetherUITests: XCTestCase {
     private var app: XCUIApplication!
     private var root: URL!
+    private var staleInterruptionMonitor: NSObjectProtocol?
+    override func setUp() {
+        super.setUp()
+        staleInterruptionMonitor = addUIInterruptionMonitor(withDescription: "Already dismissed native input candidate") { alert in
+            // macOS 27 can report a transient input-candidate dialog and remove
+            // it before XCTest resolves its identity. Handle only its absence;
+            // real permission/confirmation dialogs are never clicked or granted.
+            !alert.exists
+        }
+    }
     private func dismissRunnerDocumentsRequest() {
         let system = XCUIApplication(bundleIdentifier: "com.apple.UserNotificationCenter")
         let dialog = system.dialogs.firstMatch
@@ -32,12 +42,42 @@ import CryptoKit
         app.activate()
         XCTAssertTrue(app.windows.firstMatch.waitForExistence(timeout: 15))
         XCTAssertTrue(app.descendants(matching: .any)["nav.home"].waitForExistence(timeout: 15))
+        if compact { XCTAssertEqual(app.windows.firstMatch.frame.width, 900, accuracy: 2, "Compact fixture must actually resize the window") }
     }
     private func screenshot(_ name: String) throws {
         let window = app.windows.firstMatch
         XCTAssertTrue(window.exists)
-        let shot = window.screenshot()
+        XCTAssertLessThanOrEqual(app.sheets.count, 1, "Only one modal sheet may be presented")
+        // Native sheets/popovers may extend beyond a compact parent window.
+        // Screenshot the actual owned element, not a clipped parent-window crop.
+        let target = app.popovers.firstMatch.exists ? app.popovers.firstMatch : app.sheets.firstMatch.exists ? app.sheets.firstMatch : window
+        let shot = target.screenshot()
         let attachment = XCTAttachment(screenshot: shot); attachment.name = name; attachment.lifetime = .keepAlways; add(attachment)
+        let scope = target.elementType == .popover ? "popover" : target.elementType == .sheet ? "sheet" : "window"
+        let metadata = XCTAttachment(string: "Native XCTest scope: \(scope); frame: \(target.frame); fixture window: \(window.frame)")
+        metadata.name = name + "-capture-scope"; metadata.lifetime = .keepAlways; add(metadata)
+    }
+    private func enterCommittedSearch(_ text: String) {
+        // Test locale does not select the Mac's keyboard input source. Pinyin
+        // can keep typeText's Latin fixture in marked composition. A native
+        // Cmd+V commits the exact deterministic query without changing the
+        // user's input method, and the complete clipboard is restored.
+        let pasteboard = NSPasteboard.general
+        let saved = (pasteboard.pasteboardItems ?? []).map { item in
+            let copy = NSPasteboardItem()
+            for type in item.types { if let bytes = item.data(forType: type) { copy.setData(bytes, forType: type) } }
+            return copy
+        }
+        pasteboard.clearContents(); pasteboard.setString(text, forType: .string)
+        let testChange = pasteboard.changeCount
+        defer {
+            if pasteboard.changeCount == testChange {
+                pasteboard.clearContents()
+                if !saved.isEmpty { pasteboard.writeObjects(saved) }
+            }
+        }
+        let field = app.textFields["finance.currency.search"]
+        field.click(); field.typeKey("v", modifierFlags: .command)
     }
     func testNavigationAndNoPersistentGiftUI() {
         launch()
@@ -150,6 +190,11 @@ import CryptoKit
         XCTAssertTrue(app.buttons["wish.grant.detail.close"].waitForExistence(timeout: 5))
         XCTAssertTrue(app.buttons["wish.grant.detail.close"].isHittable)
         app.buttons["wish.grant.detail.close"].click()
+        for dark in [false, true] {
+            launch(page: "home", populated: true, dark: dark, reduce: true, compact: true)
+            XCTAssertTrue(app.buttons["home.pending"].isHittable)
+            try screenshot("home-populated-\(dark ? "dark" : "light")-compact-reduced")
+        }
     }
     func testTaskActionAndClosableSheet() {
         launch(page: "tasks")
@@ -278,10 +323,22 @@ import CryptoKit
         original.click(); original.typeText("218.01")
         app.buttons["finance.currency.open"].click()
         XCTAssertTrue(app.textFields["finance.currency.search"].waitForExistence(timeout: 5))
-        app.textFields["finance.currency.search"].click(); app.textFields["finance.currency.search"].typeText("USD")
+        enterCommittedSearch("USD")
+        // Filtering moves USD to a different row. XCTest idle does not imply
+        // that SwiftUI's next layout/snapshot is committed; wait for the real
+        // result set before resolving a coordinate for the row.
+        let filtered = XCTNSPredicateExpectation(predicate: NSPredicate(format: "exists == false"), object: app.buttons["finance.currency.CNY"])
+        XCTAssertEqual(XCTWaiter.wait(for: [filtered], timeout: 5), .completed)
+        try screenshot("currency-search-before-click")
         app.buttons["finance.currency.USD"].click()
-        let emptyValue = original.value as? String ?? ""
-        XCTAssertTrue(emptyValue.isEmpty || emptyValue == original.placeholderValue)
+        try screenshot("currency-search-after-click")
+        let debug = XCTAttachment(string: app.debugDescription); debug.name = "currency-click-hierarchy"; debug.lifetime = .keepAlways; add(debug)
+        XCTAssertFalse(app.textFields["finance.currency.search"].exists, "Currency row center must activate selection and close the popover")
+        // macOS SwiftUI can expose an empty TextField's prompt as its AX value
+        // without setting AXPlaceholderValue. Wait for the data-bound change;
+        // accept only the actual prompt, never arbitrary nonempty text.
+        let cleared = XCTNSPredicateExpectation(predicate: NSPredicate(format: "value == '' OR value == placeholderValue OR value == '原币金额'"), object: original)
+        XCTAssertEqual(XCTWaiter.wait(for: [cleared], timeout: 5), .completed, "Currency change left original value: \(String(describing: original.value)), placeholder: \(String(describing: original.placeholderValue))")
         app.buttons["finance.save"].click()
         XCTAssertTrue(app.staticTexts["finance.editor.error"].waitForExistence(timeout: 5))
         original.click(); original.typeText("10")
@@ -304,7 +361,14 @@ import CryptoKit
         XCTAssertTrue(row.waitForExistence(timeout: 8))
         row.click()
         XCTAssertTrue(app.buttons["finance.review.correct"].waitForExistence(timeout: 5))
-        app.buttons["finance.review.correct"].click()
+        let correct = app.buttons["finance.review.correct"]
+        for _ in 0..<4 where !correct.isHittable {
+            app.sheets.firstMatch.scrollViews.firstMatch.scroll(byDeltaX: 0, deltaY: -180)
+        }
+        XCTAssertTrue(correct.isHittable, "Reconciliation action must be visible after scrolling the native form")
+        correct.click()
+        let closed = XCTNSPredicateExpectation(predicate: NSPredicate(format: "count == 0"), object: app.sheets)
+        XCTAssertEqual(XCTWaiter.wait(for: [closed], timeout: 5), .completed, "Successful reconciliation must close the editor")
         XCTAssertTrue(row.waitForExistence(timeout: 5)); row.click()
         XCTAssertFalse(app.buttons["finance.review.correct"].exists)
         app.buttons["sheet.cancel"].click()
@@ -327,10 +391,45 @@ import CryptoKit
             }
         }
         for dark in [false, true] {
-            let name = "expenses-populated-\(dark ? "dark" : "light")-compact-reduced"
-            launch(page: "expenses", populated: true, dark: dark, reduce: true, compact: true, name: name)
-            XCTAssertTrue(app.buttons["finance.new"].isHittable)
-            try screenshot(name)
+            let mode = dark ? "dark" : "light"
+            for page in ["reserves", "expenses", "bills"] {
+                let name = "\(page)-populated-\(mode)-compact-reduced"
+                launch(page: page, populated: true, dark: dark, reduce: true, compact: true, name: name)
+                XCTAssertTrue(app.buttons["finance.new"].isHittable)
+                XCTAssertTrue(app.radioGroups["finance.tabs"].radioButtons["Recurring Bills"].isHittable)
+                try screenshot(name)
+            }
+            app.buttons["finance.new"].click()
+            XCTAssertTrue(app.textFields["finance.bill.title"].waitForExistence(timeout: 5))
+            XCTAssertTrue(app.buttons["finance.save"].isHittable)
+            XCTAssertTrue(app.buttons["sheet.cancel"].isHittable)
+            try screenshot("bill-editor-\(mode)-compact-reduced")
+            app.buttons["finance.currency.open"].click()
+            XCTAssertTrue(app.textFields["finance.currency.search"].waitForExistence(timeout: 5))
+            try screenshot("currency-picker-\(mode)-compact-reduced")
+            enterCommittedSearch("JPY")
+            let filtered = XCTNSPredicateExpectation(predicate: NSPredicate(format: "exists == false"), object: app.buttons["finance.currency.CNY"])
+            XCTAssertEqual(XCTWaiter.wait(for: [filtered], timeout: 5), .completed)
+            XCTAssertTrue(app.buttons["finance.currency.JPY"].isHittable)
+            // A native input-candidate AX dialog can disappear while XCTest's
+            // automatic interruption handler is resolving it. Click the freshly
+            // verified visible row directly; assert actual selection below.
+            app.buttons["finance.currency.JPY"].coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.5)).click()
+            XCTAssertFalse(app.textFields["finance.currency.search"].exists)
+            XCTAssertTrue(app.buttons["finance.currency.open"].label.contains("JPY"))
+            app.buttons["sheet.cancel"].click()
+            XCTAssertEqual(app.sheets.count, 0)
+
+            launch(page: "finance-settings", populated: true, dark: dark, reduce: true, compact: true)
+            XCTAssertTrue(app.buttons["finance.save"].waitForExistence(timeout: 5))
+            app.radioGroups["finance.cycle.scope"].radioButtons["我的周期"].click()
+            let day = app.buttons.matching(identifier: "finance.day.15").firstMatch
+            let centered = XCTNSPredicateExpectation(predicate: NSPredicate(format: "hittable == true"), object: day)
+            XCTAssertEqual(XCTWaiter.wait(for: [centered], timeout: 5), .completed, "Personal cycle must center its persisted day 15")
+            XCTAssertTrue(app.buttons["finance.save"].isHittable)
+            try screenshot("finance-settings-personal-\(mode)-compact-reduced")
+            app.buttons["sheet.cancel"].click()
+            XCTAssertEqual(app.sheets.count, 0)
         }
     }
 }

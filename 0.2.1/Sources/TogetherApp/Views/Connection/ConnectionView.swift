@@ -12,7 +12,7 @@ struct ConnectionView: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 24) {
-                PageHeading(title: Copy.text("copy.navigation.639a40e82b9a"), subtitle: "")
+                PageHeading(title: Copy.text("nav.connection"), subtitle: "")
                 HStack { Circle().fill(model.network.isOnline ? .green : .secondary).frame(width: 7, height: 7); Text(model.network.state.displayName).font(.callout); Spacer() }
                     .accessibilityIdentifier("connection.state")
                 if let error = model.network.errorMessage { Text(error).foregroundStyle(.orange).accessibilityIdentifier("connection.error") }
