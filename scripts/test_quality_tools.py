@@ -3,8 +3,24 @@ from pathlib import Path
 from PIL import Image
 sys.path.insert(0,str(Path(__file__).parent))
 import audit_ui_copy as audit
+import compare_visuals as visuals
 from compare_visuals import compare, expected_cases
 class QualityToolTests(unittest.TestCase):
+    def test_capture_run_rejects_replaced_or_escaped_images(self):
+        with tempfile.TemporaryDirectory() as folder:
+            root=Path(folder);directory=root/'qa/visual/candidates/run-a';directory.mkdir(parents=True)
+            image=directory/'case.png';Image.new('RGB',(10,10),'white').save(image)
+            saved=visuals.ROOT,visuals.CANDIDATES
+            visuals.ROOT=root;visuals.CANDIDATES=root/'qa/visual/candidates'
+            try:
+                report={'captureDirectory':'qa/visual/candidates/run-a','screenshotSHA256':{'case.png':visuals.sha(image)}}
+                self.assertEqual(visuals.capture_file('case.png',report),image.resolve())
+                Image.new('RGB',(10,10),'black').save(image)
+                with self.assertRaisesRegex(ValueError,'hash'):visuals.capture_file('case.png',report)
+                with self.assertRaisesRegex(ValueError,'escaped'):visuals.capture_file('../case.png',report)
+                report['captureDirectory']='qa/results'
+                with self.assertRaisesRegex(ValueError,'outside'):visuals.capture_file('case.png',report)
+            finally:visuals.ROOT,visuals.CANDIDATES=saved
     def test_copy_catalog_and_raw_unreviewed_error(self):
         with tempfile.TemporaryDirectory() as folder:
             root=Path(folder);src=root/'0.0.1/Sources/TogetherApp';src.mkdir(parents=True)

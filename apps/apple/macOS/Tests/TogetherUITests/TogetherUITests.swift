@@ -35,16 +35,27 @@ import CryptoKit
         if compact { XCTAssertEqual(app.windows.firstMatch.frame.width, 900, accuracy: 2, "Compact fixture must actually resize the window") }
     }
     private func screenshot(_ name: String) throws {
+        // Presence of the final button precedes the end of the spring and
+        // delayed content transitions. Snapshot the settled state while the
+        // behavior tests continue to exercise the actual animation.
+        if name.hasSuffix("-normal-opened") {
+            // Opening changes layout underneath the pointer; keep photo-hover
+            // controls out of this resting-state fixture, without hiding them
+            // in the product or changing system pointer preferences.
+            app.sheets.firstMatch.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.03)).hover()
+            Thread.sleep(forTimeInterval: 1)
+        }
         let window = app.windows.firstMatch
         XCTAssertTrue(window.exists)
         XCTAssertLessThanOrEqual(app.sheets.count, 1, "Only one modal sheet may be presented")
         // Native sheets/popovers may extend beyond a compact parent window.
         // Screenshot the actual owned element, not a clipped parent-window crop.
         let target = app.popovers.firstMatch.exists ? app.popovers.firstMatch : app.sheets.firstMatch.exists ? app.sheets.firstMatch : window
+        let scope = target.elementType == .popover ? "popover" : target.elementType == .sheet ? "sheet" : "window"
+        let targetFrame = target.frame, windowFrame = window.frame
         let shot = target.screenshot()
         let attachment = XCTAttachment(screenshot: shot); attachment.name = name; attachment.lifetime = .keepAlways; add(attachment)
-        let scope = target.elementType == .popover ? "popover" : target.elementType == .sheet ? "sheet" : "window"
-        let metadata = XCTAttachment(string: "Native XCTest scope: \(scope); frame: \(target.frame); fixture window: \(window.frame)")
+        let metadata = XCTAttachment(string: "Native XCTest scope: \(scope); frame: \(targetFrame); fixture window: \(windowFrame)")
         metadata.name = name + "-capture-scope"; metadata.lifetime = .keepAlways; add(metadata)
     }
     private func enterCommittedSearch(_ text: String) {
@@ -321,6 +332,26 @@ import CryptoKit
         }
     }
     func testOurStoryNotImplemented() throws { throw XCTSkip("Our Story is absent; no placeholder screenshot is accepted.") }
+    func testVisualTransientSurfaces() throws {
+        // Narrow reproduction for capture timing/material differences; no
+        // new product behavior and no mutation of approved reference images.
+        for dark in [false, true] {
+            let mode = dark ? "dark" : "light"
+            launch(page: "bills", dark: dark, reduce: true, compact: true)
+            app.buttons["finance.new"].click()
+            XCTAssertTrue(app.textFields["finance.bill.title"].waitForExistence(timeout: 5))
+            app.buttons["finance.currency.open"].click()
+            XCTAssertTrue(app.textFields["finance.currency.search"].waitForExistence(timeout: 5))
+            Thread.sleep(forTimeInterval: 1)
+            try screenshot("currency-picker-\(mode)-compact-reduced")
+            launch(page: "reveal", populated: true, dark: dark, reduce: false)
+            XCTAssertTrue(app.buttons["gift.open"].waitForExistence(timeout: 8))
+            app.buttons["gift.open"].click()
+            XCTAssertTrue(app.buttons["gift.received"].waitForExistence(timeout: 5))
+            try screenshot("reveal-\(mode)-normal-opened")
+            XCTAssertTrue(app.buttons["gift.received"].isHittable)
+        }
+    }
     private func financeTab(_ name: String) {
         let control = app.radioGroups["finance.tabs"]
         XCTAssertTrue(control.waitForExistence(timeout: 8))

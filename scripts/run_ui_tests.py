@@ -9,8 +9,9 @@ ROOT=Path(__file__).resolve().parents[1]
 project=ROOT/json.loads((ROOT/'qa/project.json').read_text())['projectDirectory'];results=ROOT/'qa/results';results.mkdir(parents=True,exist_ok=True)
 output=ROOT/'qa/visual/candidates';output.mkdir(parents=True,exist_ok=True)
 # New run path; never removes or overwrites an approved result bundle/baseline.
-import datetime
+import datetime,hashlib
 stamp=datetime.datetime.now().strftime('%Y%m%d-%H%M%S');bundle=results/f'ui-{stamp}.xcresult'
+output=output/stamp;output.mkdir(parents=True,exist_ok=False)
 env=os.environ.copy()
 report_name='ui'+('-'+args.label if args.label else '')
 derived=Path(os.environ.get('TOGETHER_UI_DERIVED_DATA',str(Path.home()/('.cache/Together/UIQA-'+project.name+'-DerivedData'))))
@@ -22,7 +23,7 @@ if selected:
  for name in selected:
   command.append('-only-testing:TogetherUITests/TogetherUITests/'+name)
 with (results/(report_name+'-test.log')).open('w') as log:run=subprocess.run(command,cwd=project,env=env,stdout=log,stderr=subprocess.STDOUT)
-summary={'status':'PASS' if run.returncode==0 else 'FAIL','resultBundle':str(bundle),'exitCode':run.returncode,'screenshots':[],'skippedPages':['Our Story: not implemented']}
+summary={'status':'PASS' if run.returncode==0 else 'FAIL','resultBundle':str(bundle),'exitCode':run.returncode,'screenshots':[],'screenshotSHA256':{},'captureDirectory':str(output.relative_to(ROOT)),'skippedPages':['Our Story: not implemented']}
 log_text=(results/(report_name+'-test.log')).read_text()
 if run.returncode!=0 and 'Timed out while enabling automation mode' in log_text and 'Test Case ' not in log_text:
     summary['status']='NOT RUN'
@@ -51,6 +52,7 @@ if bundle.exists():
                         if all(c.isalnum() or c in '-_' for c in safe):
                             shutil.copy2(attachments/filename,output/(safe+'.png'))
                             summary['screenshots'].append(safe+'.png')
+                            summary['screenshotSHA256'][safe+'.png']=hashlib.sha256((output/(safe+'.png')).read_bytes()).hexdigest()
         except (TypeError,KeyError,json.JSONDecodeError):pass
 summary['screenshots']=sorted(set(summary['screenshots']))
 (results/(report_name+'.json')).write_text(json.dumps(summary,ensure_ascii=False,indent=2)+'\n')

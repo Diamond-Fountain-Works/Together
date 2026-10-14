@@ -41,7 +41,7 @@ Additional `pre-monorepo-baseline.bundle` contains all current refs and was veri
 
 TogetherCore keeps module/product `TogetherCore` and current SwiftData/Network/AppKit adapters; its extraction does not imply Android/iOS/watchOS builds pass. Platform-neutral schemas and synthetic vectors live under `protocol/`; future Kotlin domain implementations must pass the same vectors. No placeholder platform projects were generated.
 
-App identity `com.together.app`, Application Support paths, physical schema classes, signed logs, key files, paired pins/routes, C1 transport and Lamport semantics stay unchanged. Build increments to **5**, Marketing Version stays **0.2.1** because package/resource identity may change the binary. No `/Applications` replacement or public release artifact upload. Release packaging is validated locally and remains ad-hoc/unnotarized.
+App identity `com.together.app`, Application Support paths, physical schema classes, signed logs, key files, paired pins/routes, C1 transport and Lamport semantics stay unchanged. Build increments to **5**, Marketing Version stays **0.2.1** because package/resource identity may change the binary. No `/Applications` replacement or public release artifact upload. Build 5 Release packaging evidence is recorded only after the final package command completes; signing remains ad-hoc/unnotarized.
 
 Implemented invitation TTL stays **600000 ms (10 minutes)**. Formal requirement **28800000 ms (8 hours)** is unresolved and tracked in [Issue #1](https://github.com/Diamond-Fountain-Works/Together/issues/1); change it only in a separate coordinated network PR/test/deployment. No production Worker configuration/deployment was changed. C2 and encrypted mailbox are future boundaries, not current capabilities.
 
