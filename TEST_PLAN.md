@@ -181,3 +181,11 @@ Latest correction uses two vertically stacked left sidebar destinations, removes
 - Human-approved baselines remain immutable. With an empty approval manifest, complete screenshots still require human review; no automatic baseline approval or Visual PASS.
 
 Build 3 supplementary verification: currency fixtures commit exact queries through native paste while preserving the clipboard, rather than switching the user's Pinyin input method. Native sheet/popover captures include complete owned elements even when their bounds extend outside the compact parent window. A focused capture report can be selected with `compare_visuals.py --capture-report qa/results/ui-visual-capture.json`; this does not combine old candidate files into a current run. Client reconnect lifecycle corrections, unchanged crypto checks and real repeated-reconnect evidence are documented in qa/NETWORK_RECONNECT_REVIEW.md.
+
+## Build 4 input-method final acceptance
+
+- Record HIToolbox current/selected/configured input sources and symbolic input shortcuts before an authorized temporary switch. ABC is a comparison condition, never a Together runtime requirement. Use native UI to switch; do not rewrite preferences or remove IMEs.
+- Save full ABC/Pinyin result bundles/logs; restore Pinyin and verify actual active source plus all configured keyboard sources/hotkeys, including when a test fails. Nonkeyboard system helper registrations must be disclosed separately.
+- The original 14 UI methods remain; an additional focused current-input-method currency case checks Latin JPY and Chinese 日元 in light/dark. Wait for the live input-dialog query to settle before fresh currency-row lookup. Persistent dialogs fail rather than receive automatic permissions. No JPY, business-status, sealed-privacy or closure assertion is waived.
+- Use a complete post-fix Pinyin suite for final acceptance. A focused pass or an ABC pass alone cannot clear the original full-suite failure. See [qa/INPUT_METHOD_REVIEW_BUILD4.md](qa/INPUT_METHOD_REVIEW_BUILD4.md).
+- Git all-refs backup is verified in durable Documents storage; live repository migration remains a separate action. Candidate snapshots need explicit human approval tied to exact hashes.

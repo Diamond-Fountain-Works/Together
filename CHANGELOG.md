@@ -1,5 +1,14 @@
 # Together changelog
 
+## 0.2.1 · Build 4 — input-method QA follow-up (no new product binary)
+
+- Compared the original failing finance snapshot case under temporarily selected ABC and restored Pinyin; retained both complete logs and verified the original configured input sources/hotkeys were preserved.
+- Corrected only XCUITest input-dialog waiting and fresh currency-row lookup; kept currency-selection/closure assertions and added light/dark Latin/Chinese search coverage. No Chinese input restriction was introduced.
+- Recovered the missing dark personal-financial-cycle capture. Human baseline approval remains distinct from automated capture.
+- Reviewed all 13 remaining copy warnings individually without modifying product text or disabling audit rules.
+- Created and restore-verified a durable all-refs Git bundle outside the cache directory; the live repository was not moved.
+- Release Build 4 binary/DMG remain unchanged; no installation, production-data, identity or pairing change. Actual final results are recorded in qa/FINAL_QA_BUILD4.md.
+
 ## 0.2.1 · Build 2 — Our Finances (development)
 
 - Added three-tab finance workspace, one shared/individual/AA expense ledger, derived reserve balances and dated deposits.

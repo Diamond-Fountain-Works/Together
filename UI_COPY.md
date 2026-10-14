@@ -37,3 +37,7 @@ The `finance.*` catalog entries are functional names, actions, filters, true led
 Every original warning is recorded in [qa/COPY_REVIEW_BUILD3.md](qa/COPY_REVIEW_BUILD3.md) and its machine-readable companion. Twelve functional descriptions were shortened without changing business semantics. Equivalent buttons/navigation labels now reuse one catalog key; unused current-version inventory keys were removed, while the original 0.0.1 catalog was preserved. No audit rule or script was disabled.
 
 The remaining 13 warnings stay visible: 12 independent translation contexts (including task/media Pending, currency codes VED/VES and financial change-history phrases), plus the security-boundary disclosure that still requires independent review. This is WARN, not a manufactured PASS. There are no outstanding copy-budget errors or newly unregistered product strings.
+
+## Build 4 warning follow-up
+
+[qa/COPY_REVIEW_BUILD4.md](qa/COPY_REVIEW_BUILD4.md) checks all 13 remaining warnings against actual uses. Twelve equal-text entries have distinct task/media, setup/advisor, ISO currency, bill/audio, filter, change-history or relationship/amount contexts. No unreviewed wording or redundant product paragraph was found in these 13. Keep the warnings visible; do not disable duplicate detection or add a batch exception. The remaining privacy disclosure has matching technical evidence but independent security review is still pending. No catalog text changed, and Copy QA remains WARN.

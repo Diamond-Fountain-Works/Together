@@ -5,16 +5,6 @@ import CryptoKit
 @MainActor final class TogetherUITests: XCTestCase {
     private var app: XCUIApplication!
     private var root: URL!
-    private var staleInterruptionMonitor: NSObjectProtocol?
-    override func setUp() {
-        super.setUp()
-        staleInterruptionMonitor = addUIInterruptionMonitor(withDescription: "Already dismissed native input candidate") { alert in
-            // macOS 27 can report a transient input-candidate dialog and remove
-            // it before XCTest resolves its identity. Handle only its absence;
-            // real permission/confirmation dialogs are never clicked or granted.
-            !alert.exists
-        }
-    }
     private func dismissRunnerDocumentsRequest() {
         let system = XCUIApplication(bundleIdentifier: "com.apple.UserNotificationCenter")
         let dialog = system.dialogs.firstMatch
@@ -78,6 +68,31 @@ import CryptoKit
         }
         let field = app.textFields["finance.currency.search"]
         field.click(); field.typeKey("v", modifierFlags: .command)
+        // The Pinyin input indicator is a short-lived AX dialog near the field.
+        // Waiting on the application's live query avoids retaining its identity
+        // while XCTest's automatic interruption handler attempts the next click.
+        // A genuine persistent dialog fails this wait; no permission is granted.
+        let inputUIClosed = XCTNSPredicateExpectation(predicate: NSPredicate(format: "count == 0"), object: app.dialogs)
+        XCTAssertEqual(XCTWaiter.wait(for: [inputUIClosed], timeout: 8), .completed, "Native input UI must settle before resolving a currency row")
+    }
+    func testCurrencySearchWithCurrentInputMethod() throws {
+        for dark in [false, true] {
+            launch(page: "bills", dark: dark, reduce: true, compact: true)
+            app.buttons["finance.new"].click()
+            app.buttons["finance.currency.open"].click()
+            XCTAssertTrue(app.textFields["finance.currency.search"].waitForExistence(timeout: 5))
+            enterCommittedSearch(dark ? "日元" : "JPY")
+            let filtered = XCTNSPredicateExpectation(predicate: NSPredicate(format: "exists == false"), object: app.buttons["finance.currency.CNY"])
+            XCTAssertEqual(XCTWaiter.wait(for: [filtered], timeout: 5), .completed)
+            let yen = app.buttons.matching(identifier: "finance.currency.JPY").firstMatch
+            XCTAssertTrue(yen.waitForExistence(timeout: 5))
+            XCTAssertTrue(yen.isHittable)
+            yen.click()
+            XCTAssertFalse(app.textFields["finance.currency.search"].exists)
+            XCTAssertTrue(app.buttons["finance.currency.open"].label.contains("JPY"))
+            app.buttons["sheet.cancel"].click()
+            XCTAssertEqual(app.sheets.count, 0)
+        }
     }
     func testNavigationAndNoPersistentGiftUI() {
         launch()
@@ -411,10 +426,8 @@ import CryptoKit
             let filtered = XCTNSPredicateExpectation(predicate: NSPredicate(format: "exists == false"), object: app.buttons["finance.currency.CNY"])
             XCTAssertEqual(XCTWaiter.wait(for: [filtered], timeout: 5), .completed)
             XCTAssertTrue(app.buttons["finance.currency.JPY"].isHittable)
-            // A native input-candidate AX dialog can disappear while XCTest's
-            // automatic interruption handler is resolving it. Click the freshly
-            // verified visible row directly; assert actual selection below.
-            app.buttons["finance.currency.JPY"].coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.5)).click()
+            // Resolve a fresh identifier query after the input UI settles.
+            app.buttons.matching(identifier: "finance.currency.JPY").firstMatch.click()
             XCTAssertFalse(app.textFields["finance.currency.search"].exists)
             XCTAssertTrue(app.buttons["finance.currency.open"].label.contains("JPY"))
             app.buttons["sheet.cancel"].click()

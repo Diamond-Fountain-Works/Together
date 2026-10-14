@@ -1,4 +1,4 @@
-# Together 0.2.1 · Build 4 QA candidate
+# Together 0.2.1 · Build 4 — local install candidate
 
 原生 macOS 双人协作应用，沿用 SwiftUI、SwiftData、签名 Operation Log、Lamport 合并和现有 Together Relay。当前开发目录为 `0.2.1/`；`0.0.1/` 保留原样。Our Story 尚未实现，没有占位导航。
 
@@ -45,4 +45,6 @@ Relay 只实时转发密文，没有离线邮箱；发送方关闭时不能承�
 
 完整规则与双 Mac 验收：REQUIREMENTS.md、ARCHITECTURE.md、TEST_PLAN.md、PHASES.md、CHANGELOG.md；服务部署说明见 server/README.md。
 
-最终验收记录：[qa/FINAL_QA_BUILD4.md](qa/FINAL_QA_BUILD4.md)。Git 历史仍在外置缓存目录，风险及未执行的迁移方案见 [qa/GIT_STORAGE_REVIEW.md](qa/GIT_STORAGE_REVIEW.md)。
+最终验收记录：[qa/FINAL_QA_BUILD4.md](qa/FINAL_QA_BUILD4.md)。Git 历史仍在外置缓存目录，已创建并验证 Documents 中的全引用备份；风险及尚未执行的仓库迁移方案见 [qa/GIT_STORAGE_REVIEW.md](qa/GIT_STORAGE_REVIEW.md)。
+
+Build 4 最终本机安装准备：**READY FOR LOCAL INSTALL**。完整拼音 UI 14 PASS / 0 FAIL / 1 SKIP，人工批准后的视觉基线比较 68/68 PASS；Copy 0 Error / 13 Warning 有逐项记录。未安装或覆盖 Applications。未公证、独立安全审核及真实双 Mac 跨 Wi-Fi 验收仍单独保留，不能据此宣称正式分发完成。

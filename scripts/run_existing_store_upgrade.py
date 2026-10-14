@@ -17,15 +17,26 @@ results.mkdir(parents=True, exist_ok=True)
 
 def fingerprint():
     paths = list(source.glob('Together.store*')) + list((source/'Identity').glob('device-*.key'))
-    return {str(p.relative_to(source)): hashlib.file_digest(p.open('rb'), 'sha256').hexdigest() for p in paths if p.is_file()}
+    hashes = {}
+    for path in paths:
+        if not path.is_file(): continue
+        digest = hashlib.sha256()
+        # file_digest is only available in Python 3.11+. Keep the documented
+        # QA entry usable on older Python and never read a whole store at once.
+        with path.open('rb') as file:
+            for block in iter(lambda: file.read(1024 * 1024), b''):
+                digest.update(block)
+        hashes[str(path.relative_to(source))] = digest.hexdigest()
+    return hashes
 
 def run(command, cwd, env=None):
     with (results/'existing-store-upgrade.log').open('a') as log:
         subprocess.run(command, cwd=cwd, env=env, stdout=log, stderr=subprocess.STDOUT, check=True)
 
-before = fingerprint()
+before = None
 report = {'status':'NOT RUN', 'isolation':'owner-only temporary copy', 'productionSourceUnchanged':False, 'appProcessLaunches':0}
 try:
+    before = fingerprint()
     if not (source/'Together.store').exists():
         raise RuntimeError('Existing store is absent')
     with tempfile.TemporaryDirectory(prefix='together-ui-existing-') as directory:
@@ -66,8 +77,12 @@ try:
 except Exception as error:
     report.update(status='FAIL', reason=str(error))
 finally:
-    report['productionSourceUnchanged'] = fingerprint() == before
-    if not report['productionSourceUnchanged']: report.update(status='FAIL', reason='Source fingerprint changed during the rehearsal; investigate concurrent app activity')
+    try:
+        report['productionSourceUnchanged'] = before is not None and fingerprint() == before
+    except OSError as error:
+        report.update(status='FAIL', reason='Final source fingerprint failed: '+str(error))
+    if before is not None and not report['productionSourceUnchanged'] and not report.get('reason', '').startswith('Final source fingerprint failed:'):
+        report.update(status='FAIL', reason='Source fingerprint changed during the rehearsal; investigate concurrent app activity')
     (results/'existing-store-upgrade.json').write_text(json.dumps(report,indent=2)+'\n')
 print('Existing store copy upgrade:',report['status'],'source unchanged:',report['productionSourceUnchanged'],'isolated app launches:',report['appProcessLaunches'])
 raise SystemExit(0 if report['status']=='PASS' else 1)

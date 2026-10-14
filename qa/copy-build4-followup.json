@@ -1,0 +1,217 @@
+{
+  "reviewedAt": "2026-10-14T12:51:59.853530+08:00",
+  "build": "4",
+  "warningsReviewed": 13,
+  "redundantProductTextFound": 0,
+  "independentContextWarnings": 12,
+  "independentSecurityReviewPending": 1,
+  "auditRulesChanged": false,
+  "productStringsChanged": false,
+  "items": [
+    {
+      "file": "qa/ui_copy_review.json",
+      "id": "copy.empty_state.6b4beaf7f321",
+      "type": "human_review",
+      "severity": "Warning",
+      "suggestion": "Security boundary needs independent review; do not promote protocol review as complete.",
+      "text": "照片和语音保存在本机。中继仅转发加密帧，本机文件不另加密。",
+      "classification": "独立审核未完成",
+      "decision": "retain_warning",
+      "reason": "Settings 隐私边界；PairingService 在发送 WirePayload 前调用 secure.seal，RelayCrypto 使用 ChaChaPoly；MediaStore 持久化原文件，不另做文件内容加密。技术事实与代码一致，但不能由同一实施者冒充独立安全审核。",
+      "sourceReferences": [
+        "0.2.1/Sources/TogetherApp/Views/Settings/SettingsView.swift"
+      ],
+      "securityEvidence": "0.2.1/Sources/TogetherCore/Networking/Relay/PairingService.swift:196,210; 0.2.1/Sources/TogetherCore/Networking/Relay/RelayCrypto.swift:77-90; 0.2.1/Sources/TogetherCore/Media/MediaStore.swift:31,120",
+      "userContentScanned": false
+    },
+    {
+      "file": "0.2.1/Sources/TogetherCore/Resources/UI.xcstrings",
+      "id": "status.media.local",
+      "type": "duplicate_copy",
+      "severity": "Warning",
+      "suggestion": "Reuse status.gift.local unless contexts require independent translation.",
+      "text": "Local",
+      "classification": "合理的不同语义",
+      "decision": "retain_warning",
+      "reason": "附件文件已在本地，与礼物提交的 Local 是不同领域状态；未承诺远端收到。",
+      "sourceReferences": [
+        "0.2.1/Sources/TogetherCore/Localization/StatusCopy.swift"
+      ],
+      "securityEvidence": null,
+      "userContentScanned": false
+    },
+    {
+      "file": "0.2.1/Sources/TogetherCore/Resources/UI.xcstrings",
+      "id": "setup.title.welcome",
+      "type": "duplicate_copy",
+      "severity": "Warning",
+      "suggestion": "Reuse copy.navigation.0e2226b5235f unless contexts require independent translation.",
+      "text": "Welcome",
+      "classification": "合理的独立流程",
+      "decision": "retain_warning",
+      "reason": "Initial Setup 与 Advisor 是独立启动流程，在同一时刻不叠加；不是 Home 中重复欢迎横幅。",
+      "sourceReferences": [
+        "0.2.1/Sources/TogetherApp/Onboarding/InitialSetupView.swift"
+      ],
+      "securityEvidence": null,
+      "userContentScanned": false
+    },
+    {
+      "file": "0.2.1/Sources/TogetherCore/Resources/UI.xcstrings",
+      "id": "plans.filter.pending",
+      "type": "duplicate_copy",
+      "severity": "Warning",
+      "suggestion": "Reuse status.media.pending unless contexts require independent translation.",
+      "text": "Pending",
+      "classification": "合理的不同语义",
+      "decision": "retain_warning",
+      "reason": "任务筛选 Pending 与媒体传输 Pending 独立；任务未完成不等于附件等待同步。",
+      "sourceReferences": [
+        "0.2.1/Sources/TogetherApp/ViewModels/PlansNavigation.swift",
+        "0.2.1/Sources/TogetherApp/Views/HomeView.swift"
+      ],
+      "securityEvidence": null,
+      "userContentScanned": false
+    },
+    {
+      "file": "0.2.1/Sources/TogetherCore/Resources/UI.xcstrings",
+      "id": "finance.currency.VES",
+      "type": "duplicate_copy",
+      "severity": "Warning",
+      "suggestion": "Reuse finance.currency.VED unless contexts require independent translation.",
+      "text": "Bolívar Soberano",
+      "classification": "参考数据同名",
+      "decision": "retain_warning",
+      "reason": "VED/VES 是独立币种代码；显示时保留代码，不能以同名合并币种身份。",
+      "sourceReferences": [],
+      "securityEvidence": null,
+      "userContentScanned": false
+    },
+    {
+      "file": "0.2.1/Sources/TogetherCore/Resources/UI.xcstrings",
+      "id": "finance.bill.pause",
+      "type": "duplicate_copy",
+      "severity": "Warning",
+      "suggestion": "Reuse copy.action.8d12fc0d4eb2 unless contexts require independent translation.",
+      "text": "暂停",
+      "classification": "合理的不同语义",
+      "decision": "retain_warning",
+      "reason": "暂停账单未来规则，与语音播放暂停是不同操作；独立翻译上下文。",
+      "sourceReferences": [
+        "0.2.1/Sources/TogetherApp/Views/Finances/OurFinancesView.swift"
+      ],
+      "securityEvidence": null,
+      "userContentScanned": false
+    },
+    {
+      "file": "0.2.1/Sources/TogetherCore/Resources/UI.xcstrings",
+      "id": "finance.source.all",
+      "type": "duplicate_copy",
+      "severity": "Warning",
+      "suggestion": "Reuse finance.filter.all unless contexts require independent translation.",
+      "text": "全部",
+      "classification": "合理的独立筛选",
+      "decision": "retain_warning",
+      "reason": "来源全部与付款方式全部是两个独立筛选维度，不是重复的同一操作。",
+      "sourceReferences": [],
+      "securityEvidence": null,
+      "userContentScanned": false
+    },
+    {
+      "file": "0.2.1/Sources/TogetherCore/Resources/UI.xcstrings",
+      "id": "finance.change.reserveEntry.create",
+      "type": "duplicate_copy",
+      "severity": "Warning",
+      "suggestion": "Reuse finance.action.new.reserves unless contexts require independent translation.",
+      "text": "新增存款",
+      "classification": "真实历史与操作分离",
+      "decision": "retain_warning",
+      "reason": "历史中记录已发生的新增存款，与新增存款按钮区分时态、领域用途；记录由实际操作生成。",
+      "sourceReferences": [
+        "0.2.1/Sources/TogetherApp/Views/Finances/FinanceReviewViews.swift"
+      ],
+      "securityEvidence": null,
+      "userContentScanned": false
+    },
+    {
+      "file": "0.2.1/Sources/TogetherCore/Resources/UI.xcstrings",
+      "id": "finance.change.dateEvent.create",
+      "type": "duplicate_copy",
+      "severity": "Warning",
+      "suggestion": "Reuse finance.events.new unless contexts require independent translation.",
+      "text": "新增约会",
+      "classification": "真实历史与操作分离",
+      "decision": "retain_warning",
+      "reason": "历史中新增约会，与新建约会按钮区分已发生事件/命令；不是重复说明。",
+      "sourceReferences": [
+        "0.2.1/Sources/TogetherApp/Views/Finances/FinanceReviewViews.swift"
+      ],
+      "securityEvidence": null,
+      "userContentScanned": false
+    },
+    {
+      "file": "0.2.1/Sources/TogetherCore/Resources/UI.xcstrings",
+      "id": "finance.change.expense.create",
+      "type": "duplicate_copy",
+      "severity": "Warning",
+      "suggestion": "Reuse finance.action.new.expenses unless contexts require independent translation.",
+      "text": "新增支出",
+      "classification": "真实历史与操作分离",
+      "decision": "retain_warning",
+      "reason": "支出变更历史与新增支出命令分别翻译；不凭空生成支出记录。",
+      "sourceReferences": [
+        "0.2.1/Sources/TogetherApp/Views/Finances/FinanceReviewViews.swift"
+      ],
+      "securityEvidence": null,
+      "userContentScanned": false
+    },
+    {
+      "file": "0.2.1/Sources/TogetherCore/Resources/UI.xcstrings",
+      "id": "finance.change.recurringBill.create",
+      "type": "duplicate_copy",
+      "severity": "Warning",
+      "suggestion": "Reuse finance.action.new.bills unless contexts require independent translation.",
+      "text": "新增账单",
+      "classification": "真实历史与操作分离",
+      "decision": "retain_warning",
+      "reason": "账单创建历史与新增账单按钮分别服务于审计和命令。",
+      "sourceReferences": [
+        "0.2.1/Sources/TogetherApp/Views/Finances/FinanceReviewViews.swift"
+      ],
+      "securityEvidence": null,
+      "userContentScanned": false
+    },
+    {
+      "file": "0.2.1/Sources/TogetherCore/Resources/UI.xcstrings",
+      "id": "finance.change.billOccurrence.patch",
+      "type": "duplicate_copy",
+      "severity": "Warning",
+      "suggestion": "Reuse finance.bill.editOccurrence unless contexts require independent translation.",
+      "text": "修改本期预计",
+      "classification": "真实历史与操作分离",
+      "decision": "retain_warning",
+      "reason": "修改本期预计的历史事件与当前操作分开；只修改实际期次。",
+      "sourceReferences": [
+        "0.2.1/Sources/TogetherApp/Views/Finances/FinanceReviewViews.swift"
+      ],
+      "securityEvidence": null,
+      "userContentScanned": false
+    },
+    {
+      "file": "0.2.1/Sources/TogetherCore/Resources/UI.xcstrings",
+      "id": "finance.change.amount",
+      "type": "duplicate_copy",
+      "severity": "Warning",
+      "suggestion": "Reuse copy.guidance.3e122095ba88 unless contexts require independent translation.",
+      "text": "%@ → %@",
+      "classification": "模板同形但含义不同",
+      "decision": "retain_warning",
+      "reason": "金额前后变化与关系方向共用箭头形状，但分别是 Decimal 金额和昵称/身份；应独立翻译，且显示真实动态值。",
+      "sourceReferences": [
+        "0.2.1/Sources/TogetherApp/Views/Finances/FinanceReviewViews.swift"
+      ],
+      "securityEvidence": null,
+      "userContentScanned": false
+    }
+  ]
+}

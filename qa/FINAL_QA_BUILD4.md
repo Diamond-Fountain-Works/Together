@@ -1,46 +1,42 @@
 # Together 0.2.1 Build 4 — Final QA and safe upgrade
 
-**NOT READY FOR LOCAL INSTALL.** Release packaging and migration are verified, but the final complete UI run retains one failure and one required image is absent. No Applications install, repository move or production-store reset is authorized by this report.
+**READY FOR LOCAL INSTALL** as a controlled local candidate. The user explicitly approved all 68 frozen image hashes; current comparisons passed 68/68. Pinyin UI, isolated migration/restart and package integrity checks passed. This is not notarized public distribution or physical cross-Wi-Fi acceptance. No Applications install/replacement is authorized or performed.
 
-| Gate | Evidence / boundary |
+| Gate | Actual result / boundary |
 | --- | --- |
-| Build | PASS: Universal Release 0.2.1 Build 4; signature/bundle/DMG verification passed. Release get-task-allow is absent. |
-| Unit Tests | 77 PASS / 0 FAIL / 1 SKIP in the complete suite; the skipped existing-store-copy case separately passed, covering 78 unique business test methods. Server 8 PASS; quality tools 6 PASS. |
-| UI Tests | FAIL: final complete run 12 PASS / 1 FAIL / 1 SKIP. Our Story is the explicit skip. FinanceSnapshotMatrix fails on a disappearing native input-candidate AX reference after JPY search. USD save/reset and expense reconciliation focused checks passed. |
-| Copy QA | WARN: 0 errors, 13 retained warnings after individual review of all 58 originals. Rules unchanged; qa/COPY_REVIEW_BUILD3.md. |
-| Visual QA | FAIL / REVIEW REQUIRED: final complete run 67/68 required captures. Missing finance-settings-personal-dark-compact-reduced.png. Four requested shared financial Settings captures are complete native images. No approved baseline overwritten. |
-| Migration Safety | PASS: generated populated 0.0.1 store and actual old-store private copy; three store reopens, two actual Debug app launches, byte-identical identity and original-source fingerprints. |
-| Network Sync | Local Worker/native WebSocket and public Relay tests; original reconnect plus three extra rounds. Physical dual-Mac/different-Wi-Fi is not simulated or claimed. |
-| Release Artifact | [Build 4 Universal DMG](../0.2.1/dist/Together-0.2.1-Build4-Universal.dmg), 5.10 MiB; all packaging checks passed. Ad-hoc signing; Gatekeeper REJECTED; notarization NOT RUN. |
-| Remaining Issues | One reproducible SDK/input-candidate UI failure; one missing image; no human-approved baseline; physical dual-Mac acceptance and independent security review unrun. Temporary input-method comparison remains unapproved; no input method was changed. |
+| Build | PASS: native Debug test build and unchanged Universal Release 0.2.1 Build 4. Bundle/signature/entitlements and DMG rechecked; no Release debugger access. |
+| Unit Tests | Existing complete suite: 77 PASS / 0 FAIL / 1 SKIP; skipped existing-copy case separately passed. Follow-up old-source migration 1 PASS; existing-copy/restart case 1 PASS. These reruns do not inflate unique-case counts. Server 8 PASS; quality tools 6 PASS. |
+| UI Tests | **14 PASS / 0 FAIL / 1 SKIP** in one complete original-Pinyin run, including the original 14 methods and an added focused Latin/Chinese currency-search regression. Our Story is the explicit unimplemented skip. |
+| Copy QA | **WARN: 0 errors / 13 warnings**, all individually reviewed; 12 legitimate independent translation contexts and 1 independently unreviewed security disclosure. Product strings and audit rules unchanged. |
+| Visual QA | **PASS: 68/68 required cases**, plus 3 diagnostic images. Missing dark personal-cycle capture recovered; four shared Settings captures are complete native sheets. All 68 frozen hashes were explicitly approved by the user and current comparisons passed; no baseline was self-approved. |
+| Migration Safety | PASS: original 0.0.1 generated store and actual production-store private copy. Three store reopens and two real Debug app processes use the private copy; original operations/entities/local records and identity preserved; production fingerprints unchanged. |
+| Network Sync | Previously verified unchanged local Worker/native WebSocket and public Relay tests with repeated reconnects remain PASS. Physical two-Mac/different-Wi-Fi test is **NOT RUN**. No offline relay delivery claim. |
+| Release Artifact | Build 4 Universal DMG, 5.10 MiB; SHA-256 unchanged. Ad-hoc signing; Gatekeeper **REJECTED**; notarization **NOT RUN**. This report does not make it a notarized public distribution. |
+| Remaining Issues | One independent security/disclosure review; real cross-Wi-Fi dual-Mac acceptance; notarization/Developer ID. Live external Git remains in `.cache`, but verified durable recovery bundles are now available. |
 
-## Repaired and retained findings
+## Fixed / passed in this follow-up
 
-- Previous automation-mode initialization failure is historical. Today the same Mac's runner entered automation and executed tests without enabling Developer mode or changing system security permissions. The exact cause of the earlier session failure is unproven. Xcode's CoreDevice/CoreSimulator mismatch warnings remain, but they did not prevent native Mac UI execution. Runner target/host, launch flags, private data roots and waits were checked.
-- Current input source is Pinyin. Test locale alone does not select a keyboard input source; committed native paste restores the complete prior clipboard and avoids uncommitted Latin-code composition. Tests wait for actual filtering/visible day state before click coordinates. Currency popover search state is owned by its content view; native code search disables autocorrection.
-- Real compact fixtures now assert 900pt width. Full native sheets/popovers can extend beyond a compact parent window, so captures use that owned element instead of clipping it through the parent window. Header/list windows remain window screenshots. The previous four incomplete Settings rasterizations are not acceptance evidence.
-- A real reconnect failure was observed, preserved, fixed and exercised on both local and public services; see qa/NETWORK_RECONNECT_REVIEW.md. No authentication check, rate limit or timeout was loosened. Business entity/model/schema/clock rules are unchanged.
-- Dedicated Git history is intact at ~/.cache/Together/finance-development.git, with no remote; the cache-cleanup loss risk and proposed copy/bundle migration are in qa/GIT_STORAGE_REVIEW.md. Nothing was moved or deleted.
+- Recorded current Pinyin, enabled keyboard/input methods and shortcut settings before switching through existing native UI. ABC original harness passed; restored Pinyin original harness reproduced the same disappearing 84×77pt native AX dialog failure at JPY selection. Full failed logs/result bundles were retained.
+- Fixed only tests: wait for the live `app.dialogs` query to reach zero, then resolve a fresh currency identifier; remove the ineffective stale-dialog monitor. A persistent dialog fails rather than receiving permission. JPY selection, true currency value and closure assertions remain. A dedicated light/dark case checks JPY and 日元 under the current input source. No runtime input restriction or product/business/sync change.
+- Focused Pinyin case and complete 15-method Pinyin suite passed. Original keyboard/input-method list, active Pinyin/layout and shortcut settings were verified after the full run. A system-registered Non Keyboard EmojiFunctionRowItem difference is explicitly retained in the restoration record; no IME was deleted/reconfigured. See [INPUT_METHOD_REVIEW_BUILD4.md](INPUT_METHOD_REVIEW_BUILD4.md).
+- A follow-up script failed before opening data because system Python 3.9 lacks `hashlib.file_digest`. Corrected the QA script to bounded streaming SHA-256 and ensured fingerprint failures produce a fresh FAIL report. Re-running with Python 3.9 passed actual-copy migration and two isolated app launches. The initial traceback is preserved in `qa/results/existing-store-upgrade-python-compat-error.log`.
+- Generated old-source migration again passed with a fresh private fixture. Actual local-copy rehearsal preserved 5 operations, 3 original entity hashes and 4 local records; no peer/binding exists in that actual source. Paired migration is covered by the separate populated old-code fixture and saved-route integration checks, not falsely claimed for absent actual records.
+- `/Applications/Together.app` remains absent at inspection; no installer/removal action occurred. Existing production Application Support database and identity fingerprints match before/after this follow-up. No Keychain access, identity rotation, pairing replacement or production-store write.
+- Durable all-refs Git backup, bundle verification, temporary mirror restore, ref equality and `fsck --full` passed. Live history directory was neither moved nor removed. See [GIT_STORAGE_REVIEW.md](GIT_STORAGE_REVIEW.md).
 
-## Upgrade boundary
+## Changed files
 
-The populated old-source fixture includes Tasks/Recurring, dated WishGrant/confirmed WishItem, Profile/avatar, received Love Gift/presentation state, signed operations and trusted peer/RelayBinding. New finance data initializes and persists; replayed old operations remain idempotent. Existing identity-file reload occurs before any legacy Keychain read, including when migration is requested again.
+- `0.2.1/Tests/TogetherUITests/TogetherUITests.swift`: input-dialog wait, fresh row resolution and focused current-input-source regression.
+- `scripts/run_existing_store_upgrade.py`: Python-compatible bounded hash and truthful failure reporting.
+- `README.md`, `TEST_PLAN.md`, `UI_COPY.md`, `CHANGELOG.md`: actual follow-up rules/evidence; no runtime catalog change.
+- `qa/INPUT_METHOD_REVIEW_BUILD4.md`, `qa/COPY_REVIEW_BUILD4.md`, `qa/copy-build4-followup.json`, `qa/GIT_STORAGE_REVIEW.md`, this report and frozen visual inventory/gallery: diagnosis, per-warning decisions, backup evidence and human-review artifacts.
+- No `0.2.1/Sources`, configuration, release scripts, physical SwiftData schema, original `0.0.1`, installed app or production user data changed in this follow-up. Existing Build 4 binary/DMG are byte-identical; no new marketing/build identity is required for test/docs-only changes.
 
-The actual local store copy currently contains five original operations, three entity hashes and four local records; no peer/binding is present in that source. Those absent relationships are not claimed to have been tested in the actual copy: paired migration is covered by the populated fixture and real saved-route integration tests. Both real app launches use an isolated Debug-only storage root and suppress network restore, never the live store or live pair.
+## Evidence and human approval
 
-At initial and final inspection, `/Applications/Together.app` is absent. Its absence predates any install action in this task; no installer action is performed. The existing Application Support store and identity remain present and fingerprint-identical. Rehearsal does not constitute an authorized in-place installation or a test of quarantined Release/Gatekeeper launch.
-
-## UI findings at the final form size
-
-Financial forms now fit 620pt compact content, with scrollable fields and fixed Cancel/Save actions. Existing expense reconciliation/skip/delete actions moved to a fixed supplementary footer after manual native inspection showed they could sit below the scroll viewport. Native action verification confirmed reconciliation updates the original expense and closes without changing the total. A focused XCUITest then passed this same action/closure check.
-
-macOS 27 also intermittently reports an input-candidate AX dialog and removes it before XCTest's default interruption handler resolves it. This failure is retained in the raw logs. The test monitor handles only a dialog that no longer exists; it never grants or clicks a real permission/confirmation. Final acceptance must reflect the actual final rerun outcome, not a prior pass.
-
-## Final artifacts and provenance
-
-- Artifact: `0.2.1/dist/Together-0.2.1-Build4-Universal.dmg`; SHA-256 `19735b41056a03469eed8eb9efe223d1240477dd33415ace7566ee4a0f35e950`.
-- Build 3 was superseded after Xcode injected debugger access into its Release signature. Build 4 disables base-entitlement injection in Release; required network/microphone/file-picker entitlements and hardened runtime remain. Signature/DMG mounted-bundle checks passed. No package is installed.
-- Full UI result: `/Users/giga_fortress0/Documents/ProjectsLocal/Together/qa/results/ui-20261014-110535.xcresult`; targeted SDK failure and attempted monitor: `qa/results/ui-finance-capture-final.json`. Failed runs remain preserved.
-- Current machine-readable report: `qa/results/final-upgrade-preparation.json`. Earlier Build 2/3 documents are historical; they cannot override this result.
-
-Current screenshot inventory and missing-case evidence: [visual/BUILD4_SCREENSHOTS.md](visual/BUILD4_SCREENSHOTS.md). No human baseline is approved. Temporary ABC input-method comparison remains pending the separate user confirmation requested under Computer Use rules; absence of a reply is not authorization.
+- Complete UI result: `qa/results/ui-20261014-125814.xcresult`; full log: `qa/results/ui-test.log`.
+- Original comparison logs: `qa/results/ui-abc-finance-test.log` (PASS) and `ui-pinyin-finance-test.log` (FAIL); corrected focused log: `ui-pinyin-wait-fix-test.log` (PASS).
+- [Frozen 68-image gallery and hashes](visual/reviews/build4-final-20261014-1309/REVIEW.md); manifest SHA-256 `9060d1deb2dca8c16b2d5ffbf435ea343f1b20a4b3107b67b81f63bf352c6544`. Explicit user approval was received and recorded in `APPROVAL.json`; all 68 hashes were verified before entering approved/. This approval does not authorize installation.
+- [All 13 copy decisions](COPY_REVIEW_BUILD4.md). No blanket suppression or manufactured Copy PASS.
+- [Build 4 Universal DMG](../0.2.1/dist/Together-0.2.1-Build4-Universal.dmg); SHA-256 `19735b41056a03469eed8eb9efe223d1240477dd33415ace7566ee4a0f35e950`.
+- Machine-readable report: `qa/results/final-upgrade-preparation.json`. Earlier failed runs remain historical evidence, not current acceptance results. SDK CoreDevice/CoreSimulator mismatch warnings remain diagnostic; they did not block this native Mac suite and iOS testing is outside scope.
