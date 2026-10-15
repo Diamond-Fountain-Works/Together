@@ -1,6 +1,7 @@
 import { exports, env } from "cloudflare:workers";
 import { runInDurableObject } from "cloudflare:test";
 import { describe, it, expect } from "vitest";
+import { INVITATION_TTL_MS, invitationExpired } from "../src/index";
 const encode = new TextEncoder();
 const b64 = (bytes: Uint8Array) => btoa(String.fromCharCode(...bytes));
 const sha = async (text: string) =>
@@ -77,6 +78,31 @@ const body = (d: Awaited<ReturnType<typeof device>>) => ({
   profileName: d.profileName,
 });
 describe("real Workers runtime / invitation and authorization", () => {
+  it("expires at exactly eight server-controlled hours", async () => {
+    expect(INVITATION_TTL_MS).toBe(28_800_000);
+    const now = 1_791_532_800_000;
+    expect(invitationExpired(now + INVITATION_TTL_MS, now + INVITATION_TTL_MS - 1)).toBe(false);
+    expect(invitationExpired(now + INVITATION_TTL_MS, now + INVITATION_TTL_MS)).toBe(true);
+    const a = await device(), before = Date.now();
+    const response = await request(a, "POST", "/v1/invitations", body(a), "eight-hour-create");
+    const invite = await response.json() as any;
+    expect(invite.expiresAt).toBeGreaterThanOrEqual(before + INVITATION_TTL_MS);
+    expect(invite.expiresAt).toBeLessThanOrEqual(Date.now() + INVITATION_TTL_MS);
+  });
+  it("atomically permits only one of two concurrent joining devices", async () => {
+    const a = await device(), b = await device(), c = await device();
+    const invite = await (await request(a, "POST", "/v1/invitations", body(a), "race-owner")).json() as any;
+    const results = await Promise.all([
+      request(b, "POST", "/v1/invitations/join", {...body(b),code:invite.code}, "race-b"),
+      request(c, "POST", "/v1/invitations/join", {...body(c),code:invite.code}, "race-c"),
+    ]);
+    expect(results.map(r=>r.status).sort()).toEqual([200,400]);
+    const route = await (await request(a,"GET","/v1/routes/"+invite.routeId,{},"race-read")).json() as any;
+    expect(route.members).toHaveLength(2);
+    const ticket = await (await request(a,"POST","/v1/routes/"+invite.routeId+"/ticket",{},"race-ticket")).json() as any;
+    expect(ticket.expiresAt - Date.now()).toBeLessThanOrEqual(60_000);
+    expect(ticket.expiresAt - Date.now()).toBeGreaterThan(50_000);
+  });
   it("accepts finance protocol 3 and keeps protocol 2 routes compatible", async () => {
     for (const version of [2, 3]) {
       const d = await device("Version fixture", version);

@@ -1,3 +1,9 @@
+# Unreleased — invitation eight-hour source change
+
+- Server-controlled one-use invitations now last 28,800,000 ms; expiry is inclusive at the deadline. Concurrent join, expiry, reuse, nonce/ticket lifetime and legacy routes are covered by runtime tests.
+- The macOS client already renders server expiresAt and contains no ten-minute duration literal. No App binary/content or Build number changes in this server-only PR.
+- Local implementation only. No production deployment, App installation or automatic Issue #1 closure. Monorepo visual approval and multi-device protocol delivery are separate gates.
+
 # Monorepo foundation — 0.2.1 Build 5 candidate
 
 - Consolidates the current macOS source, TogetherCore package, C1 Relay and authoritative docs without business/transport/schema changes; restores legacy migration source from pinned verified Git history.

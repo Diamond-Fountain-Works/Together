@@ -33,6 +33,10 @@ type Invitation = {
 };
 const encoder = new TextEncoder(),
   alphabet = "23456789ABCDEFGHJKLMNPQRSTUVWXYZ";
+export const INVITATION_TTL_MS = 28_800_000;
+export function invitationExpired(expiresAt: number, now = Date.now()): boolean {
+  return expiresAt <= now;
+}
 const uuid = /^[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}$/;
 function randomBytes(n: number): Uint8Array<ArrayBuffer> {
   return crypto.getRandomValues(new Uint8Array(n));
@@ -296,7 +300,7 @@ export class ConnectionDirectory extends DurableObject<Env> {
             owner,
             expectedPeer: body.expectedPeer,
             routeId: id(),
-            expiresAt: Date.now() + 600000,
+            expiresAt: Date.now() + INVITATION_TTL_MS,
             used: false,
           };
         await this.ctx.storage.put("invite:" + (await hash(code)), invitation);
@@ -330,7 +334,7 @@ export class ConnectionDirectory extends DurableObject<Env> {
             if (
               !invitation ||
               invitation.used ||
-              invitation.expiresAt < Date.now()
+              invitationExpired(invitation.expiresAt)
             )
               throw new ServiceError(400, "INVITATION_UNAVAILABLE");
             if (

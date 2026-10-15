@@ -92,9 +92,9 @@
     "purpose": "Synthetic hash-only bytes; not a valid recorded audio attachment"
   },
   "invitation": {
-    "implementedTTLms": 600000,
+    "implementedTTLms": 28800000,
     "requiredTTLms": 28800000,
-    "targetStatus": "PENDING_NETWORK_CHANGE",
+    "targetStatus": "IMPLEMENTED_NOT_DEPLOYED",
     "oneUse": true,
     "issue": "https://github.com/Diamond-Fountain-Works/Together/issues/1"
   }

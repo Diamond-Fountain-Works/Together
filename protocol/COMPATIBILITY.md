@@ -10,7 +10,7 @@ Schemas describe portable DTOs and the current signed envelope, never SwiftData 
 
 ## Invitation requirement gap
 
-The formally approved lifetime is **8 hours / 28800000ms**, one successful use. The current old implementation remains **10 minutes / 600000ms** for this directory refactor. Issue #1 tracks a separate coordinated server/client-copy/spec/test PR; production deployment is separately authorized. The target vector is explicitly pending and is not reported as a passed current capability. Nonces/socket tickets keep independent 60-second lifetimes.
+The formally approved and locally implemented lifetime is **8 hours / 28800000ms**, one successful use. The server rejects expiry at `now >= expiresAt` and consumes a successful join atomically. Existing clients render the actual server expiration timestamp, so no hardcoded ten-minute label remains. Nonces/socket tickets keep independent 60-second lifetimes. This separate Issue #1 PR does not deploy production; the last audited production lifetime is **10 minutes / 600000ms**. Protocol 3 JSON, saved routes and identities remain unchanged.
 
 ## Cross-platform status
 
