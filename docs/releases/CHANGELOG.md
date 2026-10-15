@@ -122,4 +122,5 @@
 - Add directed encrypted multi-device relay sessions and reused resumable verified media; no mailbox, bank integration, C2 or Android UI.
 - Add local universal change history/review, with sealed gift privacy, same-user other-device origin and superseded history. Dedicated QA-host configuration isolates test startup.
 - Add cross-runtime signed fixtures, four native-client local Worker tests, actual SIGKILL recovery and a 100,000-signed-operation benchmark. [Evidence and limits](../qa/reports/GITLIKE_C1_QA.md).
+- Harden retired-hello replay, invalid staged-chain recovery, sealed legacy-baseline retry and exact revoked-prefix verification; retain rejected raw history and prevent stale asynchronous projection from restoring revoked authorization. Six adversarial regressions pass.
 - Invitation eight-hour fix remains a separate PR #3 with no production deployment. New enrollment UI, external security/physical acceptance and human visual approval remain release gates.
