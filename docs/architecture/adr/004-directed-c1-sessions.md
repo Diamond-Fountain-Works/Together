@@ -1,0 +1,3 @@
+# ADR 004 — Additive C1 per-device routing
+
+Accepted for implementation. Keep Cloudflare Workers/DOs and URLSessionWebSocketTask. Add versioned public authorization records and per-device directed sockets alongside existing v1 routes. Reuse nonce challenge/ticket authentication and established CryptoKit/WebCrypto primitives. Encrypt each device-pair session independently, binding its space, authorized keys, recipient and sequence; do not reuse one user's private key across devices. No business plaintext/media persistence or mailbox. Rollback disables v2 while preserving v1 routes and all local operations. Deployment is separately authorized.

@@ -1,0 +1,3 @@
+# ADR 001 — Preserve identity and freeze space membership
+
+Accepted for implementation. One space has two stable user IDs and multiple independently keyed devices. Enrollment requires a signed grant from the owner's trusted root, distinct from inviting the partner. Preserve existing effective space ID, initial aliases, time zone, private keys, signed history and v1 pins/binding. Store new public authorization metadata in LocalRecord; do not rebuild SwiftData or copy a private key to a new device. Two pinned original devices sign migration genesis; incomplete migration leaves the legacy path intact.

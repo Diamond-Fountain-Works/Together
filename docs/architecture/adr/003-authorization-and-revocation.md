@@ -1,0 +1,3 @@
+# ADR 003 — Explicit grants, epochs and certified revocation frontiers
+
+Accepted for implementation; independent security review required. Per-owner hash-linked control updates are signed by the trusted owner root and CAS-serialized; fork/equivocation fails closed. Each new device has its own key and grant epoch. Protocol 4 adds signed sequence/previous-content links outside unchanged legacy operations. Revocation pins the known accepted prefix. Keep historical verification keys and records; reject new records beyond the frontier. Unseen offline records cannot prove pre-revocation timing with createdAt and remain diagnostic. Lost controller identity requires deliberate recovery; no silent rotation, user-ID-only enrollment or automatic authority replacement.

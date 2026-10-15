@@ -1,0 +1,3 @@
+# ADR 002 — Content inventory before Merkle optimization
+
+Accepted for implementation. Protocol 4 uses keyset pages of operation UUID/content SHA-256 and bounded request/transfer batches, with explicit pass checkpoints and repeat passes for concurrent writes. Compare content, not just IDs/counts/max Lamport. Existing UUID uniqueness provides an index without changing signed JSON or physical schema. Prefer a linear streaming checkpoint to a Merkle DAG until measurements show that range diff complexity is necessary. Prove >10,000 and 100,000-operation behavior with synthetic measurements, including memory and main-actor responsiveness limits.
