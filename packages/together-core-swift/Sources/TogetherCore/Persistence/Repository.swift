@@ -26,6 +26,7 @@ public struct LocalIdentityMetadata: Codable, Sendable {
 @MainActor public final class TogetherRepository {
     public let container: ModelContainer
     private let context: ModelContext
+    public private(set) var operationRevision: UInt64 = 0
     public init(url: URL? = nil, inMemory: Bool = false) throws {
         let schema = Schema([OperationRecord.self, LocalRecord.self, EntityRecord.self])
         let config: ModelConfiguration
@@ -35,15 +36,32 @@ public struct LocalIdentityMetadata: Codable, Sendable {
         context = ModelContext(container); context.autosaveEnabled = false
     }
     public func allOperations() throws -> [SignedOperation] { try context.fetch(FetchDescriptor<OperationRecord>()).map { try CanonicalJSON.decode(SignedOperation.self, from: $0.body) } }
-    public func insert(_ operations: [SignedOperation]) throws {
-        var existing = Dictionary(uniqueKeysWithValues: try allOperations().map { ($0.id, $0) })
+    private func additions(_ operations: [SignedOperation]) throws -> [SignedOperation] {
+        // Query only the incoming unique index keys. Never fetch/decode the
+        // entire historical log just to append a small network batch.
+        let ids = operations.map { $0.id.uuidString }
+        var existing: [String: Data] = [:]
+        for start in stride(from: 0, to: ids.count, by: 256) {
+            let keys = Array(ids[start..<min(start + 256, ids.count)])
+            let query = FetchDescriptor<OperationRecord>(predicate: #Predicate { keys.contains($0.operationId) })
+            for row in try context.fetch(query) { existing[row.operationId] = row.body }
+        }
         var additions: [SignedOperation] = []
         for operation in operations {
-            if let prior = existing[operation.id] {
-                guard try CanonicalJSON.encode(prior) == CanonicalJSON.encode(operation) else { throw RepositoryError.reusedOperationId }
-            } else { additions.append(operation); existing[operation.id] = operation }
+            let bytes = try CanonicalJSON.encode(operation), key = operation.id.uuidString
+            if let prior = existing[key] {
+                guard prior == bytes else { throw RepositoryError.reusedOperationId }
+            } else { additions.append(operation); existing[key] = bytes }
         }
-        do { for operation in additions { context.insert(try OperationRecord(operation: operation)) }; try context.save() } catch { context.rollback(); throw error }
+        return additions
+    }
+    public func insert(_ operations: [SignedOperation]) throws {
+        let additions = try additions(operations)
+        do {
+            for operation in additions { context.insert(try OperationRecord(operation: operation)) }
+            try context.save()
+            if !additions.isEmpty { operationRevision &+= 1 }
+        } catch { context.rollback(); throw error }
     }
     public func commitGift(_ operations: [SignedOperation], giftId: UUID, slot: String) throws {
         let key = "gift-slot:\(slot)"
@@ -54,6 +72,7 @@ public struct LocalIdentityMetadata: Codable, Sendable {
                 for operation in operations { context.insert(try OperationRecord(operation: operation)) }
                 try context.save()
             }
+            operationRevision &+= 1
         } catch { context.rollback(); throw error }
     }
     public func load<T: Decodable>(_ type: T.Type, key: String) throws -> T? {
@@ -63,9 +82,56 @@ public struct LocalIdentityMetadata: Codable, Sendable {
     }
     public func save<T: Encodable>(_ value: T, key: String) throws {
         let data = try CanonicalJSON.encode(value)
-        if let row = try context.fetch(FetchDescriptor<LocalRecord>()).first(where: { $0.key == key }) { row.body = data }
+        let wanted = key
+        var query = FetchDescriptor<LocalRecord>(predicate: #Predicate { $0.key == wanted }); query.fetchLimit = 1
+        if let row = try context.fetch(query).first { row.body = data }
         else { context.insert(LocalRecord(key: key, body: data)) }
         do { try context.save() } catch { context.rollback(); throw error }
+    }
+    public func operationCount() throws -> Int { try context.fetchCount(FetchDescriptor<OperationRecord>()) }
+    /// Bounded keyset scan over the existing unique UUID index. No schema change.
+    public func operationPage(after: String? = nil, limit: Int = 128) throws -> [StoredOperationBytes] {
+        guard (1...256).contains(limit) else { throw ReplicationError.bounds }
+        let cursor = after ?? ""
+        var query = FetchDescriptor<OperationRecord>(predicate: #Predicate { $0.operationId > cursor },
+                                                     sortBy: [SortDescriptor(\.operationId, comparator: .lexical)])
+        query.fetchLimit = limit
+        return try context.fetch(query).map { StoredOperationBytes(id: $0.operationId, bytes: $0.body) }
+    }
+    public func operationBytes(ids: [UUID]) throws -> [StoredOperationBytes] {
+        guard ids.count <= 256 else { throw ReplicationError.bounds }
+        let keys = ids.map(\.uuidString)
+        let query = FetchDescriptor<OperationRecord>(predicate: #Predicate { keys.contains($0.operationId) })
+        return try context.fetch(query).map { StoredOperationBytes(id: $0.operationId, bytes: $0.body) }
+    }
+    /// Facts and their replication witness commit together; a failure rolls
+    /// back both. Caller verifies authorization/signatures before this boundary.
+    public func commitReplication(_ operations: [SignedOperation], records: [String: Data], removing: [String] = []) throws {
+        let additions = try additions(operations)
+        do {
+            let rows = try additions.map(OperationRecord.init(operation:))
+            for (key, body) in records {
+                let wanted = key
+                var query = FetchDescriptor<LocalRecord>(predicate: #Predicate { $0.key == wanted }); query.fetchLimit = 1
+                if let row = try context.fetch(query).first { row.body = body }
+                else { context.insert(LocalRecord(key: key, body: body)) }
+            }
+            for row in rows { context.insert(row) }
+            for key in removing where records[key] == nil {
+                let wanted = key
+                let query = FetchDescriptor<LocalRecord>(predicate: #Predicate { $0.key == wanted })
+                for row in try context.fetch(query) { context.delete(row) }
+            }
+            try context.save()
+            if !rows.isEmpty { operationRevision &+= 1 }
+        } catch { context.rollback(); throw error }
+    }
+    public func localPage(prefix: String, after: String? = nil, limit: Int = 128) throws -> [StoredOperationBytes] {
+        guard (1...256).contains(limit) else { throw ReplicationError.bounds }
+        let lower = after ?? prefix, upper = prefix + "~"
+        var query = FetchDescriptor<LocalRecord>(predicate: #Predicate { $0.key > lower && $0.key < upper }, sortBy: [SortDescriptor(\.key, comparator: .lexical)])
+        query.fetchLimit = limit
+        return try context.fetch(query).map { StoredOperationBytes(id: $0.key, bytes: $0.body) }
     }
     public func saveAtomically(_ records: [String: Data]) throws {
         do { try context.transaction {

@@ -4,7 +4,7 @@ public enum OperationProjector {
     public static func replay(_ signed: [SignedOperation], context: ReplicaContext) -> DomainSnapshot {
         var result = DomainSnapshot()
         let operations = signed.filter { item in
-            guard let descriptor = context.devices[item.operation.deviceId], item.verified(by: descriptor) else {
+            guard context.permits(item), let descriptor = context.devices[item.operation.deviceId], item.verified(by: descriptor) else {
                 result.conflicts.append(DomainConflict(operationId: item.id, entityId: item.operation.entityId, reason: "操作签名或用户身份不匹配")); return false
             }
             return true
