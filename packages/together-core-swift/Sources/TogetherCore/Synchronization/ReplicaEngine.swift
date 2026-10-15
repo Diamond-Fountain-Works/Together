@@ -381,18 +381,29 @@ extension ReplicaEngine {
         return store
     }
     public func refreshFromReplication(_ store:AuthorizedReplicationStore) async throws {
+        try await refreshFromReplication(store,project:{log,context in
+            await Task.detached(priority:.utility){OperationProjector.replay(log,context:context)}.value
+        })
+    }
+    func refreshFromReplication(_ store:AuthorizedReplicationStore,project:@escaping @Sendable ([SignedOperation],ReplicaContext)async -> DomainSnapshot)async throws {
         while true {
             let revision=repository.operationRevision
             let input=try await store.projectionInput(),verified=input.context,log=input.operations,before=snapshot
-            let (projected,cacheRows)=try await Task.detached(priority:.utility){
-                let next=OperationProjector.replay(log,context:verified)
-                return (next,try ProjectionCacheDelta.rows(before:before,after:next))
+            let projected=await project(log,verified)
+            let cacheRows=try await Task.detached(priority:.utility){
+                try ProjectionCacheDelta.rows(before:before,after:projected)
             }.value
-            guard repository.operationRevision==revision else {continue}
+            let expectedAuthorization=try verified.authorization?.digest
+            func authorizationStillMatches()throws -> Bool {
+                let current=try repository.load(AuthorizationArchive.self,key:"replication4/authorization")
+                return try current.map{ReplicationHash.digest(try CanonicalJSON.encode($0))}==expectedAuthorization
+            }
+            guard repository.operationRevision==revision,try authorizationStillMatches() else {continue}
             replicationContext=verified;operations=log;snapshot=projected
             giftSourceDevices=Dictionary(uniqueKeysWithValues:log.map{($0.id,$0.operation.deviceId)})
             changeNumber+=1
             for offset in stride(from:0,to:cacheRows.count,by:256){
+                guard try authorizationStillMatches() else{break}
                 guard (try? repository.cacheRows(Array(cacheRows[offset..<min(offset+256,cacheRows.count)]),expectedRevision:revision)) == true else{break}
                 await Task.yield()
             }
@@ -404,13 +415,17 @@ extension ReplicaEngine {
         let trust=try SpaceAuthorization.restore(archive)
         if let previous=replicationContext?.authorization {guard try previous.genesis.digest==trust.genesis.digest else {throw ReplicationError.unauthorized}}
         else if let peer { _=try SpaceAuthorization.restore(archive,existingPins:ReplicaContext(local:identity.descriptor,peer:peer.descriptor)) }
-        var accepted:[UUID:String]=[:]
+        var accepted:[UUID:String]=[:],revokedIDs:Set<UUID>=[]
+        if trust.devices.values.contains(where:{$0.revokedAt != nil}) {
+            let proofs=try operations.compactMap{try repository.load(AuthorizedOperation.self,key:"replication4/proof/"+$0.id.uuidString)}
+            for device in trust.devices.values where device.revokedAt != nil {if let chain=try RevokedPrefix.resolve(device,proofs:proofs,trust:trust){revokedIDs.formUnion(chain.map(\.id))}}
+        }
         if try repository.load(String.self,key:"replication4/legacy-seal")==trust.genesis.body.legacyCheckpoint.digest {
             for op in operations {
                 let entry=try InventoryEntry(op)
                 if let proof=try repository.load(AuthorizedOperation.self,key:"replication4/proof/"+op.id.uuidString) {
                     guard proof.body.signedOperation==op else {throw ReplicationError.contentCollision}
-                    if (try? proof.verify(in:trust)) != nil {accepted[op.id]=entry.contentDigest}
+                    if (try? proof.verify(in:trust)) != nil,trust.devices[op.operation.deviceId]?.revokedAt == nil || revokedIDs.contains(op.id) {accepted[op.id]=entry.contentDigest}
                 }else if try repository.load(String.self,key:"replication4/legacy/"+op.id.uuidString)==entry.contentDigest {accepted[op.id]=entry.contentDigest}
             }
         }

@@ -157,7 +157,13 @@ public actor ChangeReviewService {
     if let cached, cached.revision == revision, cached.context == context {
       return Array(cached.events.prefix(max(0, limit)))
     }
-    let log = try await repository.allOperations()
+    var log: [SignedOperation] = []
+    var cursor: String?
+    repeat {
+      let page = try await repository.operationPage(after: cursor, limit: 128)
+      log += try page.map { try CanonicalJSON.decode(SignedOperation.self, from: $0.bytes) }
+      cursor = page.count == 128 ? page.last?.id : nil
+    } while cursor != nil
     let events = OperationProjector.changes(log, context: context)
     cached = (revision, context, events)
     return Array(events.prefix(max(0, limit)))

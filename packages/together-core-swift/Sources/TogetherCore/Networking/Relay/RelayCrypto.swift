@@ -1,6 +1,16 @@
 import Foundation
 import CryptoKit
 
+/// A local ephemeral key may survive several legitimate peer reconnects.
+/// Never reconstruct a prior transcript/counter pair under that same key.
+struct RelayHandshakeHistory {
+    private var used:Set<String>=[]
+    mutating func accept(_ hello:RelaySignedHello)throws {
+        let digest=ReplicationHash.digest(try CanonicalJSON.encode(hello))
+        guard hello.verified(),used.count<64,used.insert(digest).inserted else{throw ReplicationError.unauthorized}
+    }
+}
+
 struct RelayHelloBody: Codable, Equatable, Sendable {
     var protocolVersion = 1
     var routeId: UUID

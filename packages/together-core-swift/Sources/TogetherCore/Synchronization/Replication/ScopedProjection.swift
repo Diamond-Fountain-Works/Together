@@ -43,9 +43,10 @@ public enum ScopedProjection {
       result.adjustments = part.adjustments
     }
     if !types.isDisjoint(with: gifts) {
+      let profileIds=Set(log.filter{$0.operation.entityType == .profile}.map(\.operation.entityId))
       let part = replay(
         log.filter {
-          gifts.contains($0.operation.entityType) || $0.operation.entityType == .profile
+          gifts.contains($0.operation.entityType) || (basic.contains($0.operation.entityType) && profileIds.contains($0.operation.entityId))
         })
       result.space = part.space
       result.mediaAssets = part.mediaAssets

@@ -60,7 +60,7 @@ actor ReplicationTestWire {
         #expect(try await a.index.checkpoint()==b.index.checkpoint())
         #expect(try await al.partnerHasPersisted(a.index.entry(for:op.id),trust:a.authorization))
     }
-    @Test @MainActor func outOfOrderChainAndDuplicateAreIdempotentAndBackdatedRevokedRecordFails()async throws{
+    @Test @MainActor func outOfOrderChainDuplicatesAndTamperedSequenceAreRejected()async throws{
         let f=try ReplicationFixture(),(a,b,_,_)=try await replicationPair(f)
         let one=try await a.append(f.operation(f.a)),two=try await a.append(f.operation(f.a,clock:2))
         try await b.receive([.authorized(two)])
@@ -116,7 +116,7 @@ actor ReplicationTestWire {
         #expect(try await index.checkpoint().count==261)
         try await index.releaseSnapshot(frozen)
     }
-    @Test @MainActor func malformedInventoryDigestAndWrongBatchDoNotAcknowledge()async throws{
+    @Test @MainActor func malformedInventoryDigestIsRejectedBeforeFacts()async throws{
         let f=try ReplicationFixture(),(a,_,al,_)=try await replicationPair(f),wire=ReplicationTestWire()
         let session=PagedReplicationSession(store:a,ledger:al,remote:f.b.descriptor,send:{try await wire.send($0,to:1)})
         try await session.synchronize()

@@ -36,4 +36,11 @@ class ReplicationV4Conformance(unittest.TestCase):
         frame=deepcopy(self.fixture['frames'][2]);frame['page']['entries']*=129
         with self.assertRaises(ValidationError):self.validate('ReplicationFrame',frame)
         with self.assertRaises(ValidationError):self.validate('ReplicationFrame',{'kind':'databaseSnapshot','passId':self.fixture['frames'][1]['passId']})
+    def test_ack_requires_either_entries_or_a_checkpoint(self):
+        from copy import deepcopy
+        from jsonschema import ValidationError
+        receipt=deepcopy(self.fixture['receipt']);receipt['body']['entries']=[];receipt['body'].pop('checkpoint',None)
+        with self.assertRaises(ValidationError):self.validate('SignedAcknowledgement',receipt)
+        receipt=deepcopy(self.fixture['receipt']);receipt['body']['checkpoint']=self.fixture['checkpoint']
+        with self.assertRaises(ValidationError):self.validate('SignedAcknowledgement',receipt)
 if __name__=='__main__':unittest.main()

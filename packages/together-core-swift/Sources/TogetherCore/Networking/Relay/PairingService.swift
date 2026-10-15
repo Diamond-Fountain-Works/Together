@@ -29,6 +29,7 @@ public enum PairingConnectionState: String, Sendable { case unpaired = "Unpaired
     @ObservationIgnored private var ephemeral = Curve25519.KeyAgreement.PrivateKey()
     @ObservationIgnored private var hello: RelaySignedHello?
     @ObservationIgnored private var secure: RelaySecureSession?
+    @ObservationIgnored private var handshakeHistory=RelayHandshakeHistory()
     @ObservationIgnored private var localApproved = false
     @ObservationIgnored private var remoteApproved = false
     @ObservationIgnored private var serverPaired = false
@@ -158,6 +159,7 @@ public enum PairingConnectionState: String, Sendable { case unpaired = "Unpaired
     private func resetSession() {
         clearPeerHandshake()
         hello = nil; ephemeral = Curve25519.KeyAgreement.PrivateKey(); helloSentForPeer = false
+        handshakeHistory=RelayHandshakeHistory()
     }
     private func receive(_ data: Data) {
         do {
@@ -195,6 +197,7 @@ public enum PairingConnectionState: String, Sendable { case unpaired = "Unpaired
                 }
                 guard let hello else { throw TogetherError.invalid(Copy.text("copy.error.92daf69006a1")) }
                 let secure = try RelaySecureSession(identity: engine.identity, ephemeral: ephemeral, local: hello, remote: remote, expectedPeer: engine.peer?.descriptor)
+                try handshakeHistory.accept(remote)
                 self.secure = secure
                 if binding != nil {
                     localApproved = true; enqueue(try CanonicalJSON.encode(RelayPacket(kind: "consent", consent: secure.consent(identity: engine.identity))))

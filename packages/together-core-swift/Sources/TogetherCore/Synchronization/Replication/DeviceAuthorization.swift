@@ -301,6 +301,7 @@ public struct AuthorizedOperation: Codable, Equatable, Sendable, Identifiable {
     guard b.version == 4, b.spaceId == trust.spaceId, b.sequence > 0,
       b.sequence < 9_000_000_000_000_000,
       ReplicationHash.valid(b.previousDigest), let device = trust.devices[op.operation.deviceId],
+      b.sequence != 1 || b.previousDigest == DeviceFrontier().digest,
       device.epochId == b.epochId,
       op.verified(by: device.descriptor),
       SignedSpaceGenesis.verify(
@@ -310,5 +311,30 @@ public struct AuthorizedOperation: Codable, Equatable, Sendable, Identifiable {
       throw ReplicationError.revoked
     }
     return device
+  }
+}
+
+/// Resolve the exact owner-pinned revoked chain, never just its sequence.
+enum RevokedPrefix {
+  static func resolve(
+    _ device: AuthorizedDevice, proofs: [AuthorizedOperation], trust: SpaceAuthorization
+  ) throws -> [AuthorizedOperation]? {
+    guard let cutoff = device.revokedAt else { return nil }
+    var byDigest: [String: AuthorizedOperation] = [:]
+    for proof in proofs
+    where proof.body.epochId == device.epochId && proof.body.sequence <= cutoff.sequence {
+      if (try? proof.verify(in: trust)) != nil { byDigest[try proof.digest] = proof }
+    }
+    var cursor = cutoff
+    var reversed: [AuthorizedOperation] = []
+    while cursor.sequence > 0 {
+      guard let proof = byDigest[cursor.digest], proof.body.sequence == cursor.sequence else {
+        return nil
+      }
+      reversed.append(proof)
+      cursor = DeviceFrontier(sequence: cursor.sequence - 1, digest: proof.body.previousDigest)
+    }
+    guard cursor == DeviceFrontier() else { throw ReplicationError.authorizationFork }
+    return reversed.reversed()
   }
 }

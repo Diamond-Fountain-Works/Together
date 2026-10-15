@@ -65,7 +65,7 @@ import Testing
       session.remoteHello.body.descriptor.publicKey == d.publicKey
         && trust.spaceId == context.spaceId)
   }
-  @Test func existingEngineWritesCertifiedFactsAndRestartsWithoutIdentityOrQuotaReset() async throws
+  @Test func existingEngineWritesCertifiedFactsAndRestartsWithoutIdentityReset() async throws
   {
     let p = try TwoReplicas()
     let task = try p.a.createTask(title: "Preserved legacy task")

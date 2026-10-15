@@ -254,15 +254,18 @@ struct SharedChangeHistoryView: View {
         let candidates =
           event.action == .create
           ? ["amount", "quantity"]
-          : ["title", "displayName", "notes", "description", "status", "amount", "quantity"]
+          : [
+            "title", "displayName", "notes", "description", "status", "amount", "quantity", "dueAt",
+            "assignedTo", "payment", "active", "grantedOn",
+          ]
         let fields = candidates.filter { event.before[$0] != event.after[$0] }
         ForEach(fields, id: \.self) { key in
           VStack(alignment: .leading, spacing: 4) {
             Text(fieldName(key)).font(.caption).foregroundStyle(.secondary)
             HStack(alignment: .top) {
-              Text(verbatim: value(event.before[key])).foregroundStyle(.secondary)
+              Text(verbatim: value(event.before[key], field: key)).foregroundStyle(.secondary)
               Image(systemName: "arrow.right").foregroundStyle(.tertiary)
-              Text(verbatim: value(event.after[key]))
+              Text(verbatim: value(event.after[key], field: key))
             }.font(.callout).textSelection(.enabled).frame(maxWidth: .infinity, alignment: .leading)
           }
         }
@@ -289,13 +292,24 @@ struct SharedChangeHistoryView: View {
     case "title": Copy.text("copy.guidance.c3405f8c7d9d")
     case "displayName": Copy.text("copy.guidance.7a1e2b964b67")
     case "notes", "description": Copy.text("copy.guidance.daede9881787")
+    case "dueAt": Copy.text("copy.guidance.15f26621cdce")
+    case "assignedTo": Copy.text("copy.guidance.a525346277ed")
+    case "payment": Copy.text("finance.payment.title")
+    case "grantedOn": Copy.text("finance.field.date")
+    case "active": Copy.text("sync.field.status")
     case "quantity": Copy.text("sync.field.quantity")
     case "status": Copy.text("sync.field.status")
     default: Copy.text("finance.amount.actualCNY")
     }
   }
-  private func value(_ value: LogValue?) -> String {
+  private func value(_ value: LogValue?, field: String) -> String {
     guard let value else { return Copy.text("role.unknown") }
+    if field == "assignedTo", let user = value.uuid { return model.name(user) }
+    if field == "payment", case .data(let bytes) = value,
+      let payment = try? CanonicalJSON.decode(FinancePayment.self, from: bytes)
+    {
+      return model.financialPaymentName(payment)
+    }
     switch value {
     case .null: return Copy.text("role.unknown")
     case .string(let text):
@@ -313,7 +327,8 @@ struct SharedChangeHistoryView: View {
     case .integer(let number): return String(number)
     case .boolean(let flag):
       return Copy.text(flag ? "finance.status.active" : "finance.status.paused")
-    case .date(let date): return date.formatted(date: .abbreviated, time: .omitted)
+    case .date(let date):
+      return date.formatted(date: .abbreviated, time: field == "dueAt" ? .shortened : .omitted)
     case .data(let bytes):
       if let amount = try? CanonicalJSON.decode(FinanceAmount.self, from: bytes) {
         return FinanceMoney.display(amount.finalCNYMinor)

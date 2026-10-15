@@ -67,6 +67,10 @@ import Testing
         operationType: .create, lamportClock: 1,
         payload: ["deviceId": .id(f.a.descriptor.deviceId), "displayName": .string("Synthetic")]))
     let before = OperationProjector.replay([task], context: f.context)
+    let earlyTask=try f.operation(f.a,clock:0,entity:id)
+    let shared=try f.a.sign(SyncOperation(deviceId:f.a.descriptor.deviceId,actorId:id,entityId:f.context.spaceId,entityType:.sharedSpace,operationType:.create,lamportClock:5,payload:["sharedTimeZoneIdentifier":.string(f.context.sharedTimeZone)]))
+    let old=OperationProjector.replay([earlyTask,profile],context:f.context)
+    #expect(ScopedProjection.replay(existing:old,log:[earlyTask,profile,shared],additions:[shared],context:f.context)==OperationProjector.replay([earlyTask,profile,shared],context:f.context))
     #expect(
       ScopedProjection.replay(
         existing: before, log: [task, profile], additions: [profile], context: f.context)

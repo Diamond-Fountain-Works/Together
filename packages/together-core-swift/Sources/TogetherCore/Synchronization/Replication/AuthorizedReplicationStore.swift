@@ -26,6 +26,7 @@ public actor AuthorizedReplicationStore {
   public private(set) var authorization: SpaceAuthorization
   private var legacySealed = false
   private var legacyCount: Int?
+  private var revokedPrefixIDs: Set<UUID> = []
   private var locked = false
   private var waiters: [CheckedContinuation<Void, Never>] = []
   private let prefix = "replication4/"
@@ -73,12 +74,12 @@ public actor AuthorizedReplicationStore {
           try await repository.saveAtomically(records)
           cursor = page.next
         } while cursor != nil
-        try await sealLegacyIfComplete()
+        try await sealLegacyIfComplete(recovering: true)
       }
     }
     // A crash may leave a complete, verified baseline partly promoted.
     // Resume its transaction batches even if no peer sends it again.
-    try await sealLegacyIfComplete()
+    try await sealLegacyIfComplete(recovering: true)
     try await refreshVisibility()
     try await promote()
   }
@@ -95,7 +96,43 @@ public actor AuthorizedReplicationStore {
     try await refreshVisibility()
     try await promote()
   }
+  private func availableRevokedProofs() async throws -> [AuthorizedOperation] {
+    guard authorization.devices.values.contains(where: { $0.revokedAt != nil }) else { return [] }
+    var result: [AuthorizedOperation] = []
+    for family in ["proof/", "stage/"] {
+      var cursor: String?
+      repeat {
+        let rows = try await repository.localPage(
+          prefix: prefix + family, after: cursor, limit: 256)
+        for row in rows {
+          let proof: AuthorizedOperation
+          if family == "proof/" {
+            proof = try CanonicalJSON.decode(AuthorizedOperation.self, from: row.bytes)
+          } else {
+            guard
+              case .authorized(let value) = try CanonicalJSON.decode(
+                ReplicationRecord.self, from: row.bytes)
+            else { continue }
+            proof = value
+          }
+          if authorization.devices[proof.body.signedOperation.operation.deviceId]?.revokedAt != nil
+          {
+            result.append(proof)
+          }
+        }
+        cursor = rows.count == 256 ? rows.last?.id : nil
+      } while cursor != nil
+    }
+    return result
+  }
   private func refreshVisibility() async throws {
+    revokedPrefixIDs = []
+    let proofs = try await availableRevokedProofs()
+    for device in authorization.devices.values where device.revokedAt != nil {
+      if let chain = try RevokedPrefix.resolve(device, proofs: proofs, trust: authorization) {
+        revokedPrefixIDs.formUnion(chain.map(\.id))
+      }
+    }
     var cursor: String?
     var excluded: Set<UUID> = []
     repeat {
@@ -103,7 +140,13 @@ public actor AuthorizedReplicationStore {
         prefix: prefix + "proof/", after: cursor, limit: 256)
       for row in rows {
         let proof = try CanonicalJSON.decode(AuthorizedOperation.self, from: row.bytes)
-        if (try? proof.verify(in: authorization)) == nil { excluded.insert(proof.id) }
+        let revoked =
+          authorization.devices[proof.body.signedOperation.operation.deviceId]?.revokedAt != nil
+        if (try? proof.verify(in: authorization)) == nil
+          || (revoked && !revokedPrefixIDs.contains(proof.id))
+        {
+          excluded.insert(proof.id)
+        }
       }
       cursor = rows.count == 256 ? rows.last?.id : nil
     } while cursor != nil
@@ -130,6 +173,10 @@ public actor AuthorizedReplicationStore {
     {
       guard proof.body.signedOperation == operation else { throw ReplicationError.contentCollision }
       _ = try proof.verify(in: authorization)
+      guard
+        authorization.devices[operation.operation.deviceId]?.revokedAt == nil
+          || revokedPrefixIDs.contains(proof.id)
+      else { throw ReplicationError.unauthorized }
       return .authorized(proof)
     }
     guard
@@ -212,24 +259,28 @@ public actor AuthorizedReplicationStore {
           try await repository.save(value, key: prefix + "quarantine/" + (try value.digest))
           throw ReplicationError.revoked
         }
+        let revoked = authorization.devices[op.operation.deviceId]?.revokedAt != nil
         if let prior = try await repository.load(AuthorizedOperation.self, key: proofKey(op.id)) {
           guard prior == value else { throw ReplicationError.contentCollision }
-          continue
+          if !revoked { continue }
+        } else if try await !repository.operationBytes(ids: [op.id]).isEmpty {
+          throw ReplicationError.contentCollision
         }
-        guard
-          value.body.sequence
-            > (try await frontier(deviceId: value.body.signedOperation.operation.deviceId)).sequence
-        else { throw ReplicationError.authorizationFork }
-        let key = sequenceKey(value.body)
-        if let prior = pending[key] {
-          guard try CanonicalJSON.decode(UUID.self, from: prior) == op.id else {
+        if !revoked {
+          guard value.body.sequence > (try await frontier(deviceId: op.operation.deviceId)).sequence
+          else { throw ReplicationError.authorizationFork }
+          let key = sequenceKey(value.body)
+          if let prior = pending[key] {
+            guard try CanonicalJSON.decode(UUID.self, from: prior) == op.id else {
+              throw ReplicationError.authorizationFork
+            }
+          }
+          if let prior = try await repository.load(UUID.self, key: key), prior != op.id {
             throw ReplicationError.authorizationFork
           }
+          pending[key] = try CanonicalJSON.encode(op.id)
         }
-        if let prior = try await repository.load(UUID.self, key: key), prior != op.id {
-          throw ReplicationError.authorizationFork
-        }
-        pending[key] = try CanonicalJSON.encode(op.id)
+
       }
       if let prior = pending[stageKey(op.id)], prior != raw {
         throw ReplicationError.contentCollision
@@ -239,6 +290,7 @@ public actor AuthorizedReplicationStore {
     if newLegacy > 0 {
       let count = try await readLegacyCount() + newLegacy
       guard count <= authorization.genesis.body.legacyCheckpoint.count else {
+        try await discardUnsealedLegacy()
         throw ReplicationError.contentCollision
       }
       pending[prefix + "legacy-count"] = try CanonicalJSON.encode(count)
@@ -248,11 +300,15 @@ public actor AuthorizedReplicationStore {
     try await sealLegacyIfComplete()
     try await promote()
   }
-  private func sealLegacyIfComplete() async throws {
+  private func sealLegacyIfComplete(recovering: Bool = false) async throws {
     guard !legacySealed else { return }
     let expected = authorization.genesis.body.legacyCheckpoint.count
     let known = try await readLegacyCount()
-    guard known <= expected else { throw ReplicationError.contentCollision }
+    guard known <= expected else {
+      try await discardUnsealedLegacy()
+      if recovering { return }
+      throw ReplicationError.contentCollision
+    }
     guard known == expected else { return }
     var cursor: String?
     var count = 0
@@ -276,6 +332,8 @@ public actor AuthorizedReplicationStore {
     guard count <= wanted.count else { throw ReplicationError.contentCollision }
     guard count == wanted.count else { return }
     guard hash.finalize().map({ String(format: "%02x", $0) }).joined() == wanted.digest else {
+      try await discardUnsealedLegacy()
+      if recovering { return }
       throw ReplicationError.contentCollision
     }
     cursor = nil
@@ -316,34 +374,76 @@ public actor AuthorizedReplicationStore {
     legacyCount = count
     return count
   }
+  private func discardUnsealedLegacy() async throws {
+    while true {
+      let rows = try await repository.localPage(prefix: prefix + "legacy/", limit: 128)
+      if rows.isEmpty { break }
+      var records: [String: Data] = [:]
+      var remove = rows.map(\.id)
+      for row in rows {
+        guard let id = UUID(uuidString: String(row.id.suffix(36))) else {
+          throw ReplicationError.invalidPage
+        }
+        if let value = try await repository.load(ReplicationRecord.self, key: stageKey(id)) {
+          records[prefix + "quarantine/legacy/" + id.uuidString] = try CanonicalJSON.encode(value)
+          remove.append(stageKey(id))
+        }
+      }
+      let remaining = max(0, try await readLegacyCount() - rows.count)
+      records[prefix + "legacy-count"] = try CanonicalJSON.encode(remaining)
+      try await repository.commitReplication([], records: records, removing: remove)
+      legacyCount = remaining
+    }
+  }
+  private func quarantine(_ record: AuthorizedOperation) async throws {
+    var remove = [stageKey(record.id)]
+    if try await repository.load(UUID.self, key: sequenceKey(record.body)) == record.id {
+      remove.append(sequenceKey(record.body))
+    }
+    try await repository.commitReplication(
+      [], records: [prefix + "quarantine/" + (try record.digest): try CanonicalJSON.encode(record)],
+      removing: remove)
+  }
   private func promote() async throws {
     guard legacySealed else { return }
+    let proofs = try await availableRevokedProofs()
     for device in authorization.devices.values {
       var head = try await frontier(deviceId: device.id)
       var batch: [AuthorizedOperation] = []
       if let cutoff = device.revokedAt {
-        if head.sequence >= cutoff.sequence { continue }
-        var verifyHead = head
-        while verifyHead.sequence < cutoff.sequence {
-          guard
-            let record = try await staged(epoch: device.epochId, sequence: verifyHead.sequence + 1)
-          else { break }
-          _ = try record.verify(in: authorization)
-          guard record.body.previousDigest == verifyHead.digest else {
+        guard
+          let canonical = try RevokedPrefix.resolve(device, proofs: proofs, trust: authorization)
+        else { continue }
+        let retained = Set(canonical.map(\.id))
+        for proof in proofs
+        where proof.body.epochId == device.epochId && !retained.contains(proof.id) {
+          if try await repository.load(ReplicationRecord.self, key: stageKey(proof.id)) != nil {
+            try await quarantine(proof)
+          }
+        }
+        // Retain raw divergent facts/proofs as diagnostics, but replace only
+        // derived head/staging state with the exact owner-pinned branch.
+        if head != cutoff {
+          try await repository.save(DeviceFrontier(), key: headKey(device.epochId))
+          for offset in stride(from: 0, to: canonical.count, by: 32) {
+            let chunk = Array(canonical[offset..<min(offset + 32, canonical.count)])
+            if let last = chunk.last {
+              try await commit(
+                chunk, head: DeviceFrontier(sequence: last.body.sequence, digest: last.digest))
+            }
+          }
+        }
+        continue
+      }
+      while let certified = try await staged(epoch: device.epochId, sequence: head.sequence + 1) {
+        do {
+          _ = try certified.verify(in: authorization)
+          guard certified.body.previousDigest == head.digest else {
             throw ReplicationError.authorizationFork
           }
-          verifyHead = try DeviceFrontier(sequence: record.body.sequence, digest: record.digest)
-        }
-        guard verifyHead.sequence == cutoff.sequence else { continue }
-        guard verifyHead == cutoff else { throw ReplicationError.authorizationFork }
-      }
-      while true {
-        if let cutoff = device.revokedAt, head.sequence >= cutoff.sequence { break }
-        guard let certified = try await staged(epoch: device.epochId, sequence: head.sequence + 1)
-        else { break }
-        _ = try certified.verify(in: authorization)
-        guard certified.body.previousDigest == head.digest else {
-          throw ReplicationError.authorizationFork
+        } catch {
+          try await quarantine(certified)
+          break
         }
         head = try DeviceFrontier(sequence: certified.body.sequence, digest: certified.digest)
         batch.append(certified)
@@ -353,8 +453,9 @@ public actor AuthorizedReplicationStore {
         }
       }
       if !batch.isEmpty { try await commit(batch, head: head) }
-      // An incomplete revoked prefix remains staged until its signed
-      // cutoff head can be verified. No guessed historical permission.
+    }
+    if !proofs.isEmpty || authorization.devices.values.contains(where: { $0.revokedAt != nil }) {
+      try await refreshVisibility()
     }
   }
   private func staged(epoch: UUID, sequence: Int64) async throws -> AuthorizedOperation? {
@@ -431,7 +532,10 @@ public actor AuthorizedReplicationStore {
         if let bytes = byKey[proofKey(id)] {
           let proof = try CanonicalJSON.decode(AuthorizedOperation.self, from: bytes)
           guard proof.body.signedOperation == op else { throw ReplicationError.contentCollision }
-          if (try? proof.verify(in: authorization)) != nil {
+          if (try? proof.verify(in: authorization)) != nil,
+            authorization.devices[op.operation.deviceId]?.revokedAt == nil
+              || revokedPrefixIDs.contains(id)
+          {
             accepted[id] = digest
             log.append(op)
           }

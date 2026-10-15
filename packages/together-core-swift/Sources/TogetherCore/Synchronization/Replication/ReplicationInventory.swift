@@ -258,13 +258,16 @@ public actor OperationInventoryIndex {
         throw ReplicationError.contentCollision
       }
     }
-    return entries.filter { byId[$0.operationId] == nil }
+    return entries.filter { byId[$0.operationId] == nil || excluded.contains($0.operationId) }
   }
   public func entry(for id: UUID) async throws -> InventoryEntry {
+    guard !excluded.contains(id) else { throw ReplicationError.unauthorized }
     guard let row = try await repository.operationBytes(ids: [id]).first else {
       throw ReplicationError.invalidPage
     }
-    return try await entries(for: [row])[0]
+    let value = try await entries(for: [row])[0]
+    guard !excluded.contains(id) else { throw ReplicationError.unauthorized }
+    return value
   }
   private func entries(for rows: [StoredOperationBytes]) async throws -> [InventoryEntry] {
     let prefix = "replication4/proof/"
@@ -297,6 +300,9 @@ public actor OperationInventoryIndex {
       total += bytes.count
     }
     guard !result.isEmpty || requested.isEmpty else { throw ReplicationError.bounds }
+    guard requested.allSatisfy({ !excluded.contains($0.operationId) }) else {
+      throw ReplicationError.unauthorized
+    }
     return result
   }
 }

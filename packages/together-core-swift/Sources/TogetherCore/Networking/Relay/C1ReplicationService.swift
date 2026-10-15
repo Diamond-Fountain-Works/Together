@@ -114,6 +114,7 @@ extension RelayAPI {
   let ephemeral: Curve25519.KeyAgreement.PrivateKey
   let hello: RelaySignedHello
   var secure: RelaySecureSession?
+  var handshakeHistory=RelayHandshakeHistory()
   var approved = false
   var replication: PagedReplicationSession?
   var media: OperationLogSyncSession?
@@ -444,6 +445,7 @@ extension RelayAPI {
       let secure = try RelaySecureSession(
         identity: engine.identity, ephemeral: channel.ephemeral, local: channel.hello,
         remote: remote, expectedPeer: channel.remote, authorization: trust)
+      try channel.handshakeHistory.accept(remote)
       channel.secure = secure
       try await send(
         RelayPacket(kind: "consent", consent: secure.consent(identity: engine.identity)),
