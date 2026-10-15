@@ -17,7 +17,7 @@ report_name='ui'+('-'+args.label if args.label else '')
 derived=Path(os.environ.get('TOGETHER_UI_DERIVED_DATA',str(Path.home()/('.cache/Together/UIQA-'+project.name+'-DerivedData'))))
 derived.mkdir(parents=True,exist_ok=True)
 subprocess.run([sys.executable,'script/generate_project.py'],cwd=project,check=True,env=env)
-command=['xcodebuild','-project','Together.xcodeproj','-scheme','Together','-configuration','Debug','-destination',f'platform=macOS,arch={platform.machine()}','-derivedDataPath',str(derived),'-resultBundlePath',str(bundle),'-test-timeouts-enabled','YES','-default-test-execution-time-allowance','300','-maximum-test-execution-time-allowance','300','test']
+command=['xcodebuild','-project','Together.xcodeproj','-scheme','Together','-configuration','UITesting','-destination',f'platform=macOS,arch={platform.machine()}','-derivedDataPath',str(derived),'-resultBundlePath',str(bundle),'-test-timeouts-enabled','YES','-default-test-execution-time-allowance','300','-maximum-test-execution-time-allowance','300','test']
 selected=args.only_test or (['testNavigationAndNoPersistentGiftUI','testTaskActionAndClosableSheet','testPlansFiltersSharedEditorAndHomeRouting','testWishLedgerDetailUsesExistingActions','testCompactLayoutAndReduceMotion','testMenuGiftEditorAndEmptySubmission','testSealedGiftPrivacyAndOneAutomaticModal'] if args.behavior_only else [])
 if selected:
  for name in selected:

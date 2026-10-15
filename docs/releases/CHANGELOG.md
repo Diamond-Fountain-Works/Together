@@ -113,3 +113,13 @@
 - Disabled Xcode base-entitlement injection for Release; get-task-allow is absent. Required network, microphone and file-panel access plus hardened runtime are retained.
 - Bundle verifier now rejects debugger access in Release and checks actual required entitlements. Marketing version remains 0.2.1; no business/schema/protocol change.
 - Verified Universal DMG/checksum/mounted bundle; ad-hoc and not notarized. Final candidate is NOT READY FOR LOCAL INSTALL because one native UI capture case still fails and one required screenshot is missing.
+
+## 0.2.1 Build 6 — Git-like C1 foundation (development, not deployed/installed)
+
+- Add explicit replication 4/API 2 capability alongside unchanged legacy Protocol 3: stable two-user space, independent signed device grants/epochs, retained revocation history, certified operation chains and co-signed old-log migration.
+- Add immutable paged content/certificate inventory, bounded bidirectional batches, live sync hints, durable per-device signed receipts and restarted gap recovery.
+- Reuse original domain merge with off-main verification/replay, scoped local entity recomputation and changed-row derived-cache updates; keep original physical SwiftData schema and identity/bindings.
+- Add directed encrypted multi-device relay sessions and reused resumable verified media; no mailbox, bank integration, C2 or Android UI.
+- Add local universal change history/review, with sealed gift privacy, same-user other-device origin and superseded history. Dedicated QA-host configuration isolates test startup.
+- Add cross-runtime signed fixtures, four native-client local Worker tests, actual SIGKILL recovery and a 100,000-signed-operation benchmark. [Evidence and limits](../qa/reports/GITLIKE_C1_QA.md).
+- Invitation eight-hour fix remains a separate PR #3 with no production deployment. New enrollment UI, external security/physical acceptance and human visual approval remain release gates.

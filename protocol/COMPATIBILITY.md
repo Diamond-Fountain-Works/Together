@@ -1,6 +1,6 @@
 # Together protocol compatibility
 
-App Version/Build: authoritative source apps/apple/macOS/Configuration/ReleaseVersion.json. Device/sync feature protocol: 3. Relay API/frame protocol: 1. Database storage generation: 1 (existing three SwiftData models, no migration/change in this refactor). These are independent dimensions; a build increment does not change transport or storage.
+App Version/Build: authoritative source apps/apple/macOS/Configuration/ReleaseVersion.json. Device/sync feature protocol: 3. Relay API/frame protocol: 1. Database storage generation: 1 (existing three SwiftData models, no migration/change in this refactor). These are independent dimensions. The opt-in Git-like foundation additionally supports replication **4** / Relay API **2**, with the same physical storage generation. Default normal pairing remains Device 3 / Relay 1; activating 4 requires an explicit verified migration, not a build-number guess.
 
 C1 HTTPS/WSS realtime relay remains active; C2 Iroh/P2P is future work. No encrypted mailbox. Signed operations are ordered by Lamport/device/operation ID, not system time. Server routes encrypted frames; clients validate signatures/membership and merge. Core namespace TogetherCore, Bundle ID and Application Support/identity/pairing locations are unchanged.
 
@@ -10,8 +10,14 @@ Schemas describe portable DTOs and the current signed envelope, never SwiftData 
 
 ## Invitation requirement gap
 
-The formally approved lifetime is **8 hours / 28800000ms**, one successful use. The current old implementation remains **10 minutes / 600000ms** for this directory refactor. Issue #1 tracks a separate coordinated server/client-copy/spec/test PR; production deployment is separately authorized. The target vector is explicitly pending and is not reported as a passed current capability. Nonces/socket tickets keep independent 60-second lifetimes.
+The formally approved lifetime is **8 hours / 28800000ms**, one successful use. The current old implementation remains **10 minutes / 600000ms** on this core network branch. [PR #3](https://github.com/Diamond-Fountain-Works/Together/pull/3) implements the independent coordinated fix locally; production deployment is separately authorized. The target vector is explicitly pending and is not reported as a passed current capability. Nonces/socket tickets keep independent 60-second lifetimes.
 
 ## Cross-platform status
 
 macOS Swift Core is extracted and tested. It still contains SwiftData, Network and macOS AppKit/ImageIO adapters; iOS/watchOS builds are not claimed. Future Apple clients can reuse domain logic after narrowing platform adapters. Android is documentation only; fixtures are the common behavioral contract, not an Android implementation.
+
+## Protocol 4 opt-in compatibility
+
+[Wire contract](REPLICATION_V4.md), [architecture](../docs/architecture/GITLIKE_REPLICATION.md), [JSON Schema](schemas/replication-v4.schema.json) and [synthetic signed vectors](fixtures/replication-v4.json) define the additional capability. Protocol 3 SignedOperation/LogValue canonical bytes and signatures remain unchanged inside the versioned certificate. Original IDs/keys/space aliases and V1 binding survive migration. Raw V3 merge is rejected once a replica activates V4; it must receive the certified legacy checkpoint or an epoch-authorized wrapper through V4. An incompatible client fails explicitly; it never silently replaces membership.
+
+App Build 6 is development evidence, not an automatic rollout. Relay API 2 has only local tests and no deployment authorization. New enrollment/migration exchange UI, external security review, physical interoperability and coordinated rollback rehearsal remain release gates.

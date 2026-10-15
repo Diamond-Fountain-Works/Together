@@ -15,3 +15,7 @@ Local logs live under ignored `qa/results/`. Approved images and metadata live u
 Native XCTest exports now use a unique `qa/visual/candidates/<run timestamp>/` directory and per-image SHA-256 in the run report. Comparison rejects replaced or escaped images; a later focused/failed run cannot silently overwrite a full run's evidence. Snapshot timing/hover assertions remain separate from the image-difference threshold and human baseline approval.
 
 The Xcode 26 CI run exposed a fixture-only SwiftPM compatibility issue: `main.swift` also declared `@main`. Renaming the harness entry to `LegacyFixtureMain.swift` fixed it; current product sources and the pinned old-source tree were unchanged. Run `38527602870` then passed both jobs. This is distinct from local Xcode 27 validation and from manual two-Mac tests.
+
+## Replication 4 headless additions
+
+Stacked PRs targeting refactor/monorepo-foundation now trigger the same workflow. The macOS job additionally requires four actual native Swift clients against a fresh loopback Worker and synthetic SIGKILL recovery. Both V1 and V2 integrations have distinct gates. Portable tests include the signed V4 DTO vectors in Swift/WebCrypto/Python; no deployment credentials are required. The optional 100,000-operation benchmark runs locally and is not a CI throughput SLA. The dedicated QA-host bundle isolates UI startup from production storage; hosted screenshots remain NOT RUN.

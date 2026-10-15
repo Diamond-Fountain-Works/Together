@@ -241,3 +241,14 @@ Files: scripts/install_local.py, Makefile, AGENTS, README, CHANGELOG, QA install
 Checks: installed bundle and Desktop installer full hashes/signature PASS; source/DMG equality PASS; user-data metadata unchanged; one Launch Services registration and native NSWorkspace application URL confirmed. Quality tools 6 PASS. No new Swift build/UI run (same verified Release). Installation first caught a registration recreated by an indexer; the scoped post-removal pass resolved it and is now part of the helper.
 
 Open work remains Developer ID/notarization and the previously documented independent security/physical two-Mac/human visual acceptance. Next release: make package, then make install to keep a single daily app entry.
+
+## Git-like C1 multi-device stage (Build 6)
+
+- Stage 0: independent feature/gitlike-c1-multidevice worktree from Monorepo 1832df0. PR #2 remains Draft and untouched. Public repository visibility retained.
+- A–F: architecture/ADRs, stable-space signed device grants/epochs, certified immutable facts, bounded paged anti-entropy, scoped/background old projection and exact per-device durable ACK implemented. Synthetic/unit/integration evidence is in the C1 QA report; independent security and physical tests remain gates.
+- G–H: universal applied-change review and additive C1 API 2 directed per-device sessions/media are implemented. Menu sheet UI has candidate/manual evidence only, no automatic baseline approval. Enrollment/migration exchange UI and production deployment are incomplete.
+- I: eight-hour invitation correction is separately delivered in Draft PR #3, local tests/CI passed; Challenge/ticket remain 60 seconds. Not deployed; core branch keeps the existing ten-minute value.
+- J–K: indexed paged reads, crash staging/head/ACK recovery, changed-row cache and large signed-history benchmark implemented. Fully indexed dependent-domain projection, encrypted backup/export UX, controller loss recovery, archive paging and physical multi-device acceptance remain open. No history pruning.
+- L: source/protocol/tests/docs and safety-scanned commits are to be delivered in a Draft stacked PR targeting the still-open Monorepo branch. Merge, install and production deploy require separate authorization.
+
+Authoritative current counts/limits: [C1 QA](../qa/reports/GITLIKE_C1_QA.md) and [architecture](../architecture/GITLIKE_REPLICATION.md). Old phase evidence above is historical, not a pass for this new protocol.

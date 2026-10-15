@@ -1,6 +1,6 @@
 # Git-like replication: C1 evolution
 
-Status: implementation in progress on `feature/gitlike-c1-multidevice`, based on verified Monorepo commit `1832df0`. PR #2 remains Draft; its 68 Build 5 candidates are not approved by this work. No production deployment, installation, identity rotation, database reset or C2 change is authorized.
+Status: implemented opt-in foundation; final QA in progress on `feature/gitlike-c1-multidevice`, based on verified Monorepo commit `1832df0`. PR #2 remains Draft; its 68 Build 5 candidates are not approved by this work. No production deployment, installation, identity rotation, database reset or C2 change is authorized.
 
 ## Audited baseline
 
@@ -43,7 +43,7 @@ Legacy history is sealed by count + SHA-256 over a sorted ID/content inventory. 
 
 ### Anti-entropy
 
-Use sorted, keyset-paginated UUID + SHA-256 inventory, bounded requests and byte-bounded operation batches. A per-pass high-water ID and content checkpoint define a stable scan; writes during a pass trigger another pass. Never infer completeness from maximum Lamport or an operation count alone. Resume cursors are tied to their pass/source checkpoint; changed state restarts safely from durable local facts. Identical IDs with different bytes fail and are diagnosed. A disconnect loses transport work, not committed operations.
+Use sorted, keyset-paginated UUID + SHA-256 inventory, bounded requests and byte-bounded operation batches. Each pass materializes immutable 128-entry inventory pages and a content/certificate checkpoint in rebuildable LocalRecord cache rows. Writers during capture abort that capture safely; writers after capture queue another pass. Never infer completeness from maximum Lamport or an operation count alone. Resume cursors are tied to their pass/source checkpoint; changed state restarts safely from durable local facts. Identical IDs with different bytes fail and are diagnosed. A disconnect loses transport work, not committed operations.
 
 Keep bounded in-flight pages/batches and backpressure. Hash/signature verification and domain replay run off the main actor; SwiftData fetch/save work is bounded. Incremental projection may replay affected entity/dependency groups only when equivalence to full replay is established. Full verified replay remains the oracle. No unproven automatic log pruning or tombstone removal.
 
@@ -61,4 +61,32 @@ C2 Iroh/QUIC, encrypted mailbox, central business storage, media hosting and pla
 
 ## Implementation ledger
 
-Architecture audit/design: recorded. Trust, indexed durable log, paged sessions, ACK, universal review, Relay v2 and large-log measurements: pending implementation/tests. Invitation eight-hour change: separate branch/PR. No entry in this document alone means a capability is complete or production deployed.
+| Area | Current implementation | Acceptance boundary |
+| --- | --- | --- |
+| Identity/trust | Co-signed stable-space genesis, independent owner/device grants, hash-linked CAS control streams, epochs, revocation prefixes, public descriptor listing/revocation APIs | Tested with synthetic independent keys; controller recovery/rotation and polished enrollment UI are missing |
+| Durable log | Unchanged inner SignedOperation, certified outer sequence/hash chain, atomic fact/proof/head saves, duplicate/content-collision checks, durable out-of-order staging and rejection quarantine | Physical SwiftData classes unchanged; no history rewrite |
+| Anti-entropy | Immutable paged inventory, content + certificate digests, bounded bidirectional batches, live sync hints, persisted receipts | New protocol 4 only; legacy protocol 3 retains its existing 10,000-ID guard |
+| Projection | Existing field/domain rules, background verified full replay, scoped local recomputation, changed-row cache | Full recovery and dependent-domain replay remain O(history); see performance report, not an instant-start claim |
+| ACK | Signed exact-operation/checkpoint receipts, per-device durable progress, partner-at-least-one vs all-authorized distinctions | No socket/relay success treated as remote persistence; reviewed and domain confirmation stay separate |
+| Review | Applied before/after changes across Tasks/Wishes/Profile/Gift/Finance; same-user other-device origin; local review/dismissal/presentation; superseded history labelled | Gift plaintext/media excluded from sealed review; new sheet needs human visual acceptance |
+| C1 | Additive API 2 schema, per-device directed sockets, pairwise encrypted sessions, fresh tickets, retry/backpressure, reused media channel | Local native four-client Worker tests; no production deployment or physical cross-WiFi acceptance |
+| Invitation | Independent eight-hour fix in [PR #3](https://github.com/Diamond-Fountain-Works/Together/pull/3) | Not deployed; this core branch/last known deployment still use ten minutes |
+
+### Activation, upgrade and rollback
+
+`C1ReplicationService.migrationProposal` reads the old exact content checkpoint. Each old Mac calls `signMigrationProposal` locally; it refuses an unmatched local history. `migrate` requires both signatures, matches original pins and the server's existing V1 route, then adds `replication4/authorization` and `replication4/relay-binding` beside the original binding. No new SharedSpace or key is synthesized. An untrusted service capability flag cannot activate this mode.
+
+For an additional device, an already trusted owner root signs its independently generated public descriptor. `prepareAuthorizedDevice` accepts an empty replica only after verifying that grant, frozen space and an out-of-band authenticated genesis digest. It saves public trust and identity metadata, not another device's private key. The new device downloads the sealed legacy baseline before business projection. The domain APIs are implemented and tested; invitation/QR/manual fingerprint exchange screens for this enrollment and the two-Mac migration proposal exchange remain unimplemented. The normal released flow remains Protocol 3 until those UI/release and deployment gates are satisfied.
+
+Server V2 data uses distinct `space4` metadata and room IDs alongside unchanged V1 routes. Rollback of an unactivated client/server leaves V1 intact. After Protocol 4 writes, blindly launching an old binary against the new local state is **not** a safe rollback: it cannot validate outer certificates or authorizations. Preserve an owner-only pre-activation store/identity/media backup, stop all participating upgraded clients and restore a coordinated checkpoint only with explicit data-recovery approval. Never delete production Durable Objects or silently discard newly signed history. An offline new-device recovery uses another authorized replica; the relay has no historical mailbox.
+
+### Bounds and remaining work
+
+- Inventory 128 entries, operation batches at most 32 and 240,000 encoded bytes; directed relay frames at most 524,288 bytes, existing media chunks 64 KiB. These are frame/flow bounds, **not** original-image size or pixel limits. Native incoming/outgoing queues cap at 8 MiB each, with 10ms outbound pacing.
+- At most 32 currently active devices. The authenticated metadata response/archive caps at 131,072 bytes; exhausting that control-history bound fails closed with `AUTHORIZATION_HISTORY_PAGE_REQUIRED`. Paginated authorization archives are not implemented. Retired keys/events remain in the archive; never remove them to bypass this bound.
+- Revoked devices retain verified accepted history up to the pinned sequence/head. An unseen signature cannot be time-dated safely by `createdAt`; unsupported beyond-cutoff candidates are diagnostic, never successful business changes. Long revoked-prefix recovery may rescan its chain; this still needs indexing/performance work.
+- Inventory snapshots are rebuildable cache, retained by active sessions and discarded after use; stale process caches are reclaimed at restart. They are not a replacement for signed facts. Durable staging, certified-head checks and actual SIGKILL tests cover crash recovery; a user-facing encrypted log backup/export/restore workflow, root loss recovery and automatic key rotation are not implemented.
+- Initial projection and change-history reconstruction read the full legal fact set off the main actor; SwiftData transactions are bounded. Local simple-entity updates replay only affected IDs; dependent Wishes/Gifts/Finance still replay their complete domain. No claim of a fully indexed incremental projector, measured GUI frame rate or bounded total application RSS.
+- Snapshot-only replacement, automatic operation/tombstone pruning, offline mailbox, Android/iOS/watchOS clients and C2 remain future work. Independent cryptographic review and physical-device testing are release gates, not completed by unit tests.
+
+Evidence and exact commands: [C1 QA report](../qa/reports/GITLIKE_C1_QA.md).

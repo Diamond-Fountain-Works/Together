@@ -201,3 +201,15 @@ Build 3 supplementary verification: currency fixtures commit exact queries throu
 - The original 14 UI methods remain; an additional focused current-input-method currency case checks Latin JPY and Chinese 日元 in light/dark. Wait for the live input-dialog query to settle before fresh currency-row lookup. Persistent dialogs fail rather than receive automatic permissions. No JPY, business-status, sealed-privacy or closure assertion is waived.
 - Use a complete post-fix Pinyin suite for final acceptance. A focused pass or an ABC pass alone cannot clear the original full-suite failure. See [qa/INPUT_METHOD_REVIEW_BUILD4.md](reports/INPUT_METHOD_REVIEW_BUILD4.md).
 - Git all-refs backup is verified in durable Documents storage; live repository migration remains a separate action. Candidate snapshots need explicit human approval tied to exact hashes.
+
+## Replication 4 acceptance and isolation
+
+Run `./scripts/qa.sh --skip-ui` for the headless gates, including existing-source store migration, legacy relay integration, four native V4 clients against a fresh local Worker, actual child-process SIGKILL recovery, Swift domain tests, service runtime tests, Python conformance, copy and tracked/history publication safety. `check_ci_report.py` requires each independently named integration/crash gate. It does not promote unrun UI/visual to PASS.
+
+Run `TOGETHER_RUN_REPLICATION_PERF=1 TOGETHER_PERF_OUTPUT=/absolute/local/report.json swift test -c release --package-path packages/together-core-swift --filter ReplicationPerformanceTests` for 100,000 actual signed/certified synthetic operations across two on-disk stores and bounded session frames. Record elapsed phases, RSS, frame/queue bounds, scoped correction vs full replay and configuration. This is an in-process wire harness, not RTT/GUI frame rate evidence.
+
+Protocol vectors are shared by Swift/CryptoKit, Workers/WebCrypto and Python/schema checks. Trust tests reject forged owner/user grants, control forks, beyond-cutoff signatures and same-ID different content/certificates. Session tests cover late one-sided writes after convergence, out-of-order facts, immutable inventory, lost ACK/restart, offline independent device progress and media receipt scoping. Existing finance/wish/task/gift tests remain the invariant oracle.
+
+Native UI uses the dedicated UITesting configuration and com.together.app.qa, which refuses launch without `--ui-testing`; ordinary Debug/Release keep the production Bundle ID. New change-review screenshots are candidates only. Automation initialization failures are NOT RUN, not successful UI assertions. Preserve prior Build 5 review states/baselines.
+
+Physical Mac A/Mac B across different WiFi, Mac/Android, four physical devices, hardware/media permissions, enrollment screens and external cryptographic review remain separate NOT RUN/BLOCKED gates. Do not use real databases, keys or photos in CI. See [current results](reports/GITLIKE_C1_QA.md).
