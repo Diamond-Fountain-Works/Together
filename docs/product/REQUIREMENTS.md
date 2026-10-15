@@ -1,6 +1,6 @@
-# Repository migration scope and invitation requirement correction
+# Invitation eight-hour implementation — separate network PR
 
-This repository migration preserves all current runtime behavior. The formally required invitation lifetime is **8 hours**, one successful use. The current 10-minute implementation is an acknowledged legacy gap, not the final requirement. Correct it in a separate coordinated network-protocol PR (server calculation, client wording, specification and tests); deploy only after separate authorization. Do not change C1, identities or production Worker during the directory refactor.
+This branch implements **8 hours / 28,800,000 ms**, one successful use, based on server time. The legacy 10-minute implementation is not the product requirement. Challenges/tickets remain 60 seconds. Existing clients display the server-supplied expiresAt, with no hardcoded duration to replace. Protocol 3, saved pairings and the macOS binary are unchanged. The production Worker was last audited at 10 minutes and requires separate deployment authorization; local code/tests do not establish deployment. Monorepo PR #2 and the multi-device protocol PR remain independent.
 
 # Together 0.2.1 — Our Finances
 
@@ -57,7 +57,7 @@ WishGrant 与 WishItem 分开建模。Grant 保存本次额度、约定日历日
 
 ## 连接与同步（正式迁移修订）
 
-正常用户只安装 Together，使用 12 位安全随机一次性邀请码（10 分钟）和双方明确身份确认配对；不要求安装 Tailscale、输入 IP/VPN/开放端口。Cloudflare Workers + Durable Objects 负责邀请、公开路由和实时转发，不判断业务状态或保存业务正文。
+正常用户只安装 Together，使用 12 位安全随机一次性邀请码（服务器控制，8 小时有效）和双方明确身份确认配对；不要求安装 Tailscale、输入 IP/VPN/开放端口。Cloudflare Workers + Durable Objects 负责邀请、公开路由和实时转发，不判断业务状态或保存业务正文。此规则在本分支实现，正式服务另行部署验收。
 
 SyncTransport 抽象 connect/disconnect/send/receive/state/error；URLSessionWebSocketTask 提供 RelayWebSocketTransport，旧 PeerService、NWListener/NWConnection 与 LegacyTailscaleTransport 保留回归。双方确认、公钥绑定、认证握手、HTTPS/WSS、应用层认证加密与重放保护必须先于业务交换。设备私钥按最新需求存本机受限文件；旧身份需主动迁移，不得静默重置。Cloudflare 凭据不得进入 App 或仓库。
 

@@ -42,7 +42,7 @@ make package
 
 Normal pairing uses an invitation and explicit mutual identity confirmation, then native URLSession WebSocket live/catch-up sync. Legacy TCP remains for regression; this refactor does not switch to C2 or deploy a Worker. Relay forwards online ciphertext only; a sender closing before peer sync cannot promise delivery. Application-encryption framing still requires [independent security review](docs/security/SECURITY_REVIEW.md). Physical two-Mac/different-Wi-Fi acceptance is separate from localhost or one-Mac public-service tests.
 
-**Invitation lifetime:** current code is **10 minutes**. The formal product requirement is **8 hours**; [Issue #1](https://github.com/Diamond-Fountain-Works/Together/issues/1) tracks a separate coordinated protocol/client/server/test change and later deployment. This refactor preserves runtime behavior.
+**Invitation lifetime:** this branch implements one-use **8 hours**, controlled by server time. Production was last audited at **10 minutes** and is not changed by this source PR. The client already renders the actual server `expiresAt`, so it does not advertise a hardcoded lifetime. [Issue #1](https://github.com/Diamond-Fountain-Works/Together/issues/1) remains open until separately authorized deployment and production verification. Challenges/tickets stay 60 seconds; old pair bindings remain valid.
 
 App, sync protocol and storage generation are [separate dimensions](protocol/versions.json): device protocol 3, Relay service protocol 1, physical SwiftData storage generation 1. Protocol 2/3 client mismatch is diagnosed; upgraded identities/routes remain pinned. The storage generation index does not claim a new VersionedSchema migration.
 

@@ -5,9 +5,10 @@
   "databaseSchemaVersion": 1,
   "storageSchemaMeaning": "Existing OperationRecord/LocalRecord/EntityRecord SwiftData storage generation, unchanged by refactor",
   "invitation": {
-    "implementedLifetimeMilliseconds": 600000,
+    "implementedLifetimeMilliseconds": 28800000,
+    "deployedLifetimeMillisecondsAtLastAudit": 600000,
     "requiredLifetimeMilliseconds": 28800000,
-    "status": "implementation_gap",
+    "status": "implemented_not_deployed",
     "issue": "https://github.com/Diamond-Fountain-Works/Together/issues/1"
   }
 }

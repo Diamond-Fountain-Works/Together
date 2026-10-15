@@ -1,3 +1,7 @@
+# Invitation protocol phase I — separate branch
+
+`fix/invitation-eight-hours` is stacked on Monorepo commit `1832df0`, not old main. Server lifetime/boundary and atomic-concurrency tests implemented; TypeScript check and 10 Workers tests PASS locally. Existing dynamic client expiration and Protocol 3 encoding remain unchanged. Challenge/ticket lifetimes stay 60 seconds. Production deployment, live eight-hour verification and physical two-Mac acceptance remain NOT RUN. No App binary, production data, keys, pins or Monorepo visual approval changed.
+
 # Monorepo execution stage
 
 Precondition Build 4 completed before baseline publication. Raw Git/reflog backup, verified restoration, standard `.git`, Public Organization baseline and invitation-gap Issue #1 are complete. Directory changes are on `refactor/monorepo-foundation`; native/Universal builds, domain/protocol/relay/migration tests and hosted CI passed. Final native UI: 15 PASS / 0 FAIL / 1 intentional SKIP; 68 captures complete, raw visual 18 PASS / 50 minor REVIEW REQUIRED / 0 FAIL. A frozen image-hash review is pending, so the PR remains Draft rather than merge-ready. Implementation/results/rollback: [migration](../architecture/MONOREPO_MIGRATION.md), [QA](../qa/reports/MONOREPO_QA.md). No product installation, production-data edits, C2, Android or Worker deployment.

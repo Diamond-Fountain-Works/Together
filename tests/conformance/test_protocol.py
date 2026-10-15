@@ -47,9 +47,9 @@ class ProtocolConformance(unittest.TestCase):
         self.assertEqual(str(uuid.UUID(bytes=bytes(data))).upper(),v['uuid'])
         v=V['media'];data=base64.b64decode(v['base64'],validate=True)
         self.assertEqual(len(data),v['byteCount']);self.assertEqual(hashlib.sha256(data).hexdigest(),v['sha256'])
-    def test_invitation_target_is_not_misreported_as_implemented(self):
-        v=V['invitation'];self.assertEqual(v['implementedTTLms'],600000);self.assertEqual(v['requiredTTLms'],8*60*60*1000);self.assertEqual(v['targetStatus'],'PENDING_NETWORK_CHANGE');self.assertTrue(v['oneUse'])
-        source=(ROOT/'services/relay/src/index.ts').read_text();self.assertIn('expiresAt: Date.now() + 600000',source)
+    def test_invitation_eight_hours_is_local_not_a_deployment_claim(self):
+        v=V['invitation'];self.assertEqual(v['implementedTTLms'],28800000);self.assertEqual(v['requiredTTLms'],8*60*60*1000);self.assertEqual(v['targetStatus'],'IMPLEMENTED_NOT_DEPLOYED');self.assertTrue(v['oneUse'])
+        source=(ROOT/'services/relay/src/index.ts').read_text();policy=(ROOT/'services/relay/src/invitation-policy.ts').read_text();self.assertIn('INVITATION_TTL_MS = 28_800_000',policy);self.assertIn('expiresAt: Date.now() + INVITATION_TTL_MS',source)
     def test_version_dimensions(self):
         versions=json.loads((ROOT/'protocol/versions.json').read_text());app=json.loads((ROOT/versions['appVersionSource']).read_text())
         self.assertEqual(app['deviceProtocolVersion'],versions['syncProtocolVersion']);self.assertEqual(versions['databaseSchemaVersion'],1);self.assertEqual(versions['relayServiceProtocolVersion'],1)

@@ -1,3 +1,4 @@
+import { INVITATION_TTL_MS, invitationExpired } from "./invitation-policy";
 import { DurableObject } from "cloudflare:workers";
 export interface Env {
   DIRECTORY: DurableObjectNamespace<ConnectionDirectory>;
@@ -296,7 +297,7 @@ export class ConnectionDirectory extends DurableObject<Env> {
             owner,
             expectedPeer: body.expectedPeer,
             routeId: id(),
-            expiresAt: Date.now() + 600000,
+            expiresAt: Date.now() + INVITATION_TTL_MS,
             used: false,
           };
         await this.ctx.storage.put("invite:" + (await hash(code)), invitation);
@@ -330,7 +331,7 @@ export class ConnectionDirectory extends DurableObject<Env> {
             if (
               !invitation ||
               invitation.used ||
-              invitation.expiresAt < Date.now()
+              invitationExpired(invitation.expiresAt)
             )
               throw new ServiceError(400, "INVITATION_UNAVAILABLE");
             if (
