@@ -2,7 +2,7 @@ import Foundation
 
 enum FinanceProjector {
     static let types: Set<EntityType> = [.reserveEntry, .dateEvent, .expense, .recurringBill, .billRevision, .billOccurrence, .financeSettings, .paymentMethod]
-    static func apply(_ operations: [SyncOperation], context: ReplicaContext, snapshot: inout DomainSnapshot) {
+    static func apply(_ operations: [SyncOperation], context: ReplicaContext, snapshot: inout DomainSnapshot,audit:ProjectionAudit?=nil) {
         let ops = operations.filter { types.contains($0.entityType) }
         var drafts: [UUID: FinanceDraft] = [:]
         for op in ops where op.operationType == .create {
@@ -10,6 +10,8 @@ enum FinanceProjector {
                   validValues(op.payload, type: op.entityType, context: context, actor: op.actorId, creating: true) else {
                 OperationProjector.conflict(op, Copy.text("finance.error.invalidRecord"), into: &snapshot); continue
             }
+            let before=drafts[op.entityId]?.values ?? [:]
+            defer{audit?.record(op,before:before,after:drafts[op.entityId]?.values ?? [:])}
             if var prior = drafts[op.entityId] {
                 // Deterministic settings/forecast/opening IDs can be initialized
                 // independently while offline. Merge their mutable fields with
@@ -28,6 +30,8 @@ enum FinanceProjector {
         }
         for op in ops where op.operationType != .create {
             guard var draft = drafts[op.entityId], draft.base.entityType == op.entityType else { continue }
+            var before=draft.values;before["deletedAt"] = .optionalDate(draft.deletedAt)
+            defer{var after=draft.values;after["deletedAt"] = .optionalDate(draft.deletedAt);audit?.record(op,before:before,after:after)}
             guard op.entityType != .billRevision else { OperationProjector.conflict(op, Copy.text("finance.error.invalidRecord"), into: &snapshot); continue }
             let owner = draft.values["ownerId"]?.uuid
             guard context.members.contains(op.actorId), (op.entityType != .paymentMethod || owner == op.actorId),

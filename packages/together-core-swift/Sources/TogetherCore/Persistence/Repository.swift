@@ -63,13 +63,18 @@ public struct LocalIdentityMetadata: Codable, Sendable {
             if !additions.isEmpty { operationRevision &+= 1 }
         } catch { context.rollback(); throw error }
     }
-    public func commitGift(_ operations: [SignedOperation], giftId: UUID, slot: String) throws {
+    public func commitGift(_ operations: [SignedOperation], giftId: UUID, slot: String, replicationRecords: [String: Data] = [:]) throws {
         let key = "gift-slot:\(slot)"
         do {
             try context.transaction {
                 guard try load(UUID.self, key: key) == nil else { throw TogetherError.invalid(Copy.text("copy.error.90bff42b45e2")) }
                 context.insert(LocalRecord(key: key, body: try CanonicalJSON.encode(giftId)))
-                for operation in operations { context.insert(try OperationRecord(operation: operation)) }
+                for operation in try additions(operations) { context.insert(try OperationRecord(operation: operation)) }
+                for (key,body) in replicationRecords {
+                    let wanted=key
+                    var query=FetchDescriptor<LocalRecord>(predicate:#Predicate{$0.key==wanted});query.fetchLimit=1
+                    if let row=try context.fetch(query).first {row.body=body} else {context.insert(LocalRecord(key:key,body:body))}
+                }
                 try context.save()
             }
             operationRevision &+= 1
@@ -126,6 +131,15 @@ public struct LocalIdentityMetadata: Codable, Sendable {
             if !rows.isEmpty { operationRevision &+= 1 }
         } catch { context.rollback(); throw error }
     }
+    public func commitCertified(_ operations:[SignedOperation],records:[String:Data],removing:[String],headKey:String,expectedHead:DeviceFrontier,authorizationDigest:String)throws {
+        let actual=try load(DeviceFrontier.self,key:headKey) ?? DeviceFrontier()
+        guard actual==expectedHead,let archive=try load(AuthorizationArchive.self,key:"replication4/authorization"),try SpaceAuthorization.restore(archive).digest==authorizationDigest else{throw ReplicationError.staleAuthorization}
+        try commitReplication(operations,records:records,removing:removing)
+    }
+    public func localBytes(keys:[String]) throws -> [StoredOperationBytes] {
+        guard keys.count<=256 else {throw ReplicationError.bounds}
+        return try context.fetch(FetchDescriptor<LocalRecord>(predicate:#Predicate{keys.contains($0.key)})).map{StoredOperationBytes(id:$0.key,bytes:$0.body)}
+    }
     public func localPage(prefix: String, after: String? = nil, limit: Int = 128) throws -> [StoredOperationBytes] {
         guard (1...256).contains(limit) else { throw ReplicationError.bounds }
         let lower = after ?? prefix, upper = prefix + "~"
@@ -142,6 +156,18 @@ public struct LocalIdentityMetadata: Codable, Sendable {
             }
             try context.save()
         } } catch { context.rollback(); throw error }
+    }
+    public func cacheRows(_ rows:[ProjectionCacheRow],expectedRevision:UInt64)throws -> Bool {
+        guard operationRevision==expectedRevision else{return false}
+        guard rows.count<=256 else{throw ReplicationError.bounds}
+        do {
+            let keys=rows.map(\.key),prior=Dictionary(uniqueKeysWithValues:try context.fetch(FetchDescriptor<EntityRecord>(predicate:#Predicate{keys.contains($0.key)})).map{($0.key,$0)})
+            for row in rows {
+                if let body=row.bytes {if let old=prior[row.key]{old.body=body;old.entityType=row.type}else{context.insert(EntityRecord(key:row.key,entityType:row.type,body:body))}}
+                else if let old=prior[row.key]{context.delete(old)}
+            }
+            try context.save();return true
+        }catch{context.rollback();throw error}
     }
     public func cache(_ snapshot: DomainSnapshot) throws {
         var records: [(String, String, Data)] = []

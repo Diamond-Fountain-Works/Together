@@ -20,7 +20,12 @@ public struct DeviceIdentity: Sendable {
         descriptor = DeviceDescriptor(deviceId: deviceId, userId: userId, initialSpaceId: initialSpaceId, publicKey: key.publicKey.rawRepresentation, displayName: displayName, protocolVersion: protocolVersion, initialTimeZoneIdentifier: timeZoneIdentifier)
     }
     public func sign(_ bytes: Data) throws -> Data { try Curve25519.Signing.PrivateKey(rawRepresentation: privateKeyData).signature(for: bytes) }
-    public func sign(_ operation: SyncOperation) throws -> SignedOperation { try SignedOperation(operation: operation, signature: sign(CanonicalJSON.encode(operation))) }
+    public func sign(_ operation: SyncOperation) throws -> SignedOperation {
+        let bytes=try CanonicalJSON.encode(operation)
+        // Publish the exact millisecond-precision value that was signed and
+        // persisted, rather than retaining sub-millisecond local-only Dates.
+        return try SignedOperation(operation:CanonicalJSON.decode(SyncOperation.self,from:bytes),signature:sign(bytes))
+    }
     public static func persistent(deviceId: UUID, userId: UUID, spaceId: UUID, directory: URL,
                                   needsExistingIdentity: Bool, migrateLegacy: Bool = false,
                                   timeZoneIdentifier: String = TimeZone.current.identifier, protocolVersion: Int = 2, validateKey: (Data) throws -> Void = { _ in }) throws -> DeviceIdentity {

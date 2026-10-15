@@ -8669,6 +8669,259 @@
           }
         }
       }
+    },
+    "sync.changes.title": {
+      "comment": "Navigation; universal operation change review",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "变更记录"
+          }
+        }
+      }
+    },
+    "sync.changes.empty": {
+      "comment": "Empty State; universal operation change review",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "暂无变更"
+          }
+        }
+      }
+    },
+    "sync.changes.count": {
+      "comment": "Status; universal operation change review",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "已同步 %@ 项变更"
+          }
+        }
+      }
+    },
+    "sync.changes.profiles": {
+      "comment": "Navigation; universal operation change review",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "个人资料"
+          }
+        }
+      }
+    },
+    "sync.origin.thisDevice": {
+      "comment": "Status; universal operation change review",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "本机"
+          }
+        }
+      }
+    },
+    "sync.origin.myOtherDevice": {
+      "comment": "Status; universal operation change review",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "我的其他设备"
+          }
+        }
+      }
+    },
+    "sync.origin.partner": {
+      "comment": "Status; universal operation change review",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "伴侣设备"
+          }
+        }
+      }
+    },
+    "sync.review.action": {
+      "comment": "Action; universal operation change review",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "标为已查看"
+          }
+        }
+      }
+    },
+    "sync.review.reviewed": {
+      "comment": "Status; universal operation change review",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "已查看"
+          }
+        }
+      }
+    },
+    "sync.review.dismissed": {
+      "comment": "Status; universal operation change review",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "已忽略"
+          }
+        }
+      }
+    },
+    "sync.field.status": {
+      "comment": "Guidance; universal operation change review",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "状态"
+          }
+        }
+      }
+    },
+    "sync.field.quantity": {
+      "comment": "Guidance; universal operation change review",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "数量"
+          }
+        }
+      }
+    },
+    "sync.action.create": {
+      "comment": "Status; universal operation change review",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "新增记录"
+          }
+        }
+      }
+    },
+    "sync.action.delete": {
+      "comment": "Status; universal operation change review",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "删除记录"
+          }
+        }
+      }
+    },
+    "sync.action.completeTask": {
+      "comment": "Status; universal operation change review",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "完成任务"
+          }
+        }
+      }
+    },
+    "sync.action.reopenTask": {
+      "comment": "Status; universal operation change review",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "重新开启任务"
+          }
+        }
+      }
+    },
+    "sync.action.requestFulfillment": {
+      "comment": "Status; universal operation change review",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "申请兑现愿望"
+          }
+        }
+      }
+    },
+    "sync.action.confirmFulfillment": {
+      "comment": "Status; universal operation change review",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "确认兑现愿望"
+          }
+        }
+      }
+    },
+    "sync.action.rejectFulfillment": {
+      "comment": "Status; universal operation change review",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "重新开启愿望"
+          }
+        }
+      }
+    },
+    "sync.domain.gifts": {
+      "comment": "Navigation; universal gift metadata review",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "爱意礼物"
+          }
+        }
+      }
+    },
+    "qa.error.isolatedLaunch": {
+      "comment": "Error; fail-closed QA host, never production data",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "隔离测试需要有效的启动参数。"
+          }
+        }
+      }
+    },
+    "sync.resolution.superseded": {
+      "comment": "Status; historical modification, not current winner",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "已被后续修改替代"
+          }
+        }
+      }
+    },
+    "sync.resolution.partiallySuperseded": {
+      "comment": "Status; historical modification, not current winner",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "部分已被后续修改替代"
+          }
+        }
+      }
     }
   }
 }

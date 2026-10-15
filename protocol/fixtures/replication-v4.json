@@ -1,0 +1,271 @@
+{
+  "authorization" : {
+    "events" : [
+      {
+        "body" : {
+          "action" : "grant",
+          "authorizerDeviceId" : "DDF60403-7329-49AA-BF8A-58EB1198997C",
+          "device" : {
+            "deviceId" : "1C17E960-073B-42EB-BA02-2A9B6665930E",
+            "displayName" : "Synthetic phone",
+            "initialSpaceId" : "914C54B8-4E4F-4A11-8895-D933A0C3C7DA",
+            "initialTimeZoneIdentifier" : "Asia/Shanghai",
+            "protocolVersion" : 4,
+            "publicKey" : "NHLcdnwtZ/l4NY5/zH9OS4cuCt1ywCvhzncSzCiM+As=",
+            "userId" : "4DBF07BC-2DD0-40D8-ADB0-7DBD508DA14D"
+          },
+          "epochId" : "B184D602-38EA-4E67-8B9F-D3B47413F6B6",
+          "ownerId" : "4DBF07BC-2DD0-40D8-ADB0-7DBD508DA14D",
+          "previousDigest" : "55de4b5257b7b4a11aaa5128a3c8edcd3e69bd3fda07341a29dfdd33a88493cb",
+          "revision" : 1,
+          "spaceId" : "66999FED-5267-5096-BB50-223376EB623B",
+          "version" : 4
+        },
+        "signature" : "x+kwjkhQ9JDmX82O10hai0c4gI/8YoyZP5RJcltzxbNBvrjk3BvgNZfhXEvC6mP3L14qHgm4ccRf37+cNheCDg=="
+      }
+    ],
+    "genesis" : {
+      "body" : {
+        "legacyCheckpoint" : {
+          "count" : 0,
+          "digest" : "7dd799ac93d3172ace0d0af5c1171f5f1cee1c3597313259cfda53ee7815a9ae"
+        },
+        "legacySpaceIds" : [
+          "31D93D28-09DE-4DF4-8A42-76AE8BAD2F3D",
+          "66999FED-5267-5096-BB50-223376EB623B",
+          "D1B054D6-D71D-4B64-BFA4-2F2DC481F1BB"
+        ],
+        "memberIds" : [
+          "03CE4DB1-57BD-4B81-A599-E5E264880FF3",
+          "4DBF07BC-2DD0-40D8-ADB0-7DBD508DA14D"
+        ],
+        "roots" : [
+          {
+            "deviceId" : "001FB9CE-7885-4AA9-B069-1EDA6904A4EC",
+            "displayName" : "Synthetic B",
+            "initialSpaceId" : "D1B054D6-D71D-4B64-BFA4-2F2DC481F1BB",
+            "initialTimeZoneIdentifier" : "Asia/Shanghai",
+            "protocolVersion" : 3,
+            "publicKey" : "KjCxsNMQ3/Ve76HtVL/n9CAm09/dK05iwfgs9wsGfA4=",
+            "userId" : "03CE4DB1-57BD-4B81-A599-E5E264880FF3"
+          },
+          {
+            "deviceId" : "DDF60403-7329-49AA-BF8A-58EB1198997C",
+            "displayName" : "Synthetic A",
+            "initialSpaceId" : "31D93D28-09DE-4DF4-8A42-76AE8BAD2F3D",
+            "initialTimeZoneIdentifier" : "Asia/Shanghai",
+            "protocolVersion" : 3,
+            "publicKey" : "TgA3dgZmyD2o1LkYtyahQnPqjGLip8mdbGAOQU7pCbo=",
+            "userId" : "4DBF07BC-2DD0-40D8-ADB0-7DBD508DA14D"
+          }
+        ],
+        "sharedTimeZoneIdentifier" : "Asia/Shanghai",
+        "spaceId" : "66999FED-5267-5096-BB50-223376EB623B",
+        "version" : 4
+      },
+      "signatures" : [
+        {
+          "deviceId" : "001FB9CE-7885-4AA9-B069-1EDA6904A4EC",
+          "signature" : "z7IQPekehiTnPnxxrG50icKKlVMzIAz95wm/njJ5z7iGrQSFvfmWh78rqQWmcgb0dgj2sRPH8ucQbSMG7dkoDw=="
+        },
+        {
+          "deviceId" : "DDF60403-7329-49AA-BF8A-58EB1198997C",
+          "signature" : "Y2vnox6Cytm8IJlNF4iS9Qbmu+MMhA0h9Jx6sO58jSYJB0ARWwykhtF3zkLfWIqZLnDP3Ps2ta8An3zO5cICBg=="
+        }
+      ]
+    }
+  },
+  "authorizationDigest" : "fdd3aaf08f5c097836db5d3c185f798168bc3cc25bc4cb12d3c6425605baeb2e",
+  "checkpoint" : {
+    "count" : 1,
+    "digest" : "9645003d4839496a50d666dfe360dd503e431cef6385e27fbcbc0f0fb04f0e7c"
+  },
+  "frames" : [
+    {
+      "hintId" : "4B810544-43C4-4EC0-BEAD-3FDB873C0B7B",
+      "kind" : "syncHint"
+    },
+    {
+      "kind" : "inventoryStart",
+      "passId" : "61812082-04E1-4660-9375-BDB47241D081"
+    },
+    {
+      "kind" : "inventoryPage",
+      "page" : {
+        "checkpoint" : {
+          "count" : 1,
+          "digest" : "9645003d4839496a50d666dfe360dd503e431cef6385e27fbcbc0f0fb04f0e7c"
+        },
+        "entries" : [
+          {
+            "certificationDigest" : "6ab5e73be3a46078b64e047a698ff872e2cdd2a3b68208468e863a65aca116a0",
+            "contentDigest" : "a40fa3c3848a8daa03a9c0276175034deadf1aad976906ece2c3c0224d96c1b1",
+            "operationId" : "951CFF49-D5AB-482A-9C74-615E41FBA1FA"
+          }
+        ]
+      },
+      "passId" : "61812082-04E1-4660-9375-BDB47241D081"
+    },
+    {
+      "cursor" : "951CFF49-D5AB-482A-9C74-615E41FBA1FA",
+      "kind" : "inventoryNext",
+      "passId" : "61812082-04E1-4660-9375-BDB47241D081"
+    },
+    {
+      "entries" : [
+        {
+          "certificationDigest" : "6ab5e73be3a46078b64e047a698ff872e2cdd2a3b68208468e863a65aca116a0",
+          "contentDigest" : "a40fa3c3848a8daa03a9c0276175034deadf1aad976906ece2c3c0224d96c1b1",
+          "operationId" : "951CFF49-D5AB-482A-9C74-615E41FBA1FA"
+        }
+      ],
+      "kind" : "operationRequest",
+      "passId" : "61812082-04E1-4660-9375-BDB47241D081",
+      "requestId" : "DD723A1C-FA9D-4D4C-AA3C-0962EB924AA0"
+    },
+    {
+      "kind" : "operationBatch",
+      "passId" : "61812082-04E1-4660-9375-BDB47241D081",
+      "records" : [
+        {
+          "authorized" : {
+            "body" : {
+              "epochId" : "B184D602-38EA-4E67-8B9F-D3B47413F6B6",
+              "previousDigest" : "0000000000000000000000000000000000000000000000000000000000000000",
+              "sequence" : 1,
+              "signedOperation" : {
+                "operation" : {
+                  "actorId" : "4DBF07BC-2DD0-40D8-ADB0-7DBD508DA14D",
+                  "createdAt" : 1791532800000,
+                  "deviceId" : "1C17E960-073B-42EB-BA02-2A9B6665930E",
+                  "entityId" : "8AB5EBCE-F818-4D08-B336-6D4A66DB2842",
+                  "entityType" : "task",
+                  "lamportClock" : 1,
+                  "operationId" : "951CFF49-D5AB-482A-9C74-615E41FBA1FA",
+                  "operationType" : "create",
+                  "payload" : {
+                    "createdBy" : {
+                      "string" : {
+                        "_0" : "4DBF07BC-2DD0-40D8-ADB0-7DBD508DA14D"
+                      }
+                    },
+                    "spaceId" : {
+                      "string" : {
+                        "_0" : "66999FED-5267-5096-BB50-223376EB623B"
+                      }
+                    },
+                    "title" : {
+                      "string" : {
+                        "_0" : "合成任务 / Synthetic ♡"
+                      }
+                    }
+                  }
+                },
+                "signature" : "jJNE5ZlTP6p603ur0i70yJEYfmnfo4DcY4SaHbcFZ2ofhHv9M6eVZD9mRcPdsvTiPhOT9iRAmC6Q+JvGO4R3Ag=="
+              },
+              "spaceId" : "66999FED-5267-5096-BB50-223376EB623B",
+              "version" : 4
+            },
+            "signature" : "gLblL36g7FFdO36zRps0SqZD0N8L5JPcK0jSwe7s0Pa9fFCOOZ89fx1FXCtKU55uPqzXmbxAtyyDCqZQaRFyCw=="
+          },
+          "kind" : "authorized"
+        }
+      ],
+      "requestId" : "DD723A1C-FA9D-4D4C-AA3C-0962EB924AA0"
+    },
+    {
+      "checkpoint" : {
+        "count" : 1,
+        "digest" : "9645003d4839496a50d666dfe360dd503e431cef6385e27fbcbc0f0fb04f0e7c"
+      },
+      "kind" : "inventoryFinished",
+      "passId" : "61812082-04E1-4660-9375-BDB47241D081"
+    },
+    {
+      "kind" : "acknowledgement",
+      "receipt" : {
+        "body" : {
+          "deviceId" : "001FB9CE-7885-4AA9-B069-1EDA6904A4EC",
+          "entries" : [
+            {
+              "certificationDigest" : "6ab5e73be3a46078b64e047a698ff872e2cdd2a3b68208468e863a65aca116a0",
+              "contentDigest" : "a40fa3c3848a8daa03a9c0276175034deadf1aad976906ece2c3c0224d96c1b1",
+              "operationId" : "951CFF49-D5AB-482A-9C74-615E41FBA1FA"
+            }
+          ],
+          "epochId" : "0C59F17F-231F-50B8-8BF5-F398D54972D9",
+          "spaceId" : "66999FED-5267-5096-BB50-223376EB623B",
+          "version" : 4
+        },
+        "signature" : "9OPjrctAlnegyxQgi2+dXjF1cvHhRsq+L3giQ/r1lfzf67aZj3phRuotF/KektRgK0EsljKlmxEtJ21kGNF+BA=="
+      }
+    }
+  ],
+  "inventory" : {
+    "certificationDigest" : "6ab5e73be3a46078b64e047a698ff872e2cdd2a3b68208468e863a65aca116a0",
+    "contentDigest" : "a40fa3c3848a8daa03a9c0276175034deadf1aad976906ece2c3c0224d96c1b1",
+    "operationId" : "951CFF49-D5AB-482A-9C74-615E41FBA1FA"
+  },
+  "protocolVersion" : 4,
+  "receipt" : {
+    "body" : {
+      "deviceId" : "001FB9CE-7885-4AA9-B069-1EDA6904A4EC",
+      "entries" : [
+        {
+          "certificationDigest" : "6ab5e73be3a46078b64e047a698ff872e2cdd2a3b68208468e863a65aca116a0",
+          "contentDigest" : "a40fa3c3848a8daa03a9c0276175034deadf1aad976906ece2c3c0224d96c1b1",
+          "operationId" : "951CFF49-D5AB-482A-9C74-615E41FBA1FA"
+        }
+      ],
+      "epochId" : "0C59F17F-231F-50B8-8BF5-F398D54972D9",
+      "spaceId" : "66999FED-5267-5096-BB50-223376EB623B",
+      "version" : 4
+    },
+    "signature" : "9OPjrctAlnegyxQgi2+dXjF1cvHhRsq+L3giQ/r1lfzf67aZj3phRuotF/KektRgK0EsljKlmxEtJ21kGNF+BA=="
+  },
+  "record" : {
+    "authorized" : {
+      "body" : {
+        "epochId" : "B184D602-38EA-4E67-8B9F-D3B47413F6B6",
+        "previousDigest" : "0000000000000000000000000000000000000000000000000000000000000000",
+        "sequence" : 1,
+        "signedOperation" : {
+          "operation" : {
+            "actorId" : "4DBF07BC-2DD0-40D8-ADB0-7DBD508DA14D",
+            "createdAt" : 1791532800000,
+            "deviceId" : "1C17E960-073B-42EB-BA02-2A9B6665930E",
+            "entityId" : "8AB5EBCE-F818-4D08-B336-6D4A66DB2842",
+            "entityType" : "task",
+            "lamportClock" : 1,
+            "operationId" : "951CFF49-D5AB-482A-9C74-615E41FBA1FA",
+            "operationType" : "create",
+            "payload" : {
+              "createdBy" : {
+                "string" : {
+                  "_0" : "4DBF07BC-2DD0-40D8-ADB0-7DBD508DA14D"
+                }
+              },
+              "spaceId" : {
+                "string" : {
+                  "_0" : "66999FED-5267-5096-BB50-223376EB623B"
+                }
+              },
+              "title" : {
+                "string" : {
+                  "_0" : "合成任务 / Synthetic ♡"
+                }
+              }
+            }
+          },
+          "signature" : "jJNE5ZlTP6p603ur0i70yJEYfmnfo4DcY4SaHbcFZ2ofhHv9M6eVZD9mRcPdsvTiPhOT9iRAmC6Q+JvGO4R3Ag=="
+        },
+        "spaceId" : "66999FED-5267-5096-BB50-223376EB623B",
+        "version" : 4
+      },
+      "signature" : "gLblL36g7FFdO36zRps0SqZD0N8L5JPcK0jSwe7s0Pa9fFCOOZ89fx1FXCtKU55uPqzXmbxAtyyDCqZQaRFyCw=="
+    },
+    "kind" : "authorized"
+  },
+  "recordDigest" : "967fa2fe40aa8c5d92bbe619e40b69dbe8b90b7fc6aa6ac0fe78ce2bea54359a",
+  "synthetic" : true
+}

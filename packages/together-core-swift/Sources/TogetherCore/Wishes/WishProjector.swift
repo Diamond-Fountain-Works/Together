@@ -1,8 +1,10 @@
 import Foundation
 
 enum WishProjector {
-    static func apply(_ operations: [SyncOperation], context: ReplicaContext, snapshot: inout DomainSnapshot) {
+    static func apply(_ operations: [SyncOperation], context: ReplicaContext, snapshot: inout DomainSnapshot,audit:ProjectionAudit?=nil) {
         for op in operations where op.entityType == .wishGrant && op.operationType == .create && snapshot.grants[op.entityId] == nil {
+            let before=audit.map{_ in ProjectionAudit.fields(op.entityType,id:op.entityId,in:snapshot)}
+            defer{if let before{audit?.record(op,before:before,after:ProjectionAudit.fields(op.entityType,id:op.entityId,in:snapshot))}}
             let p = op.payload
             guard OperationProjector.spaceValid(p, context: context), p["createdBy"]?.uuid == op.actorId,
                   let fulfiller = p["fulfillerId"]?.uuid, let beneficiary = p["beneficiaryId"]?.uuid,
@@ -17,6 +19,8 @@ enum WishProjector {
         var occupied: [UUID: Set<UUID>] = [:]
         var deferred: [UUID: [SyncOperation]] = [:]
         for op in operations {
+            let before=(op.entityType == .grantAdjustment ? audit:nil).map{_ in ProjectionAudit.fields(op.entityType,id:op.entityId,in:snapshot)}
+            defer{if let before{audit?.record(op,before:before,after:ProjectionAudit.fields(op.entityType,id:op.entityId,in:snapshot))}}
             switch op.entityType {
             case .grantAdjustment:
                 guard op.operationType == .create, let grantId = op.payload["grantId"]?.uuid,
@@ -41,10 +45,11 @@ enum WishProjector {
                     }
                     let valid = occupied[grantId, default: []].count < totals[grantId, default: 0]
                     snapshot.wishes[op.entityId] = WishItem(wishId: op.entityId, grantId: grantId, title: op.payload["title"]!.string!, description: op.payload["description"]?.string ?? "", beneficiaryId: grant.beneficiaryId, fulfillerId: grant.fulfillerId, createdBy: op.actorId, status: valid ? .open : .conflict, createdAt: op.createdAt, fulfilledAt: nil, conflictReason: valid ? nil : "超出本批愿望额度")
+                    audit?.record(op,before:[:],after:ProjectionAudit.fields(op.entityType,id:op.entityId,in:snapshot))
                     if valid { occupied[grantId, default: []].insert(op.entityId) }
                     else { OperationProjector.conflict(op, Copy.text("copy.error.6031747cf298"), into: &snapshot) }
-                    for pending in deferred.removeValue(forKey: op.entityId) ?? [] { applyWishAction(pending, snapshot: &snapshot) }
-                } else if snapshot.wishes[op.entityId] != nil { applyWishAction(op, snapshot: &snapshot) }
+                    for pending in deferred.removeValue(forKey: op.entityId) ?? [] { applyWishAction(pending, snapshot: &snapshot,audit:audit) }
+                } else if snapshot.wishes[op.entityId] != nil { applyWishAction(op, snapshot: &snapshot,audit:audit) }
                 else { deferred[op.entityId, default: []].append(op) }
             default: break
             }
@@ -52,7 +57,9 @@ enum WishProjector {
         for ops in deferred.values { for op in ops { OperationProjector.conflict(op, Copy.text("copy.error.8dea963dccc2"), into: &snapshot) } }
     }
 
-    private static func applyWishAction(_ op: SyncOperation, snapshot: inout DomainSnapshot) {
+    private static func applyWishAction(_ op: SyncOperation, snapshot: inout DomainSnapshot,audit:ProjectionAudit?) {
+        let before=audit.map{_ in ProjectionAudit.fields(op.entityType,id:op.entityId,in:snapshot)}
+        defer{if let before{audit?.record(op,before:before,after:ProjectionAudit.fields(op.entityType,id:op.entityId,in:snapshot))}}
         guard var wish = snapshot.wishes[op.entityId] else { return }
         guard wish.status != .conflict else { OperationProjector.conflict(op, Copy.text("copy.error.8e322a238953"), into: &snapshot); return }
         switch op.operationType {

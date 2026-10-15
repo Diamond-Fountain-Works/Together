@@ -34,14 +34,18 @@ public enum TogetherError: LocalizedError {
     public private(set) var operations: [SignedOperation] = []
     public private(set) var changeNumber = 0
     @ObservationIgnored public var onOperationsChanged: (() -> Void)?
+    @ObservationIgnored private var mediaDownloadSources:[UUID:UUID]=[:]
     @ObservationIgnored private var giftSourceDevices: [UUID: UUID] = [:]
     @ObservationIgnored private var presentationCache: [UUID: GiftPresentationState] = [:]
     @ObservationIgnored private var progressPublishedAt: [UUID: ContinuousClock.Instant] = [:]
     @ObservationIgnored var financeChangeCache: (operationCount: Int, members: Set<UUID>, limit: Int, changes: [FinanceChange])?
-    public var context: ReplicaContext { ReplicaContext(local: identity.descriptor, peer: peer?.descriptor) }
+    @ObservationIgnored private var replicationContext: ReplicaContext?
+    public var context: ReplicaContext { replicationContext ?? ReplicaContext(local: identity.descriptor, peer: peer?.descriptor) }
+    public var usesReplication4: Bool { replicationContext != nil }
     public var ownProfile: UserProfile? { snapshot.profiles[identity.descriptor.userId] }
-    public var partnerProfile: UserProfile? { peer.flatMap { snapshot.profiles[$0.descriptor.userId] } }
+    public var partnerProfile: UserProfile? { context.peer.flatMap { snapshot.profiles[$0.userId] } }
     public var sharedSpace: SharedSpace { snapshot.space ?? SharedSpace(id: context.spaceId, memberIds: context.members.sorted { $0.uuidString < $1.uuidString }, timeZoneIdentifier: context.sharedTimeZone) }
+    private var validLamportMaximum:Int64 {operations.filter{context.acceptedContent?[$0.id] != nil || context.authorization==nil}.map(\.operation.lamportClock).max() ?? 0}
     func localFinanceDidChange() { changeNumber += 1 }
 
     public init(repository: TogetherRepository, identity: DeviceIdentity, mediaRoot: URL? = nil, dateProvider: any DateProvider = SystemDateProvider()) throws {
@@ -51,8 +55,11 @@ public enum TogetherError: LocalizedError {
         stagedAssets = Dictionary(uniqueKeysWithValues: (try repository.load([MediaAsset].self, key: "staged-media") ?? []).map { ($0.id, $0) })
         peer = try repository.load(PairedPeer.self, key: "paired-peer")
         operations = try repository.allOperations()
+        try reloadReplicationContext()
         snapshot = OperationProjector.replay(operations, context: context)
         giftSourceDevices = Dictionary(uniqueKeysWithValues: operations.map { ($0.id, $0.operation.deviceId) })
+        if try usesReplication4 && repository.load(String.self,key:"replication4/legacy-seal") == nil { return }
+        if let trust=context.authorization,!trust.containsActive(identity.descriptor){return}
         if ownProfile == nil {
             try append(entity: identity.descriptor.userId, type: .profile, action: .create,
                        fields: ["deviceId": .id(identity.descriptor.deviceId), "displayName": .string("我"), "relationshipLabel": .string("unknown"), "avatarData": .null])
@@ -63,6 +70,7 @@ public enum TogetherError: LocalizedError {
     }
 
     public static func production(migrateLegacyIdentity: Bool = false) throws -> ReplicaEngine {
+        guard Bundle.main.bundleIdentifier != "com.together.app.qa" else {throw TogetherError.invalid(Copy.text("qa.error.isolatedLaunch"))}
         let directory = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)[0].appendingPathComponent("Together", isDirectory: true)
         try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
         let repository = try TogetherRepository(url: directory.appendingPathComponent("Together.store"))
@@ -103,6 +111,7 @@ public enum TogetherError: LocalizedError {
         peer = proposed; try refresh(); try ensureSharedSpace()
     }
     public func merge(_ incoming: [SignedOperation]) throws {
+        guard !usesReplication4 else { throw ReplicationError.incompatibleProtocol }
         guard incoming.count <= 10_000 else { throw TogetherError.invalid(Copy.text("copy.error.10abb8d8d023")) }
         for operation in incoming {
             guard let device = context.devices[operation.operation.deviceId], operation.verified(by: device) else { throw TogetherError.invalid(Copy.text("copy.error.76ef9b5cd8a8")) }
@@ -169,7 +178,7 @@ public enum TogetherError: LocalizedError {
         return snapshot.gifts.values.contains { $0.senderId == identity.descriptor.userId && $0.sentDayKey == day && $0.isEffective }
     }
     @discardableResult public func sendGift(_ draft: LoveGiftDraft) throws -> UUID {
-        guard let peer else { throw TogetherError.invalid(Copy.text("copy.error.cfd25e4c08e5")) }
+        guard let partner=context.peer else { throw TogetherError.invalid(Copy.text("copy.error.cfd25e4c08e5")) }
         // Match the persisted millisecond precision without rounding the last instant of a day into tomorrow.
         let now = Date(timeIntervalSince1970: floor(dateProvider.now().timeIntervalSince1970 * 1000) / 1000), zone = sharedSpace.timeZoneIdentifier
         let day = try GiftCalendar.dayKey(at: now, timeZoneIdentifier: zone)
@@ -181,8 +190,8 @@ public enum TogetherError: LocalizedError {
         }
         let slot = GiftCalendar.slot(space: context.spaceId, sender: identity.descriptor.userId, day: day)
         let id = StableID.make("gift:" + slot)
-        let fields: [String: LogValue] = ["spaceId": .id(context.spaceId), "senderId": .id(identity.descriptor.userId), "recipientId": .id(peer.descriptor.userId), "textContent": .string(draft.text), "audioAssetId": .id(draft.audioAssetId), "photoAssetId": .id(draft.photoAssetId), "replyToGiftId": .id(draft.replyToGiftId), "sentAt": .date(now), "sentDayKey": .string(day), "sharedTimeZoneIdentifier": .string(zone)]
-        var clock = (operations.map(\.operation.lamportClock).max() ?? 0) + 1
+        let fields: [String: LogValue] = ["spaceId": .id(context.spaceId), "senderId": .id(identity.descriptor.userId), "recipientId": .id(partner.userId), "textContent": .string(draft.text), "audioAssetId": .id(draft.audioAssetId), "photoAssetId": .id(draft.photoAssetId), "replyToGiftId": .id(draft.replyToGiftId), "sentAt": .date(now), "sentDayKey": .string(day), "sharedTimeZoneIdentifier": .string(zone)]
+        var clock = validLamportMaximum + 1
         var assetOperations: [SignedOperation] = []
         for assetId in [draft.audioAssetId, draft.photoAssetId].compactMap({ $0 }) where snapshot.mediaAssets[assetId] == nil {
             guard let asset = stagedAssets[assetId] else { throw TogetherError.invalid(Copy.text("copy.error.2b3beaac2d7a")) }
@@ -190,10 +199,11 @@ public enum TogetherError: LocalizedError {
         }
         let operation = SyncOperation(deviceId: identity.descriptor.deviceId, actorId: identity.descriptor.userId, entityId: id, entityType: .loveGift, operationType: .create, lamportClock: clock, payload: fields, createdAt: now)
         let signed = try identity.sign(operation)
-        let next = OperationProjector.replay(operations + assetOperations + [signed], context: context)
+        let additions=assetOperations+[signed],preview=try previewContext(including:additions)
+        let next = ScopedProjection.replay(existing:snapshot,log:operations+additions,additions:additions,context:preview)
         if let conflict = next.conflicts.first(where: { $0.id == signed.id }) { throw TogetherError.invalid(conflict.reason) }
-        try repository.commitGift(assetOperations + [signed], giftId: id, slot: slot)
-        try refresh(); onOperationsChanged?()
+        try repository.commitGift(assetOperations + [signed], giftId: id, slot: slot, replicationRecords: replicationMetadata(for:assetOperations + [signed]))
+        publishLocal(additions,snapshot:next,context:preview);onOperationsChanged?()
         // Clearing the draft is secondary to the durable send; it must never undo the quota reservation.
         try? saveDraft(LoveGiftDraft())
         return id
@@ -201,8 +211,8 @@ public enum TogetherError: LocalizedError {
     public func deleteGift(_ id: UUID) throws { try append(entity: id, type: .loveGift, action: .delete, fields: [:]) }
     public var receivedGifts: [DailyLoveGift] { snapshot.gifts.values.filter { validReceivedGift($0) }.sorted { $0.sentAt > $1.sentAt } }
     public func validReceivedGift(_ gift: DailyLoveGift) -> Bool {
-        guard let peer, gift.isEffective, gift.deletedAt == nil, gift.spaceId == context.spaceId, gift.recipientId == identity.descriptor.userId, gift.senderId == peer.descriptor.userId,
-              snapshot.gifts[gift.id] == gift, giftSourceDevices[gift.creationOperationId] == peer.descriptor.deviceId else { return false }
+        guard let partner=context.peer, gift.isEffective, gift.deletedAt == nil, gift.spaceId == context.spaceId, gift.recipientId == identity.descriptor.userId, gift.senderId == partner.userId,
+              snapshot.gifts[gift.id] == gift, let source=giftSourceDevices[gift.creationOperationId], context.devices[source]?.userId == partner.userId else { return false }
         // Snapshot was built only from verified, actor-bound signatures in OperationProjector.
         return true
     }
@@ -224,35 +234,38 @@ public enum TogetherError: LocalizedError {
     }
     public func deliveryState(_ gift: DailyLoveGift) -> GiftDeliveryState {
         _ = changeNumber
-        return (try? repository.load(GiftReceipt.self, key: "gift-receipt:\(gift.id)")) != nil ? .synced : .pendingSync
+        return (try? repository.load(GiftReceipt.self,key:"gift-receipt:\(gift.id)")) == GiftReceipt(gift:gift,assets:snapshot.mediaAssets) ? .synced:.pendingSync
     }
     public func acceptReceipt(_ receipt: GiftReceipt, from device: DeviceDescriptor) throws {
-        guard let peer, peer.descriptor.deviceId == device.deviceId, peer.descriptor.publicKey == device.publicKey,
+        guard let partner=context.peer, device.userId == partner.userId, isAuthorizedRemote(device),
               let gift = snapshot.gifts[receipt.giftId], gift.senderId == identity.descriptor.userId, gift.recipientId == device.userId,
               receipt == GiftReceipt(gift: gift, assets: snapshot.mediaAssets) else { throw TogetherError.invalid(Copy.text("copy.error.47ef85d323e2")) }
         try repository.save(receipt, key: "gift-receipt:\(gift.id)"); changeNumber += 1
     }
     private func ensureSharedSpace() throws {
-        guard peer != nil, context.spaceCreator.deviceId == identity.descriptor.deviceId, snapshot.space == nil else { return }
+        guard context.peer != nil, context.spaceCreator.deviceId == identity.descriptor.deviceId, snapshot.space == nil else { return }
         try append(entity: context.spaceId, type: .sharedSpace, action: .create, fields: ["sharedTimeZoneIdentifier": .string(context.sharedTimeZone)])
     }
 
     @discardableResult public func createTask(title: String, notes: String = "", assignedTo: UUID? = nil, dueAt: Date? = nil, recurrence: RecurrenceDraft? = nil) throws -> UUID {
-        let id = UUID()
-        let ruleId = try recurrence.map { try createRule($0, anchor: dueAt ?? .now) }
-        try append(entity: id, type: .task, action: .create, fields: taskFields(title: title, notes: notes, assignedTo: assignedTo, dueAt: dueAt, ruleId: ruleId))
-        return id
+        let id=UUID(),ruleId=recurrence.map{_ in UUID()}
+        var group:[(UUID,EntityType,OperationType,[String:LogValue])]=[]
+        if let recurrence,let ruleId {group.append((ruleId,.recurrenceRule,.create,ruleFields(recurrence,anchor:dueAt ?? dateProvider.now(),includeIdentity:true)))}
+        group.append((id,.task,.create,taskFields(title:title,notes:notes,assignedTo:assignedTo,dueAt:dueAt,ruleId:ruleId)))
+        try appendGroup(group);return id
     }
     public func editTask(_ id: UUID, title: String, notes: String, assignedTo: UUID?, dueAt: Date?, recurrence: RecurrenceDraft?) throws {
         guard let task = snapshot.tasks[id], task.deletedAt == nil else { throw TogetherError.invalid(Copy.text("copy.error.c9e9d90c0c38")) }
-        var ruleId: UUID?
+        var ruleId:UUID?,group:[(UUID,EntityType,OperationType,[String:LogValue])]=[]
         if let recurrence {
-            if let existing = task.recurrenceRuleId {
-                try append(entity: existing, type: .recurrenceRule, action: .patch, fields: ruleFields(recurrence, anchor: snapshot.rules[existing]?.anchorAt ?? dueAt ?? .now, includeIdentity: false))
-                ruleId = existing
-            } else { ruleId = try createRule(recurrence, anchor: dueAt ?? .now) }
+            if let existing=task.recurrenceRuleId {
+                group.append((existing,.recurrenceRule,.patch,ruleFields(recurrence,anchor:snapshot.rules[existing]?.anchorAt ?? dueAt ?? dateProvider.now(),includeIdentity:false)));ruleId=existing
+            }else{
+                let id=UUID();ruleId=id;group.append((id,.recurrenceRule,.create,ruleFields(recurrence,anchor:dueAt ?? dateProvider.now(),includeIdentity:true)))
+            }
         }
-        try append(entity: id, type: .task, action: .patch, fields: ["title": .string(title), "notes": .string(notes), "assignedTo": .id(assignedTo), "dueAt": .optionalDate(dueAt), "recurrenceRuleId": .id(ruleId)])
+        group.append((id,.task,.patch,["title":.string(title),"notes":.string(notes),"assignedTo":.id(assignedTo),"dueAt":.optionalDate(dueAt),"recurrenceRuleId":.id(ruleId)]))
+        try appendGroup(group)
     }
     public func setCompleted(_ id: UUID, completed: Bool) throws {
         guard let task = snapshot.tasks[id], task.deletedAt == nil else { throw TogetherError.invalid(Copy.text("copy.error.c9e9d90c0c38")) }
@@ -285,17 +298,30 @@ public enum TogetherError: LocalizedError {
     public func rejectFulfillment(_ id: UUID) throws { try append(entity: id, type: .wishItem, action: .rejectFulfillment, fields: [:]) }
 
     func append(entity: UUID, type: EntityType, action: OperationType, fields: [String: LogValue], createdAt: Date? = nil) throws {
-        let clock = (operations.map(\.operation.lamportClock).max() ?? 0) + 1
-        let operation = SyncOperation(deviceId: identity.descriptor.deviceId, actorId: identity.descriptor.userId, entityId: entity, entityType: type, operationType: action, lamportClock: clock, payload: fields, createdAt: createdAt ?? .now)
-        let signed = try identity.sign(operation)
-        let next = OperationProjector.replay(operations + [signed], context: context)
-        if let failure = next.conflicts.first(where: { $0.id == operation.operationId }) { throw TogetherError.invalid(failure.reason) }
-        try repository.insert([signed])
-        try refresh()
-        onOperationsChanged?()
+        try appendGroup([(entity,type,action,fields)],createdAt:createdAt)
+    }
+    private func appendGroup(_ group:[(UUID,EntityType,OperationType,[String:LogValue])],createdAt:Date?=nil)throws {
+        guard !group.isEmpty,group.count<=32 else{throw ReplicationError.bounds}
+        var clock=validLamportMaximum+1
+        let signed=try group.map{entry in
+            defer{clock+=1}
+            return try identity.sign(SyncOperation(deviceId:identity.descriptor.deviceId,actorId:identity.descriptor.userId,entityId:entry.0,entityType:entry.1,operationType:entry.2,lamportClock:clock,payload:entry.3,createdAt:createdAt ?? dateProvider.now()))
+        }
+        let preview=try previewContext(including:signed),next=ScopedProjection.replay(existing:snapshot,log:operations+signed,additions:signed,context:preview),ids=Set(signed.map(\.id))
+        if let failure=next.conflicts.first(where:{ids.contains($0.id)}){throw TogetherError.invalid(failure.reason)}
+        try repository.commitReplication(signed,records:replicationMetadata(for:signed))
+        publishLocal(signed,snapshot:next,context:preview);onOperationsChanged?()
+    }
+    private func publishLocal(_ additions:[SignedOperation],snapshot next:DomainSnapshot,context nextContext:ReplicaContext){
+        let before=snapshot
+        operations+=additions;snapshot=next;if usesReplication4{replicationContext=nextContext}
+        for op in additions{giftSourceDevices[op.id]=op.operation.deviceId}
+        if let rows=try? ProjectionCacheDelta.rows(before:before,after:next,additions:additions){for offset in stride(from:0,to:rows.count,by:256){_ = try? repository.cacheRows(Array(rows[offset..<min(offset+256,rows.count)]),expectedRevision:repository.operationRevision)}}
+        changeNumber+=1
     }
     private func refresh() throws {
         operations = try repository.allOperations()
+        try reloadReplicationContext()
         snapshot = OperationProjector.replay(operations, context: context)
         giftSourceDevices = Dictionary(uniqueKeysWithValues: operations.map { ($0.id, $0.operation.deviceId) })
         try repository.cache(snapshot)
@@ -330,5 +356,88 @@ public enum TogetherError: LocalizedError {
                 try append(entity: id, type: .task, action: .create, fields: taskFields(title: task.title, notes: task.notes, assignedTo: task.assignedTo, dueAt: date, ruleId: ruleId, index: index, parent: task.taskId, availableAt: date))
             }
         }
+    }
+}
+
+
+extension ReplicaEngine {
+    func claimMediaDownload(_ id:UUID,from device:UUID)->Bool {
+        guard mediaDownloadSources[id]==nil || mediaDownloadSources[id]==device else{return false}
+        mediaDownloadSources[id]=device;return true
+    }
+    func releaseMediaDownload(_ id:UUID,from device:UUID){if mediaDownloadSources[id]==device{mediaDownloadSources.removeValue(forKey:id)}}
+    public func isAuthorizedRemote(_ device:DeviceDescriptor) -> Bool {
+        if let trust=context.authorization {return device.deviceId != identity.descriptor.deviceId && trust.containsActive(device)}
+        return peer?.descriptor.deviceId==device.deviceId && peer?.descriptor.publicKey==device.publicKey && peer?.descriptor.userId==device.userId
+    }
+    /// Explicit activation only; the old peer, route, identity and original
+    /// signed operation bytes remain in their existing records.
+    public func activateReplication4(_ archive:AuthorizationArchive) async throws -> AuthorizedReplicationStore {
+        let pins=peer.map{ReplicaContext(local:identity.descriptor,peer:$0.descriptor)}
+        let trust=try SpaceAuthorization.restore(archive,existingPins:pins)
+        let store=try AuthorizedReplicationStore(repository:repository,identity:identity,authorization:trust)
+        try await store.restore()
+        try await refreshFromReplication(store)
+        return store
+    }
+    public func refreshFromReplication(_ store:AuthorizedReplicationStore) async throws {
+        while true {
+            let revision=repository.operationRevision
+            let input=try await store.projectionInput(),verified=input.context,log=input.operations,before=snapshot
+            let (projected,cacheRows)=try await Task.detached(priority:.utility){
+                let next=OperationProjector.replay(log,context:verified)
+                return (next,try ProjectionCacheDelta.rows(before:before,after:next))
+            }.value
+            guard repository.operationRevision==revision else {continue}
+            replicationContext=verified;operations=log;snapshot=projected
+            giftSourceDevices=Dictionary(uniqueKeysWithValues:log.map{($0.id,$0.operation.deviceId)})
+            changeNumber+=1
+            for offset in stride(from:0,to:cacheRows.count,by:256){
+                guard (try? repository.cacheRows(Array(cacheRows[offset..<min(offset+256,cacheRows.count)]),expectedRevision:revision)) == true else{break}
+                await Task.yield()
+            }
+            return
+        }
+    }
+    private func reloadReplicationContext() throws {
+        guard let archive=try repository.load(AuthorizationArchive.self,key:"replication4/authorization") else {return}
+        let trust=try SpaceAuthorization.restore(archive)
+        if let previous=replicationContext?.authorization {guard try previous.genesis.digest==trust.genesis.digest else {throw ReplicationError.unauthorized}}
+        else if let peer { _=try SpaceAuthorization.restore(archive,existingPins:ReplicaContext(local:identity.descriptor,peer:peer.descriptor)) }
+        var accepted:[UUID:String]=[:]
+        if try repository.load(String.self,key:"replication4/legacy-seal")==trust.genesis.body.legacyCheckpoint.digest {
+            for op in operations {
+                let entry=try InventoryEntry(op)
+                if let proof=try repository.load(AuthorizedOperation.self,key:"replication4/proof/"+op.id.uuidString) {
+                    guard proof.body.signedOperation==op else {throw ReplicationError.contentCollision}
+                    if (try? proof.verify(in:trust)) != nil {accepted[op.id]=entry.contentDigest}
+                }else if try repository.load(String.self,key:"replication4/legacy/"+op.id.uuidString)==entry.contentDigest {accepted[op.id]=entry.contentDigest}
+            }
+        }
+        replicationContext=try ReplicaContext(local:identity.descriptor,authorization:trust,acceptedContent:accepted)
+    }
+    private func previewContext(including additions:[SignedOperation]) throws -> ReplicaContext {
+        guard let trust=context.authorization else {return context}
+        var accepted=context.acceptedContent ?? [:]
+        for op in additions {accepted[op.id]=try InventoryEntry(op).contentDigest}
+        return try ReplicaContext(local:identity.descriptor,authorization:trust,acceptedContent:accepted)
+    }
+    /// Called synchronously on the repository's owning actor: sequence read,
+    /// signatures, quota and fact commit cannot be interleaved by another task.
+    private func replicationMetadata(for log:[SignedOperation]) throws -> [String:Data] {
+        guard let trust=context.authorization else {
+            guard try repository.load(AuthorizationArchive.self,key:"replication4/authorization")==nil else{throw ReplicationError.staleAuthorization};return [:]
+        }
+        guard let saved=try repository.load(AuthorizationArchive.self,key:"replication4/authorization"),try SpaceAuthorization.restore(saved).digest==trust.digest else{throw ReplicationError.staleAuthorization}
+        guard trust.containsActive(identity.descriptor),let own=trust.devices[identity.descriptor.deviceId],
+              try repository.load(String.self,key:"replication4/legacy-seal")==trust.genesis.body.legacyCheckpoint.digest else {throw ReplicationError.unauthorized}
+        let headKey="replication4/head/"+own.epochId.uuidString
+        var head=try repository.load(DeviceFrontier.self,key:headKey) ?? DeviceFrontier(),records:[String:Data]=[:]
+        for op in log {
+            let proof=try AuthorizedOperation.sign(op,identity:identity,trust:trust,previous:head)
+            records["replication4/proof/"+op.id.uuidString]=try CanonicalJSON.encode(proof)
+            head=try DeviceFrontier(sequence:proof.body.sequence,digest:proof.digest)
+        }
+        records[headKey]=try CanonicalJSON.encode(head);return records
     }
 }
