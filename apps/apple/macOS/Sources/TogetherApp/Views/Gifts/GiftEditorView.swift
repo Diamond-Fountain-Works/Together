@@ -60,15 +60,15 @@ struct GiftComposerView: View {
                 }
             }
             if busy { ProgressView(Copy.text("status.media.savingOriginal")).controlSize(.small) }
-            if model.engine.peer == nil { Text(Copy.text("copy.emotional.3ceeec638ae6")).font(.callout).foregroundStyle(.secondary) }
+            if model.engine.context.peer == nil { Text(Copy.text("copy.emotional.3ceeec638ae6")).font(.callout).foregroundStyle(.secondary) }
             Text(Copy.text("copy.status.6a8ae976f27c")).font(.caption).foregroundStyle(.secondary)
             if let error = recorder.error ?? saveError { Text(error).font(.callout).foregroundStyle(.orange).textSelection(.enabled) }
             HStack {
                 Button(setup ? Copy.text("copy.action.1e157fdf0388") : Copy.text("copy.action.5329e3f0ee46")) { saveAndFinish() }.disabled(busy || recorder.recording)
                 Spacer()
-                Button(model.engine.peer == nil ? Copy.text("copy.action.14e50ef4f212") : Copy.text("copy.emotional.1a1a433b6d1e")) { send() }
+                Button(model.engine.context.peer == nil ? Copy.text("copy.action.14e50ef4f212") : Copy.text("copy.emotional.1a1a433b6d1e")) { send() }
                     .buttonStyle(.borderedProminent).keyboardShortcut(.defaultAction)
-                    .disabled(busy || recorder.recording || recorder.starting || sent || !draft.hasContent || (used && model.engine.peer != nil)).accessibilityIdentifier("gift.send")
+                    .disabled(busy || recorder.recording || recorder.starting || sent || !draft.hasContent || (used && model.engine.context.peer != nil)).accessibilityIdentifier("gift.send")
             }
             Text(Copy.format("copy.guidance.c17ea66392d2", String(describing: model.engine.sharedSpace.timeZoneIdentifier))).font(.caption).foregroundStyle(.secondary)
         }
@@ -98,7 +98,7 @@ struct GiftComposerView: View {
     }
     private func send() {
         guard !sent else { return }
-        if model.engine.peer == nil { saveAndFinish(); return }
+        if model.engine.context.peer == nil { saveAndFinish(); return }
         do { _ = try model.engine.sendGift(draft); sent = true; model.lovePulse += 1; onFinish() }
         catch { saveError = error.localizedDescription }
     }

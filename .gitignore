@@ -46,3 +46,6 @@ qa/visual/candidates/
 .local-only/
 qa/reports/local/
 output/playwright/
+
+# Dedicated UI-test host build products.
+.ui-derived/

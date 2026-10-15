@@ -121,7 +121,7 @@ struct ExpensesView: View {
             Picker(Copy.text("finance.filter.status"), selection: $model.financialStatusFilter) { Text(Copy.text("finance.filter.all")).tag("all"); ForEach(ExpenseReviewStatus.allCases, id: \.self) { Text(Copy.text("finance.status." + $0.rawValue)).tag($0.rawValue) } }.frame(maxWidth: 150)
         }
         HStack {
-            Picker(Copy.text("finance.filter.period"), selection: $model.financialDateFilter) { ForEach(["all", "shared", "personal", "partner", "range"].filter { model.engine.peer != nil || $0 != "partner" }, id: \.self) { Text(Copy.text("finance.period." + $0)).tag($0) } }.accessibilityIdentifier("finance.period")
+            Picker(Copy.text("finance.filter.period"), selection: $model.financialDateFilter) { ForEach(["all", "shared", "personal", "partner", "range"].filter { model.engine.context.peer != nil || $0 != "partner" }, id: \.self) { Text(Copy.text("finance.period." + $0)).tag($0) } }.accessibilityIdentifier("finance.period")
             Picker(Copy.text("finance.field.category"), selection: $model.financialCategoryFilter) { Text(Copy.text("finance.filter.all")).tag("all"); ForEach(Set(model.engine.snapshot.finance.expenses.values.map(\.category)).sorted(), id: \.self) { category in Text(category.isEmpty ? Copy.text("finance.category.none") : category).tag(category) } }
         }
         if model.financialDateFilter == "range" { HStack { DatePicker(Copy.text("finance.period.from"), selection: $model.financialRangeStart, displayedComponents: .date); DatePicker(Copy.text("finance.period.to"), selection: $model.financialRangeEnd, displayedComponents: .date) }.environment(\.timeZone, TimeZone(identifier: model.engine.sharedSpace.timeZoneIdentifier)!) }

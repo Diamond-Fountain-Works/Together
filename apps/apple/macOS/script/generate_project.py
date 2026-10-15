@@ -65,13 +65,16 @@ source_phase = add("sources", f'isa = PBXSourcesBuildPhase; buildActionMask = 21
 resource_phase = add("resources", f'isa = PBXResourcesBuildPhase; buildActionMask = 2147483647; files = ({", ".join(resource_builds)}); runOnlyForDeploymentPostprocessing = 0;')
 framework_phase = add("frameworks", f'isa = PBXFrameworksBuildPhase; buildActionMask = 2147483647; files = ({core_build}); runOnlyForDeploymentPostprocessing = 0;')
 project_configs, target_configs = [], []
-for configuration in ["Debug", "Release"]:
+for configuration in ["Debug", "Release", "UITesting"]:
     project_configs.append(add("project-" + configuration, f'isa = XCBuildConfiguration; name = {configuration}; buildSettings = {{ MACOSX_DEPLOYMENT_TARGET = 14.0; SDKROOT = macosx; SWIFT_VERSION = 6.0; CLANG_ENABLE_MODULES = YES; }};'))
     settings = 'PRODUCT_NAME = Together; PRODUCT_MODULE_NAME = TogetherApp; PRODUCT_BUNDLE_IDENTIFIER = com.together.app; MARKETING_VERSION = __VERSION__; CURRENT_PROJECT_VERSION = __BUILD__; GENERATE_INFOPLIST_FILE = YES; INFOPLIST_KEY_CFBundleDisplayName = Together; INFOPLIST_KEY_NSMicrophoneUsageDescription = "__MICROPHONE_COPY__"; CODE_SIGN_ENTITLEMENTS = Sources/TogetherApp/Resources/Together.entitlements; INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity"; MACOSX_DEPLOYMENT_TARGET = 14.0; SWIFT_VERSION = 6.0; ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon; CODE_SIGN_STYLE = Manual; CODE_SIGN_IDENTITY = "-"; ENABLE_APP_SANDBOX = NO; ENABLE_HARDENED_RUNTIME = YES; LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";'
     settings = settings.replace("__VERSION__", release_version["marketingVersion"]).replace("__BUILD__", release_version["buildNumber"])
     settings = settings.replace("__MICROPHONE_COPY__", microphone_copy.replace(chr(92), chr(92) * 2).replace(chr(34), chr(92) + chr(34)).replace(chr(10), chr(92) + "n"))
     settings += ' INFOPLIST_FILE = Configuration/Info.plist;'
-    if configuration == "Debug": settings += ' SWIFT_OPTIMIZATION_LEVEL = "-Onone"; SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG; ONLY_ACTIVE_ARCH = YES;'
+    if configuration == "UITesting":
+        settings=settings.replace("PRODUCT_BUNDLE_IDENTIFIER = com.together.app;","PRODUCT_BUNDLE_IDENTIFIER = com.together.app.qa;")
+        settings += ' SWIFT_OPTIMIZATION_LEVEL = "-Onone"; SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG TOGETHER_UI_TEST_HOST"; ONLY_ACTIVE_ARCH = YES;'
+    elif configuration == "Debug": settings += ' SWIFT_OPTIMIZATION_LEVEL = "-Onone"; SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG; ONLY_ACTIVE_ARCH = YES;'
     else: settings += ' CODE_SIGN_INJECT_BASE_ENTITLEMENTS = NO;'
     target_configs.append(add("target-" + configuration, f'isa = XCBuildConfiguration; name = {configuration}; buildSettings = {{ {settings} }};'))
 project_list = add("project-configs", f'isa = XCConfigurationList; buildConfigurations = ({", ".join(project_configs)}); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release;')
@@ -91,7 +94,7 @@ for n, obj in enumerate(objects):
 ui_source = add("ui-sources", f'isa = PBXSourcesBuildPhase; buildActionMask = 2147483647; files = ({", ".join(ui_builds)}); runOnlyForDeploymentPostprocessing = 0;')
 ui_framework = add("ui-frameworks", 'isa = PBXFrameworksBuildPhase; buildActionMask = 2147483647; files = (); runOnlyForDeploymentPostprocessing = 0;')
 ui_configs = []
-for configuration in ["Debug", "Release"]:
+for configuration in ["Debug", "Release", "UITesting"]:
     ui_configs.append(add("ui-"+configuration, f'isa = XCBuildConfiguration; name = {configuration}; buildSettings = {{ PRODUCT_NAME = TogetherUITests; PRODUCT_BUNDLE_IDENTIFIER = com.together.app.UITests; GENERATE_INFOPLIST_FILE = YES; MACOSX_DEPLOYMENT_TARGET = 14.0; SWIFT_VERSION = 6.0; CODE_SIGN_STYLE = Manual; CODE_SIGN_IDENTITY = "-"; TEST_TARGET_NAME = TogetherNative; ONLY_ACTIVE_ARCH = YES; LD_RUNPATH_SEARCH_PATHS = "$(inherited) @loader_path/../Frameworks @executable_path/../Frameworks"; }};'))
 ui_list = add("ui-configs", f'isa = XCConfigurationList; buildConfigurations = ({", ".join(ui_configs)}); defaultConfigurationIsVisible = 0; defaultConfigurationName = Debug;')
 proxy = add("ui-proxy", f'isa = PBXContainerItemProxy; containerPortal = {ref("project")}; proxyType = 1; remoteGlobalIDString = {target}; remoteInfo = Together;')
@@ -106,7 +109,7 @@ buildable = f'<BuildableReference BuildableIdentifier="primary" BlueprintIdentif
 (schemes / "Together.xcscheme").write_text(f'''<?xml version="1.0" encoding="UTF-8"?>
 <Scheme LastUpgradeVersion="2700" version="1.7">
  <BuildAction parallelizeBuildables="YES" buildImplicitDependencies="YES"><BuildActionEntries><BuildActionEntry buildForTesting="YES" buildForRunning="YES" buildForProfiling="YES" buildForArchiving="YES" buildForAnalyzing="YES">{buildable}</BuildActionEntry></BuildActionEntries></BuildAction>
- <TestAction buildConfiguration="Debug" selectedDebuggerIdentifier="Xcode.DebuggerFoundation.Debugger.LLDB" selectedLauncherIdentifier="Xcode.IDEFoundation.Launcher.LLDB" shouldUseLaunchSchemeArgsEnv="YES"><Testables><TestableReference skipped="NO"><BuildableReference BuildableIdentifier="primary" BlueprintIdentifier="{ui_target}" BuildableName="TogetherUITests.xctest" BlueprintName="TogetherUITests" ReferencedContainer="container:Together.xcodeproj"/></TestableReference></Testables></TestAction>
+ <TestAction buildConfiguration="UITesting" selectedDebuggerIdentifier="Xcode.DebuggerFoundation.Debugger.LLDB" selectedLauncherIdentifier="Xcode.IDEFoundation.Launcher.LLDB" shouldUseLaunchSchemeArgsEnv="YES"><Testables><TestableReference skipped="NO"><BuildableReference BuildableIdentifier="primary" BlueprintIdentifier="{ui_target}" BuildableName="TogetherUITests.xctest" BlueprintName="TogetherUITests" ReferencedContainer="container:Together.xcodeproj"/></TestableReference></Testables></TestAction>
  <LaunchAction buildConfiguration="Debug" selectedDebuggerIdentifier="Xcode.DebuggerFoundation.Debugger.LLDB" selectedLauncherIdentifier="Xcode.IDEFoundation.Launcher.LLDB" launchStyle="0" useCustomWorkingDirectory="NO" ignoresPersistentStateOnLaunch="NO" debugDocumentVersioning="YES" debugServiceExtension="internal" allowLocationSimulation="YES"><BuildableProductRunnable runnableDebuggingMode="0">{buildable}</BuildableProductRunnable></LaunchAction>
  <ProfileAction buildConfiguration="Release" shouldUseLaunchSchemeArgsEnv="YES" savedToolIdentifier="" useCustomWorkingDirectory="NO" debugDocumentVersioning="YES"><BuildableProductRunnable runnableDebuggingMode="0">{buildable}</BuildableProductRunnable></ProfileAction>
  <AnalyzeAction buildConfiguration="Debug"/>

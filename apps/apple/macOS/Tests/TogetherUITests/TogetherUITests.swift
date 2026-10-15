@@ -105,6 +105,28 @@ import CryptoKit
             XCTAssertEqual(app.sheets.count, 0)
         }
     }
+    func testSharedChangeReviewPrivacyAndClosableHistory() throws {
+        for dark in [false,true] {
+            launch(page:"changes",populated:true,dark:dark,reduce:true,compact:true)
+            let close=app.buttons["sync.changes.close"]
+            XCTAssertTrue(close.waitForExistence(timeout:8));XCTAssertTrue(close.isHittable)
+            XCTAssertTrue(app.scrollViews["sync.changes.list"].waitForExistence(timeout:8))
+            XCTAssertFalse(app.staticTexts["PRIVATE_FIXTURE_GIFT_CONTENT"].exists)
+            let review=app.buttons["sync.changes.review"];XCTAssertTrue(review.isEnabled);review.click()
+            XCTAssertTrue(app.staticTexts.matching(NSPredicate(format:"label == %@","已查看")).firstMatch.waitForExistence(timeout:5))
+            close.click();XCTAssertEqual(app.sheets.count,0)
+            XCTAssertFalse(app.buttons["gift.open"].exists)
+        }
+    }
+    func testSharedChangeReviewCandidateScreenshots() throws {
+        for dark in [false,true] {for populated in [false,true] {
+            let name="changes-"+(populated ? "populated":"empty")+"-"+(dark ? "dark":"light")+"-compact-reduced"
+            launch(page:"changes",populated:populated,dark:dark,reduce:true,compact:true,name:name)
+            XCTAssertTrue(app.buttons["sync.changes.close"].waitForExistence(timeout:8))
+            if populated {XCTAssertTrue(app.scrollViews["sync.changes.list"].waitForExistence(timeout:8))}
+            try screenshot(name)
+        }}
+    }
     func testNavigationAndNoPersistentGiftUI() {
         launch()
         XCTAssertFalse(app.staticTexts["Daily Love Gift"].exists)

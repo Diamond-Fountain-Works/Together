@@ -5524,6 +5524,167 @@
       "review": "approved",
       "reason": "Factual recovery reminder for missed occurrences",
       "textSHA256": "4edcf252f305e5366562fdf9b640a0246e7c399af81c4e58d9f4576d0180d104"
+    },
+    "sync.changes.title": {
+      "category": "Navigation",
+      "context": "Universal Change Review from actual projected operations",
+      "review": "approved",
+      "reason": "Functional labels in the explicitly requested cross-domain change review; within copy budget, no invented user content or delivery claims.",
+      "textSHA256": "6a44819f991b4c49c290784a28baa425f3d7cebe6ec2a25c4c3c899f914b7314"
+    },
+    "sync.changes.empty": {
+      "category": "Empty State",
+      "context": "Universal Change Review from actual projected operations",
+      "review": "approved",
+      "reason": "Functional labels in the explicitly requested cross-domain change review; within copy budget, no invented user content or delivery claims.",
+      "textSHA256": "815347a7ad901ec74dade8999db0976931d4650ed9c78362eac92fbae3cf40fd"
+    },
+    "sync.changes.count": {
+      "category": "Status",
+      "context": "Universal Change Review from actual projected operations",
+      "review": "approved",
+      "reason": "Functional labels in the explicitly requested cross-domain change review; within copy budget, no invented user content or delivery claims.",
+      "textSHA256": "9d7010ad2ead7f8a36d08a2de917b7decfe61f99332eea0eb61fc12fccb4949b"
+    },
+    "sync.changes.profiles": {
+      "category": "Navigation",
+      "context": "Universal Change Review from actual projected operations",
+      "review": "approved",
+      "reason": "Functional labels in the explicitly requested cross-domain change review; within copy budget, no invented user content or delivery claims.",
+      "textSHA256": "b94d13a45ea21152fd63e193e3c0e3d6ff168931b471e1f8bfca84b0723dd3c1"
+    },
+    "sync.origin.thisDevice": {
+      "category": "Status",
+      "context": "Universal Change Review from actual projected operations",
+      "review": "approved",
+      "reason": "Functional labels in the explicitly requested cross-domain change review; within copy budget, no invented user content or delivery claims.",
+      "textSHA256": "8a94c4a1cdbd821ebbd32eff1549e6ae9ebcbc540dcd39c933d1ea2177d1ce5f"
+    },
+    "sync.origin.myOtherDevice": {
+      "category": "Status",
+      "context": "Universal Change Review from actual projected operations",
+      "review": "approved",
+      "reason": "Functional labels in the explicitly requested cross-domain change review; within copy budget, no invented user content or delivery claims.",
+      "textSHA256": "179da81e0e481a17fbd9cc28cb62c39a970393fbedae9fee5da7477e3d3db36c"
+    },
+    "sync.origin.partner": {
+      "category": "Status",
+      "context": "Universal Change Review from actual projected operations",
+      "review": "approved",
+      "reason": "Functional labels in the explicitly requested cross-domain change review; within copy budget, no invented user content or delivery claims.",
+      "textSHA256": "bea20ac7469dd14fb478d0cb4f87fb848894681b9ff122607584579355360cdd"
+    },
+    "sync.review.action": {
+      "category": "Action",
+      "context": "Universal Change Review from actual projected operations",
+      "review": "approved",
+      "reason": "Functional labels in the explicitly requested cross-domain change review; within copy budget, no invented user content or delivery claims.",
+      "textSHA256": "52084250e64b3e049e17f484255b6fffbd51ee81cb7503d823e1951075418d6c"
+    },
+    "sync.review.reviewed": {
+      "category": "Status",
+      "context": "Universal Change Review from actual projected operations",
+      "review": "approved",
+      "reason": "Functional labels in the explicitly requested cross-domain change review; within copy budget, no invented user content or delivery claims.",
+      "textSHA256": "8028201c37f466c72ecb2883fd4e0a3f92f1f94cddd5c69514515404f7cdd515"
+    },
+    "sync.review.dismissed": {
+      "category": "Status",
+      "context": "Universal Change Review from actual projected operations",
+      "review": "approved",
+      "reason": "Functional labels in the explicitly requested cross-domain change review; within copy budget, no invented user content or delivery claims.",
+      "textSHA256": "c9bb70bcaaa3bee1f1a6031886a12270c0cdabafbba9e845513a76e3959dac3f"
+    },
+    "sync.field.status": {
+      "category": "Guidance",
+      "context": "Universal Change Review from actual projected operations",
+      "review": "approved",
+      "reason": "Functional labels in the explicitly requested cross-domain change review; within copy budget, no invented user content or delivery claims.",
+      "textSHA256": "6320b4a8722a851fb99566e4eac1cfd4b93bc684b3a33d9f5cae37a116b8c734"
+    },
+    "sync.field.quantity": {
+      "category": "Guidance",
+      "context": "Universal Change Review from actual projected operations",
+      "review": "approved",
+      "reason": "Functional labels in the explicitly requested cross-domain change review; within copy budget, no invented user content or delivery claims.",
+      "textSHA256": "5e29d121dda011c50d1a2d539dde959645ab8f53aa813d3864d957100329f39e"
+    },
+    "sync.action.create": {
+      "category": "Status",
+      "context": "Universal Change Review from actual projected operations",
+      "review": "approved",
+      "reason": "Functional labels in the explicitly requested cross-domain change review; within copy budget, no invented user content or delivery claims.",
+      "textSHA256": "9007ba40674f31554e30e840620949559a3dfaab805dc0177fd58c25ad3761da"
+    },
+    "sync.action.delete": {
+      "category": "Status",
+      "context": "Universal Change Review from actual projected operations",
+      "review": "approved",
+      "reason": "Functional labels in the explicitly requested cross-domain change review; within copy budget, no invented user content or delivery claims.",
+      "textSHA256": "f2cf9101bb2d88164819d5dc6b50dc5d59e38f23d19bbac4537dfa7f20533cff"
+    },
+    "sync.action.completeTask": {
+      "category": "Status",
+      "context": "Universal Change Review from actual projected operations",
+      "review": "approved",
+      "reason": "Functional labels in the explicitly requested cross-domain change review; within copy budget, no invented user content or delivery claims.",
+      "textSHA256": "56be09301c39591338998a4dc83217667744a8fc6f12521d557eb90128ca378a"
+    },
+    "sync.action.reopenTask": {
+      "category": "Status",
+      "context": "Universal Change Review from actual projected operations",
+      "review": "approved",
+      "reason": "Functional labels in the explicitly requested cross-domain change review; within copy budget, no invented user content or delivery claims.",
+      "textSHA256": "367a334c100fb9b18fc115c7b983034d1362aef7d7bfe4b9d8b42d2eef8ada23"
+    },
+    "sync.action.requestFulfillment": {
+      "category": "Status",
+      "context": "Universal Change Review from actual projected operations",
+      "review": "approved",
+      "reason": "Functional labels in the explicitly requested cross-domain change review; within copy budget, no invented user content or delivery claims.",
+      "textSHA256": "70a4b1148ac6367d74735080a661f1de5696d4024297801cfe5b33e42edce778"
+    },
+    "sync.action.confirmFulfillment": {
+      "category": "Status",
+      "context": "Universal Change Review from actual projected operations",
+      "review": "approved",
+      "reason": "Functional labels in the explicitly requested cross-domain change review; within copy budget, no invented user content or delivery claims.",
+      "textSHA256": "c8c2b31b447c21927f510d2934da24d92cbabfdf56bb12b462dbed2705aa7c79"
+    },
+    "sync.action.rejectFulfillment": {
+      "category": "Status",
+      "context": "Universal Change Review from actual projected operations",
+      "review": "approved",
+      "reason": "Functional labels in the explicitly requested cross-domain change review; within copy budget, no invented user content or delivery claims.",
+      "textSHA256": "c86f79fdab1ade2dc0971d7601ad6fa3c7cd37b665d345e63fe416aadfb9414f"
+    },
+    "sync.domain.gifts": {
+      "category": "Navigation",
+      "context": "Gift event domain label; sealed content remains hidden",
+      "review": "approved",
+      "reason": "Functional label in explicitly requested cross-domain review.",
+      "textSHA256": "95139c7154d54b893292bc500f3f0d123aec126e7dda51f5e1aa8613906c0822"
+    },
+    "qa.error.isolatedLaunch": {
+      "category": "Error",
+      "context": "Dedicated UI test-host safe launch",
+      "review": "approved",
+      "reason": "Functional recovery guidance; a QA process never falls through to production startup.",
+      "textSHA256": "99d377d3fa33add7ce50a799ce241aae0244d36d282f15b33ceafd49ed0128ad"
+    },
+    "sync.resolution.superseded": {
+      "category": "Status",
+      "context": "Deterministic field merge history",
+      "review": "approved",
+      "reason": "Factual winner/supersession status required by change review.",
+      "textSHA256": "8d099b128a4772d03a4c8e625497bad8d958a70a10bef7067d12f9af7e47f6a7"
+    },
+    "sync.resolution.partiallySuperseded": {
+      "category": "Status",
+      "context": "Deterministic field merge history",
+      "review": "approved",
+      "reason": "Factual winner/supersession status required by change review.",
+      "textSHA256": "9ec2fc1666307734fa189621a85e75359bbf38928fef8c3e3a755cf698f2c3b3"
     }
   }
 }

@@ -22,6 +22,7 @@ enum AppSection: String, CaseIterable, Identifiable {
 }
 enum AppSheet: Identifiable {
     case task(UUID?), nextTime(UUID), grant, grantDetail(UUID), wish(UUID), adjustment(UUID), crop, advisor, whatsNew, initialSetup, giftEditor(UUID?), giftHistory, giftReveal([UUID], Bool)
+    case changes
     case finance(FinanceSheet)
     var id: String {
         switch self {
@@ -38,6 +39,7 @@ enum AppSheet: Identifiable {
         case .giftEditor(let id): "giftEditor-\(id?.uuidString ?? "new")"
         case .giftHistory: "giftHistory"
         case .giftReveal(let ids, _): "giftReveal-\(ids.first?.uuidString ?? "empty")"
+        case .changes: "changes"
         case .finance(let sheet): sheet.id
         }
     }
@@ -47,6 +49,9 @@ enum AppSheet: Identifiable {
 }
 @MainActor @Observable final class ApplicationModel {
     let engine: ReplicaEngine
+    let changeReview:ChangeReviewService
+    var changeBannerEvents:[ChangeEvent]=[]
+    @ObservationIgnored var changeReviewTask:Task<Void,Never>?
     let network: PairingService
     let preferences: LocalAppPreferences
     let localDefaults: UserDefaults
@@ -86,6 +91,12 @@ enum AppSheet: Identifiable {
 
     init(engine: ReplicaEngine, defaults: UserDefaults = .standard, serviceURL: URL? = nil, useBundledService: Bool = true, filePanelDirectory: URL? = nil) {
         self.engine = engine
+        changeReview=ChangeReviewService(repository:engine.repository)
+        // Seed presentation history once on upgrade; this is not a read receipt
+        // and does not mark any legacy business change as approved/reviewed.
+        if (try? engine.repository.load(ChangeReviewState.self,key:"replication4/change-review")) == nil {
+            var state=ChangeReviewState();state.presentedOperationIds=Set(engine.operations.map(\.id));try? engine.repository.save(state,key:"replication4/change-review")
+        }
         localDefaults = defaults
         self.filePanelDirectory = filePanelDirectory
         let configured = serviceURL ?? (useBundledService ? (Bundle.main.object(forInfoDictionaryKey: "TogetherRelayURL") as? String).flatMap(URL.init(string:)) : nil)
@@ -106,7 +117,7 @@ enum AppSheet: Identifiable {
         #else
         network.restore()
         #endif
-        checkStartupGifts(); refreshFinancialState(); presentNext()
+        checkStartupGifts(); refreshFinancialState(); refreshSharedChanges(); presentNext()
         clockTask = Task { @MainActor [weak self] in
             while !Task.isCancelled {
                 guard let self else { return }

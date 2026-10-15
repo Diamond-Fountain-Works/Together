@@ -23,7 +23,7 @@ struct InitialSetupView: View {
                     if step > 0 { Button(Copy.text("copy.action.a57b08a480b8")) { move(-1) } }
                     Spacer()
                     if step == 3 {
-                        Button(model.engine.peer == nil ? Copy.text("copy.action.0b4fa4b9e083") : Copy.text("copy.action.31fbef162594")) { move(1) }.buttonStyle(.borderedProminent)
+                        Button(model.engine.context.peer == nil ? Copy.text("copy.action.0b4fa4b9e083") : Copy.text("copy.action.31fbef162594")) { move(1) }.buttonStyle(.borderedProminent)
                     } else {
                         Button(Copy.text("copy.action.31fbef162594")) { advance() }.buttonStyle(.borderedProminent).keyboardShortcut(.defaultAction)
                             .disabled((step == 1 && role == nil) || (step == 2 && name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty) || model.importingMedia)
@@ -70,7 +70,7 @@ struct InitialSetupView: View {
                 .onChange(of: name) { _, value in if value.count > 80 { name = String(value.prefix(80)) } }
         case 3:
             Text(titles[step]).font(.title.weight(.semibold))
-            Text(model.engine.peer == nil ? Copy.text("copy.guidance.34509ac3c987") : Copy.text("copy.status.854395e0abf2")).foregroundStyle(.secondary)
+            Text(model.engine.context.peer == nil ? Copy.text("copy.guidance.34509ac3c987") : Copy.text("copy.status.854395e0abf2")).foregroundStyle(.secondary)
             Button(Copy.text("copy.action.e3b0859f5da0")) { connecting.toggle() }
             if connecting { ConnectionView(model: model).frame(height: 330) }
         default:

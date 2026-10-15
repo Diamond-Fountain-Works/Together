@@ -14,7 +14,7 @@ struct WishesView: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 24) {
-                if model.engine.peer == nil {
+                if model.engine.context.peer == nil {
                     ContentUnavailableView {
                         Label(Copy.text("plans.empty.unpairedWishes"), systemImage: "link")
                     } actions: {
@@ -29,7 +29,7 @@ struct WishesView: View {
                         }
                     }
                 }
-                if model.engine.peer != nil {
+                if model.engine.context.peer != nil {
                     Text(Copy.text("copy.status.47ada653c100")).font(.headline)
                     if grants.isEmpty {
                         Text(Copy.text("copy.empty_state.2dfc21ff5af0")).foregroundStyle(.secondary)

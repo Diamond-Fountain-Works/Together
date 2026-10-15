@@ -28,7 +28,8 @@ struct RootView: View {
             ZStack(alignment: .topLeading) {
                 TogetherTheme.background(scheme).ignoresSafeArea()
                 VStack(spacing: 0) {
-                    if !model.financialBannerChanges.isEmpty { FinanceChangeBanner(model: model) }
+                    if !model.changeBannerEvents.isEmpty { SharedChangeBanner(model:model) }
+                    else if !model.financialBannerChanges.isEmpty { FinanceChangeBanner(model: model) }
                     page.id(model.section == .wishes ? .plans : model.section)
                     .transition(reduceMotion ? .identity : .opacity.combined(with: .offset(x: 12)))
                 }
@@ -40,7 +41,7 @@ struct RootView: View {
                         .disabled(model.sheet != nil).accessibilityIdentifier("task.new")
                 } else if model.section == .wishes {
                     Button(Copy.text("plans.action.addWishes"), systemImage: "plus") { model.show(.grant) }
-                        .disabled(model.engine.peer == nil || model.sheet != nil).accessibilityIdentifier("wish.grant.new")
+                        .disabled(model.engine.context.peer == nil || model.sheet != nil).accessibilityIdentifier("wish.grant.new")
                 } else if model.section == .finances {
                     Button(Copy.text("finance.action.settings"), systemImage: "slider.horizontal.3") { model.showFinance(.settings) }.accessibilityIdentifier("finance.settings")
                     Button(Copy.text("finance.action.changes"), systemImage: "clock.arrow.circlepath") { model.showFinance(.changes) }.accessibilityIdentifier("finance.changes")
@@ -70,6 +71,7 @@ struct RootView: View {
             case .giftHistory: GiftHistoryView(model: model)
             case .giftReveal(let ids, let automatic): GiftRevealView(model: model, giftIds: ids, automatic: automatic)
             case .finance(let sheet): FinanceSheetView(model: model, sheet: sheet)
+            case .changes: SharedChangeHistoryView(model:model)
             }
             }.tint(TogetherTheme.rose)
         }
@@ -78,7 +80,7 @@ struct RootView: View {
         } message: { Text(model.errorMessage ?? "") }
         .task { model.start() }
         .onChange(of: model.network.completedSyncCount) { _, _ in model.checkStartupGifts() }
-        .onChange(of: model.engine.changeNumber) { _, _ in model.checkStartupGifts(); model.refreshFinancialState() }
+        .onChange(of: model.engine.changeNumber) { _, _ in model.checkStartupGifts(); model.refreshFinancialState();model.refreshSharedChanges() }
         .onChange(of: model.section) { _, _ in model.noteUserInteraction() }
         .onReceive(NotificationCenter.default.publisher(for: NSApplication.didBecomeActiveNotification)) { _ in model.currentDate = model.engine.dateProvider.now() }
     }

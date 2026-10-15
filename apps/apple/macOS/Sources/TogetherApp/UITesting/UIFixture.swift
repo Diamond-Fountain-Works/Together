@@ -17,7 +17,7 @@ struct UIFixture {
     init() throws {
         let env = ProcessInfo.processInfo.environment
         page = env["TOGETHER_UI_PAGE"] ?? "home"
-        guard ["home","tasks","upcoming","completed","wishes","gifts","reveal","settings","setup","reserves","expenses","bills","finance-settings"].contains(page),
+        guard ["home","tasks","upcoming","completed","wishes","gifts","reveal","settings","setup","reserves","expenses","bills","finance-settings","changes"].contains(page),
               let path = env["TOGETHER_UI_ROOT"], URL(fileURLWithPath: path).lastPathComponent.hasPrefix("together-ui-") else { throw TogetherError.invalid("Invalid isolated UI fixture configuration") }
         root = URL(fileURLWithPath: path, isDirectory: true).standardizedFileURL.resolvingSymlinksInPath()
         let temporary = FileManager.default.temporaryDirectory.standardizedFileURL.resolvingSymlinksInPath().path
@@ -116,6 +116,7 @@ struct UIFixture {
         case "bills": model.section = .finances; model.financeTab = .bills
         default: model.section = .home
         }
+        if page == "changes" { model.show(.changes) }
         if page == "gifts" { model.show(.giftEditor(nil)) }
         if page == "finance-settings" { model.showFinance(.settings) }
         return model

@@ -31,9 +31,9 @@ enum RelativeFinancePayment: String, CaseIterable, Identifiable {
         case .reserves: return .init(kind: .reserves, paymentMethodId: cardId)
         case .own: return .init(kind: .personal, userIds: [me], paymentMethodId: cardId)
         case .partner:
-            guard let peer = model.engine.peer else { throw FinanceError.invalidPayment }; return .init(kind: .personal, userIds: [peer.descriptor.userId], paymentMethodId: cardId)
+            guard let peer = model.engine.context.peer else { throw FinanceError.invalidPayment }; return .init(kind: .personal, userIds: [peer.userId], paymentMethodId: cardId)
         case .aa:
-            guard let peer = model.engine.peer else { throw FinanceError.invalidPayment }; return .init(kind: .equalSplit, userIds: [me, peer.descriptor.userId], paymentMethodId: cardId)
+            guard let peer = model.engine.context.peer else { throw FinanceError.invalidPayment }; return .init(kind: .equalSplit, userIds: [me, peer.userId], paymentMethodId: cardId)
         }
     }
     init(_ payment: FinancePayment, me: UUID) {
@@ -51,12 +51,6 @@ extension ApplicationModel {
         perform {
             try engine.reconcileFinanceBills()
             financialReminders = try engine.financeReminders(at: currentDate)
-            if lastFinancialOperationCount != engine.operations.count {
-                let state = try engine.financialReviewState(), changes = engine.financialChanges(limit: max(150, engine.operations.count))
-                let displaying = Set(financialBannerChanges.map(\.id))
-                financialBannerChanges = changes.filter { $0.actorId != engine.identity.descriptor.userId && (displaying.contains($0.id) || !state.presentedOperationIds.contains($0.id)) }
-                lastFinancialOperationCount = engine.operations.count
-            }
             let signature = String(engine.operations.count) + ":" + CivilDate(currentDate).iso + ":" + String(localDefaults.bool(forKey: "financeSystemNotifications"))
             if signature != financialNotificationSignature {
                 financialNotificationSignature = signature
@@ -83,7 +77,7 @@ extension ApplicationModel {
     }
     var financialRangeOwner: UUID? {
         if financialDateFilter == "personal" { return engine.identity.descriptor.userId }
-        if financialDateFilter == "partner" { return engine.peer?.descriptor.userId }
+        if financialDateFilter == "partner" { return engine.context.peer?.userId }
         return nil
     }
     var financialRange: DateInterval? {

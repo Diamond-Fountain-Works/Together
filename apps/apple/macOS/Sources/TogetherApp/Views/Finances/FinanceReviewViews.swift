@@ -94,6 +94,7 @@ struct FinanceChangeHistoryView: View {
                                 if let old = change.oldCNYMinor, let new = change.newCNYMinor, old != new { Text(Copy.format("finance.change.amount", FinanceMoney.display(old), FinanceMoney.display(new))).font(.callout.monospacedDigit()) }
                                 else if let value = change.newCNYMinor { Text(verbatim: FinanceMoney.display(value)).font(.callout.monospacedDigit()) }
                             }
+                            if change.resolution != .effective {Text(Copy.text("sync.resolution."+change.resolution.rawValue)).font(.caption).foregroundStyle(.secondary)}
                             if let month = change.effectiveMonth { Text(Copy.format("finance.change.effective", month.iso)).font(.caption).foregroundStyle(.secondary) }
                             if let payment = change.newPayment, payment != change.oldPayment { Text(model.financialPaymentName(payment)).font(.caption).foregroundStyle(.secondary) }
                             if let status = change.reviewStatus { Text(Copy.text("finance.status." + status.rawValue)).font(.caption).foregroundStyle(.secondary) }

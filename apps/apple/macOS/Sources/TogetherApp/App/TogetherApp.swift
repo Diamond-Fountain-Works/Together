@@ -9,12 +9,17 @@ import AppKit
     @AppStorage("appearance") private var appearance = "system"
     @NSApplicationDelegateAdaptor(TogetherAppDelegate.self) private var delegate
     init() {
+        #if TOGETHER_UI_TEST_HOST
+        if !UIFixture.enabled { _startupError=State(initialValue:Copy.text("qa.error.isolatedLaunch")) }
+        return
+        #else
         #if DEBUG
         if UIFixture.enabled { return }
         #endif
         do { _model = State(initialValue: ApplicationModel(engine: try ReplicaEngine.production())) }
         catch IdentityStorageError.legacyMigrationRequired { _needsIdentityMigration = State(initialValue: true) }
         catch { _startupError = State(initialValue: error.localizedDescription) }
+        #endif
     }
     var body: some Scene {
         WindowGroup("Together", id: "main") {
@@ -51,6 +56,7 @@ import AppKit
                     .keyboardShortcut("l", modifiers: [.command, .shift]).disabled(model == nil)
             }
             CommandGroup(after: .windowArrangement) {
+                Button(Copy.text("sync.changes.title")) {model?.show(.changes)}.disabled(model==nil)
                 Button(Copy.text("copy.action.1555373b2da2")) { model?.show(.giftHistory) }.keyboardShortcut("l", modifiers: [.command, .option]).disabled(model == nil)
             }
             CommandGroup(replacing: .help) {

@@ -67,7 +67,7 @@ struct FinancePaymentFields: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
             Picker(Copy.text("finance.payment.title"), selection: $selection) {
-                ForEach(RelativeFinancePayment.allCases.filter { model.engine.peer != nil || ![.partner, .aa].contains($0) }) { Text($0.title).tag($0) }
+                ForEach(RelativeFinancePayment.allCases.filter { model.engine.context.peer != nil || ![.partner, .aa].contains($0) }) { Text($0.title).tag($0) }
             }.accessibilityIdentifier("finance.payment.picker")
             if !model.engine.visiblePaymentMethods.isEmpty {
                 Picker(Copy.text("finance.cards.title"), selection: $cardId) {

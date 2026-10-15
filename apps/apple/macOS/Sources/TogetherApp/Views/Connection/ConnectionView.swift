@@ -37,7 +37,7 @@ struct ConnectionView: View {
                             }
                         }
                     }
-                } else if model.engine.peer == nil || model.network.needsMigration {
+                } else if model.engine.context.peer == nil || model.network.needsMigration {
                     if model.network.needsMigration { Text(Copy.text("copy.guidance.0c2e0cb3cd53")).font(.callout).foregroundStyle(.secondary) }
                     TogetherCard {
                         VStack(alignment: .leading, spacing: 16) {
