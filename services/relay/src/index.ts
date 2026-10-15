@@ -1,3 +1,4 @@
+import { INVITATION_TTL_MS, invitationExpired } from "./invitation-policy";
 import { DurableObject } from "cloudflare:workers";
 export interface Env {
   DIRECTORY: DurableObjectNamespace<ConnectionDirectory>;
@@ -33,10 +34,6 @@ type Invitation = {
 };
 const encoder = new TextEncoder(),
   alphabet = "23456789ABCDEFGHJKLMNPQRSTUVWXYZ";
-export const INVITATION_TTL_MS = 28_800_000;
-export function invitationExpired(expiresAt: number, now = Date.now()): boolean {
-  return expiresAt <= now;
-}
 const uuid = /^[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}$/;
 function randomBytes(n: number): Uint8Array<ArrayBuffer> {
   return crypto.getRandomValues(new Uint8Array(n));

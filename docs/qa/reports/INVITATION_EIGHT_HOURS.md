@@ -9,3 +9,7 @@ Branch `fix/invitation-eight-hours`, based on Monorepo `1832df0`. Separate from 
 - App/core source, signed JSON, local store schema, identities and saved routes are unchanged. No new macOS binary or baseline images were produced.
 - Production deployment, live eight-hour behavior and physical two-Mac tests: NOT RUN. Production remains the previously audited 10-minute implementation. Issue #1 must remain open until deployment and verification are authorized/completed.
 - Rollback: revert the isolated source PR; keep existing paired routes. No database deletion, re-pairing or Durable Object recreation is needed. Already issued invitations keep their stored expiresAt; changing the source constant does not extend them retroactively.
+
+## Runtime regression found and repaired
+
+The first GitHub macOS run rejected a value exported from the Worker entry point and could not start its local relay. Invitation policy constants now live in a normal imported module. The actual `qa.sh --skip-ui` local Worker integration, migration, business tests and app build pass after that repair; UI and visual checks remain NOT RUN. The 60-second challenge/ticket lifetime is unchanged.

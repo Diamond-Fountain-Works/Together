@@ -1,7 +1,7 @@
 import { exports, env } from "cloudflare:workers";
 import { runInDurableObject } from "cloudflare:test";
 import { describe, it, expect } from "vitest";
-import { INVITATION_TTL_MS, invitationExpired } from "../src/index";
+import { INVITATION_TTL_MS, invitationExpired } from "../src/invitation-policy";
 const encode = new TextEncoder();
 const b64 = (bytes: Uint8Array) => btoa(String.fromCharCode(...bytes));
 const sha = async (text: string) =>
