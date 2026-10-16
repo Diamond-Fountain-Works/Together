@@ -127,8 +127,13 @@ import TogetherCore
             XCTAssertTrue(close.waitForExistence(timeout:8));XCTAssertTrue(close.isHittable)
             XCTAssertTrue(app.scrollViews["sync.changes.list"].waitForExistence(timeout:8))
             XCTAssertFalse(app.staticTexts["PRIVATE_FIXTURE_GIFT_CONTENT"].exists)
+            // macOS groups the disposition with the rest of its row. Scope
+            // the query to actual change rows, and assert a real state change.
+            let reviewed = app.scrollViews["sync.changes.list"].descendants(matching: .any)
+                .matching(NSPredicate(format:"label CONTAINS %@ OR value CONTAINS %@","已查看","已查看")).firstMatch
+            XCTAssertFalse(reviewed.exists)
             let review=app.buttons["sync.changes.review"];XCTAssertTrue(review.isEnabled);review.click()
-            XCTAssertTrue(app.staticTexts.matching(NSPredicate(format:"label == %@","已查看")).firstMatch.waitForExistence(timeout:5))
+            XCTAssertTrue(reviewed.waitForExistence(timeout:5))
             close.click();XCTAssertEqual(app.sheets.count,0)
             XCTAssertFalse(app.buttons["gift.open"].exists)
         }
@@ -229,6 +234,11 @@ import TogetherCore
         deviceButton("devices.authorize").click(); saveDeviceFile("Together-Device-Authorization.json")
         let completion = try CanonicalJSON.decode(DeviceEnrollmentCompletion.self, from: Data(contentsOf: output.appendingPathComponent("Together-Device-Authorization.json")))
         let device = try workspace.complete(completion, offerId: offer.body.id, verified: true)
+        let statusId = "devices.state." + device.identity.descriptor.deviceId.uuidString
+        let offline = app.staticTexts[statusId]
+        let showsOffline = XCTNSPredicateExpectation(predicate: NSPredicate(format: "label == %@ OR value == %@", "离线", "离线"), object: offline)
+        XCTAssertEqual(XCTWaiter.wait(for: [showsOffline], timeout: 8), .completed)
+        try screenshot("devices-authorized-offline-light-candidate")
         let trust = try SpaceAuthorization.restore(completion.body.archive)
         let store = try AuthorizedReplicationStore(repository: device.repository, identity: device.identity, authorization: trust)
         try await store.restore()
@@ -252,6 +262,7 @@ import TogetherCore
         let revoked = app.descendants(matching: .any)["devices.state." + device.identity.descriptor.deviceId.uuidString]
         XCTAssertTrue(revoked.waitForExistence(timeout: 8))
         XCTAssertTrue(revoked.label.contains("已撤销") || (revoked.value as? String)?.contains("已撤销") == true)
+        try screenshot("devices-revoked-light-candidate")
         deviceButton("devices.close").click()
     }
     func testNewDeviceJoinsThroughNativeFilesAndSyncsHistory() throws {
