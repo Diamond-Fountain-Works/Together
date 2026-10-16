@@ -7,22 +7,12 @@ import TogetherCore
 @MainActor final class TogetherUITests: XCTestCase {
     private var app: XCUIApplication!
     private var root: URL!
-    private func dismissRunnerDocumentsRequest() {
-        let system = XCUIApplication(bundleIdentifier: "com.apple.UserNotificationCenter")
-        let dialog = system.dialogs.firstMatch
-        guard dialog.exists else { return }
-        let texts = dialog.staticTexts.allElementsBoundByIndex.map { $0.value as? String ?? $0.label }.joined(separator: " ")
-        if texts.contains("TogetherUITests-Runner") && (texts.contains("文稿") || texts.contains("Documents")) && texts.contains("automated testing") {
-            dialog.buttons["action-button-2"].click()
-        }
-    }
     override func tearDown() {
         app?.terminate()
         if let root { try? FileManager.default.removeItem(at: root) }
         super.tearDown()
     }
     private func launch(page: String = "home", populated: Bool = false, dark: Bool = false, reduce: Bool = false, compact: Bool = false, name: String = "behavior") {
-        dismissRunnerDocumentsRequest()
         app?.terminate()
         if let root { try? FileManager.default.removeItem(at: root) }
         // The runner's container tmp belongs to another app's protected data.
@@ -44,6 +34,26 @@ import TogetherCore
         continueAfterFailure = false
         print("QA_RUNNER_AX_TRUSTED \(AXIsProcessTrusted())")
         app.launch()
+        // XCTest launches without the normal macOS reopen event. Await that
+        // event here, before any assertion/termination; the host must never
+        // schedule a later bundle relaunch from its own delegate.
+        let running = NSWorkspace.shared.runningApplications.filter {
+            $0.bundleURL?.standardizedFileURL.path == URL(fileURLWithPath: verifiedPath).standardizedFileURL.path
+        }
+        XCTAssertEqual(running.count, 1, "Exactly one verified QA host must be running")
+        guard let process = running.first, running.count == 1 else { return }
+        let configuration = NSWorkspace.OpenConfiguration()
+        configuration.createsNewApplicationInstance = false
+        configuration.activates = true
+        configuration.arguments = app.launchArguments
+        configuration.environment = app.launchEnvironment
+        let reopened = expectation(description: "Reopen the existing isolated QA process")
+        NSWorkspace.shared.openApplication(at: URL(fileURLWithPath: verifiedPath), configuration: configuration) { result, error in
+            XCTAssertNil(error)
+            XCTAssertEqual(result?.processIdentifier, process.processIdentifier, "Reopen must not create another QA process")
+            reopened.fulfill()
+        }
+        wait(for: [reopened], timeout: 10)
         app.activate()
         XCTAssertTrue(app.windows.firstMatch.waitForExistence(timeout: 15))
         XCTAssertTrue(app.descendants(matching: .any)["nav.home"].waitForExistence(timeout: 15))
@@ -310,7 +320,6 @@ import TogetherCore
         app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH 'task.open.' AND label CONTAINS %@", title)).firstMatch
     }
     private func mode(_ name: String) {
-        dismissRunnerDocumentsRequest()
         let item = app.descendants(matching: .any)[name == "wishes" ? "nav.wishes" : "nav.plans"].firstMatch
         XCTAssertTrue(item.isHittable)
         item.click()

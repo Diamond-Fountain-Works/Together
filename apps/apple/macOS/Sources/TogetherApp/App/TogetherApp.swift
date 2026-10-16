@@ -78,17 +78,6 @@ import AppKit
 @MainActor final class TogetherAppDelegate: NSObject, NSApplicationDelegate {
     func applicationDidFinishLaunching(_ notification: Notification) {
         NSApp.setActivationPolicy(.regular); NSApp.activate(ignoringOtherApps: true)
-        #if TOGETHER_UI_TEST_HOST
-        // XCTest starts the host without a Launch Services reopen event.
-        // Present the already-created QA scene; never instantiate a second
-        // production model or fall back to a different app bundle.
-        DispatchQueue.main.async {
-            let configuration = NSWorkspace.OpenConfiguration()
-            configuration.activates = true
-            configuration.createsNewApplicationInstance = false
-            NSWorkspace.shared.openApplication(at: Bundle.main.bundleURL, configuration: configuration) { _, _ in }
-        }
-        #endif
     }
     func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool { false }
 }
