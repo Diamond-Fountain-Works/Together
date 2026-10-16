@@ -34,6 +34,17 @@ import TogetherCore
         continueAfterFailure = false
         print("QA_RUNNER_AX_TRUSTED \(AXIsProcessTrusted())")
         app.launch()
+        reopenQAHost()
+        app.activate()
+        XCTAssertTrue(app.windows.firstMatch.waitForExistence(timeout: 15))
+        XCTAssertTrue(app.descendants(matching: .any)["nav.home"].waitForExistence(timeout: 15))
+        if compact { XCTAssertEqual(app.windows.firstMatch.frame.width, 900, accuracy: 2, "Compact fixture must actually resize the window") }
+    }
+    private func reopenQAHost() {
+        guard let verifiedPath = ProcessInfo.processInfo.environment["TOGETHER_UI_VERIFIED_APP_PATH"],
+              Bundle(path: verifiedPath)?.bundleIdentifier == "com.together.app.qa" else {
+            return XCTFail("Reopen refused: verified QA host is missing")
+        }
         // XCTest launches without the normal macOS reopen event. Await that
         // event here, before any assertion/termination; the host must never
         // schedule a later bundle relaunch from its own delegate.
@@ -54,10 +65,6 @@ import TogetherCore
             reopened.fulfill()
         }
         wait(for: [reopened], timeout: 10)
-        app.activate()
-        XCTAssertTrue(app.windows.firstMatch.waitForExistence(timeout: 15))
-        XCTAssertTrue(app.descendants(matching: .any)["nav.home"].waitForExistence(timeout: 15))
-        if compact { XCTAssertEqual(app.windows.firstMatch.frame.width, 900, accuracy: 2, "Compact fixture must actually resize the window") }
     }
     private func screenshot(_ name: String) throws {
         // Presence of the final button precedes the end of the spring and
@@ -489,7 +496,7 @@ import TogetherCore
         XCTAssertEqual(originals.count, 1)
         XCTAssertEqual(SHA256.hash(data: try Data(contentsOf: output)), SHA256.hash(data: try Data(contentsOf: originals[0])))
         app.buttons["gift.received"].click()
-        app.terminate(); app.launch(); app.activate()
+        app.terminate(); app.launch(); reopenQAHost(); app.activate()
         XCTAssertTrue(app.descendants(matching: .any)["nav.home"].waitForExistence(timeout: 10))
         XCTAssertFalse(app.buttons["gift.open"].exists)
         openHistory()

@@ -45,3 +45,7 @@ The remaining 13 warnings stay visible: 12 independent translation contexts (inc
 ## Protocol 4 change review
 
 The `sync.*` additions name actual domains, device origins, projected operations and local review states. `已同步 %@ 项变更` counts persisted remote operations; it does not imply all devices received them or a person approved them. Gift review shows only creation/deletion metadata, keeping sealed text/media private until the existing reveal flow opens them. No hashes, Lamport clocks or internal field names appear in this UI.
+
+## Device management copy review
+
+`device.*` names requested native enrollment/migration actions, explicit identity comparison, truthful device/history states and recovery errors. Public exchange filenames are user-visible save defaults, not network credentials. All exact values are in the catalog/review index. Copy QA is **WARN: 0 errors / 14 warnings**. The prior 13 dispositions remain unchanged; the additional `device.status.revoked` / `finance.status.revoked` equal-text warning is retained because revoking device authorization and revoking a ledger entry are separate translation contexts. No suppression or audit rule change was made. Human candidate-screen approval is still separate.

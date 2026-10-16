@@ -47,3 +47,5 @@ Window screenshots cover ordinary pages. For native sheets or popovers that exte
 ## Universal change history
 
 Use a native menu-driven sheet with one domain filter and concise rows. Show actual actor/device origin and before/after business values; superseded changes stay labelled in history and do not create new-change banners. Gift review uses creation/deletion metadata only, preserving sealed content. Clicking View reuses the existing domain editor/detail. No extra sidebar, persistent welcome panel, approval workflow or technical hash/clock labels. New candidates require human review; legacy approved images are not automatically replaced.
+
+Device management uses the existing native sheet/card typography, fixed identity comparison code, a scrollable body and a pinned Close footer. Grant/revoke controls are functional, with explicit confirmation; no celebratory banner or new navigation section is added. Light/dark/Reduce Motion screenshots remain candidates until actual desktop capture and human approval.

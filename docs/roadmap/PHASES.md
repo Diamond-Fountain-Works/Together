@@ -173,7 +173,6 @@ Computer Use 已恢复。实际检查交付 App 的 Home、Upcoming、Wishes、G
 
 检查范围及仍未验收项目见 TEST_PLAN 的“本次原生界面复查”。未将没有真实配对和礼物数据的 Reveal/媒体播放记为 GUI 通过。
 
-
 ## 最新增量 — Design Gate / Relay / Love Gift UX（2026-10-10）
 
 ### Migration A–B：审计与传输提取
@@ -204,13 +203,11 @@ Copy Audit 管理静态正文与精确哈希；新增或旧 key 改值未审核�
 
 下一步仅外部验收：Cloudflare 邮箱验证后部署/公网集成、两个实体 Mac 跨 Wi-Fi、独立安全审查、麦克风/系统 Reduce Motion 和人工候选截图审批。不擅自增加聊天、独立相册或业务功能。
 
-
 ## 部署跟进 — 邮箱验证完成
 
 文件：Configuration/RelayService.json、generate_project.py、server/deployment.json、RelayTests、README/ARCHITECTURE/REQUIREMENTS/TEST_PLAN/CHANGELOG/server README。Worker/DO 上传和发布成功，公网 HTTP 200；双隔离原生客户端 HTTPS/WSS 测试通过（资料/愿望/任务、三内容礼物、原图头像/照片、音频、哈希确认、断线重连与磁盘恢复）。默认 App 构建自动使用真实 origin。
 
 部署版本 d214ea2f-5034-4b1a-9f31-dca118b1b245。仍需实体两台 Mac 跨 Wi-Fi、硬件/权限、独立安全审查和人工视觉基线；没有离线信箱或公证声明。最终构建/质量入口记录见 TEST_PLAN 与 qa/results。
-
 
 ## 2026-10-10 · Our Plans / local identity follow-up
 
@@ -222,7 +219,6 @@ Validation: 43 domain + 7 Workers + 6 tools + 10 UI = 66 PASS / 0 FAIL, 1 SKIP; 
 
 Open work: human visual baseline approval; real legacy-user Keychain migration consent; Developer ID/notarization, independent protocol review and physical two-Mac cross-Wi-Fi acceptance. Next work follows user review; no new business feature is added.
 
-
 ## 2026-10-10 · Plans / Wishes left sidebar correction
 
 Files: RootView, OurPlansView, ApplicationModel, TogetherUITests, UI.xcstrings/review metadata; AGENTS, DESIGN_SYSTEM, UI_COPY, README, ARCHITECTURE, REQUIREMENTS, TEST_PLAN, CHANGELOG; current QA reports and before/after native captures.
@@ -232,7 +228,6 @@ Implemented: Plans and Wishes are separate vertically stacked native left sideba
 Validation: 66 PASS / 0 FAIL, 1 SKIP; 38 captures REVIEW REQUIRED; Copy 0 Error / 35 Warning; Debug + Universal Release and six DMG checks PASS. UI evidence: ui-20261010-170246.xcresult. dist App and installer updated, version remains 0.0.1 Build 1.
 
 Open work: human screenshot/animation review and existing notarization, independent security and physical two-Mac acceptance. Next work follows user review; no new feature is added.
-
 
 ## 2026-10-11 · Local app installation and duplicate cleanup
 
@@ -252,3 +247,7 @@ Open work remains Developer ID/notarization and the previously documented indepe
 - L: source/protocol/tests/docs and safety-scanned commits are delivered in [Draft stacked PR #4](https://github.com/Diamond-Fountain-Works/Together/pull/4), targeting the still-open Monorepo branch. Local full gate: 125 Swift PASS / 0 FAIL / 3 SKIP, 18 Worker and 14 portable conformance PASS; current-commit CI is checked separately in the C1 QA report. Merge, install and production deploy require separate authorization.
 
 Authoritative current counts/limits: [C1 QA](../qa/reports/GITLIKE_C1_QA.md) and [architecture](../architecture/GITLIKE_REPLICATION.md). Old phase evidence above is historical, not a pass for this new protocol.
+
+## C1 final hardening — development Build 10
+
+Incident investigation: read-only frozen private evidence, confirmed local review/launch-preference writes, no new business operation found, historical preference uncertainty retained. Performance: identical 100k workload, final 198.123 s sync / 298.347 s phases / 722.8 MiB RSS; full replay is still O(history). Native own-device signed-file enrollment, list/revoke and explicit two-root migration implemented; independent keys and old IDs/space preserved. Full headless tests: 136 PASS / 0 FAIL / 3 SKIP; Relay 18 / Python protocol 17 pass. New source-review finding corrected with executable regression; independent protocol review remains BLOCKED. Three native device UI cases and cached-gift restart pass together after isolated Runner/locator/reopen fixes (4 PASS / 0 FAIL); the final complete regression reports 20 PASS / 0 FAIL / 1 SKIP and temporary permissions are restored. Visual comparison remains 16 PASS / 50 REVIEW REQUIRED / 2 FAIL with no new human approvals, as tracked in the current report. No installation, merge, production Worker deployment, Android UI, C2 or automatic root recovery. Exact current evidence: [C1_HARDENING](../qa/reports/C1_HARDENING.md).

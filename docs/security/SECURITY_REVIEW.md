@@ -36,7 +36,6 @@ Required before production security approval: independent transcript/KDF/consent
 
 Primary primitive references: [CryptoKit](https://developer.apple.com/documentation/cryptokit), [Cloudflare Web Crypto](https://developers.cloudflare.com/workers/runtime-apis/web-crypto/), [hibernating sockets](https://developers.cloudflare.com/durable-objects/best-practices/websockets/).
 
-
 ## Public deployment evidence
 
 2026-10-10: verified-account deployment and HTTP 200 health check completed at https://together-connection.together-connection-service.workers.dev. Actual native HTTPS/WSS integration covered mutual confirmation, encrypted profiles/operations/wish ledger and confirmation, original avatar/photo and audio chunks with SHA-256, recipient acknowledgement, reconnect and persistent binding. Default App configuration uses this public origin, no Cloudflare credentials.
@@ -56,3 +55,7 @@ Release gate: independent review of genesis migration, owner/root recovery polic
 ### Source review follow-up (2026-10-16)
 
 A sealed source diff review of `1832df0..4eb3e5d` reported one High and three Medium findings: retired hello rollback, invalid durable staging, legacy checkpoint poisoning and acceptance of a divergent revoked prefix. The later `4091bf9` commit fixes these plus the partial-checkpoint overflow and stale asynchronous authorization/projection race identified during follow-up. Six adversarial executable regressions pass; the full suite reports 125 passed, 0 failed, 3 skipped. The original sealed findings are retained, not relabelled as a clean scan of new code. Exact evidence/scope is in [C1 QA](../qa/reports/GITLIKE_C1_QA.md). This local source review and regression testing do not replace the independent review gate above.
+
+## Enrollment hardening follow-up
+
+[Build 10 evidence](../qa/reports/C1_HARDENING.md) retains the new immutable 34-file review's one Medium stale-completion finding and its later tested correction (`cf75c38`). Completed retries now include all authorization known by the owner root, without another grant; already-exported offline files still cannot reveal revocations unknown at export. QA copied fixtures no longer query legacy Keychain, and QA networking is restricted to an explicitly supplied loopback origin. These source reviews/regressions do not satisfy independent protocol certification. Root-key loss, long authorization history and controlled rollout remain explicit [architecture boundaries](../architecture/adr/006-native-device-enrollment.md).

@@ -1,3 +1,16 @@
+# Development — 0.2.1 Build 10 (unreleased)
+
+- Isolated XCTest now owns and awaits the existing host's native reopen, checks the PID, and carries its fixture arguments/environment. Removed the QA delegate's asynchronous self-relaunch and stale external notification-center query. Production startup remains unchanged.
+- Build number increments after App-source changes; prior Build 9 artifacts and failed desktop attempts remain available. No installation or deployment.
+
+# Development — 0.2.1 Build 9 (unreleased)
+
+- Added native signed-file Add My Device, device fingerprints/list/revoke and bilateral legacy migration confirmation; stable original identities, space and log remain. Desktop/human acceptance is pending.
+- Scoped SwiftData contexts/bulk local lookup and durable signed ACK membership pages reduce the same 100k benchmark's measured synchronization cost. Wire operations, deterministic business merge and physical schema are unchanged.
+- Corrected cached enrollment exports to retain current known revocations; added explicit regression, key-loss guards and QA file-key/loopback confinement.
+- Added read-only startup-incident findings with explicit UNKNOWN items, root-loss boundaries and authorization-paging assessment.
+- No production install/deployment/merge; independent protocol review, physical networking, desktop QA and visual acceptance remain gates.
+
 # Monorepo foundation — 0.2.1 Build 5 candidate
 
 - Consolidates the current macOS source, TogetherCore package, C1 Relay and authoritative docs without business/transport/schema changes; restores legacy migration source from pinned verified Git history.

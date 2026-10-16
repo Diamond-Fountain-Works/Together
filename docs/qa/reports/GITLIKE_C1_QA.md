@@ -1,4 +1,6 @@
-# Git-like C1 replication QA — development Build 6
+# Git-like C1 replication QA — prior Build 6 evidence
+
+Latest follow-up: [Build 10 hardening: 20/0/1 desktop tests, incident findings and remaining visual/security gates](C1_HARDENING.md). The results below are retained historical evidence, not the current desktop acceptance status.
 
 Status: local headless gates passed; release approval **BLOCKED** by independent security review, desktop UI/visual acceptance and enrollment/activation UX. Runtime fixes are committed at `4091bf91de877f00979c8e25128b0d4f8126a9fa`. Branch `feature/gitlike-c1-multidevice` is stacked on Monorepo `1832df0`; PR #2 remains Draft and untouched. Source is public, runtime/QA artifacts remain local. No installation or production Worker deployment is part of this task.
 
