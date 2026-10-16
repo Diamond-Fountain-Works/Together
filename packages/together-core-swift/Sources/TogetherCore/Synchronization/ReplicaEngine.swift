@@ -26,6 +26,7 @@ public enum TogetherError: LocalizedError {
     public let identity: DeviceIdentity
     public let repository: TogetherRepository
     public let mediaStore: MediaStore
+    public let enrollmentRoot: URL?
     @ObservationIgnored public let dateProvider: any DateProvider
     public private(set) var mediaProgress: [UUID: MediaProgress] = [:]
     public private(set) var stagedAssets: [UUID: MediaAsset] = [:]
@@ -40,6 +41,7 @@ public enum TogetherError: LocalizedError {
     @ObservationIgnored private var progressPublishedAt: [UUID: ContinuousClock.Instant] = [:]
     @ObservationIgnored var financeChangeCache: (operationCount: Int, members: Set<UUID>, limit: Int, changes: [FinanceChange])?
     @ObservationIgnored private var replicationContext: ReplicaContext?
+    @ObservationIgnored private var activatingReplication = false
     public var context: ReplicaContext { replicationContext ?? ReplicaContext(local: identity.descriptor, peer: peer?.descriptor) }
     public var usesReplication4: Bool { replicationContext != nil }
     public var ownProfile: UserProfile? { snapshot.profiles[identity.descriptor.userId] }
@@ -48,9 +50,10 @@ public enum TogetherError: LocalizedError {
     private var validLamportMaximum:Int64 {operations.filter{context.acceptedContent?[$0.id] != nil || context.authorization==nil}.map(\.operation.lamportClock).max() ?? 0}
     func localFinanceDidChange() { changeNumber += 1 }
 
-    public init(repository: TogetherRepository, identity: DeviceIdentity, mediaRoot: URL? = nil, dateProvider: any DateProvider = SystemDateProvider()) throws {
+    public init(repository: TogetherRepository, identity: DeviceIdentity, mediaRoot: URL? = nil, dateProvider: any DateProvider = SystemDateProvider(), enrollmentRoot: URL? = nil) throws {
         self.repository = repository; self.identity = identity
         self.dateProvider = dateProvider
+        self.enrollmentRoot = enrollmentRoot ?? repository.storageURL?.deletingLastPathComponent()
         mediaStore = try MediaStore(root: mediaRoot ?? FileManager.default.temporaryDirectory.appendingPathComponent("Together-tests-\(UUID())"))
         stagedAssets = Dictionary(uniqueKeysWithValues: (try repository.load([MediaAsset].self, key: "staged-media") ?? []).map { ($0.id, $0) })
         peer = try repository.load(PairedPeer.self, key: "paired-peer")
@@ -71,25 +74,35 @@ public enum TogetherError: LocalizedError {
 
     public static func production(migrateLegacyIdentity: Bool = false) throws -> ReplicaEngine {
         guard Bundle.main.bundleIdentifier != "com.together.app.qa" else {throw TogetherError.invalid(Copy.text("qa.error.isolatedLaunch"))}
-        let directory = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)[0].appendingPathComponent("Together", isDirectory: true)
+        let root = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)[0].appendingPathComponent("Together", isDirectory: true)
+        let directory = try DeviceEnrollmentWorkspace(root: root).activeDirectory()
+        if !FileManager.default.fileExists(atPath: directory.appendingPathComponent("Together.store").path) {
+            let keys = (try? FileManager.default.contentsOfDirectory(at: directory.appendingPathComponent("Identity"), includingPropertiesForKeys: nil)) ?? []
+            guard keys.isEmpty else { throw IdentityStorageError.identityMismatch }
+        }
         try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
         let repository = try TogetherRepository(url: directory.appendingPathComponent("Together.store"))
         let operations = try repository.allOperations()
         let existingMetadata = try repository.load(LocalIdentityMetadata.self, key: "local-identity")
         guard existingMetadata != nil || operations.isEmpty else { throw IdentityStorageError.identityMismatch }
         let metadata = existingMetadata ?? LocalIdentityMetadata()
-        let zone = try repository.load(String.self, key: "initial-time-zone") ?? TimeZone.current.identifier
+        let enrolled = try repository.load(DeviceDescriptor.self, key: "replication4/local-device")
+        if directory != root, existingMetadata == nil || enrolled == nil { throw IdentityStorageError.identityMismatch }
+        if let enrolled { guard enrolled.deviceId == metadata.deviceId, enrolled.userId == metadata.userId, enrolled.initialSpaceId == metadata.spaceId else { throw IdentityStorageError.identityMismatch } }
+        let storedZone = try repository.load(String.self, key: "initial-time-zone")
+        let zone = enrolled?.initialTimeZoneIdentifier ?? storedZone ?? TimeZone.current.identifier
         let identity = try DeviceIdentity.persistent(deviceId: metadata.deviceId, userId: metadata.userId, spaceId: metadata.spaceId,
                                                      directory: directory.appendingPathComponent("Identity", isDirectory: true),
-                                                     needsExistingIdentity: !operations.isEmpty, migrateLegacy: migrateLegacyIdentity, timeZoneIdentifier: zone, protocolVersion: 3) { key in
+                                                     needsExistingIdentity: existingMetadata != nil || !operations.isEmpty || enrolled != nil, migrateLegacy: migrateLegacyIdentity, timeZoneIdentifier: zone, protocolVersion: enrolled?.protocolVersion ?? 3, displayName: enrolled?.displayName ?? "我") { key in
             let publicKey = try Curve25519.Signing.PrivateKey(rawRepresentation: key).publicKey
+            if let enrolled, enrolled.publicKey != publicKey.rawRepresentation { throw IdentityStorageError.identityMismatch }
             for operation in operations where operation.operation.deviceId == metadata.deviceId {
                 guard try publicKey.isValidSignature(operation.signature, for: CanonicalJSON.encode(operation.operation)) else { throw IdentityStorageError.identityMismatch }
             }
         }
         try repository.save(metadata, key: "local-identity")
         try repository.save(zone, key: "initial-time-zone")
-        return try ReplicaEngine(repository: repository, identity: identity, mediaRoot: directory.appendingPathComponent("Media"))
+        return try ReplicaEngine(repository: repository, identity: identity, mediaRoot: directory.appendingPathComponent("Media"), enrollmentRoot: root)
     }
 
     public func authorize(_ proposed: PairedPeer) throws {
@@ -111,6 +124,7 @@ public enum TogetherError: LocalizedError {
         peer = proposed; try refresh(); try ensureSharedSpace()
     }
     public func merge(_ incoming: [SignedOperation]) throws {
+        guard !activatingReplication else { throw ReplicationError.inventoryChanged }
         guard !usesReplication4 else { throw ReplicationError.incompatibleProtocol }
         guard incoming.count <= 10_000 else { throw TogetherError.invalid(Copy.text("copy.error.10abb8d8d023")) }
         for operation in incoming {
@@ -373,8 +387,14 @@ extension ReplicaEngine {
     /// Explicit activation only; the old peer, route, identity and original
     /// signed operation bytes remain in their existing records.
     public func activateReplication4(_ archive:AuthorizationArchive) async throws -> AuthorizedReplicationStore {
+        guard !activatingReplication else { throw ReplicationError.inventoryChanged }
+        activatingReplication = true
+        defer { activatingReplication = false }
         let pins=peer.map{ReplicaContext(local:identity.descriptor,peer:$0.descriptor)}
         let trust=try SpaceAuthorization.restore(archive,existingPins:pins)
+        if !usesReplication4 {
+            guard try await OperationInventoryIndex(repository:repository).checkpoint() == trust.genesis.body.legacyCheckpoint else { throw ReplicationError.inventoryChanged }
+        }
         let store=try AuthorizedReplicationStore(repository:repository,identity:identity,authorization:trust)
         try await store.restore()
         try await refreshFromReplication(store)
@@ -440,6 +460,7 @@ extension ReplicaEngine {
     /// Called synchronously on the repository's owning actor: sequence read,
     /// signatures, quota and fact commit cannot be interleaved by another task.
     private func replicationMetadata(for log:[SignedOperation]) throws -> [String:Data] {
+        guard !activatingReplication || usesReplication4 else { throw ReplicationError.inventoryChanged }
         guard let trust=context.authorization else {
             guard try repository.load(AuthorizationArchive.self,key:"replication4/authorization")==nil else{throw ReplicationError.staleAuthorization};return [:]
         }

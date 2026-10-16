@@ -1,0 +1,230 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/Diamond-Fountain-Works/Together/protocol/device-enrollment-v1",
+  "title": "Together explicit device enrollment files v1",
+  "$defs": {
+    "C1ReplicationBinding": {
+      "type": "object",
+      "properties": {
+        "serviceURL": {
+          "type": "string",
+          "format": "uri"
+        },
+        "spaceId": {
+          "type": "string",
+          "pattern": "^[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}$"
+        },
+        "legacyRouteId": {
+          "type": "string",
+          "pattern": "^[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}$"
+        },
+        "localDeviceId": {
+          "type": "string",
+          "pattern": "^[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}$"
+        }
+      },
+      "required": [
+        "serviceURL",
+        "spaceId",
+        "legacyRouteId",
+        "localDeviceId"
+      ],
+      "additionalProperties": false
+    },
+    "Offer": {
+      "type": "object",
+      "properties": {
+        "body": {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "const": "Together-Device-Offer-1"
+            },
+            "id": {
+              "type": "string",
+              "pattern": "^[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}$"
+            },
+            "issuerDeviceId": {
+              "type": "string",
+              "pattern": "^[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}$"
+            },
+            "ownerId": {
+              "type": "string",
+              "pattern": "^[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}$"
+            },
+            "archive": {
+              "$ref": "https://github.com/Diamond-Fountain-Works/Together/protocol/replication-v4#/$defs/AuthorizationArchive"
+            },
+            "binding": {
+              "type": "object",
+              "properties": {
+                "serviceURL": {
+                  "type": "string",
+                  "format": "uri"
+                },
+                "spaceId": {
+                  "type": "string",
+                  "pattern": "^[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}$"
+                },
+                "legacyRouteId": {
+                  "type": "string",
+                  "pattern": "^[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}$"
+                },
+                "localDeviceId": {
+                  "type": "string",
+                  "pattern": "^[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}$"
+                }
+              },
+              "required": [
+                "serviceURL",
+                "spaceId",
+                "legacyRouteId",
+                "localDeviceId"
+              ],
+              "additionalProperties": false
+            },
+            "expiresAt": {
+              "type": "integer"
+            }
+          },
+          "required": [
+            "kind",
+            "id",
+            "issuerDeviceId",
+            "ownerId",
+            "archive",
+            "binding",
+            "expiresAt"
+          ],
+          "additionalProperties": false
+        },
+        "signature": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "body",
+        "signature"
+      ],
+      "additionalProperties": false
+    },
+    "Request": {
+      "type": "object",
+      "properties": {
+        "body": {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "const": "Together-Device-Request-1"
+            },
+            "offerId": {
+              "type": "string",
+              "pattern": "^[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}$"
+            },
+            "offerDigest": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "device": {
+              "$ref": "https://github.com/Diamond-Fountain-Works/Together/protocol/replication-v4#/$defs/DeviceDescriptor"
+            }
+          },
+          "required": [
+            "kind",
+            "offerId",
+            "offerDigest",
+            "device"
+          ],
+          "additionalProperties": false
+        },
+        "signature": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "body",
+        "signature"
+      ],
+      "additionalProperties": false
+    },
+    "Completion": {
+      "type": "object",
+      "properties": {
+        "body": {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "const": "Together-Device-Completion-1"
+            },
+            "requestDigest": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "archive": {
+              "$ref": "https://github.com/Diamond-Fountain-Works/Together/protocol/replication-v4#/$defs/AuthorizationArchive"
+            },
+            "binding": {
+              "type": "object",
+              "properties": {
+                "serviceURL": {
+                  "type": "string",
+                  "format": "uri"
+                },
+                "spaceId": {
+                  "type": "string",
+                  "pattern": "^[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}$"
+                },
+                "legacyRouteId": {
+                  "type": "string",
+                  "pattern": "^[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}$"
+                },
+                "localDeviceId": {
+                  "type": "string",
+                  "pattern": "^[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}$"
+                }
+              },
+              "required": [
+                "serviceURL",
+                "spaceId",
+                "legacyRouteId",
+                "localDeviceId"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "kind",
+            "requestDigest",
+            "archive",
+            "binding"
+          ],
+          "additionalProperties": false
+        },
+        "signature": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "body",
+        "signature"
+      ],
+      "additionalProperties": false
+    },
+    "Migration": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "const": "Together-Legacy-Migration-4"
+        },
+        "genesis": {
+          "$ref": "https://github.com/Diamond-Fountain-Works/Together/protocol/replication-v4#/$defs/SignedSpaceGenesis"
+        }
+      },
+      "required": [
+        "kind",
+        "genesis"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

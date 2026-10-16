@@ -22,7 +22,7 @@ enum AppSection: String, CaseIterable, Identifiable {
 }
 enum AppSheet: Identifiable {
     case task(UUID?), nextTime(UUID), grant, grantDetail(UUID), wish(UUID), adjustment(UUID), crop, advisor, whatsNew, initialSetup, giftEditor(UUID?), giftHistory, giftReveal([UUID], Bool)
-    case changes
+    case changes, devices
     case finance(FinanceSheet)
     var id: String {
         switch self {
@@ -40,6 +40,7 @@ enum AppSheet: Identifiable {
         case .giftHistory: "giftHistory"
         case .giftReveal(let ids, _): "giftReveal-\(ids.first?.uuidString ?? "empty")"
         case .changes: "changes"
+        case .devices: "devices"
         case .finance(let sheet): sheet.id
         }
     }
@@ -49,6 +50,13 @@ enum AppSheet: Identifiable {
 }
 @MainActor @Observable final class ApplicationModel {
     let engine: ReplicaEngine
+    var requestedReplica: ReplicaEngine?
+    #if DEBUG
+    @ObservationIgnored var qaC1Peers: [C1ReplicationService] = []
+    @ObservationIgnored var qaLegacyPeers: [PairingService] = []
+    @ObservationIgnored var qaDeviceTask: Task<Void, Never>?
+    var qaAllowsLocalNetwork = false
+    #endif
     let changeReview:ChangeReviewService
     var changeBannerEvents:[ChangeEvent]=[]
     @ObservationIgnored var changeReviewTask:Task<Void,Never>?
@@ -86,7 +94,7 @@ enum AppSheet: Identifiable {
     @ObservationIgnored private var pendingSheets: [AppSheet] = []
     @ObservationIgnored private var lastSheet: AppSheet?
     @ObservationIgnored private var started = false
-    @ObservationIgnored private let filePanelDirectory: URL?
+    @ObservationIgnored let filePanelDirectory: URL?
     @ObservationIgnored private var giftLaunchPolicy = GiftLaunchPolicy(cachedInboxIds: [])
 
     init(engine: ReplicaEngine, defaults: UserDefaults = .standard, serviceURL: URL? = nil, useBundledService: Bool = true, filePanelDirectory: URL? = nil) {
@@ -113,7 +121,7 @@ enum AppSheet: Identifiable {
         #if DEBUG
         // A copied store can contain a real RelayBinding; nil serviceURL alone
         // does not suppress that persisted address. Fixtures must stay offline.
-        if !UIFixture.enabled { network.restore() }
+        if !UIFixture.enabled || qaAllowsLocalNetwork { network.restore() }
         #else
         network.restore()
         #endif
@@ -138,6 +146,18 @@ enum AppSheet: Identifiable {
         else { sheet = value; lastSheet = value }
     }
     func dismissSheet() { sheet = nil }
+    func switchToEnrolledReplica(_ engine: ReplicaEngine) {
+        clockTask?.cancel(); changeReviewTask?.cancel(); network.disconnect()
+        requestedReplica = engine
+    }
+    func replacement(with engine: ReplicaEngine) -> ApplicationModel {
+        let result = ApplicationModel(engine: engine, defaults: localDefaults, useBundledService: false, filePanelDirectory: filePanelDirectory)
+        #if DEBUG
+        result.qaC1Peers = qaC1Peers; result.qaLegacyPeers = qaLegacyPeers
+        result.qaDeviceTask = qaDeviceTask; result.qaAllowsLocalNetwork = qaAllowsLocalNetwork
+        #endif
+        return result
+    }
     func replaceSheet(_ next: AppSheet) { pendingSheets.insert(next, at: 0); dismissSheet() }
     func giftRevealDidAppear(automatic: Bool) { if automatic { giftLaunchPolicy.didPresentAutomatically() } }
     func noteUserInteraction() {

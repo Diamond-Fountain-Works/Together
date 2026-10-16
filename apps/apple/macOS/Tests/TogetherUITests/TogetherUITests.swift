@@ -1,6 +1,8 @@
 import XCTest
 import AppKit
 import CryptoKit
+import ApplicationServices
+import TogetherCore
 
 @MainActor final class TogetherUITests: XCTestCase {
     private var app: XCUIApplication!
@@ -23,11 +25,18 @@ import CryptoKit
         dismissRunnerDocumentsRequest()
         app?.terminate()
         if let root { try? FileManager.default.removeItem(at: root) }
-        root = FileManager.default.temporaryDirectory.appendingPathComponent("together-ui-" + UUID().uuidString)
-        app = XCUIApplication()
-        app.launchArguments = ["--ui-testing", "-AppleLanguages", "(zh-Hans)", "-AppleLocale", "zh_CN", "-NSDoubleLocalizedStrings", "NO"]
+        // The runner's container tmp belongs to another app's protected data.
+        // Use an explicit owner-only shared tmp root, never Documents or a
+        // production Application Support/container path.
+        root = URL(fileURLWithPath: "/private/tmp/together-ui-qa", isDirectory: true).appendingPathComponent("together-ui-" + UUID().uuidString)
+        do { try FileManager.default.createDirectory(at: root, withIntermediateDirectories: true, attributes: [.posixPermissions: 0o700]) }
+        catch { XCTFail("Cannot create isolated QA root: \(error)"); return }
+        app = XCUIApplication(bundleIdentifier: "com.together.app.qa")
+        app.launchArguments = ["--ui-testing", "-AppleLanguages", "(zh-Hans)", "-AppleLocale", "zh_CN", "-NSDoubleLocalizedStrings", "NO", "-ApplePersistenceIgnoreState", "YES"]
         app.launchEnvironment = ["TOGETHER_UI_ROOT":root.path, "TOGETHER_UI_PAGE":page, "TOGETHER_UI_STATE":populated ? "populated" : "empty", "TOGETHER_UI_MODE":dark ? "dark" : "light", "TOGETHER_UI_REDUCE_MOTION":reduce ? "1" : "0", "TOGETHER_UI_COMPACT":compact ? "1" : "0", "TOGETHER_UI_CASE":name]
+        if let relay = ProcessInfo.processInfo.environment["TOGETHER_UI_RELAY_URL"] { app.launchEnvironment["TOGETHER_UI_RELAY_URL"] = relay }
         continueAfterFailure = false
+        print("QA_RUNNER_AX_TRUSTED \(AXIsProcessTrusted())")
         app.launch()
         app.activate()
         XCTAssertTrue(app.windows.firstMatch.waitForExistence(timeout: 15))
@@ -142,6 +151,108 @@ import CryptoKit
             let item = app.descendants(matching: .any)[id].firstMatch; XCTAssertTrue(item.isHittable); item.click()
         }
         XCTAssertFalse(app.radioGroups["plans.mode"].exists)
+    }
+    private func saveDeviceFile() {
+        let save = app.dialogs["save-panel"].buttons["OKButton"]
+        XCTAssertTrue(save.waitForExistence(timeout: 8)); save.click()
+    }
+    private func openDeviceFile(_ filename: String) {
+        let panel = app.dialogs["open-panel"]
+        XCTAssertTrue(panel.waitForExistence(timeout: 8))
+        let stem = (filename as NSString).deletingPathExtension
+        let file = panel.descendants(matching: .any).matching(NSPredicate(format: "label BEGINSWITH %@ OR value BEGINSWITH %@", stem, stem)).firstMatch
+        XCTAssertTrue(file.waitForExistence(timeout: 8)); file.click()
+        let button = panel.buttons["OKButton"]; XCTAssertTrue(button.isEnabled); button.click()
+    }
+    private func deviceButton(_ id: String) -> XCUIElement {
+        let button = app.buttons[id]
+        XCTAssertTrue(button.waitForExistence(timeout: 15))
+        for _ in 0..<6 where !button.isHittable { app.sheets.firstMatch.scrollViews.firstMatch.scroll(byDeltaX: 0, deltaY: -260) }
+        for _ in 0..<12 where !button.isHittable { app.sheets.firstMatch.scrollViews.firstMatch.scroll(byDeltaX: 0, deltaY: 260) }
+        XCTAssertTrue(button.isHittable)
+        return button
+    }
+    private func checkDeviceToggle(_ id: String) {
+        let toggle = app.checkBoxes[id]
+        XCTAssertTrue(toggle.waitForExistence(timeout: 8))
+        for _ in 0..<6 where !toggle.isHittable { app.sheets.firstMatch.scrollViews.firstMatch.scroll(byDeltaX: 0, deltaY: -220) }
+        toggle.click()
+    }
+    func testDeviceControllerAuthorizesAndRevokes() async throws {
+        launch(page: "devices", name: "device-controller")
+        let add = deviceButton("devices.add")
+        let enabled = XCTNSPredicateExpectation(predicate: NSPredicate(format: "enabled == true"), object: add)
+        XCTAssertEqual(XCTWaiter.wait(for: [enabled], timeout: 25), .completed)
+        add.click(); saveDeviceFile()
+        let output = root.appendingPathComponent("user-export")
+        let offer = try CanonicalJSON.decode(DeviceEnrollmentOffer.self, from: Data(contentsOf: output.appendingPathComponent("Together-Device-Offer.json")))
+        let workspace = DeviceEnrollmentWorkspace(root: root.appendingPathComponent("independent-device"))
+        let request = try workspace.stage(offer: offer, name: "UI_INDEPENDENT_DEVICE", verified: true, now: .now)
+        try CanonicalJSON.encode(request).write(to: output.appendingPathComponent("Together-Device-Request.json"))
+        deviceButton("devices.importRequest").click(); openDeviceFile("Together-Device-Request.json")
+        XCTAssertFalse(deviceButton("devices.authorize").isEnabled)
+        checkDeviceToggle("devices.verifyRequest")
+        deviceButton("devices.authorize").click(); saveDeviceFile()
+        let completion = try CanonicalJSON.decode(DeviceEnrollmentCompletion.self, from: Data(contentsOf: output.appendingPathComponent("Together-Device-Authorization.json")))
+        let device = try workspace.complete(completion, offerId: offer.body.id, verified: true)
+        let trust = try SpaceAuthorization.restore(completion.body.archive)
+        let store = try AuthorizedReplicationStore(repository: device.repository, identity: device.identity, authorization: trust)
+        try await store.restore()
+        let service = try C1ReplicationService(engine: device, binding: completion.body.binding, store: store)
+        defer { service.stop() }
+        await service.start()
+        let deadline = ContinuousClock.now.advanced(by: .seconds(30))
+        while service.state != .connected {
+            guard ContinuousClock.now < deadline else { return XCTFail("Independent device failed to sync: \(service.errorMessage ?? "none")") }
+            try await Task.sleep(for: .milliseconds(100))
+        }
+        XCTAssertFalse(device.operations.isEmpty)
+        try screenshot("devices-controller-light-candidate")
+        deviceButton("devices.revoke." + device.identity.descriptor.deviceId.uuidString).click()
+        deviceButton("devices.revoke.confirm").click()
+        let stopped = ContinuousClock.now.advanced(by: .seconds(20))
+        while service.state != .error {
+            guard ContinuousClock.now < stopped else { return XCTFail("Revoked device still appeared connected") }
+            try await Task.sleep(for: .milliseconds(100))
+        }
+        XCTAssertTrue(app.staticTexts["已撤销"].exists)
+        deviceButton("devices.close").click()
+    }
+    func testNewDeviceJoinsThroughNativeFilesAndSyncsHistory() throws {
+        launch(page: "devices-join", dark: true, reduce: true, name: "device-join")
+        deviceButton("devices.importOffer").click(); openDeviceFile("Together-Device-Offer.json")
+        XCTAssertFalse(deviceButton("devices.exportRequest").isEnabled)
+        checkDeviceToggle("devices.verifyOffer")
+        deviceButton("devices.exportRequest").click(); saveDeviceFile()
+        let completion = root.appendingPathComponent("user-export/Together-Device-Authorization.json")
+        let received = XCTNSPredicateExpectation(predicate: NSPredicate { _, _ in FileManager.default.fileExists(atPath: completion.path) }, object: nil)
+        XCTAssertEqual(XCTWaiter.wait(for: [received], timeout: 25), .completed)
+        deviceButton("devices.importCompletion").click(); openDeviceFile("Together-Device-Authorization.json")
+        XCTAssertFalse(deviceButton("devices.use").isEnabled)
+        checkDeviceToggle("devices.verifyCompletion")
+        deviceButton("devices.use").click()
+        XCTAssertTrue(app.descendants(matching: .any)["nav.connection"].waitForExistence(timeout: 15))
+        app.descendants(matching: .any)["nav.connection"].click()
+        deviceButton("connection.devices").click()
+        let history = app.staticTexts["devices.historyState"]
+        let synced = XCTNSPredicateExpectation(predicate: NSPredicate(format: "label == %@", "本次历史同步已完成"), object: history)
+        XCTAssertEqual(XCTWaiter.wait(for: [synced], timeout: 30), .completed)
+        try screenshot("devices-joined-dark-reduced-candidate")
+        deviceButton("devices.close").click()
+    }
+    func testLegacyMigrationRequiresTwoSignedConfirmations() throws {
+        launch(page: "devices-migration", name: "device-migration")
+        deviceButton("devices.migration.begin").click(); saveDeviceFile()
+        let file = root.appendingPathComponent("user-export/Together-Migration-Cosigned.json")
+        let signed = XCTNSPredicateExpectation(predicate: NSPredicate { _, _ in FileManager.default.fileExists(atPath: file.path) }, object: nil)
+        XCTAssertEqual(XCTWaiter.wait(for: [signed], timeout: 25), .completed)
+        deviceButton("devices.migration.import").click(); openDeviceFile("Together-Migration-Cosigned.json")
+        XCTAssertFalse(deviceButton("devices.migration.activate").isEnabled)
+        checkDeviceToggle("devices.migration.verify")
+        deviceButton("devices.migration.activate").click()
+        XCTAssertTrue(app.buttons["devices.add"].waitForExistence(timeout: 25))
+        try screenshot("devices-migration-confirmed-light-candidate")
+        deviceButton("devices.close").click()
     }
     private func filter(_ title: String) {
         let control = app.radioGroups["plans.taskFilter"]

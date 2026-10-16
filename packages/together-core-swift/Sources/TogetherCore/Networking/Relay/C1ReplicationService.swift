@@ -237,6 +237,7 @@ extension RelayAPI {
     let remote = try await api.bootstrap4(
       legacyRouteId: legacy.routeId, authorization: trust.archive)
     _ = try remote.verified(local: engine.identity.descriptor, previous: trust)
+    guard try await index.checkpoint() == genesis.body.legacyCheckpoint else { throw ReplicationError.inventoryChanged }
     let binding = C1ReplicationBinding(
       serviceURL: legacy.serviceURL, spaceId: trust.spaceId, legacyRouteId: legacy.routeId,
       localDeviceId: engine.identity.descriptor.deviceId)
@@ -285,6 +286,8 @@ extension RelayAPI {
         LocalIdentityMetadata(
           deviceId: identity.descriptor.deviceId, userId: identity.descriptor.userId,
           spaceId: identity.descriptor.initialSpaceId)),
+      "replication4/local-device": CanonicalJSON.encode(identity.descriptor),
+      "initial-time-zone": CanonicalJSON.encode(trust.genesis.body.sharedTimeZoneIdentifier),
     ])
   }
   public func start() async {
@@ -319,6 +322,35 @@ extension RelayAPI {
   }
   public func devices() async -> [AuthorizedDevice] {
     await store.authorization.devices.values.sorted { $0.id.uuidString < $1.id.uuidString }
+  }
+  public func createDeviceOffer(now: Date = .now) async throws -> DeviceEnrollmentOffer {
+    let offer = try await DeviceEnrollmentOffer.issue(identity: engine.identity, trust: store.authorization, binding: binding, now: now)
+    try engine.repository.save(offer, key: "replication4/enrollment/offer/\(offer.body.id)")
+    return offer
+  }
+  public func approveDeviceRequest(_ request: DeviceEnrollmentRequest, verified: Bool, now: Date = .now) async throws -> DeviceEnrollmentCompletion {
+    guard verified else { throw DeviceEnrollmentError.confirmationRequired }
+    let prefix = "replication4/enrollment/", id = request.body.offerId.uuidString
+    guard let offer = try engine.repository.load(DeviceEnrollmentOffer.self, key: prefix + "offer/" + id),
+      offer.body.issuerDeviceId == engine.identity.descriptor.deviceId else { throw ReplicationError.unauthorized }
+    try request.verify(offer: offer)
+    if let done = try engine.repository.load(DeviceEnrollmentCompletion.self, key: prefix + "complete/" + id) {
+      guard try done.body.requestDigest == request.digest else { throw ReplicationError.contentCollision }
+      guard await store.authorization.containsActive(request.body.device) else { throw ReplicationError.revoked }
+      return done
+    }
+    _ = try offer.verify(now: now)
+    if let claimed = try engine.repository.load(String.self, key: prefix + "claimed/" + id) {
+      guard try claimed == request.digest else { throw ReplicationError.contentCollision }
+    } else { try engine.repository.save(request.digest, key: prefix + "claimed/" + id) }
+    let trust = await store.authorization
+    if let existing = trust.devices[request.body.device.deviceId] {
+      guard existing.isActive, existing.descriptor == request.body.device else { throw ReplicationError.unauthorized }
+    } else { try await addMyDevice(request.body.device) }
+    let completion = try await DeviceEnrollmentCompletion.issue(request: request, offer: offer,
+      trust: store.authorization, binding: binding, identity: engine.identity)
+    try engine.repository.save(completion, key: prefix + "complete/" + id)
+    return completion
   }
   /// The caller presents the independent new device fingerprint for explicit
   /// user confirmation before invoking this authorization command.

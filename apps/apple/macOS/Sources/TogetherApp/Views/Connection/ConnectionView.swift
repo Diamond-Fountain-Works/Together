@@ -15,6 +15,7 @@ struct ConnectionView: View {
                 PageHeading(title: Copy.text("nav.connection"), subtitle: "")
                 HStack { Circle().fill(model.network.isOnline ? .green : .secondary).frame(width: 7, height: 7); Text(model.network.state.displayName).font(.callout); Spacer() }
                     .accessibilityIdentifier("connection.state")
+                Button(Copy.text("device.title"), systemImage: "desktopcomputer") { model.show(.devices) }.accessibilityIdentifier("connection.devices")
                 if let error = model.network.errorMessage { Text(error).foregroundStyle(.orange).accessibilityIdentifier("connection.error") }
                 if !model.network.isConfigured {
                     Text(Copy.text("copy.guidance.4d93993d5b23")).font(.callout).foregroundStyle(.secondary)

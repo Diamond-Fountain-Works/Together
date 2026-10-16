@@ -20,6 +20,9 @@ struct RelayAPI {
     let identity: DeviceIdentity
     let session: URLSession
     init(base: URL, identity: DeviceIdentity, session: URLSession? = nil) throws {
+        self.base = try Self.validatedBase(base); self.identity = identity; self.session = session ?? RelayURLSession.make()
+    }
+    static func validatedBase(_ base: URL) throws -> URL {
         let local = ["127.0.0.1", "localhost", "::1"].contains(base.host ?? "")
         #if DEBUG
         let allowed = base.scheme == "https" || (base.scheme == "http" && local)
@@ -27,7 +30,7 @@ struct RelayAPI {
         let allowed = base.scheme == "https"
         #endif
         guard allowed, base.host?.isEmpty == false, base.path.isEmpty || base.path == "/", base.user == nil, base.password == nil, base.query == nil, base.fragment == nil else { throw TogetherError.invalid(Copy.text("copy.error.183f34eaecaa")) }
-        self.base = base; self.identity = identity; self.session = session ?? RelayURLSession.make()
+        return base
     }
     func createInvitation(name: String, expectedPeer: DeviceDescriptor?) async throws -> RelayInvitation {
         try await request("POST", path: "/v1/invitations", body: CanonicalJSON.encode(RelayIdentityRequest(descriptor: identity.descriptor, profileName: name, expectedPeer: expectedPeer)), as: RelayInvitation.self)

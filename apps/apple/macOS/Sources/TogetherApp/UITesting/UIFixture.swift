@@ -17,16 +17,16 @@ struct UIFixture {
     init() throws {
         let env = ProcessInfo.processInfo.environment
         page = env["TOGETHER_UI_PAGE"] ?? "home"
-        guard ["home","tasks","upcoming","completed","wishes","gifts","reveal","settings","setup","reserves","expenses","bills","finance-settings","changes"].contains(page),
+        guard ["home","tasks","upcoming","completed","wishes","gifts","reveal","settings","setup","reserves","expenses","bills","finance-settings","changes","devices","devices-join","devices-migration"].contains(page),
               let path = env["TOGETHER_UI_ROOT"], URL(fileURLWithPath: path).lastPathComponent.hasPrefix("together-ui-") else { throw TogetherError.invalid("Invalid isolated UI fixture configuration") }
         root = URL(fileURLWithPath: path, isDirectory: true).standardizedFileURL.resolvingSymlinksInPath()
         let temporary = FileManager.default.temporaryDirectory.standardizedFileURL.resolvingSymlinksInPath().path
-        guard root.path.hasPrefix(temporary + "/") || root.path.hasPrefix("/private/tmp/together-ui-") || root.path.hasPrefix("/tmp/together-ui-") || root.path.contains("/Library/Containers/com.together.app.UITests.xctrunner/Data/tmp/together-ui-") else { throw TogetherError.invalid("UI fixture root must be private temporary storage") }
+        guard root.path.hasPrefix(temporary + "/") || root.path.hasPrefix("/private/tmp/together-ui-") || root.path.hasPrefix("/tmp/together-ui-") || root.path.contains("/Library/Containers/com.together.app.qa.UITests.xctrunner/Data/tmp/together-ui-") else { throw TogetherError.invalid("UI fixture root must be private temporary storage") }
         populated = env["TOGETHER_UI_STATE"] == "populated"; dark = env["TOGETHER_UI_MODE"] == "dark"; reduceMotion = env["TOGETHER_UI_REDUCE_MOTION"] == "1"
         snapshotName = env["TOGETHER_UI_CASE"] ?? "fixture"
     }
     @MainActor func build() async throws -> ApplicationModel {
-        try FileManager.default.createDirectory(at: root, withIntermediateDirectories: true)
+        try FileManager.default.createDirectory(at: root, withIntermediateDirectories: true, attributes: [.posixPermissions: 0o700])
         if root.lastPathComponent.hasPrefix("together-ui-existing-") {
             // An explicit DEBUG-only upgrade rehearsal. Never resolves the
             // production Application Support path or starts a relay session.
@@ -42,8 +42,10 @@ struct UIFixture {
             return model
         }
         let now = ISO8601DateFormatter().date(from: "2026-10-09T04:00:00Z")!, clock = FixedDateProvider(now)
-        let ia = try DeviceIdentity(deviceId: UUID(uuidString: "00000000-0000-0000-0000-000000000001")!, userId: UUID(uuidString: "00000000-0000-0000-0000-000000000101")!, initialSpaceId: UUID(uuidString: "00000000-0000-0000-0000-000000000201")!, privateKeyData: Data(repeating: 1, count: 32), timeZoneIdentifier: "Asia/Shanghai", protocolVersion: 3)
-        let ib = try DeviceIdentity(deviceId: UUID(uuidString: "00000000-0000-0000-0000-000000000002")!, userId: UUID(uuidString: "00000000-0000-0000-0000-000000000102")!, initialSpaceId: UUID(uuidString: "00000000-0000-0000-0000-000000000202")!, privateKeyData: Data(repeating: 2, count: 32), timeZoneIdentifier: "Asia/Shanghai", protocolVersion: 3)
+        let deviceCase = page.hasPrefix("devices") ? "Synthetic device UI " + snapshotName + page : nil
+        func deviceID(_ role: String, fallback: String) -> UUID { deviceCase.map { StableID.make($0 + role) } ?? UUID(uuidString: fallback)! }
+        let ia = try DeviceIdentity(deviceId: deviceID("a", fallback: "00000000-0000-0000-0000-000000000001"), userId: UUID(uuidString: "00000000-0000-0000-0000-000000000101")!, initialSpaceId: UUID(uuidString: "00000000-0000-0000-0000-000000000201")!, privateKeyData: Data(repeating: 1, count: 32), timeZoneIdentifier: "Asia/Shanghai", protocolVersion: 3)
+        let ib = try DeviceIdentity(deviceId: deviceID("b", fallback: "00000000-0000-0000-0000-000000000002"), userId: UUID(uuidString: "00000000-0000-0000-0000-000000000102")!, initialSpaceId: UUID(uuidString: "00000000-0000-0000-0000-000000000202")!, privateKeyData: Data(repeating: 2, count: 32), timeZoneIdentifier: "Asia/Shanghai", protocolVersion: 3)
         let a = try ReplicaEngine(repository: TogetherRepository(url: root.appendingPathComponent("fixture.store")), identity: ia, mediaRoot: root.appendingPathComponent("media"), dateProvider: clock)
         let b = try ReplicaEngine(repository: TogetherRepository(inMemory: true), identity: ib, mediaRoot: root.appendingPathComponent("partner-media"), dateProvider: clock)
         if (try a.repository.load(Bool.self, key: "ui-fixture-built")) != true {
@@ -119,6 +121,7 @@ struct UIFixture {
         if page == "changes" { model.show(.changes) }
         if page == "gifts" { model.show(.giftEditor(nil)) }
         if page == "finance-settings" { model.showFinance(.settings) }
+        if page.hasPrefix("devices") { return try await DeviceUIFixture.configure(original: model, a: a, b: b, root: root, page: page) }
         return model
     }
     private func makePhoto() throws -> URL {
@@ -152,11 +155,14 @@ struct UIFixtureRoot: View {
     var body: some View {
         Group {
             if let model, let fixture {
-                RootView(model: model).preferredColorScheme(fixture.dark ? .dark : .light)
+                RootView(model: model).id(model.engine.identity.descriptor.deviceId).preferredColorScheme(fixture.dark ? .dark : .light)
                     .environment(\.locale, Locale(identifier: "zh_CN"))
                     .environment(\.togetherMotionOverride, fixture.reduceMotion)
                     .background(FixtureWindowSize())
                     .background(FixtureContentCapture(fixture: fixture))
+                    .onChange(of: model.requestedReplica?.identity.descriptor.deviceId) { _, _ in
+                        if let engine = model.requestedReplica { self.model = model.replacement(with: engine) }
+                    }
             } else { ProgressView().accessibilityIdentifier("qa.loading") }
         }
         .task {

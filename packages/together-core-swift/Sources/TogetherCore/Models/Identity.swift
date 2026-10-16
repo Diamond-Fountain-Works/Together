@@ -28,11 +28,11 @@ public struct DeviceIdentity: Sendable {
     }
     public static func persistent(deviceId: UUID, userId: UUID, spaceId: UUID, directory: URL,
                                   needsExistingIdentity: Bool, migrateLegacy: Bool = false,
-                                  timeZoneIdentifier: String = TimeZone.current.identifier, protocolVersion: Int = 2, validateKey: (Data) throws -> Void = { _ in }) throws -> DeviceIdentity {
+                                  timeZoneIdentifier: String = TimeZone.current.identifier, protocolVersion: Int = 2, displayName: String = "我", validateKey: (Data) throws -> Void = { _ in }) throws -> DeviceIdentity {
         let data = try IdentityFileStore(directory: directory).loadOrCreate(deviceId: deviceId, needsExistingIdentity: needsExistingIdentity, migrateLegacy: migrateLegacy, legacyReader: {
             try IdentityFileStore.readLegacyKeychain(deviceId: deviceId)
         }, validate: validateKey)
-        return try DeviceIdentity(deviceId: deviceId, userId: userId, initialSpaceId: spaceId, privateKeyData: data, timeZoneIdentifier: timeZoneIdentifier, protocolVersion: protocolVersion)
+        return try DeviceIdentity(deviceId: deviceId, userId: userId, initialSpaceId: spaceId, privateKeyData: data, displayName: displayName, timeZoneIdentifier: timeZoneIdentifier, protocolVersion: protocolVersion)
     }
 }
 public struct PairedPeer: Codable, Equatable, Sendable {

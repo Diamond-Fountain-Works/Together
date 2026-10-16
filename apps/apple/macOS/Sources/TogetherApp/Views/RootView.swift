@@ -72,6 +72,7 @@ struct RootView: View {
             case .giftReveal(let ids, let automatic): GiftRevealView(model: model, giftIds: ids, automatic: automatic)
             case .finance(let sheet): FinanceSheetView(model: model, sheet: sheet)
             case .changes: SharedChangeHistoryView(model:model)
+            case .devices: DeviceManagementView(model:model)
             }
             }.tint(TogetherTheme.rose)
         }

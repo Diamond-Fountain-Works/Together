@@ -129,6 +129,19 @@ public enum PairingConnectionState: String, Sendable { case unpaired = "Unpaired
             await service.start()
         }catch{errorMessage=error.localizedDescription;state = .error}
     }
+    public func activateMigration(_ exchange: LegacyMigrationExchange, verified: Bool) async throws {
+        guard verified else { throw DeviceEnrollmentError.confirmationRequired }
+        try await exchange.validate(engine)
+        try exchange.genesis.verify(existingPins: engine.context)
+        busy = true; defer { busy = false }
+        let service = try await C1ReplicationService.migrate(engine: engine, genesis: exchange.genesis)
+        // Only stop the old transport after the new trust/binding is durable.
+        retry?.cancel(); poll?.cancel(); resetSession(); transport.disconnect()
+        multiDeviceService = service; enabled = true
+        service.onStateChanged = { [weak self] value in self?.state = value; self?.errorMessage = self?.multiDeviceService?.errorMessage }
+        service.onConverged = { [weak self] in self?.lastSynchronizedAt = .now; self?.completedSyncCount += 1 }
+        await service.start()
+    }
     private func validateRoute(_ route: RelayRoute) throws {
         guard !route.revoked, route.members.count == 2,
               route.members.contains(where: { $0.descriptor.deviceId == engine.identity.descriptor.deviceId && $0.descriptor.publicKey == engine.identity.descriptor.publicKey }),

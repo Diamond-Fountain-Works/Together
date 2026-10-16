@@ -201,36 +201,23 @@ import Testing
     await sa.start()
     await sb.start()
     try await eventually({ sa.state == .connected && sb.state == .connected }, seconds: 20)
-    let ids = [
-      try DeviceIdentity(userId: ia.descriptor.userId, protocolVersion: 4),
-      try DeviceIdentity(userId: ib.descriptor.userId, protocolVersion: 4),
-    ]
-    try await sa.addMyDevice(ids[0].descriptor)
-    try await sb.addMyDevice(ids[1].descriptor)
-    // Each new device has a fresh independent key; only the signed public
-    // authorization archive and authenticated bootstrap digest are copied.
-    let archive = await sa.authorizationArchive()
-    // Fetch the latest owner streams after the other root's grant.
-    let state = try await RelayAPI(base: url, identity: ia).space4(space)
-    _ = archive
+    var ids: [DeviceIdentity] = []
     var engines: [ReplicaEngine] = [a, b]
     var services: [C1ReplicationService] = [sa, sb]
     defer { for service in services { service.stop() } }
-    for (i, id) in ids.enumerated() {
-      let repo = try TogetherRepository(url: temp.appendingPathComponent("child\(i).store"))
-      let binding = C1ReplicationBinding(
-        serviceURL: url, spaceId: space, legacyRouteId: oldBinding.routeId,
-        localDeviceId: id.descriptor.deviceId)
-      try C1ReplicationService.prepareAuthorizedDevice(
-        repository: repo, identity: id, binding: binding, archive: state.archive,
-        trustedGenesisDigest: genesis.digest)
-      let engine = try ReplicaEngine(
-        repository: repo, identity: id, mediaRoot: temp.appendingPathComponent("child\(i)m"),
-        dateProvider: clock)
-      let store = try AuthorizedReplicationStore(
-        repository: repo, identity: id, authorization: SpaceAuthorization.restore(state.archive))
+    for (i, controller) in [sa, sb].enumerated() {
+      // Exercise the exact native-file flow: fresh independent key, request
+      // proof of possession, explicit trusted-root grant, durable activation.
+      let workspace = DeviceEnrollmentWorkspace(root: temp.appendingPathComponent("child\(i)"))
+      let offer = try await controller.createDeviceOffer()
+      let request = try workspace.stage(offer: offer, name: "Synthetic child \(i)", verified: true, now: Date())
+      let completion = try await controller.approveDeviceRequest(request, verified: true)
+      let engine = try workspace.complete(completion, offerId: offer.body.id, verified: true, dateProvider: clock)
+      ids.append(engine.identity)
+      let store = try AuthorizedReplicationStore(repository: engine.repository, identity: engine.identity,
+        authorization: SpaceAuthorization.restore(completion.body.archive))
       try await store.restore()
-      let service = try C1ReplicationService(engine: engine, binding: binding, store: store)
+      let service = try C1ReplicationService(engine: engine, binding: completion.body.binding, store: store)
       engines.append(engine)
       services.append(service)
       await service.start()

@@ -1,0 +1,185 @@
+{
+  "completion" : {
+    "body" : {
+      "archive" : {
+        "events" : [
+          {
+            "body" : {
+              "action" : "grant",
+              "authorizerDeviceId" : "B4FDF6B0-F408-41DC-B30D-44F41FBF6714",
+              "device" : {
+                "deviceId" : "90F265C3-912E-4A52-9337-80BED712EEE3",
+                "displayName" : "Synthetic enrollment device",
+                "initialSpaceId" : "6FBD9065-7C4E-5B47-9C70-175DC4BF082D",
+                "initialTimeZoneIdentifier" : "Asia/Shanghai",
+                "protocolVersion" : 4,
+                "publicKey" : "lYCgafGhgRdnBAYBHqdk4OrlvRrdAAgp/+2iT2Ygtyw=",
+                "userId" : "D0F84FE7-EB76-402D-AC64-8295526C1F6B"
+              },
+              "epochId" : "9549E8C0-B19A-43CE-B2A5-006B02815960",
+              "ownerId" : "D0F84FE7-EB76-402D-AC64-8295526C1F6B",
+              "previousDigest" : "44f2ef2c8ce5d8ccd09038061da1a05ccec3839d1d1e2441ae4fb8c356700b13",
+              "revision" : 1,
+              "spaceId" : "6FBD9065-7C4E-5B47-9C70-175DC4BF082D",
+              "version" : 4
+            },
+            "signature" : "wXl8K/MBHJy2+GUYu25giIFxVZSyJRKPd/J7wSnJeX4KbaMMEG5XNRXeddMvpBDlwKjl/ZZMl4V8PGGFphOvCw=="
+          }
+        ],
+        "genesis" : {
+          "body" : {
+            "legacyCheckpoint" : {
+              "count" : 0,
+              "digest" : "7dd799ac93d3172ace0d0af5c1171f5f1cee1c3597313259cfda53ee7815a9ae"
+            },
+            "legacySpaceIds" : [
+              "1CB2DAC9-4F33-40B6-B5AC-46030BC83178",
+              "6FBD9065-7C4E-5B47-9C70-175DC4BF082D",
+              "C94E169D-CA71-44C8-819C-D9B83FD3D023"
+            ],
+            "memberIds" : [
+              "5165A25D-237D-40B4-9F49-CC813606EF74",
+              "D0F84FE7-EB76-402D-AC64-8295526C1F6B"
+            ],
+            "roots" : [
+              {
+                "deviceId" : "4BA2172E-2FB6-43D9-8175-CC13F12E8332",
+                "displayName" : "Synthetic B",
+                "initialSpaceId" : "1CB2DAC9-4F33-40B6-B5AC-46030BC83178",
+                "initialTimeZoneIdentifier" : "Asia/Shanghai",
+                "protocolVersion" : 3,
+                "publicKey" : "J2MAJW83f4JQCgXaw1+4qzuGRsJm6nsh2ZWdqwPh7Sk=",
+                "userId" : "5165A25D-237D-40B4-9F49-CC813606EF74"
+              },
+              {
+                "deviceId" : "B4FDF6B0-F408-41DC-B30D-44F41FBF6714",
+                "displayName" : "Synthetic A",
+                "initialSpaceId" : "C94E169D-CA71-44C8-819C-D9B83FD3D023",
+                "initialTimeZoneIdentifier" : "Asia/Shanghai",
+                "protocolVersion" : 3,
+                "publicKey" : "RIbgEHZcu/u2lebwsh5/vc7iGsqzGxvr6jJrWOwBoJs=",
+                "userId" : "D0F84FE7-EB76-402D-AC64-8295526C1F6B"
+              }
+            ],
+            "sharedTimeZoneIdentifier" : "Asia/Shanghai",
+            "spaceId" : "6FBD9065-7C4E-5B47-9C70-175DC4BF082D",
+            "version" : 4
+          },
+          "signatures" : [
+            {
+              "deviceId" : "4BA2172E-2FB6-43D9-8175-CC13F12E8332",
+              "signature" : "SufzDr42o/tC9lob9QEJglxQZk/eNC9PM+9J608BRzYvtsT5w6CGsehn9QQ5vJDZuJwaFBxQC4nD2fBUqhctBg=="
+            },
+            {
+              "deviceId" : "B4FDF6B0-F408-41DC-B30D-44F41FBF6714",
+              "signature" : "3AoYSi+iUR48gE+drjRcKjShe80zc85uCkWIs68cPnMGTUlwhVW7k4oFGg2UFQvLH8NuF91JldimVO4VEdfFBw=="
+            }
+          ]
+        }
+      },
+      "binding" : {
+        "legacyRouteId" : "50A26DD0-43BA-417D-979E-1F2A5B4B56FA",
+        "localDeviceId" : "90F265C3-912E-4A52-9337-80BED712EEE3",
+        "serviceURL" : "https://relay.example.invalid",
+        "spaceId" : "6FBD9065-7C4E-5B47-9C70-175DC4BF082D"
+      },
+      "kind" : "Together-Device-Completion-1",
+      "requestDigest" : "f97b96720784d7c2eeae4e935fbd33e2540f62f4e7b90c2f1c138433a4a37730"
+    },
+    "signature" : "Mw2xhndTyzvbUXilHWBaYpZmuTb2lqn2IGM5NAbpYlDPFRL5J2TB/T7o1mkx0ULrAfH4xB+Ha5I5ovJ0105EAQ=="
+  },
+  "offer" : {
+    "body" : {
+      "archive" : {
+        "events" : [
+
+        ],
+        "genesis" : {
+          "body" : {
+            "legacyCheckpoint" : {
+              "count" : 0,
+              "digest" : "7dd799ac93d3172ace0d0af5c1171f5f1cee1c3597313259cfda53ee7815a9ae"
+            },
+            "legacySpaceIds" : [
+              "1CB2DAC9-4F33-40B6-B5AC-46030BC83178",
+              "6FBD9065-7C4E-5B47-9C70-175DC4BF082D",
+              "C94E169D-CA71-44C8-819C-D9B83FD3D023"
+            ],
+            "memberIds" : [
+              "5165A25D-237D-40B4-9F49-CC813606EF74",
+              "D0F84FE7-EB76-402D-AC64-8295526C1F6B"
+            ],
+            "roots" : [
+              {
+                "deviceId" : "4BA2172E-2FB6-43D9-8175-CC13F12E8332",
+                "displayName" : "Synthetic B",
+                "initialSpaceId" : "1CB2DAC9-4F33-40B6-B5AC-46030BC83178",
+                "initialTimeZoneIdentifier" : "Asia/Shanghai",
+                "protocolVersion" : 3,
+                "publicKey" : "J2MAJW83f4JQCgXaw1+4qzuGRsJm6nsh2ZWdqwPh7Sk=",
+                "userId" : "5165A25D-237D-40B4-9F49-CC813606EF74"
+              },
+              {
+                "deviceId" : "B4FDF6B0-F408-41DC-B30D-44F41FBF6714",
+                "displayName" : "Synthetic A",
+                "initialSpaceId" : "C94E169D-CA71-44C8-819C-D9B83FD3D023",
+                "initialTimeZoneIdentifier" : "Asia/Shanghai",
+                "protocolVersion" : 3,
+                "publicKey" : "RIbgEHZcu/u2lebwsh5/vc7iGsqzGxvr6jJrWOwBoJs=",
+                "userId" : "D0F84FE7-EB76-402D-AC64-8295526C1F6B"
+              }
+            ],
+            "sharedTimeZoneIdentifier" : "Asia/Shanghai",
+            "spaceId" : "6FBD9065-7C4E-5B47-9C70-175DC4BF082D",
+            "version" : 4
+          },
+          "signatures" : [
+            {
+              "deviceId" : "4BA2172E-2FB6-43D9-8175-CC13F12E8332",
+              "signature" : "SufzDr42o/tC9lob9QEJglxQZk/eNC9PM+9J608BRzYvtsT5w6CGsehn9QQ5vJDZuJwaFBxQC4nD2fBUqhctBg=="
+            },
+            {
+              "deviceId" : "B4FDF6B0-F408-41DC-B30D-44F41FBF6714",
+              "signature" : "3AoYSi+iUR48gE+drjRcKjShe80zc85uCkWIs68cPnMGTUlwhVW7k4oFGg2UFQvLH8NuF91JldimVO4VEdfFBw=="
+            }
+          ]
+        }
+      },
+      "binding" : {
+        "legacyRouteId" : "50A26DD0-43BA-417D-979E-1F2A5B4B56FA",
+        "localDeviceId" : "B4FDF6B0-F408-41DC-B30D-44F41FBF6714",
+        "serviceURL" : "https://relay.example.invalid",
+        "spaceId" : "6FBD9065-7C4E-5B47-9C70-175DC4BF082D"
+      },
+      "expiresAt" : 1791551800000,
+      "id" : "7A5341CF-5E06-4C89-8825-E12929AEB4BB",
+      "issuerDeviceId" : "B4FDF6B0-F408-41DC-B30D-44F41FBF6714",
+      "kind" : "Together-Device-Offer-1",
+      "ownerId" : "D0F84FE7-EB76-402D-AC64-8295526C1F6B"
+    },
+    "signature" : "uzp/Pj9w7tYZHQPN3RSpgoYgkfvCrAQif8L5qo4js7MFAdMroGWG5zVQSM187ribl6gDvnLH67iU/jBWv6bhAw=="
+  },
+  "offerCode" : "3098 68FB E76C 3F50 D8ED 1F42",
+  "offerDigest" : "309868fbe76c3f50d8ed1f42c5839aec91118d3f55c7e377789238893953fb57",
+  "request" : {
+    "body" : {
+      "device" : {
+        "deviceId" : "90F265C3-912E-4A52-9337-80BED712EEE3",
+        "displayName" : "Synthetic enrollment device",
+        "initialSpaceId" : "6FBD9065-7C4E-5B47-9C70-175DC4BF082D",
+        "initialTimeZoneIdentifier" : "Asia/Shanghai",
+        "protocolVersion" : 4,
+        "publicKey" : "lYCgafGhgRdnBAYBHqdk4OrlvRrdAAgp/+2iT2Ygtyw=",
+        "userId" : "D0F84FE7-EB76-402D-AC64-8295526C1F6B"
+      },
+      "kind" : "Together-Device-Request-1",
+      "offerDigest" : "309868fbe76c3f50d8ed1f42c5839aec91118d3f55c7e377789238893953fb57",
+      "offerId" : "7A5341CF-5E06-4C89-8825-E12929AEB4BB"
+    },
+    "signature" : "SV2t36IbjrDvxyAE8yBVAiHboIafhsfhlqR1BIFLj5OGEPELtFd9Ume6wI5eTzxfBK1aLVBj3GK68uhLOUO1AA=="
+  },
+  "requestCode" : "F97B 9672 0784 D7C2 EEAE 4E93",
+  "requestDigest" : "f97b96720784d7c2eeae4e935fbd33e2540f62f4e7b90c2f1c138433a4a37730",
+  "synthetic" : true,
+  "version" : 1
+}

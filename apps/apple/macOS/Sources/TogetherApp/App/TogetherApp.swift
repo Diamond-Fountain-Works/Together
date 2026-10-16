@@ -36,8 +36,14 @@ import AppKit
     @ViewBuilder private var normalContent: some View {
             if let model {
                 RootView(model: model)
+                    .id(model.engine.identity.descriptor.deviceId)
                     .frame(minWidth: 900, minHeight: 620)
                     .preferredColorScheme(appearance == "system" ? nil : appearance == "dark" ? .dark : .light)
+                    .onChange(of: model.requestedReplica?.identity.descriptor.deviceId) { _, _ in
+                        if let engine = model.requestedReplica {
+                            self.model = model.replacement(with: engine)
+                        }
+                    }
             } else {
                 StartupIdentityView(needsMigration: needsIdentityMigration, error: startupError) {
                     do {
@@ -56,6 +62,7 @@ import AppKit
                     .keyboardShortcut("l", modifiers: [.command, .shift]).disabled(model == nil)
             }
             CommandGroup(after: .windowArrangement) {
+                Button(Copy.text("device.title")) { model?.show(.devices) }.disabled(model == nil)
                 Button(Copy.text("sync.changes.title")) {model?.show(.changes)}.disabled(model==nil)
                 Button(Copy.text("copy.action.1555373b2da2")) { model?.show(.giftHistory) }.keyboardShortcut("l", modifiers: [.command, .option]).disabled(model == nil)
             }
@@ -69,6 +76,14 @@ import AppKit
     }
 }
 @MainActor final class TogetherAppDelegate: NSObject, NSApplicationDelegate {
-    func applicationDidFinishLaunching(_ notification: Notification) { NSApp.setActivationPolicy(.regular); NSApp.activate(ignoringOtherApps: true) }
+    func applicationDidFinishLaunching(_ notification: Notification) {
+        NSApp.setActivationPolicy(.regular); NSApp.activate(ignoringOtherApps: true)
+        #if TOGETHER_UI_TEST_HOST
+        // XCTest starts the host without a Launch Services reopen event.
+        // Present the already-created QA scene; never instantiate a second
+        // production model or fall back to a different app bundle.
+        DispatchQueue.main.async { NSApp.windows.first(where: { $0.canBecomeMain })?.makeKeyAndOrderFront(nil) }
+        #endif
+    }
     func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool { false }
 }
