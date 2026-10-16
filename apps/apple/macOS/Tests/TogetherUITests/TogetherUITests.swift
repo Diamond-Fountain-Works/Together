@@ -179,29 +179,28 @@ import TogetherCore
         XCTAssertTrue(panel.waitForExistence(timeout: 8))
         // A column browser's ScrollView aggregates its children's labels. Do
         // not match that container as though it were the selectable filename.
-        // Use the native Go to Folder field and a committed paste, preserving
-        // the user's input source and clipboard just as currency search does.
-        panel.typeKey("g", modifierFlags: [.command, .shift])
-        let field = app.textFields["PathTextField"]
-        XCTAssertTrue(field.waitForExistence(timeout: 8))
-        let pasteboard = NSPasteboard.general
-        let saved = (pasteboard.pasteboardItems ?? []).map { item in
-            let copy = NSPasteboardItem()
-            for type in item.types { if let bytes = item.data(forType: type) { copy.setData(bytes, forType: type) } }
-            return copy
+        // The fixture supplies the actual native panel's starting directory.
+        // Select its filename in a native list. Column-view ancestors can push
+        // an otherwise existing filename offscreen. Restore the panel's view
+        // before opening; no keyboard path entry or input-source change is used.
+        let previousView = panel.browsers["ColumnView"].exists ? "cmdViewAsColumns:" : panel.outlines["ListView"].exists ? "cmdViewAsList:" : "cmdViewAsIcons:"
+        if previousView != "cmdViewAsList:" {
+            panel.menuButtons["View Options"].click()
+            app.menuItems["cmdViewAsList:"].click()
         }
-        pasteboard.clearContents()
-        pasteboard.setString(root.appendingPathComponent("user-export").appendingPathComponent(filename).path, forType: .string)
-        let testChange = pasteboard.changeCount
-        defer {
-            if pasteboard.changeCount == testChange {
-                pasteboard.clearContents()
-                if !saved.isEmpty { pasteboard.writeObjects(saved) }
-            }
+        XCTAssertTrue(panel.outlines["ListView"].waitForExistence(timeout: 8))
+        let stem = (filename as NSString).deletingPathExtension
+        let file = panel.outlines["ListView"].textFields.matching(NSPredicate(format: "value == %@ OR value == %@ OR label == %@ OR label == %@", filename, stem, filename, stem)).firstMatch
+        XCTAssertTrue(file.waitForExistence(timeout: 8))
+        XCTAssertTrue(file.isHittable)
+        file.click()
+        if previousView != "cmdViewAsList:" {
+            panel.menuButtons["View Options"].click()
+            app.menuItems[previousView].click()
         }
-        field.click(); field.typeKey("a", modifierFlags: .command); field.typeKey("v", modifierFlags: .command)
-        app.typeKey(.return, modifierFlags: [])
         let button = panel.buttons["OKButton"]; XCTAssertTrue(button.isEnabled); button.click()
+        let closed = XCTNSPredicateExpectation(predicate: NSPredicate(format: "exists == false"), object: panel)
+        XCTAssertEqual(XCTWaiter.wait(for: [closed], timeout: 8), .completed)
     }
     private func deviceButton(_ id: String) -> XCUIElement {
         let button = app.buttons[id]
