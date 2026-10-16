@@ -26,7 +26,7 @@ FinanceChange derives real before/after data from validated operation history an
 
 Production 0.2.1 DeviceDescriptor uses protocolVersion 3 with the same private key, UUIDs and space. Relay hello is signed with its descriptor; V2/V3 mismatch is rejected before operation exchange. Pinned identity matching ignores only the supported version upgrade, not device/user/public key/initial space. Saved V2 routes can reconnect with both upgraded V3 clients without an invitation. Workers routing accepts both versions and leaves existing Durable Objects intact; the legacy TCP adapter also rejects mixed clients.
 
-The wire data is Codable JSON, not SwiftData objects. FinanceMoney minor-unit strings, ISO codes, CivilDate, user UUID allocation, explicit bill/month and rule effective month are platform-independent. Existing LogValue.data wraps canonical UTF-8 finance JSON in base64; a future Kotlin client must follow the existing signed-envelope canonicalization and uppercase UUID StableID scheme. See FINANCE_PROTOCOL.md. No Android code or C2 mailbox added.
+The wire data is Codable JSON, not SwiftData objects. FinanceMoney minor-unit strings, ISO codes, CivilDate, user UUID allocation, explicit bill/month and rule effective month are platform-independent. Existing LogValue.data wraps canonical UTF-8 finance JSON in base64. The additive Android Phase A client follows the existing signed-envelope canonicalization and uppercase UUID StableID scheme; see [Android architecture](ANDROID_FOUNDATION.md) and FINANCE_PROTOCOL.md. No C2 or offline mailbox is included.
 
 ## Retained architecture history
 

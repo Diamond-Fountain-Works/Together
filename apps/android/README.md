@@ -60,3 +60,5 @@ The deterministic synthetic fixture is exported only by an explicit developer fl
 Toolchain basis: [AGP compatibility](https://developer.android.com/build/releases/agp-8-13-0-release-notes), [Compose compiler](https://developer.android.com/develop/ui/compose/setup-compose-dependencies-and-compiler), [Room](https://developer.android.com/jetpack/androidx/releases/room), [Bouncy Castle Java](https://www.bouncycastle.org/documentation/documentation-java/). Dependency versions are pinned to a tested baseline; lint upgrade advisories remain visible.
 
 Status/evidence and next steps: [Android Phase A QA](../../docs/qa/reports/ANDROID_PHASE_A.md).
+
+The final local source/Debug APK, exact SHA-256, 31 JVM / 7 emulator results and 17 unapproved screenshot candidates are recorded there. Android instrumentation was run on Android 15/API35 ARM64 only; minimum API28, physical phones/tablets and real Mac↔Android acceptance remain NOT RUN. [Draft PR #5](https://github.com/Diamond-Fountain-Works/Together/pull/5) is stacked on the unmerged Protocol 4 branch; hosted CI does not claim emulator coverage.
