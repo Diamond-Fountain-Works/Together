@@ -20,6 +20,14 @@ struct RelayAPI {
     let identity: DeviceIdentity
     let session: URLSession
     init(base: URL, identity: DeviceIdentity, session: URLSession? = nil) throws {
+        self.base = try Self.validatedBase(base); self.identity = identity; self.session = session ?? RelayURLSession.make()
+    }
+    static func validatedBase(_ base: URL) throws -> URL {
+        #if DEBUG
+        if ["com.together.app.qa", "com.together.app.qa.UITests.xctrunner"].contains(Bundle.main.bundleIdentifier ?? "") {
+            try requireQAOrigin(base, origin: ProcessInfo.processInfo.environment["TOGETHER_UI_RELAY_URL"])
+        }
+        #endif
         let local = ["127.0.0.1", "localhost", "::1"].contains(base.host ?? "")
         #if DEBUG
         let allowed = base.scheme == "https" || (base.scheme == "http" && local)
@@ -27,8 +35,19 @@ struct RelayAPI {
         let allowed = base.scheme == "https"
         #endif
         guard allowed, base.host?.isEmpty == false, base.path.isEmpty || base.path == "/", base.user == nil, base.password == nil, base.query == nil, base.fragment == nil else { throw TogetherError.invalid(Copy.text("copy.error.183f34eaecaa")) }
-        self.base = base; self.identity = identity; self.session = session ?? RelayURLSession.make()
+        return base
     }
+    #if DEBUG
+    static func requireQAOrigin(_ base: URL, origin: String?) throws {
+        guard let origin, let expected = URL(string: origin),
+              expected.scheme == "http", expected.host == "127.0.0.1", expected.port != nil,
+              expected.user == nil, expected.password == nil, expected.query == nil, expected.fragment == nil,
+              expected.path.isEmpty || expected.path == "/",
+              base.scheme == expected.scheme, base.host == expected.host, base.port == expected.port else {
+            throw TogetherError.invalid(Copy.text("qa.error.isolatedLaunch"))
+        }
+    }
+    #endif
     func createInvitation(name: String, expectedPeer: DeviceDescriptor?) async throws -> RelayInvitation {
         try await request("POST", path: "/v1/invitations", body: CanonicalJSON.encode(RelayIdentityRequest(descriptor: identity.descriptor, profileName: name, expectedPeer: expectedPeer)), as: RelayInvitation.self)
     }
@@ -42,8 +61,8 @@ struct RelayAPI {
         var c = URLComponents(url: base.appendingPathComponent("v1/socket/\(id.uuidString)"), resolvingAgainstBaseURL: false)!
         c.scheme = base.scheme == "https" ? "wss" : "ws"; return c.url!
     }
-    private func request<T: Decodable>(_ method: String, path: String, body: Data = Data(), as type: T.Type) async throws -> T {
-        let (challengeBytes, response) = try await boundedResponse(URLRequest(url: base.appendingPathComponent("v1/challenge")))
+    func request<T: Decodable>(_ method: String, path: String, body: Data = Data(), as type: T.Type, maximumResponseBytes: Int = 16_384) async throws -> T {
+        let (challengeBytes, response) = try await boundedResponse(URLRequest(url: base.appendingPathComponent(path.hasPrefix("/v2/") ? "v2/challenge":"v1/challenge")))
         try check(response, bytes: challengeBytes)
         let challenge = try CanonicalJSON.decode(RelayChallenge.self, from: challengeBytes)
         let digest = SHA256.hash(data: body).map { String(format: "%02x", $0) }.joined()
@@ -55,25 +74,31 @@ struct RelayAPI {
         request.setValue(challenge.id.uuidString, forHTTPHeaderField: "X-Together-Challenge")
         request.setValue(try identity.sign(Data(text.utf8)).base64EncodedString(), forHTTPHeaderField: "X-Together-Signature")
         if method != "GET" { request.httpBody = body }
-        let (bytes, result) = try await boundedResponse(request); try check(result, bytes: bytes)
+        let (bytes, result) = try await boundedResponse(request, maximum: maximumResponseBytes); try check(result, bytes: bytes, maximum: maximumResponseBytes)
         return try CanonicalJSON.decode(type, from: bytes)
     }
-    private func boundedResponse(_ request: URLRequest) async throws -> (Data, URLResponse) {
+    private func boundedResponse(_ request: URLRequest, maximum: Int = 16_384) async throws -> (Data, URLResponse) {
         let (stream, response) = try await session.bytes(for: request)
         var bytes = Data()
         for try await byte in stream {
-            guard bytes.count < 16_384 else { throw TogetherError.invalid(Copy.text("copy.error.6ec90dcd380a")) }
+            guard bytes.count < maximum else { throw TogetherError.invalid(Copy.text("copy.error.6ec90dcd380a")) }
             bytes.append(byte)
         }
         return (bytes, response)
     }
-    private func check(_ response: URLResponse, bytes: Data) throws {
-        guard let response = response as? HTTPURLResponse, (200..<300).contains(response.statusCode), bytes.count <= 16_384 else {
+    private func check(_ response: URLResponse, bytes: Data, maximum: Int = 16_384) throws {
+        guard let response = response as? HTTPURLResponse, (200..<300).contains(response.statusCode), bytes.count <= maximum else {
             let code = (try? JSONSerialization.jsonObject(with: bytes) as? [String: String])?["error"] ?? "SERVICE_UNAVAILABLE"
             switch code {
             case "RATE_LIMITED": throw TogetherError.invalid(Copy.text("copy.error.4cc53cafce9b"))
             case "INVITATION_UNAVAILABLE": throw TogetherError.invalid(Copy.text("copy.error.d517f113ea56"))
             case "MIGRATION_IDENTITY_MISMATCH", "NOT_A_MEMBER": throw TogetherError.invalid(Copy.text("copy.error.394ef482e899"))
+            case "NOT_AN_AUTHORIZED_DEVICE", "OWNER_AUTHORIZATION_REQUIRED", "INVALID_DEVICE_GRANT", "SPACE_ALREADY_MIGRATED": throw ReplicationError.unauthorized
+            case "INVALID_AUTHORIZATION_SIGNATURE": throw ReplicationError.invalidSignature
+            case "AUTHORIZATION_FORK": throw ReplicationError.authorizationFork
+            case "AUTHORIZATION_CHANGED": throw ReplicationError.staleAuthorization
+            case "AUTHORIZATION_HISTORY_PAGE_REQUIRED", "REQUEST_TOO_LARGE": throw ReplicationError.bounds
+            case "LEGACY_PAIR_REQUIRED": throw ReplicationError.incompatibleProtocol
             case "ROUTE_UNAVAILABLE": throw TogetherError.invalid(Copy.text("copy.error.ade4756a0885"))
             default: throw TogetherError.invalid(Copy.text("copy.error.6ec90dcd380a"))
             }

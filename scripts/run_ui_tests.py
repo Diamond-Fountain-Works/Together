@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 from pathlib import Path
 import os, json, platform, subprocess, sys
-import argparse,re
-parser=argparse.ArgumentParser();parser.add_argument('--behavior-only',action='store_true');parser.add_argument('--only-test',action='append',default=[]);parser.add_argument('--label',default='');args=parser.parse_args()
+import argparse,re,plistlib
+parser=argparse.ArgumentParser();parser.add_argument('--behavior-only',action='store_true');parser.add_argument('--only-test',action='append',default=[]);parser.add_argument('--label',default='');parser.add_argument('--without-building',action='store_true',help='Use an already built QA host, still enforcing bundle/path isolation');args=parser.parse_args()
 if any(not re.fullmatch(r'test[A-Za-z0-9_]+',name) for name in args.only_test):parser.error('--only-test requires a XCTest method name')
 if args.label and not re.fullmatch(r'[a-z0-9-]+',args.label):parser.error('--label requires a safe lowercase identifier')
 ROOT=Path(__file__).resolve().parents[1]
@@ -17,13 +17,55 @@ report_name='ui'+('-'+args.label if args.label else '')
 derived=Path(os.environ.get('TOGETHER_UI_DERIVED_DATA',str(Path.home()/('.cache/Together/UIQA-'+project.name+'-DerivedData'))))
 derived.mkdir(parents=True,exist_ok=True)
 subprocess.run([sys.executable,'script/generate_project.py'],cwd=project,check=True,env=env)
-command=['xcodebuild','-project','Together.xcodeproj','-scheme','Together','-configuration','Debug','-destination',f'platform=macOS,arch={platform.machine()}','-derivedDataPath',str(derived),'-resultBundlePath',str(bundle),'-test-timeouts-enabled','YES','-default-test-execution-time-allowance','300','-maximum-test-execution-time-allowance','300','test']
+# Build first, verify the actual bundle, and only then allow XCTest to launch.
+# A stale scheme/configuration must never fall back to the production bundle ID.
+base=['xcodebuild','-project','Together.xcodeproj','-scheme','Together','-configuration','UITesting','-destination',f'platform=macOS,arch={platform.machine()}','-derivedDataPath',str(derived),'ARCHS='+platform.machine(),'ONLY_ACTIVE_ARCH=YES','SWIFT_ACTIVE_COMPILATION_CONDITIONS=DEBUG TOGETHER_UI_TEST_HOST','SWIFT_OPTIMIZATION_LEVEL=-Onone']
+log_path=results/(report_name+'-test.log')
+with log_path.open('w') as log:
+    build=subprocess.CompletedProcess([],0) if args.without_building else subprocess.run(base+['build-for-testing'],cwd=project,env=env,stdout=log,stderr=subprocess.STDOUT)
+isolation_error=None
+runfile=None
+if build.returncode==0:
+    try:
+        candidates=list((derived/'Build/Products').glob('Together_*.xctestrun'))
+        runfile=max(candidates,key=lambda path:path.stat().st_mtime)
+        run_configuration=plistlib.loads(runfile.read_bytes())
+        config=run_configuration['TogetherUITests']
+        host=Path(config['UITargetAppPath'].replace('__TESTROOT__',str(runfile.parent)))
+        runner=Path(config['TestHostPath'].replace('__TESTROOT__',str(runfile.parent)))
+        for bundle_path,expected in [(host,'com.together.app.qa'),(runner,'com.together.app.qa.UITests.xctrunner')]:
+            assert bundle_path.resolve().is_relative_to(derived.resolve()), 'Bundle escaped private derived data'
+            info=plistlib.loads((bundle_path/'Contents/Info.plist').read_bytes())
+            assert info['CFBundleIdentifier']==expected, 'QA bundle identifier mismatch'
+        config.setdefault('EnvironmentVariables',{})['TOGETHER_UI_VERIFIED_APP_PATH']=str(host)
+        # xcodebuild does not promise to propagate arbitrary parent variables
+        # into the sandboxed test host. Declare the one loopback origin needed
+        # by device fixtures explicitly in the generated test configuration.
+        if origin := env.get('TOGETHER_UI_RELAY_URL'):
+            from urllib.parse import urlsplit
+            address=urlsplit(origin)
+            assert address.scheme=='http' and address.hostname=='127.0.0.1' and address.port, 'UI fixtures require an explicit loopback Worker'
+            assert address.path in ('','/') and not address.username and not address.password and not address.query and not address.fragment, 'Invalid QA origin'
+            config.setdefault('EnvironmentVariables',{})['TOGETHER_UI_RELAY_URL']=origin
+        runfile.write_bytes(plistlib.dumps(run_configuration))
+    except (AssertionError,KeyError,ValueError,OSError) as error:
+        isolation_error=str(error)
+command=['xcodebuild','test-without-building','-xctestrun',str(runfile),'-destination',f'platform=macOS,arch={platform.machine()}','-resultBundlePath',str(bundle),'-test-timeouts-enabled','YES','-default-test-execution-time-allowance','300','-maximum-test-execution-time-allowance','300']
 selected=args.only_test or (['testNavigationAndNoPersistentGiftUI','testTaskActionAndClosableSheet','testPlansFiltersSharedEditorAndHomeRouting','testWishLedgerDetailUsesExistingActions','testCompactLayoutAndReduceMotion','testMenuGiftEditorAndEmptySubmission','testSealedGiftPrivacyAndOneAutomaticModal'] if args.behavior_only else [])
 if selected:
  for name in selected:
   command.append('-only-testing:TogetherUITests/TogetherUITests/'+name)
-with (results/(report_name+'-test.log')).open('w') as log:run=subprocess.run(command,cwd=project,env=env,stdout=log,stderr=subprocess.STDOUT)
-summary={'status':'PASS' if run.returncode==0 else 'FAIL','resultBundle':str(bundle),'exitCode':run.returncode,'screenshots':[],'screenshotSHA256':{},'captureDirectory':str(output.relative_to(ROOT)),'skippedPages':['Our Story: not implemented']}
+if build.returncode==0 and isolation_error is None:
+    with log_path.open('a') as log:
+        log.write('QA host and runner bundle identifiers verified before launch.\n');log.flush()
+        run=subprocess.run(command,cwd=project,env=env,stdout=log,stderr=subprocess.STDOUT)
+else:
+    run=build
+    if isolation_error:
+        run.returncode=65
+        with log_path.open('a') as log:log.write('QA isolation preflight refused launch: '+isolation_error+'\n')
+summary={'status':'PASS' if run.returncode==0 else 'FAIL','resultBundle':str(bundle),'exitCode':run.returncode,'screenshots':[],'screenshotSHA256':{},'captureDirectory':str(output.relative_to(ROOT)),'skippedPages':['Our Story: not implemented'],'qaHostVerified':build.returncode==0 and isolation_error is None}
+summary['buildForTesting']='NOT RUN (explicit verified existing QA artifact)' if args.without_building else 'PASS' if build.returncode==0 else 'FAIL'
 log_text=(results/(report_name+'-test.log')).read_text()
 if run.returncode!=0 and 'Timed out while enabling automation mode' in log_text and 'Test Case ' not in log_text:
     summary['status']='NOT RUN'

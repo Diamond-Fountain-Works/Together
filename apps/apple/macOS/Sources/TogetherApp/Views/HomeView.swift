@@ -13,7 +13,7 @@ struct HomeView: View {
                     HStack(spacing: 22) {
                         person(model.engine.ownProfile, fallback: Copy.text("status.profile.self"), online: true)
                         Divider().frame(height: 46)
-                        person(model.engine.partnerProfile, fallback: model.engine.peer == nil ? Copy.text("status.profile.waitingPartner") : Copy.text("status.profile.waitingSync"), online: model.network.isOnline)
+                        person(model.engine.partnerProfile, fallback: model.engine.context.peer == nil ? Copy.text("status.profile.waitingPartner") : Copy.text("status.profile.waitingSync"), online: model.network.partnerIsOnline)
                         Spacer()
                     }
                 }
@@ -65,7 +65,7 @@ struct HomeView: View {
                 Text(profile?.displayName ?? fallback).font(.headline)
                 HStack(spacing: 5) {
                     Circle().fill(online ? .green : .secondary).frame(width: 5, height: 5)
-                    Text(profile == nil ? (model.engine.peer == nil ? Copy.text("copy.status.43461ae7bd32") : Copy.text("copy.status.710764256c01")) : (online ? Copy.text("copy.status.0d21bd52022c") : Copy.text("status.connection.offline"))).font(.caption).foregroundStyle(.secondary)
+                    Text(profile == nil ? (model.engine.context.peer == nil ? Copy.text("copy.status.43461ae7bd32") : Copy.text("copy.status.710764256c01")) : (online ? Copy.text("copy.status.0d21bd52022c") : Copy.text("status.connection.offline"))).font(.caption).foregroundStyle(.secondary)
                 }
             }
         }

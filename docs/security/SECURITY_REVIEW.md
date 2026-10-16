@@ -36,9 +36,26 @@ Required before production security approval: independent transcript/KDF/consent
 
 Primary primitive references: [CryptoKit](https://developer.apple.com/documentation/cryptokit), [Cloudflare Web Crypto](https://developers.cloudflare.com/workers/runtime-apis/web-crypto/), [hibernating sockets](https://developers.cloudflare.com/durable-objects/best-practices/websockets/).
 
-
 ## Public deployment evidence
 
 2026-10-10: verified-account deployment and HTTP 200 health check completed at https://together-connection.together-connection-service.workers.dev. Actual native HTTPS/WSS integration covered mutual confirmation, encrypted profiles/operations/wish ledger and confirmation, original avatar/photo and audio chunks with SHA-256, recipient acknowledgement, reconnect and persistent binding. Default App configuration uses this public origin, no Cloudflare credentials.
 
 These results verify a deployed service and native public network path on one Mac. They do not complete independent protocol/security review, cross-Wi-Fi physical two-Mac acceptance, mailbox, static encryption or large-scale cost/abuse review.
+
+## Replication 4 / API 2 security boundary
+
+Implemented primitives and local tests are not independent protocol review. Co-signed genesis pins the original space and legacy content; separate owner-root CAS streams authorize independent public device keys/epochs. A v4 outer signature binds the unchanged inner signed operation and contiguous device certificate chain. Revocation pins the accepted head, keeps old keys and rejects beyond-cutoff records without trusting wall-clock backdating. Control equivocation, ID/content/certificate collisions and invalid source/recipient/space fail closed.
+
+Each device pair authenticates fresh X25519/Ed25519 hellos and consent bound to the authorization digest, derives directional HKDF/ChaChaPoly keys and enforces strict replay counters. Relay API 2 verifies per-device signed challenges/tickets and active authorization, directs ciphertext to a named device and closes stale authorization sockets. WSS/Tailscale alone are not this application encryption. No global user private key, media upload storage or ciphertext mailbox was introduced.
+
+The relay can observe public identity/routing/profile metadata, ciphertext length/timing and online state, and can deny service. Compromised authorized endpoints can read their space; rollback-resistant trust is not protected against an attacker who can replace the local database/keys. File identity remains owner-only local storage, not hardware-backed. Root rotation/loss recovery and forward-secret historical at-rest encryption are not implemented. Authorization archive paging is pending; current 128 KiB metadata bound fails closed instead of deleting historical keys. An unseen pre-revocation offline signature cannot prove creation time from an editable computer clock.
+
+Release gate: independent review of genesis migration, owner/root recovery policy, revocation frontier liveness, pairwise session framing and cross-platform canonical bytes. Four-client localhost and synthetic tamper/replay tests do not satisfy this gate. Production API 2 deployment, physical cross-WiFi and new-device enrollment UI acceptance are not complete. The source PR must remain Draft while any required security/compatibility/visual gate is outstanding.
+
+### Source review follow-up (2026-10-16)
+
+A sealed source diff review of `1832df0..4eb3e5d` reported one High and three Medium findings: retired hello rollback, invalid durable staging, legacy checkpoint poisoning and acceptance of a divergent revoked prefix. The later `4091bf9` commit fixes these plus the partial-checkpoint overflow and stale asynchronous authorization/projection race identified during follow-up. Six adversarial executable regressions pass; the full suite reports 125 passed, 0 failed, 3 skipped. The original sealed findings are retained, not relabelled as a clean scan of new code. Exact evidence/scope is in [C1 QA](../qa/reports/GITLIKE_C1_QA.md). This local source review and regression testing do not replace the independent review gate above.
+
+## Enrollment hardening follow-up
+
+[Build 10 evidence](../qa/reports/C1_HARDENING.md) retains the new immutable 34-file review's one Medium stale-completion finding and its later tested correction (`cf75c38`). Completed retries now include all authorization known by the owner root, without another grant; already-exported offline files still cannot reveal revocations unknown at export. QA copied fixtures no longer query legacy Keychain, and QA networking is restricted to an explicitly supplied loopback origin. These source reviews/regressions do not satisfy independent protocol certification. Root-key loss, long authorization history and controlled rollout remain explicit [architecture boundaries](../architecture/adr/006-native-device-enrollment.md).

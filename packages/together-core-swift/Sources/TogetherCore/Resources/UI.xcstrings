@@ -8669,6 +8669,1052 @@
           }
         }
       }
+    },
+    "sync.changes.title": {
+      "comment": "Navigation; universal operation change review",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "变更记录"
+          }
+        }
+      }
+    },
+    "sync.changes.empty": {
+      "comment": "Empty State; universal operation change review",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "暂无变更"
+          }
+        }
+      }
+    },
+    "sync.changes.count": {
+      "comment": "Status; universal operation change review",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "已同步 %@ 项变更"
+          }
+        }
+      }
+    },
+    "sync.changes.profiles": {
+      "comment": "Navigation; universal operation change review",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "个人资料"
+          }
+        }
+      }
+    },
+    "sync.origin.thisDevice": {
+      "comment": "Status; universal operation change review",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "本机"
+          }
+        }
+      }
+    },
+    "sync.origin.myOtherDevice": {
+      "comment": "Status; universal operation change review",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "我的其他设备"
+          }
+        }
+      }
+    },
+    "sync.origin.partner": {
+      "comment": "Status; universal operation change review",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "伴侣设备"
+          }
+        }
+      }
+    },
+    "sync.review.action": {
+      "comment": "Action; universal operation change review",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "标为已查看"
+          }
+        }
+      }
+    },
+    "sync.review.reviewed": {
+      "comment": "Status; universal operation change review",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "已查看"
+          }
+        }
+      }
+    },
+    "sync.review.dismissed": {
+      "comment": "Status; universal operation change review",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "已忽略"
+          }
+        }
+      }
+    },
+    "sync.field.status": {
+      "comment": "Guidance; universal operation change review",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "状态"
+          }
+        }
+      }
+    },
+    "sync.field.quantity": {
+      "comment": "Guidance; universal operation change review",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "数量"
+          }
+        }
+      }
+    },
+    "sync.action.create": {
+      "comment": "Status; universal operation change review",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "新增记录"
+          }
+        }
+      }
+    },
+    "sync.action.delete": {
+      "comment": "Status; universal operation change review",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "删除记录"
+          }
+        }
+      }
+    },
+    "sync.action.completeTask": {
+      "comment": "Status; universal operation change review",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "完成任务"
+          }
+        }
+      }
+    },
+    "sync.action.reopenTask": {
+      "comment": "Status; universal operation change review",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "重新开启任务"
+          }
+        }
+      }
+    },
+    "sync.action.requestFulfillment": {
+      "comment": "Status; universal operation change review",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "申请兑现愿望"
+          }
+        }
+      }
+    },
+    "sync.action.confirmFulfillment": {
+      "comment": "Status; universal operation change review",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "确认兑现愿望"
+          }
+        }
+      }
+    },
+    "sync.action.rejectFulfillment": {
+      "comment": "Status; universal operation change review",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "重新开启愿望"
+          }
+        }
+      }
+    },
+    "sync.domain.gifts": {
+      "comment": "Navigation; universal gift metadata review",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "爱意礼物"
+          }
+        }
+      }
+    },
+    "qa.error.isolatedLaunch": {
+      "comment": "Error; fail-closed QA host, never production data",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "隔离测试需要有效的启动参数。"
+          }
+        }
+      }
+    },
+    "sync.resolution.superseded": {
+      "comment": "Status; historical modification, not current winner",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "已被后续修改替代"
+          }
+        }
+      }
+    },
+    "sync.resolution.partiallySuperseded": {
+      "comment": "Status; historical modification, not current winner",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "部分已被后续修改替代"
+          }
+        }
+      }
+    },
+    "device.title": {
+      "comment": "Navigation; user-requested device enrollment, migration and recovery controls",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "设备管理"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Devices"
+          }
+        }
+      }
+    },
+    "device.action.add": {
+      "comment": "Action; user-requested device enrollment, migration and recovery controls",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "添加本人设备"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Add My Device"
+          }
+        }
+      }
+    },
+    "device.action.importOffer": {
+      "comment": "Action; user-requested device enrollment, migration and recovery controls",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "加入本人设备"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Join My Devices"
+          }
+        }
+      }
+    },
+    "device.action.exportOffer": {
+      "comment": "Action; user-requested device enrollment, migration and recovery controls",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "导出设备邀请"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Export Device Invitation"
+          }
+        }
+      }
+    },
+    "device.action.importRequest": {
+      "comment": "Action; user-requested device enrollment, migration and recovery controls",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "导入设备请求"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Import Device Request"
+          }
+        }
+      }
+    },
+    "device.action.exportRequest": {
+      "comment": "Action; user-requested device enrollment, migration and recovery controls",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "生成设备请求"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Create Device Request"
+          }
+        }
+      }
+    },
+    "device.action.authorize": {
+      "comment": "Action; user-requested device enrollment, migration and recovery controls",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "授权此设备"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Authorize Device"
+          }
+        }
+      }
+    },
+    "device.action.exportCompletion": {
+      "comment": "Action; user-requested device enrollment, migration and recovery controls",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "导出授权文件"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Export Authorization"
+          }
+        }
+      }
+    },
+    "device.action.importCompletion": {
+      "comment": "Action; user-requested device enrollment, migration and recovery controls",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "导入授权文件"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Import Authorization"
+          }
+        }
+      }
+    },
+    "device.action.use": {
+      "comment": "Action; user-requested device enrollment, migration and recovery controls",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "使用此设备"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Use This Device"
+          }
+        }
+      }
+    },
+    "device.action.revoke": {
+      "comment": "Action; user-requested device enrollment, migration and recovery controls",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "撤销设备"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Revoke Device"
+          }
+        }
+      }
+    },
+    "device.action.exportMigration": {
+      "comment": "Action; user-requested device enrollment, migration and recovery controls",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "导出迁移提案"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Export Migration Proposal"
+          }
+        }
+      }
+    },
+    "device.action.importMigration": {
+      "comment": "Action; user-requested device enrollment, migration and recovery controls",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "导入迁移提案"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Import Migration Proposal"
+          }
+        }
+      }
+    },
+    "device.action.signMigration": {
+      "comment": "Action; user-requested device enrollment, migration and recovery controls",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "确认并签名"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Confirm and Sign"
+          }
+        }
+      }
+    },
+    "device.action.activateMigration": {
+      "comment": "Action; user-requested device enrollment, migration and recovery controls",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "启用多设备同步"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Enable Multi-device Sync"
+          }
+        }
+      }
+    },
+    "device.field.name": {
+      "comment": "Guidance; user-requested device enrollment, migration and recovery controls",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "设备名称"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Device Name"
+          }
+        }
+      }
+    },
+    "device.default.name": {
+      "comment": "Status; user-requested device enrollment, migration and recovery controls",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mac"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mac"
+          }
+        }
+      }
+    },
+    "device.migration.title": {
+      "comment": "Navigation; user-requested device enrollment, migration and recovery controls",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "升级现有配对"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Upgrade Existing Pair"
+          }
+        }
+      }
+    },
+    "device.guidance.migration": {
+      "comment": "Guidance; user-requested device enrollment, migration and recovery controls",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "先同步两台 Mac，再交换并核对迁移提案。"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sync both Macs, then exchange and verify the migration proposal."
+          }
+        }
+      }
+    },
+    "device.guidance.checkMigration": {
+      "comment": "Guidance; user-requested device enrollment, migration and recovery controls",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "两台 Mac 的安全码一致"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Both Macs show the same verification code"
+          }
+        }
+      }
+    },
+    "device.guidance.offer": {
+      "comment": "Guidance; user-requested device enrollment, migration and recovery controls",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "在新设备导入此文件，邀请仅用于添加本人设备。"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Import this file on your new device; it only adds your own device."
+          }
+        }
+      }
+    },
+    "device.guidance.offerCheck": {
+      "comment": "Guidance; user-requested device enrollment, migration and recovery controls",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "与已有可信 Mac 核对安全码。"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Compare this code with your existing trusted Mac."
+          }
+        }
+      }
+    },
+    "device.guidance.checkOffer": {
+      "comment": "Guidance; user-requested device enrollment, migration and recovery controls",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "已与可信 Mac 核对"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Verified with My Trusted Mac"
+          }
+        }
+      }
+    },
+    "device.guidance.checkRequest": {
+      "comment": "Guidance; user-requested device enrollment, migration and recovery controls",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "已核对新设备名称、指纹和安全码"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "I verified the new device name, fingerprint and code"
+          }
+        }
+      }
+    },
+    "device.guidance.checkCompletion": {
+      "comment": "Guidance; user-requested device enrollment, migration and recovery controls",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "已核对原 Mac 的授权"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "I verified my original Mac’s authorization"
+          }
+        }
+      }
+    },
+    "device.guidance.preserve": {
+      "comment": "Guidance; user-requested device enrollment, migration and recovery controls",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "原有资料保留在原存储，加入后使用新的副本。"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Existing data stays in its original store; joining uses a separate replica."
+          }
+        }
+      }
+    },
+    "device.guidance.controller": {
+      "comment": "Guidance; user-requested device enrollment, migration and recovery controls",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "请用本人的原始可信设备授权或撤销设备。"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Use your original trusted device to authorize or revoke devices."
+          }
+        }
+      }
+    },
+    "device.guidance.revoke": {
+      "comment": "Guidance; user-requested device enrollment, migration and recovery controls",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "撤销后拒绝新的访问，保留已验证的历史。"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Revocation rejects new access and preserves verified history."
+          }
+        }
+      }
+    },
+    "device.status.authorized": {
+      "comment": "Status; user-requested device enrollment, migration and recovery controls",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "设备已授权"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Device Authorized"
+          }
+        }
+      }
+    },
+    "device.status.revoked": {
+      "comment": "Status; user-requested device enrollment, migration and recovery controls",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "已撤销"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Revoked"
+          }
+        }
+      }
+    },
+    "device.status.thisDevice": {
+      "comment": "Status; user-requested device enrollment, migration and recovery controls",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "此设备"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This Device"
+          }
+        }
+      }
+    },
+    "device.status.online": {
+      "comment": "Status; user-requested device enrollment, migration and recovery controls",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "在线"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Online"
+          }
+        }
+      }
+    },
+    "device.status.offline": {
+      "comment": "Status; user-requested device enrollment, migration and recovery controls",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "离线"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Offline"
+          }
+        }
+      }
+    },
+    "device.status.migrated": {
+      "comment": "Status; user-requested device enrollment, migration and recovery controls",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "多设备同步已启用"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Multi-device Sync Enabled"
+          }
+        }
+      }
+    },
+    "device.status.historyReady": {
+      "comment": "Status; user-requested device enrollment, migration and recovery controls",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "本次历史同步已完成"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "History Sync Completed"
+          }
+        }
+      }
+    },
+    "device.status.historyPending": {
+      "comment": "Status; user-requested device enrollment, migration and recovery controls",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "等待历史同步"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Waiting for History Sync"
+          }
+        }
+      }
+    },
+    "device.error.expired": {
+      "comment": "Error; user-requested device enrollment, migration and recovery controls",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "设备邀请已过期，请重新生成。"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Device invitation expired. Create a new one."
+          }
+        }
+      }
+    },
+    "device.error.confirm": {
+      "comment": "Error; user-requested device enrollment, migration and recovery controls",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "请先核对两台设备的身份。"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Verify both devices first."
+          }
+        }
+      }
+    },
+    "device.error.existingData": {
+      "comment": "Error; user-requested device enrollment, migration and recovery controls",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "已有共享或业务数据的设备不能作为新设备加入。"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A device with shared or business data cannot join as a new device."
+          }
+        }
+      }
+    },
+    "device.error.workspace": {
+      "comment": "Error; user-requested device enrollment, migration and recovery controls",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "设备存储路径无效，请保留资料并重试。"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Invalid device storage path. Keep your data and retry."
+          }
+        }
+      }
+    },
+    "device.error.historyChanged": {
+      "comment": "Error; user-requested device enrollment, migration and recovery controls",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "历史已变化，请先同步两台 Mac，再重新核对。"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "History changed. Sync both Macs and verify a new proposal."
+          }
+        }
+      }
+    },
+    "device.file.offer": {
+      "comment": "Status; user-requested device enrollment, migration and recovery controls",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Together-Device-Offer.json"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Together-Device-Offer.json"
+          }
+        }
+      }
+    },
+    "device.file.request": {
+      "comment": "Status; user-requested device enrollment, migration and recovery controls",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Together-Device-Request.json"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Together-Device-Request.json"
+          }
+        }
+      }
+    },
+    "device.file.completion": {
+      "comment": "Status; user-requested device enrollment, migration and recovery controls",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Together-Device-Authorization.json"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Together-Device-Authorization.json"
+          }
+        }
+      }
+    },
+    "device.file.migration": {
+      "comment": "Status; user-requested device enrollment, migration and recovery controls",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Together-Migration.json"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Together-Migration.json"
+          }
+        }
+      }
+    },
+    "device.error.identityUnavailable": {
+      "comment": "Error; fail closed on missing enrollment identity",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "设备密钥不可用，已停止加入；不会生成替代身份。"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Device key unavailable. Joining stopped; no replacement identity was generated."
+          }
+        }
+      }
+    },
+    "device.guidance.relayMigration": {
+      "extractionState": "manual",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "请先在连接页面完成邀请码配对。"
+          }
+        }
+      }
     }
   }
 }

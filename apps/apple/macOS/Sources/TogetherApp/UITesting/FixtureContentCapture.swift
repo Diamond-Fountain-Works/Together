@@ -31,7 +31,7 @@ struct FixtureContentCapture: NSViewRepresentable {
                 let filename = fixture.snapshotName + ".png"
                 guard filename.range(of: #"^[A-Za-z0-9_-]+\.png$"#, options: .regularExpression) != nil else { throw CaptureError.unavailable }
                 try png.write(to: fixture.root.appendingPathComponent(filename), options: .atomic)
-                let info: [String: Any] = ["source":"AppKit own fixture content view", "scope":host.attachedSheet == nil ? "financial detail; native sidebar/toolbar excluded" : "presented settings sheet", "page":fixture.page, "fixtureTime":"2026-10-09T04:00:00Z", "locale":"zh_CN", "dark":fixture.dark, "reduceMotion":fixture.reduceMotion, "windowWidthPoints":host.contentView?.bounds.width ?? 0, "windowHeightPoints":host.contentView?.bounds.height ?? 0, "pixelsWide":result.pixelsWide, "pixelsHigh":result.pixelsHigh]
+                let info: [String: Any] = ["source":"AppKit own fixture content view", "scope":host.attachedSheet == nil ? "financial detail; native sidebar/toolbar excluded" : "presented fixture sheet", "page":fixture.page, "fixtureTime":"2026-10-09T04:00:00Z", "locale":"zh_CN", "dark":fixture.dark, "reduceMotion":fixture.reduceMotion, "windowWidthPoints":host.contentView?.bounds.width ?? 0, "windowHeightPoints":host.contentView?.bounds.height ?? 0, "pixelsWide":result.pixelsWide, "pixelsHigh":result.pixelsHigh]
                 try JSONSerialization.data(withJSONObject: info, options: [.sortedKeys, .prettyPrinted]).write(to: fixture.root.appendingPathComponent("capture.json"))
             } catch { try? Data(String(describing: error).utf8).write(to: fixture.root.appendingPathComponent("capture-error.txt")) }
         }

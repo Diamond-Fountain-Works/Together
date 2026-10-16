@@ -44,6 +44,8 @@ try:
     report['business']['discoveredCount']=int(re.search(r'Test run with (\d+) tests',text).group(1)) if re.search(r'Test run with (\d+) tests',text) else None
     report['dataMigration']={'status':'PASS' if 'actualLegacyStoreKeepsIdentityDataAndFinancialRestart() passed' in text else 'NOT RUN','sourceVersion':'0.0.1','targetVersion':json.loads((project/'Configuration/ReleaseVersion.json').read_text())['marketingVersion'],'isolation':'private temporary store created with original source'}
     report['relayIntegration']={'status':'PASS' if available() and 'invitationMutualConfirmEncryptedLogMediaReconnectAndPersistentMigration() passed' in text else 'NOT RUN' if not available() else 'FAIL','endpoint':relay_origin,'isolatedWorkerState':True}
+    report['multiDeviceIntegration']={'status':'PASS' if available() and 'fourNativeClientsMigrateCatchUpMediaAndRevokeOverRealLocalWorker() passed' in text else 'NOT RUN' if not available() else 'FAIL','endpoint':relay_origin,'physicalDevices':False,'clients':4}
+    report['crashRecovery']={'status':'PASS' if 'killedWriterRestoresFactsStagingIdentityPairingAndReceipts() passed' in text else 'NOT RUN','isolation':'synthetic child process and temporary database'}
     run('build',['./script/build_and_run.sh','--build-only'],project)
     if '--skip-ui' in sys.argv:
         report['ui']={'status':'NOT RUN','reason':'Explicit --skip-ui; previous runs cannot substitute for current verification.'}

@@ -2,9 +2,16 @@ import Foundation
 
 public enum OperationProjector {
     public static func replay(_ signed: [SignedOperation], context: ReplicaContext) -> DomainSnapshot {
+        project(signed,context:context,audit:nil)
+    }
+    public static func changes(_ signed:[SignedOperation],context:ReplicaContext)->[ChangeEvent] {
+        let audit=ProjectionAudit(),snapshot=project(signed,context:context,audit:audit)
+        return audit.finish(snapshot)
+    }
+    private static func project(_ signed:[SignedOperation],context:ReplicaContext,audit:ProjectionAudit?)->DomainSnapshot {
         var result = DomainSnapshot()
         let operations = signed.filter { item in
-            guard let descriptor = context.devices[item.operation.deviceId], item.verified(by: descriptor) else {
+            guard context.permits(item), let descriptor = context.devices[item.operation.deviceId], item.verified(by: descriptor) else {
                 result.conflicts.append(DomainConflict(operationId: item.id, entityId: item.operation.entityId, reason: "操作签名或用户身份不匹配")); return false
             }
             return true
@@ -12,11 +19,14 @@ public enum OperationProjector {
         var drafts: [UUID: EntityDraft] = [:]
         for operation in operations where operation.operationType == .create {
             guard [.profile, .task, .recurrenceRule].contains(operation.entityType), drafts[operation.entityId] == nil else { continue }
-            if creationValid(operation, context: context) { drafts[operation.entityId] = EntityDraft(operation) }
+            if creationValid(operation, context: context) { drafts[operation.entityId] = EntityDraft(operation);audit?.record(operation,before:[:],after:operation.payload) }
             else { conflict(operation, Copy.text("copy.error.90a1871c6212"), into: &result) }
         }
         for operation in operations {
             guard var draft = drafts[operation.entityId], draft.base.entityType == operation.entityType else { continue }
+            let before=draft.values
+            let oldDeleted=draft.tombstone
+            defer {var old=before,new=draft.values;old["deletedAt"] = .optionalDate(oldDeleted);new["deletedAt"] = .optionalDate(draft.tombstone);audit?.record(operation,before:old,after:new)}
             let allowed: Bool
             switch operation.entityType {
             case .profile: allowed = operation.actorId == operation.entityId
@@ -48,9 +58,9 @@ public enum OperationProjector {
             default: break
             }
         }
-        WishProjector.apply(operations, context: context, snapshot: &result)
-        GiftProjector.apply(operations, context: context, snapshot: &result)
-        FinanceProjector.apply(operations, context: context, snapshot: &result)
+        WishProjector.apply(operations, context: context, snapshot: &result,audit:audit)
+        GiftProjector.apply(operations, context: context, snapshot: &result,audit:audit)
+        FinanceProjector.apply(operations, context: context, snapshot: &result,audit:audit)
         result.conflicts = Array(Dictionary(result.conflicts.map { ($0.id, $0) }, uniquingKeysWith: { first, _ in first }).values).sorted { $0.id.uuidString < $1.id.uuidString }
         return result
     }

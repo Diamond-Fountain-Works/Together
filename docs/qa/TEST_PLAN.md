@@ -120,7 +120,6 @@ PeerService TCP tests 继续运行。真实 Tailscale/MagicDNS 回归需另行�
 
 部署 2026-10-10：第一次被邮箱未验证（10034）拒绝，随后用户完成验证，真实部署和 HTTPS/WSS 检查已通过；真实跨 Wi-Fi 双 Mac 仍未执行。
 
-
 ## 本轮实际结果（2026-10-10）
 
 - Native Debug / Release Build：PASS，Bundle 0.0.1 / Build 1，codesign strict 校验通过，UI/InfoPlist String Catalog 均实际编入 App。
@@ -133,7 +132,6 @@ PeerService TCP tests 继续运行。真实 Tailscale/MagicDNS 回归需另行�
 - Security：机制测试 PASS，独立协议审查未完成。Cloudflare 邮箱验证/部署已完成；真实跨 Wi-Fi 双 Mac 和麦克风硬件 NOT RUN。
 
 最后通过的 UI 证据：`qa/results/ui-20261010-101158.xcresult`。本轮 UI 保存面板的确定性初始目录通过 fixture 注入；生产默认仍由用户选择，未增加系统目录权限。测试曾因错误 native button selector 和 Runner 沙盒目录被拒绝而失败，已按原生 OKButton 标识及测试自身目录修正并完整重跑通过，不隐藏历史失败日志。
-
 
 ## 公网部署验收跟进
 
@@ -155,7 +153,6 @@ App 配置在 Configuration/RelayService.json，显式 Info.plist 模板保留�
 
 2026-10-10 实际执行：`make qa` 57 PASS / 0 FAIL / 1 SKIP，Copy 0 Error / 34 Warning，28 张截图 REVIEW REQUIRED；UI 证据 `qa/results/ui-20261010-110707.xcresult`。随后 `make package` Release Build 和 6 项映像/挂载文件/元数据/签名/架构/安装入口检查 PASS，生成 3,833,344 字节（3.66 MiB）DMG。未运行第二台实体 Mac 安装或 Apple 公证。
 
-
 ## Our Plans / identity-file refactor acceptance
 
 新增领域测试 6 项：新安装/重启不调用 Keychain，700/600 权限；旧身份仅主动迁移；拒绝/缺失不换钥匙；一次迁移保留原 32 字节；损坏/不匹配不覆盖；并发创建收敛于同一文件；真实 SwiftData 重开保留任务/愿望/配对。真实用户旧 Keychain 授权不是 stub 测试可以代替的验收。
@@ -166,14 +163,11 @@ App 配置在 Configuration/RelayService.json，显式 Info.plist 模板保留�
 
 迭代中发现并记录：原生 Picker 为 RadioGroup；父容器 accessibilityIdentifier 覆盖 Grant Close；自定义滚动定位/几何动画导致元素点击坐标不可用。任务使用原生 List、原生筛选 Picker 和原生 Sheet，工作区按最新需求改为左侧竖排导航；所有仍要求实际点击通过，不使用跳过代替。
 
-
 UI 验证补充：系统曾阻挡测试 Runner 对 Documents 的访问，导致虚假的无效点击坐标和输入失败。截图改为仅保留 XCTest attachments，由命令行导出；UI QA DerivedData 位于 ~/.cache/Together/UIQA-DerivedData，生产构建仍在版本目录。测试只对明确属于 TogetherUITests-Runner / Documents / automated testing 的请求选择“不允许”，不授予新目录权限。误定位的几何/滚动实现已收敛为原生 List / Picker / Sheet，并保持两个工作区 View 的稳定身份，模式切换不重建数据。自动化失败和临时诊断日志均保留，最后结果单独记录。
-
 
 ### Final Our Plans results
 
 43 Core + 7 Workers + 6 tools + 10 UI = 66 PASS / 0 FAIL; 1 UI SKIP (Our Story absent). Final UI evidence `/Users/giga_fortress0/Documents/ProjectsLocal/Together/qa/results/ui-20261010-131239.xcresult`. 38 current captures REVIEW REQUIRED, Copy 0 Error / 35 Warning. Universal Release build and mounted DMG artifact checks PASS. Actual user Keychain migration, independent security review, notarization and second physical Mac remain unverified; no user data was reset.
-
 
 ### Vertical Plans / Wishes follow-up — actual results
 
@@ -201,3 +195,23 @@ Build 3 supplementary verification: currency fixtures commit exact queries throu
 - The original 14 UI methods remain; an additional focused current-input-method currency case checks Latin JPY and Chinese 日元 in light/dark. Wait for the live input-dialog query to settle before fresh currency-row lookup. Persistent dialogs fail rather than receive automatic permissions. No JPY, business-status, sealed-privacy or closure assertion is waived.
 - Use a complete post-fix Pinyin suite for final acceptance. A focused pass or an ABC pass alone cannot clear the original full-suite failure. See [qa/INPUT_METHOD_REVIEW_BUILD4.md](reports/INPUT_METHOD_REVIEW_BUILD4.md).
 - Git all-refs backup is verified in durable Documents storage; live repository migration remains a separate action. Candidate snapshots need explicit human approval tied to exact hashes.
+
+## Replication 4 acceptance and isolation
+
+Run `./scripts/qa.sh --skip-ui` for the headless gates, including existing-source store migration, legacy relay integration, four native V4 clients against a fresh local Worker, actual child-process SIGKILL recovery, Swift domain tests, service runtime tests, Python conformance, copy and tracked/history publication safety. `check_ci_report.py` requires each independently named integration/crash gate. It does not promote unrun UI/visual to PASS.
+
+Run `TOGETHER_RUN_REPLICATION_PERF=1 TOGETHER_PERF_OUTPUT=/absolute/local/report.json swift test -c release --package-path packages/together-core-swift --filter ReplicationPerformanceTests` for 100,000 actual signed/certified synthetic operations across two on-disk stores and bounded session frames. Record elapsed phases, RSS, frame/queue bounds, scoped correction vs full replay and configuration. This is an in-process wire harness, not RTT/GUI frame rate evidence.
+
+Protocol vectors are shared by Swift/CryptoKit, Workers/WebCrypto and Python/schema checks. Trust tests reject forged owner/user grants, control forks, beyond-cutoff signatures and same-ID different content/certificates. Session tests cover late one-sided writes after convergence, out-of-order facts, immutable inventory, lost ACK/restart, offline independent device progress and media receipt scoping. Existing finance/wish/task/gift tests remain the invariant oracle.
+
+Native UI uses the dedicated UITesting configuration and com.together.app.qa, which refuses launch without `--ui-testing`; ordinary Debug/Release keep the production Bundle ID. New change-review screenshots are candidates only. Automation initialization failures are NOT RUN, not successful UI assertions. Preserve prior Build 5 review states/baselines.
+
+Physical Mac A/Mac B across different WiFi, Mac/Android, four physical devices, hardware/media permissions and external cryptographic review remain separate NOT RUN/BLOCKED gates. Native enrollment screen results are tracked in the hardening follow-up below. Do not use real databases, keys or photos in CI. See [current results](reports/GITLIKE_C1_QA.md).
+
+## C1 hardening / native enrollment acceptance
+
+See [hardening report](reports/C1_HARDENING.md) for current actual results and failures. Headless tests use real signature/persistence APIs and an isolated Worker. New vectors cover signed public enrollment DTOs, owner/space/origin binding, independent keys, expiry, retained original store, key loss, current-revocation re-export and QA-origin rejection. ACK regressions cover signed membership pages, restart/later writes and borrowed unrelated receipts.
+
+Desktop setup: build UITesting, verify actual host/Runner IDs, use private QA temp storage and an explicit loopback Worker origin. Reproduce `testDeviceControllerAuthorizesAndRevokes`, `testNewDeviceJoinsThroughNativeFilesAndSyncsHistory` and `testLegacyMigrationRequiresTwoSignedConfirmations`. Verify native open/save controls, identity toggles, full-history status, revocation, scrolling and Close in light/dark/reduced motion. Candidate captures need human approval. If Runner authorization is temporarily changed, record/restore/verify original state even on failure. Missing authorization/toolchain failures are not passing product assertions.
+
+Physical test, NOT RUN: after separately authorized compatible API2 rollout and installation on two original Macs, synchronize P3 history, exchange/countersign the same migration proposal, activate each without ID/key/space changes. On a fresh third Mac, exchange the signed offer/request/completion through native panels, compare both codes/fingerprints, verify independent key and full-history/media catch-up. Disconnect/reopen/revoke and verify truthful states and no repeated business application. Do not reset data or copy another device's key to make the test pass.

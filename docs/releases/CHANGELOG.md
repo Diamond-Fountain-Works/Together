@@ -1,3 +1,16 @@
+# Development — 0.2.1 Build 10 (unreleased)
+
+- Isolated XCTest now owns and awaits the existing host's native reopen, checks the PID, and carries its fixture arguments/environment. Removed the QA delegate's asynchronous self-relaunch and stale external notification-center query. Production startup remains unchanged.
+- Build number increments after App-source changes; prior Build 9 artifacts and failed desktop attempts remain available. No installation or deployment.
+
+# Development — 0.2.1 Build 9 (unreleased)
+
+- Added native signed-file Add My Device, device fingerprints/list/revoke and bilateral legacy migration confirmation; stable original identities, space and log remain. Desktop/human acceptance is pending.
+- Scoped SwiftData contexts/bulk local lookup and durable signed ACK membership pages reduce the same 100k benchmark's measured synchronization cost. Wire operations, deterministic business merge and physical schema are unchanged.
+- Corrected cached enrollment exports to retain current known revocations; added explicit regression, key-loss guards and QA file-key/loopback confinement.
+- Added read-only startup-incident findings with explicit UNKNOWN items, root-loss boundaries and authorization-paging assessment.
+- No production install/deployment/merge; independent protocol review, physical networking, desktop QA and visual acceptance remain gates.
+
 # Monorepo foundation — 0.2.1 Build 5 candidate
 
 - Consolidates the current macOS source, TogetherCore package, C1 Relay and authoritative docs without business/transport/schema changes; restores legacy migration source from pinned verified Git history.
@@ -113,3 +126,14 @@
 - Disabled Xcode base-entitlement injection for Release; get-task-allow is absent. Required network, microphone and file-panel access plus hardened runtime are retained.
 - Bundle verifier now rejects debugger access in Release and checks actual required entitlements. Marketing version remains 0.2.1; no business/schema/protocol change.
 - Verified Universal DMG/checksum/mounted bundle; ad-hoc and not notarized. Final candidate is NOT READY FOR LOCAL INSTALL because one native UI capture case still fails and one required screenshot is missing.
+
+## 0.2.1 Build 6 — Git-like C1 foundation (development, not deployed/installed)
+
+- Add explicit replication 4/API 2 capability alongside unchanged legacy Protocol 3: stable two-user space, independent signed device grants/epochs, retained revocation history, certified operation chains and co-signed old-log migration.
+- Add immutable paged content/certificate inventory, bounded bidirectional batches, live sync hints, durable per-device signed receipts and restarted gap recovery.
+- Reuse original domain merge with off-main verification/replay, scoped local entity recomputation and changed-row derived-cache updates; keep original physical SwiftData schema and identity/bindings.
+- Add directed encrypted multi-device relay sessions and reused resumable verified media; no mailbox, bank integration, C2 or Android UI.
+- Add local universal change history/review, with sealed gift privacy, same-user other-device origin and superseded history. Dedicated QA-host configuration isolates test startup.
+- Add cross-runtime signed fixtures, four native-client local Worker tests, actual SIGKILL recovery and a 100,000-signed-operation benchmark. [Evidence and limits](../qa/reports/GITLIKE_C1_QA.md).
+- Harden retired-hello replay, invalid staged-chain recovery, sealed legacy-baseline retry and exact revoked-prefix verification; retain rejected raw history and prevent stale asynchronous projection from restoring revoked authorization. Six adversarial regressions pass.
+- Invitation eight-hour fix remains a separate PR #3 with no production deployment. New enrollment UI, external security/physical acceptance and human visual approval remain release gates.

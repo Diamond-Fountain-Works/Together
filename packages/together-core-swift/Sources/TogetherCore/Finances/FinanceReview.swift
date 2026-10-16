@@ -3,6 +3,7 @@ import Foundation
 public struct FinanceChange: Identifiable, Equatable, Sendable {
     public var id: UUID; public var entityId: UUID; public var actorId: UUID; public var type: EntityType; public var action: OperationType
     public var title: String; public var oldCNYMinor: Int64?; public var newCNYMinor: Int64?; public var effectiveMonth: FinanceMonth?; public var createdAt: Date
+    public var resolution:ChangeResolution = .effective
     public var oldPayment: FinancePayment?; public var newPayment: FinancePayment?; public var reviewStatus: ExpenseReviewStatus?; public var active: Bool?
 }
 public enum FinanceReminderKind: String, Sendable { case forecast, reconcile, plannedDeposit }
@@ -12,29 +13,29 @@ public struct FinanceReminder: Identifiable, Equatable, Sendable {
 }
 @MainActor public extension ReplicaEngine {
     func financialChanges(limit: Int = 80) -> [FinanceChange] {
-        if let cache = financeChangeCache, cache.operationCount == operations.count, cache.members == context.members, cache.limit >= limit { return Array(cache.changes.prefix(limit)) }
-        let ordered = operations.sorted { $0.operation.order < $1.operation.order }, invalid = Set(snapshot.conflicts.map(\.operationId))
-        let selected = Set(ordered.filter { FinanceProjector.types.contains($0.operation.entityType) && !invalid.contains($0.id) }.suffix(limit).map(\.id))
-        var prefix: [SignedOperation] = [], result: [FinanceChange] = [], created: Set<UUID> = []
-        for signed in ordered {
-            defer { prefix.append(signed) }
-            let op = signed.operation
-            if op.operationType == .create && !created.insert(op.entityId).inserted,
-               op.entityType != .financeSettings && op.entityType != .billOccurrence && !(op.entityType == .reserveEntry && op.entityId == StableID.make("finance-reserves-opening")) { continue }
-            guard selected.contains(op.id) else { continue }
-            let before = OperationProjector.replay(prefix, context: context).finance
-            let month = try? FinanceProjector.decode(FinanceMonth.self, op.payload["month"])
-            let billId = op.payload["billId"]?.uuid
-            let defaults = billId.flatMap { before.bills[$0] }.flatMap { bill in month.flatMap { try? before.occurrence(bill, month: $0) } }
-            let old = before.reserves[op.entityId]?.amount ?? before.expenses[op.entityId]?.amount ?? defaults?.amount
-            let new = try? FinanceProjector.optionalDecode(FinanceAmount.self, op.payload["amount"])
-            let title = op.payload["title"]?.string ?? before.expenses[op.entityId]?.title ?? before.bills[op.entityId]?.title ?? before.dateEvents[op.entityId]?.title ?? billId.flatMap { before.bills[$0]?.title } ?? ""
-            let payment = try? FinanceProjector.optionalDecode(FinancePayment.self, op.payload["payment"])
-            result.append(.init(id: op.id, entityId: op.entityId, actorId: op.actorId, type: op.entityType, action: op.operationType, title: title, oldCNYMinor: old?.finalCNYMinor, newCNYMinor: new?.finalCNYMinor, effectiveMonth: month, createdAt: op.createdAt, oldPayment: before.expenses[op.entityId]?.payment ?? defaults?.payment, newPayment: payment, reviewStatus: op.payload["status"]?.string.flatMap(ExpenseReviewStatus.init(rawValue:)), active: FinanceProjector.boolean(op.payload["active"])))
+        if let cache=financeChangeCache,cache.operationCount==changeNumber,cache.members==context.members,cache.limit>=limit{return Array(cache.changes.prefix(limit))}
+        return financialChanges(projectedEvents:OperationProjector.changes(operations,context:context),limit:limit)
+    }
+    func financialChanges(projectedEvents:[ChangeEvent],limit:Int=80)->[FinanceChange] {
+        let events=projectedEvents.filter{FinanceProjector.types.contains($0.type)}.prefix(max(0,limit))
+        let changes=events.map{event -> FinanceChange in
+            let old=try? FinanceProjector.optionalDecode(FinanceAmount.self,event.before["amount"])
+            let new=try? FinanceProjector.optionalDecode(FinanceAmount.self,event.after["amount"])
+            let billId=event.after["billId"]?.uuid ?? event.before["billId"]?.uuid
+            let month=try? FinanceProjector.optionalDecode(FinanceMonth.self,event.after["month"])
+            let oldPayment=try? FinanceProjector.optionalDecode(FinancePayment.self,event.before["payment"])
+            let newPayment=try? FinanceProjector.optionalDecode(FinancePayment.self,event.after["payment"])
+            var defaults:RecurringBillOccurrence?
+            if let billId,let month,let bill=snapshot.finance.bills[billId] {
+                var prior=snapshot.finance
+                let order=FinanceRevisionOrder(OperationOrder(clock:event.order.clock,device:event.order.device,operation:event.order.operation))
+                prior.revisions=prior.revisions.filter{$0.value.order<order}
+                defaults=try? prior.occurrence(bill,month:month)
+            }
+            let title=event.title.isEmpty ? billId.flatMap{snapshot.finance.bills[$0]?.title} ?? "":event.title
+            return FinanceChange(id:event.id,entityId:event.entityId,actorId:event.actorId,type:event.type,action:event.action,title:title,oldCNYMinor:old?.finalCNYMinor ?? defaults?.amount.finalCNYMinor,newCNYMinor:new?.finalCNYMinor,effectiveMonth:month,createdAt:event.occurredAt,resolution:event.resolution,oldPayment:oldPayment ?? defaults?.payment,newPayment:newPayment,reviewStatus:event.after["status"]?.string.flatMap(ExpenseReviewStatus.init(rawValue:)),active:FinanceProjector.boolean(event.after["active"]))
         }
-        let changes = Array(result.reversed())
-        financeChangeCache = (operations.count, context.members, limit, changes)
-        return changes
+        financeChangeCache=(changeNumber,context.members,limit,changes);return changes
     }
     func financeReminders(at now: Date? = nil, includeFuture: Bool = false) throws -> [FinanceReminder] {
         let now = now ?? dateProvider.now(), finance = snapshot.finance

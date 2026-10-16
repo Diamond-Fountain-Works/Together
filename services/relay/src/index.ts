@@ -1,4 +1,13 @@
 import { DurableObject } from "cloudflare:workers";
+import {
+  authorizedDevice,
+  canonical,
+  MDState,
+  MultideviceError,
+  SignedAuthorization,
+  stableId,
+  verifyArchive,
+} from "./multidevice";
 export interface Env {
   DIRECTORY: DurableObjectNamespace<ConnectionDirectory>;
   ROOMS: DurableObjectNamespace<RelayRoom>;
@@ -115,10 +124,15 @@ export default {
         status: "ok",
         protocol: 1,
         deviceProtocols: [2, 3],
+        replicationProtocols: [3, 4],
+        relayAPIVersions: [1, 2],
         delivery: "realtime-only",
         version: env.SERVICE_VERSION,
       });
-    if (Number(request.headers.get("Content-Length") ?? 0) > 16384)
+    if (
+      Number(request.headers.get("Content-Length") ?? 0) >
+      (new URL(request.url).pathname.startsWith("/v2/") ? 131072 : 16384)
+    )
       return json({ error: "REQUEST_TOO_LARGE" }, 413);
     try {
       return await env.DIRECTORY.get(
@@ -136,12 +150,15 @@ export class ConnectionDirectory extends DurableObject<Env> {
     scope: string,
     limit: number,
     windowMs = 60000,
+    subject?: string,
   ): Promise<void> {
     const name =
         "rate:" +
         scope +
         ":" +
-        (await hash(request.headers.get("CF-Connecting-IP") ?? "local")),
+        (await hash(
+          subject ?? request.headers.get("CF-Connecting-IP") ?? "local",
+        )),
       now = Date.now();
     await this.ctx.storage.transaction(async (tx) => {
       let row = await tx.get<{ start: number; count: number }>(name);
@@ -224,9 +241,17 @@ export class ConnectionDirectory extends DurableObject<Env> {
   async fetch(request: Request): Promise<Response> {
     try {
       const path = new URL(request.url).pathname;
-      await this.rate(request, "requests", 120);
-      if (path === "/v1/challenge" && request.method === "GET") {
-        await this.rate(request, "challenge", 40);
+      const v2 = path.startsWith("/v2/");
+      await this.rate(request, v2 ? "requests4" : "requests", v2 ? 1024 : 120);
+      if (
+        ["/v1/challenge", "/v2/challenge"].includes(path) &&
+        request.method === "GET"
+      ) {
+        await this.rate(
+          request,
+          v2 ? "challenge4" : "challenge",
+          v2 ? 128 : 40,
+        );
         const challenge = {
           id: id(),
           nonce: b64(randomBytes(32)),
@@ -240,6 +265,47 @@ export class ConnectionDirectory extends DurableObject<Env> {
         return json(challenge);
       }
       const socket = path.match(/^\/v1\/socket\/([0-9A-F-]+)$/);
+      const socket4 = path.match(/^\/v2\/socket\/([0-9A-F-]+)$/);
+      if (
+        socket4 &&
+        request.headers.get("Upgrade")?.toLowerCase() === "websocket"
+      ) {
+        const token =
+            request.headers.get("Authorization")?.replace(/^Bearer /, "") ?? "",
+          key = "ticket4:" + (await hash(token));
+        const ticket = await this.ctx.storage.transaction(async (tx) => {
+          const row = await tx.get<{
+            spaceId: string;
+            device: string;
+            key: string;
+            expiresAt: number;
+            authorizationDigest: string;
+          }>(key);
+          await tx.delete(key);
+          return row;
+        });
+        if (
+          !ticket ||
+          ticket.spaceId !== socket4[1] ||
+          ticket.expiresAt < Date.now()
+        )
+          throw new MultideviceError(401, "TICKET_EXPIRED");
+        const state = await this.space4(ticket.spaceId, {
+          device: ticket.device,
+          key: ticket.key,
+        });
+        if (state.authorizationDigest !== ticket.authorizationDigest)
+          throw new MultideviceError(409, "AUTHORIZATION_CHANGED");
+        const room = this.env.ROOMS.get(
+          this.env.ROOMS.idFromName("space4:" + state.spaceId),
+        );
+        await room.configureSpace(state);
+        return room.fetch(
+          new Request("https://room.internal/socket4", {
+            headers: { Upgrade: "websocket", "X-Member": ticket.device },
+          }),
+        );
+      }
       if (
         socket &&
         request.headers.get("Upgrade")?.toLowerCase() === "websocket"
@@ -276,10 +342,23 @@ export class ConnectionDirectory extends DurableObject<Env> {
         );
       }
       const bodyText = request.method === "GET" ? "" : await request.text();
-      if (encoder.encode(bodyText).length > 16384)
+      if (
+        encoder.encode(bodyText).length >
+        (path.startsWith("/v2/") ? 131072 : 16384)
+      )
         throw new ServiceError(413, "REQUEST_TOO_LARGE");
       const auth = await this.authenticate(request, bodyText),
         body = bodyText ? JSON.parse(bodyText) : {};
+      if (path.startsWith("/v2/")) {
+        await this.rate(
+          request,
+          "authenticated4",
+          120,
+          60000,
+          auth.device + ":" + auth.key,
+        );
+        return await this.handle4(request, path, body, auth);
+      }
       if (path === "/v1/invitations" && request.method === "POST") {
         await this.rate(request, "create", 6, 600000);
         const owner = member(body, auth);
@@ -424,10 +503,132 @@ export class ConnectionDirectory extends DurableObject<Env> {
       }
       throw new ServiceError(404, "NOT_FOUND");
     } catch (error) {
-      if (error instanceof ServiceError)
+      if (error instanceof ServiceError || error instanceof MultideviceError)
         return json({ error: error.code }, error.status);
       return json({ error: "INVALID_REQUEST" }, 400);
     }
+  }
+  private async space4(
+    id: string,
+    auth: { device: string; key: string },
+  ): Promise<MDState> {
+    const state = await this.ctx.storage.get<MDState>("space4:" + id);
+    if (!state) throw new MultideviceError(404, "SPACE_UNAVAILABLE");
+    authorizedDevice(state, auth);
+    return state;
+  }
+  private async handle4(
+    request: Request,
+    path: string,
+    body: any,
+    auth: { device: string; key: string },
+  ): Promise<Response> {
+    if (path === "/v2/spaces" && request.method === "POST") {
+      const legacy = await this.getRoute(body.legacyRouteId, auth);
+      if (!legacy.paired || legacy.members.length !== 2)
+        throw new MultideviceError(403, "LEGACY_PAIR_REQUIRED");
+      const verified = await verifyArchive(body.authorization),
+        g = body.authorization.genesis.body;
+      const frozenSpace = await stableId(
+        "space:" +
+          legacy.members
+            .map((m) => m.descriptor.deviceId)
+            .sort()
+            .join(":"),
+      );
+      const aliases = [
+        ...new Set([
+          frozenSpace,
+          ...legacy.members.map((m) => m.descriptor.initialSpaceId),
+        ]),
+      ].sort();
+      if (
+        body.authorization.events.length !== 0 ||
+        g.spaceId !== frozenSpace ||
+        canonical(g.legacySpaceIds) !== canonical(aliases) ||
+        !g.roots.every((root: any) =>
+          legacy.members.some(
+            (m) =>
+              m.descriptor.deviceId === root.deviceId &&
+              m.descriptor.userId === root.userId &&
+              m.descriptor.publicKey === root.publicKey &&
+              m.descriptor.initialSpaceId === root.initialSpaceId,
+          ),
+        )
+      )
+        throw new MultideviceError(403, "MIGRATION_IDENTITY_MISMATCH");
+      const state: MDState = {
+        schemaVersion: 2,
+        legacyRouteId: legacy.routeId,
+        spaceId: g.spaceId,
+        archive: body.authorization,
+        ...verified,
+      };
+      const saved = await this.ctx.storage.transaction(async (tx) => {
+        const prior = await tx.get<MDState>("space4:" + state.spaceId);
+        if (prior) {
+          if (
+            prior.legacyRouteId !== state.legacyRouteId ||
+            canonical(prior.archive.genesis) !==
+              canonical(state.archive.genesis)
+          )
+            throw new MultideviceError(409, "SPACE_ALREADY_MIGRATED");
+          return prior; // A repeated bootstrap cannot erase later grants/revocations.
+        }
+        await tx.put("space4:" + state.spaceId, state);
+        return state;
+      });
+      return json(saved);
+    }
+    const match = path.match(
+      /^\/v2\/spaces\/([0-9A-F-]+)(?:\/(ticket|devices))?$/,
+    );
+    if (!match) throw new MultideviceError(404, "NOT_FOUND");
+    let state = await this.space4(match[1], auth);
+    if (request.method === "GET" && !match[2]) return json(state);
+    if (request.method !== "POST")
+      throw new MultideviceError(405, "METHOD_NOT_ALLOWED");
+    if (match[2] === "ticket") {
+      const ticket = b64(randomBytes(32)),
+        expiresAt = Date.now() + 60000;
+      await this.ctx.storage.put("ticket4:" + (await hash(ticket)), {
+        spaceId: state.spaceId,
+        device: auth.device,
+        key: auth.key,
+        authorizationDigest: state.authorizationDigest,
+        expiresAt,
+      });
+      return json({ ticket, routeId: state.spaceId, expiresAt });
+    }
+    if (match[2] === "devices") {
+      const event = body.event as SignedAuthorization;
+      if (!event || event.body.authorizerDeviceId !== auth.device)
+        throw new MultideviceError(403, "OWNER_AUTHORIZATION_REQUIRED");
+      state = await this.ctx.storage.transaction(async (tx) => {
+        const prior = (await tx.get<MDState>("space4:" + state.spaceId))!;
+        authorizedDevice(prior, auth);
+        if (prior.archive.events.some((e) => canonical(e) === canonical(event)))
+          return prior;
+        const archive = {
+            genesis: prior.archive.genesis,
+            events: [...prior.archive.events, event],
+          },
+          verified = await verifyArchive(archive);
+        const next = { ...prior, archive, ...verified };
+        if (encoder.encode(canonical(next)).length > 131072)
+          throw new MultideviceError(
+            413,
+            "AUTHORIZATION_HISTORY_PAGE_REQUIRED",
+          );
+        await tx.put("space4:" + prior.spaceId, next);
+        return next;
+      });
+      await this.env.ROOMS.get(
+        this.env.ROOMS.idFromName("space4:" + state.spaceId),
+      ).configureSpace(state);
+      return json(state);
+    }
+    throw new MultideviceError(404, "NOT_FOUND");
   }
   async alarm(): Promise<void> {
     const now = Date.now(),
@@ -435,6 +636,7 @@ export class ConnectionDirectory extends DurableObject<Env> {
     for (const [key, value] of entries) {
       if (
         (key.startsWith("nonce:") ||
+          key.startsWith("ticket4:") ||
           key.startsWith("ticket:") ||
           key.startsWith("invite:") ||
           (key.startsWith("route:") && !value.paired)) &&
@@ -449,6 +651,36 @@ export class ConnectionDirectory extends DurableObject<Env> {
 }
 
 export class RelayRoom extends DurableObject<Env> {
+  async configureSpace(state: MDState): Promise<void> {
+    const prior = await this.ctx.storage.get<MDState>("space4");
+    await this.ctx.storage.put("space4", state);
+    if (prior && prior.authorizationDigest !== state.authorizationDigest) {
+      for (const socket of this.ctx.getWebSockets())
+        socket.close(4003, "Authorization changed");
+    }
+    this.status4(state);
+  }
+  private status4(state: MDState): void {
+    const devices = [
+      ...new Set(
+        this.ctx
+          .getWebSockets()
+          .filter((s) => s.readyState === WebSocket.OPEN)
+          .map((s) => this.ctx.getTags(s)[0]),
+      ),
+    ].sort();
+    const message = JSON.stringify({
+      kind: "status4",
+      spaceId: state.spaceId,
+      devices,
+      authorizationDigest: state.authorizationDigest,
+    });
+    for (const socket of this.ctx.getWebSockets()) {
+      try {
+        socket.send(message);
+      } catch {}
+    }
+  }
   async configure(route: Route): Promise<void> {
     await this.ctx.storage.put("route", route);
     if (route.revoked) {
@@ -470,6 +702,33 @@ export class RelayRoom extends DurableObject<Env> {
     }
   }
   async fetch(request: Request): Promise<Response> {
+    if (new URL(request.url).pathname === "/socket4") {
+      const state = await this.ctx.storage.get<MDState>("space4"),
+        device = request.headers.get("X-Member") ?? "";
+      if (
+        !state ||
+        !state.devices.some(
+          (d) => d.descriptor.deviceId === device && !d.revokedAt,
+        )
+      )
+        return json({ error: "NOT_AN_AUTHORIZED_DEVICE" }, 403);
+      for (const old of this.ctx.getWebSockets(device))
+        old.close(4001, "Device session replaced");
+      const generation = id();
+      await this.ctx.storage.put("session4:" + device, generation);
+      const pair = new WebSocketPair(),
+        server = pair[1];
+      this.ctx.acceptWebSocket(server, [device, "v4"]);
+      server.serializeAttachment({
+        device,
+        generation,
+        version: 4,
+        window: Date.now(),
+        count: 0,
+      });
+      this.status4(state);
+      return new Response(null, { status: 101, webSocket: pair[0] });
+    }
     const route = await this.ctx.storage.get<Route>("route"),
       device = request.headers.get("X-Member") ?? "";
     if (
@@ -504,6 +763,8 @@ export class RelayRoom extends DurableObject<Env> {
       device: string;
       window: number;
       count: number;
+      version?: number;
+      generation?: string;
     };
     if (Date.now() - info.window > 1000) {
       info.window = Date.now();
@@ -514,6 +775,57 @@ export class RelayRoom extends DurableObject<Env> {
       return;
     }
     socket.serializeAttachment(info);
+    if (info.version === 4) {
+      const state = await this.ctx.storage.get<MDState>("space4");
+      if (
+        !state ||
+        !state.devices.some(
+          (d) => d.descriptor.deviceId === info.device && !d.revokedAt,
+        ) ||
+        (await this.ctx.storage.get("session4:" + info.device)) !==
+          info.generation
+      ) {
+        socket.close(4003, "Device unauthorized");
+        return;
+      }
+      try {
+        const frame = JSON.parse(
+          typeof message === "string"
+            ? message
+            : new TextDecoder().decode(message),
+        );
+        if (
+          frame.kind !== "relay4" ||
+          frame.senderDeviceId !== info.device ||
+          frame.recipientDeviceId === info.device ||
+          !state.devices.some(
+            (d) =>
+              d.descriptor.deviceId === frame.recipientDeviceId && !d.revokedAt,
+          ) ||
+          !["hello", "consent", "encrypted"].includes(frame.packet?.kind) ||
+          (frame.packet.kind !== "encrypted" && bytes > 8192)
+        ) {
+          socket.close(1008, "Invalid directed frame");
+          return;
+        }
+        const peers = this.ctx
+          .getWebSockets(frame.recipientDeviceId)
+          .filter((s) => s.readyState === WebSocket.OPEN);
+        if (!peers.length) {
+          socket.send(
+            JSON.stringify({
+              kind: "waiting4",
+              deviceId: frame.recipientDeviceId,
+            }),
+          );
+          return;
+        }
+        for (const peer of peers) peer.send(message);
+      } catch {
+        socket.close(1008, "Invalid frame");
+      }
+      return;
+    }
     const route = await this.ctx.storage.get<Route>("route");
     if (!route || route.revoked) {
       socket.close(4003, "Route unavailable");
@@ -555,6 +867,8 @@ export class RelayRoom extends DurableObject<Env> {
     } catch {}
     const route = await this.ctx.storage.get<Route>("route");
     if (route) this.status(route);
+    const space = await this.ctx.storage.get<MDState>("space4");
+    if (space) this.status4(space);
   }
   async webSocketError(socket: WebSocket): Promise<void> {
     try {

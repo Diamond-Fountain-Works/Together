@@ -9,12 +9,17 @@ import AppKit
     @AppStorage("appearance") private var appearance = "system"
     @NSApplicationDelegateAdaptor(TogetherAppDelegate.self) private var delegate
     init() {
+        #if TOGETHER_UI_TEST_HOST
+        if !UIFixture.enabled { _startupError=State(initialValue:Copy.text("qa.error.isolatedLaunch")) }
+        return
+        #else
         #if DEBUG
         if UIFixture.enabled { return }
         #endif
         do { _model = State(initialValue: ApplicationModel(engine: try ReplicaEngine.production())) }
         catch IdentityStorageError.legacyMigrationRequired { _needsIdentityMigration = State(initialValue: true) }
         catch { _startupError = State(initialValue: error.localizedDescription) }
+        #endif
     }
     var body: some Scene {
         WindowGroup("Together", id: "main") {
@@ -31,8 +36,14 @@ import AppKit
     @ViewBuilder private var normalContent: some View {
             if let model {
                 RootView(model: model)
+                    .id(model.engine.identity.descriptor.deviceId)
                     .frame(minWidth: 900, minHeight: 620)
                     .preferredColorScheme(appearance == "system" ? nil : appearance == "dark" ? .dark : .light)
+                    .onChange(of: model.requestedReplica?.identity.descriptor.deviceId) { _, _ in
+                        if let engine = model.requestedReplica {
+                            self.model = model.replacement(with: engine)
+                        }
+                    }
             } else {
                 StartupIdentityView(needsMigration: needsIdentityMigration, error: startupError) {
                     do {
@@ -51,6 +62,8 @@ import AppKit
                     .keyboardShortcut("l", modifiers: [.command, .shift]).disabled(model == nil)
             }
             CommandGroup(after: .windowArrangement) {
+                Button(Copy.text("device.title")) { model?.show(.devices) }.disabled(model == nil)
+                Button(Copy.text("sync.changes.title")) {model?.show(.changes)}.disabled(model==nil)
                 Button(Copy.text("copy.action.1555373b2da2")) { model?.show(.giftHistory) }.keyboardShortcut("l", modifiers: [.command, .option]).disabled(model == nil)
             }
             CommandGroup(replacing: .help) {
@@ -63,6 +76,8 @@ import AppKit
     }
 }
 @MainActor final class TogetherAppDelegate: NSObject, NSApplicationDelegate {
-    func applicationDidFinishLaunching(_ notification: Notification) { NSApp.setActivationPolicy(.regular); NSApp.activate(ignoringOtherApps: true) }
+    func applicationDidFinishLaunching(_ notification: Notification) {
+        NSApp.setActivationPolicy(.regular); NSApp.activate(ignoringOtherApps: true)
+    }
     func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool { false }
 }

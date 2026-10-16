@@ -1,0 +1,658 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/Diamond-Fountain-Works/Together/protocol/replication-v4",
+  "title": "Together replication protocol 4",
+  "description": "Explicit portable tagged messages; semantic signatures, chain continuity, authorization, bounds in bytes and canonical ordering are additionally mandatory. SwiftData is not part of this contract.",
+  "$defs": {
+    "DeviceDescriptor": {
+      "type": "object",
+      "properties": {
+        "deviceId": {
+          "type": "string",
+          "pattern": "^[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}$"
+        },
+        "userId": {
+          "type": "string",
+          "pattern": "^[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}$"
+        },
+        "initialSpaceId": {
+          "type": "string",
+          "pattern": "^[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}$"
+        },
+        "publicKey": {
+          "type": "string"
+        },
+        "displayName": {
+          "type": "string",
+          "maxLength": 80
+        },
+        "protocolVersion": {
+          "enum": [
+            2,
+            3,
+            4
+          ]
+        },
+        "initialTimeZoneIdentifier": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "deviceId",
+        "userId",
+        "initialSpaceId",
+        "publicKey",
+        "displayName",
+        "protocolVersion"
+      ],
+      "additionalProperties": false
+    },
+    "InventoryEntry": {
+      "type": "object",
+      "properties": {
+        "operationId": {
+          "type": "string",
+          "pattern": "^[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}$"
+        },
+        "contentDigest": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "certificationDigest": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      },
+      "required": [
+        "operationId",
+        "contentDigest"
+      ],
+      "additionalProperties": false
+    },
+    "InventoryCheckpoint": {
+      "type": "object",
+      "properties": {
+        "count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "digest": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      },
+      "required": [
+        "count",
+        "digest"
+      ],
+      "additionalProperties": false
+    },
+    "DeviceFrontier": {
+      "type": "object",
+      "properties": {
+        "sequence": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 8999999999999999
+        },
+        "digest": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      },
+      "required": [
+        "sequence",
+        "digest"
+      ],
+      "additionalProperties": false
+    },
+    "SpaceGenesisBody": {
+      "type": "object",
+      "properties": {
+        "version": {
+          "const": 4
+        },
+        "spaceId": {
+          "type": "string",
+          "pattern": "^[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}$"
+        },
+        "memberIds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}$"
+          },
+          "minItems": 2,
+          "maxItems": 2,
+          "uniqueItems": true
+        },
+        "roots": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/DeviceDescriptor"
+          },
+          "minItems": 2,
+          "maxItems": 2
+        },
+        "legacySpaceIds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}$"
+          },
+          "maxItems": 3
+        },
+        "sharedTimeZoneIdentifier": {
+          "type": "string"
+        },
+        "legacyCheckpoint": {
+          "$ref": "#/$defs/InventoryCheckpoint"
+        }
+      },
+      "required": [
+        "version",
+        "spaceId",
+        "memberIds",
+        "roots",
+        "legacySpaceIds",
+        "sharedTimeZoneIdentifier",
+        "legacyCheckpoint"
+      ],
+      "additionalProperties": false
+    },
+    "SignedSpaceGenesis": {
+      "type": "object",
+      "properties": {
+        "body": {
+          "$ref": "#/$defs/SpaceGenesisBody"
+        },
+        "signatures": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 2,
+          "items": {
+            "type": "object",
+            "properties": {
+              "deviceId": {
+                "type": "string",
+                "pattern": "^[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}$"
+              },
+              "signature": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "deviceId",
+              "signature"
+            ],
+            "additionalProperties": false
+          }
+        }
+      },
+      "required": [
+        "body",
+        "signatures"
+      ],
+      "additionalProperties": false
+    },
+    "DeviceAuthorizationBody": {
+      "type": "object",
+      "properties": {
+        "version": {
+          "const": 4
+        },
+        "spaceId": {
+          "type": "string",
+          "pattern": "^[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}$"
+        },
+        "ownerId": {
+          "type": "string",
+          "pattern": "^[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}$"
+        },
+        "revision": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 8999999999999999
+        },
+        "previousDigest": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "authorizerDeviceId": {
+          "type": "string",
+          "pattern": "^[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}$"
+        },
+        "action": {
+          "enum": [
+            "grant",
+            "revoke"
+          ]
+        },
+        "device": {
+          "$ref": "#/$defs/DeviceDescriptor"
+        },
+        "epochId": {
+          "type": "string",
+          "pattern": "^[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}$"
+        },
+        "cutoff": {
+          "$ref": "#/$defs/DeviceFrontier"
+        }
+      },
+      "required": [
+        "version",
+        "spaceId",
+        "ownerId",
+        "revision",
+        "previousDigest",
+        "authorizerDeviceId",
+        "action",
+        "device",
+        "epochId"
+      ],
+      "additionalProperties": false
+    },
+    "SignedDeviceAuthorization": {
+      "type": "object",
+      "properties": {
+        "body": {
+          "$ref": "#/$defs/DeviceAuthorizationBody"
+        },
+        "signature": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "body",
+        "signature"
+      ],
+      "additionalProperties": false
+    },
+    "AuthorizationArchive": {
+      "type": "object",
+      "properties": {
+        "genesis": {
+          "$ref": "#/$defs/SignedSpaceGenesis"
+        },
+        "events": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/SignedDeviceAuthorization"
+          }
+        }
+      },
+      "required": [
+        "genesis",
+        "events"
+      ],
+      "additionalProperties": false
+    },
+    "AuthorizedOperation": {
+      "type": "object",
+      "properties": {
+        "body": {
+          "type": "object",
+          "properties": {
+            "version": {
+              "const": 4
+            },
+            "spaceId": {
+              "type": "string",
+              "pattern": "^[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}$"
+            },
+            "epochId": {
+              "type": "string",
+              "pattern": "^[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}$"
+            },
+            "sequence": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 8999999999999999
+            },
+            "previousDigest": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "signedOperation": {
+              "$ref": "https://github.com/Diamond-Fountain-Works/Together/protocol/domain-v3#/$defs/SignedOperation"
+            }
+          },
+          "required": [
+            "version",
+            "spaceId",
+            "epochId",
+            "sequence",
+            "previousDigest",
+            "signedOperation"
+          ],
+          "additionalProperties": false
+        },
+        "signature": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "body",
+        "signature"
+      ],
+      "additionalProperties": false
+    },
+    "ReplicationRecord": {
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "const": "legacy"
+            },
+            "legacy": {
+              "$ref": "https://github.com/Diamond-Fountain-Works/Together/protocol/domain-v3#/$defs/SignedOperation"
+            }
+          },
+          "required": [
+            "kind",
+            "legacy"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "const": "authorized"
+            },
+            "authorized": {
+              "$ref": "#/$defs/AuthorizedOperation"
+            }
+          },
+          "required": [
+            "kind",
+            "authorized"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "InventoryPage": {
+      "type": "object",
+      "properties": {
+        "checkpoint": {
+          "$ref": "#/$defs/InventoryCheckpoint"
+        },
+        "after": {
+          "type": "string",
+          "pattern": "^[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}$"
+        },
+        "entries": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/InventoryEntry"
+          },
+          "maxItems": 128
+        },
+        "next": {
+          "type": "string",
+          "pattern": "^[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}$"
+        }
+      },
+      "required": [
+        "checkpoint",
+        "entries"
+      ],
+      "additionalProperties": false
+    },
+    "SignedAcknowledgement": {
+      "type": "object",
+      "properties": {
+        "body": {
+          "type": "object",
+          "properties": {
+            "version": {
+              "const": 4
+            },
+            "spaceId": {
+              "type": "string",
+              "pattern": "^[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}$"
+            },
+            "deviceId": {
+              "type": "string",
+              "pattern": "^[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}$"
+            },
+            "epochId": {
+              "type": "string",
+              "pattern": "^[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}$"
+            },
+            "entries": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/InventoryEntry"
+              },
+              "maxItems": 32
+            },
+            "checkpoint": {
+              "$ref": "#/$defs/InventoryCheckpoint"
+            }
+          },
+          "required": [
+            "version",
+            "spaceId",
+            "deviceId",
+            "epochId",
+            "entries"
+          ],
+          "additionalProperties": false,
+          "oneOf": [
+            {
+              "properties": {
+                "entries": {
+                  "minItems": 1
+                }
+              },
+              "not": {
+                "required": [
+                  "checkpoint"
+                ]
+              }
+            },
+            {
+              "properties": {
+                "entries": {
+                  "maxItems": 0
+                }
+              },
+              "required": [
+                "checkpoint"
+              ]
+            }
+          ]
+        },
+        "signature": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "body",
+        "signature"
+      ],
+      "additionalProperties": false
+    },
+    "ReplicationFrame": {
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "const": "syncHint"
+            },
+            "hintId": {
+              "type": "string",
+              "pattern": "^[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}$"
+            }
+          },
+          "required": [
+            "kind",
+            "hintId"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "const": "inventoryStart"
+            },
+            "passId": {
+              "type": "string",
+              "pattern": "^[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}$"
+            }
+          },
+          "required": [
+            "kind",
+            "passId"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "const": "inventoryPage"
+            },
+            "passId": {
+              "type": "string",
+              "pattern": "^[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}$"
+            },
+            "page": {
+              "$ref": "#/$defs/InventoryPage"
+            }
+          },
+          "required": [
+            "kind",
+            "passId",
+            "page"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "const": "inventoryNext"
+            },
+            "passId": {
+              "type": "string",
+              "pattern": "^[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}$"
+            },
+            "cursor": {
+              "type": "string",
+              "pattern": "^[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}$"
+            }
+          },
+          "required": [
+            "kind",
+            "passId",
+            "cursor"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "const": "operationRequest"
+            },
+            "passId": {
+              "type": "string",
+              "pattern": "^[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}$"
+            },
+            "requestId": {
+              "type": "string",
+              "pattern": "^[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}$"
+            },
+            "entries": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/InventoryEntry"
+              },
+              "maxItems": 32
+            }
+          },
+          "required": [
+            "kind",
+            "passId",
+            "requestId",
+            "entries"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "const": "operationBatch"
+            },
+            "passId": {
+              "type": "string",
+              "pattern": "^[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}$"
+            },
+            "requestId": {
+              "type": "string",
+              "pattern": "^[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}$"
+            },
+            "records": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/ReplicationRecord"
+              },
+              "maxItems": 32
+            }
+          },
+          "required": [
+            "kind",
+            "passId",
+            "requestId",
+            "records"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "const": "inventoryFinished"
+            },
+            "passId": {
+              "type": "string",
+              "pattern": "^[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}$"
+            },
+            "checkpoint": {
+              "$ref": "#/$defs/InventoryCheckpoint"
+            }
+          },
+          "required": [
+            "kind",
+            "passId",
+            "checkpoint"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "const": "acknowledgement"
+            },
+            "receipt": {
+              "$ref": "#/$defs/SignedAcknowledgement"
+            }
+          },
+          "required": [
+            "kind",
+            "receipt"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    }
+  }
+}

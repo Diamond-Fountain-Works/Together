@@ -1,7 +1,7 @@
 import Foundation
 
 enum GiftProjector {
-    static func apply(_ operations: [SyncOperation], context: ReplicaContext, snapshot: inout DomainSnapshot) {
+    static func apply(_ operations: [SyncOperation], context: ReplicaContext, snapshot: inout DomainSnapshot,audit:ProjectionAudit?=nil) {
         let creator = context.spaceCreator
         var zone = context.sharedTimeZone
         for op in operations where op.entityType == .sharedSpace {
@@ -32,6 +32,8 @@ enum GiftProjector {
         }
         var slots: [String: UUID] = [:]
         for op in operations where op.entityType == .loveGift && op.operationType == .create {
+            let before=audit.map{_ in ProjectionAudit.fields(op.entityType,id:op.entityId,in:snapshot)}
+            defer{if let before{audit?.record(op,before:before,after:ProjectionAudit.fields(op.entityType,id:op.entityId,in:snapshot))}}
             let p = op.payload
             let text = p["textContent"]?.string?.trimmingCharacters(in: .whitespacesAndNewlines)
             let audio = p["audioAssetId"]?.uuid, photo = p["photoAssetId"]?.uuid
@@ -60,6 +62,8 @@ enum GiftProjector {
         }
         // Apply tombstones after creations, including deletes that arrived before creation.
         for op in operations where op.entityType == .loveGift && op.operationType != .create {
+            let before=audit.map{_ in ProjectionAudit.fields(op.entityType,id:op.entityId,in:snapshot)}
+            defer{if let before{audit?.record(op,before:before,after:ProjectionAudit.fields(op.entityType,id:op.entityId,in:snapshot))}}
             guard op.operationType == .delete, var gift = snapshot.gifts[op.entityId], gift.senderId == op.actorId else {
                 OperationProjector.conflict(op, Copy.text("copy.error.77bc37901b5c"), into: &snapshot); continue
             }

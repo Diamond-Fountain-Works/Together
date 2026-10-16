@@ -5524,6 +5524,496 @@
       "review": "approved",
       "reason": "Factual recovery reminder for missed occurrences",
       "textSHA256": "4edcf252f305e5366562fdf9b640a0246e7c399af81c4e58d9f4576d0180d104"
+    },
+    "sync.changes.title": {
+      "category": "Navigation",
+      "context": "Universal Change Review from actual projected operations",
+      "review": "approved",
+      "reason": "Functional labels in the explicitly requested cross-domain change review; within copy budget, no invented user content or delivery claims.",
+      "textSHA256": "6a44819f991b4c49c290784a28baa425f3d7cebe6ec2a25c4c3c899f914b7314"
+    },
+    "sync.changes.empty": {
+      "category": "Empty State",
+      "context": "Universal Change Review from actual projected operations",
+      "review": "approved",
+      "reason": "Functional labels in the explicitly requested cross-domain change review; within copy budget, no invented user content or delivery claims.",
+      "textSHA256": "815347a7ad901ec74dade8999db0976931d4650ed9c78362eac92fbae3cf40fd"
+    },
+    "sync.changes.count": {
+      "category": "Status",
+      "context": "Universal Change Review from actual projected operations",
+      "review": "approved",
+      "reason": "Functional labels in the explicitly requested cross-domain change review; within copy budget, no invented user content or delivery claims.",
+      "textSHA256": "9d7010ad2ead7f8a36d08a2de917b7decfe61f99332eea0eb61fc12fccb4949b"
+    },
+    "sync.changes.profiles": {
+      "category": "Navigation",
+      "context": "Universal Change Review from actual projected operations",
+      "review": "approved",
+      "reason": "Functional labels in the explicitly requested cross-domain change review; within copy budget, no invented user content or delivery claims.",
+      "textSHA256": "b94d13a45ea21152fd63e193e3c0e3d6ff168931b471e1f8bfca84b0723dd3c1"
+    },
+    "sync.origin.thisDevice": {
+      "category": "Status",
+      "context": "Universal Change Review from actual projected operations",
+      "review": "approved",
+      "reason": "Functional labels in the explicitly requested cross-domain change review; within copy budget, no invented user content or delivery claims.",
+      "textSHA256": "8a94c4a1cdbd821ebbd32eff1549e6ae9ebcbc540dcd39c933d1ea2177d1ce5f"
+    },
+    "sync.origin.myOtherDevice": {
+      "category": "Status",
+      "context": "Universal Change Review from actual projected operations",
+      "review": "approved",
+      "reason": "Functional labels in the explicitly requested cross-domain change review; within copy budget, no invented user content or delivery claims.",
+      "textSHA256": "179da81e0e481a17fbd9cc28cb62c39a970393fbedae9fee5da7477e3d3db36c"
+    },
+    "sync.origin.partner": {
+      "category": "Status",
+      "context": "Universal Change Review from actual projected operations",
+      "review": "approved",
+      "reason": "Functional labels in the explicitly requested cross-domain change review; within copy budget, no invented user content or delivery claims.",
+      "textSHA256": "bea20ac7469dd14fb478d0cb4f87fb848894681b9ff122607584579355360cdd"
+    },
+    "sync.review.action": {
+      "category": "Action",
+      "context": "Universal Change Review from actual projected operations",
+      "review": "approved",
+      "reason": "Functional labels in the explicitly requested cross-domain change review; within copy budget, no invented user content or delivery claims.",
+      "textSHA256": "52084250e64b3e049e17f484255b6fffbd51ee81cb7503d823e1951075418d6c"
+    },
+    "sync.review.reviewed": {
+      "category": "Status",
+      "context": "Universal Change Review from actual projected operations",
+      "review": "approved",
+      "reason": "Functional labels in the explicitly requested cross-domain change review; within copy budget, no invented user content or delivery claims.",
+      "textSHA256": "8028201c37f466c72ecb2883fd4e0a3f92f1f94cddd5c69514515404f7cdd515"
+    },
+    "sync.review.dismissed": {
+      "category": "Status",
+      "context": "Universal Change Review from actual projected operations",
+      "review": "approved",
+      "reason": "Functional labels in the explicitly requested cross-domain change review; within copy budget, no invented user content or delivery claims.",
+      "textSHA256": "c9bb70bcaaa3bee1f1a6031886a12270c0cdabafbba9e845513a76e3959dac3f"
+    },
+    "sync.field.status": {
+      "category": "Guidance",
+      "context": "Universal Change Review from actual projected operations",
+      "review": "approved",
+      "reason": "Functional labels in the explicitly requested cross-domain change review; within copy budget, no invented user content or delivery claims.",
+      "textSHA256": "6320b4a8722a851fb99566e4eac1cfd4b93bc684b3a33d9f5cae37a116b8c734"
+    },
+    "sync.field.quantity": {
+      "category": "Guidance",
+      "context": "Universal Change Review from actual projected operations",
+      "review": "approved",
+      "reason": "Functional labels in the explicitly requested cross-domain change review; within copy budget, no invented user content or delivery claims.",
+      "textSHA256": "5e29d121dda011c50d1a2d539dde959645ab8f53aa813d3864d957100329f39e"
+    },
+    "sync.action.create": {
+      "category": "Status",
+      "context": "Universal Change Review from actual projected operations",
+      "review": "approved",
+      "reason": "Functional labels in the explicitly requested cross-domain change review; within copy budget, no invented user content or delivery claims.",
+      "textSHA256": "9007ba40674f31554e30e840620949559a3dfaab805dc0177fd58c25ad3761da"
+    },
+    "sync.action.delete": {
+      "category": "Status",
+      "context": "Universal Change Review from actual projected operations",
+      "review": "approved",
+      "reason": "Functional labels in the explicitly requested cross-domain change review; within copy budget, no invented user content or delivery claims.",
+      "textSHA256": "f2cf9101bb2d88164819d5dc6b50dc5d59e38f23d19bbac4537dfa7f20533cff"
+    },
+    "sync.action.completeTask": {
+      "category": "Status",
+      "context": "Universal Change Review from actual projected operations",
+      "review": "approved",
+      "reason": "Functional labels in the explicitly requested cross-domain change review; within copy budget, no invented user content or delivery claims.",
+      "textSHA256": "56be09301c39591338998a4dc83217667744a8fc6f12521d557eb90128ca378a"
+    },
+    "sync.action.reopenTask": {
+      "category": "Status",
+      "context": "Universal Change Review from actual projected operations",
+      "review": "approved",
+      "reason": "Functional labels in the explicitly requested cross-domain change review; within copy budget, no invented user content or delivery claims.",
+      "textSHA256": "367a334c100fb9b18fc115c7b983034d1362aef7d7bfe4b9d8b42d2eef8ada23"
+    },
+    "sync.action.requestFulfillment": {
+      "category": "Status",
+      "context": "Universal Change Review from actual projected operations",
+      "review": "approved",
+      "reason": "Functional labels in the explicitly requested cross-domain change review; within copy budget, no invented user content or delivery claims.",
+      "textSHA256": "70a4b1148ac6367d74735080a661f1de5696d4024297801cfe5b33e42edce778"
+    },
+    "sync.action.confirmFulfillment": {
+      "category": "Status",
+      "context": "Universal Change Review from actual projected operations",
+      "review": "approved",
+      "reason": "Functional labels in the explicitly requested cross-domain change review; within copy budget, no invented user content or delivery claims.",
+      "textSHA256": "c8c2b31b447c21927f510d2934da24d92cbabfdf56bb12b462dbed2705aa7c79"
+    },
+    "sync.action.rejectFulfillment": {
+      "category": "Status",
+      "context": "Universal Change Review from actual projected operations",
+      "review": "approved",
+      "reason": "Functional labels in the explicitly requested cross-domain change review; within copy budget, no invented user content or delivery claims.",
+      "textSHA256": "c86f79fdab1ade2dc0971d7601ad6fa3c7cd37b665d345e63fe416aadfb9414f"
+    },
+    "sync.domain.gifts": {
+      "category": "Navigation",
+      "context": "Gift event domain label; sealed content remains hidden",
+      "review": "approved",
+      "reason": "Functional label in explicitly requested cross-domain review.",
+      "textSHA256": "95139c7154d54b893292bc500f3f0d123aec126e7dda51f5e1aa8613906c0822"
+    },
+    "qa.error.isolatedLaunch": {
+      "category": "Error",
+      "context": "Dedicated UI test-host safe launch",
+      "review": "approved",
+      "reason": "Functional recovery guidance; a QA process never falls through to production startup.",
+      "textSHA256": "99d377d3fa33add7ce50a799ce241aae0244d36d282f15b33ceafd49ed0128ad"
+    },
+    "sync.resolution.superseded": {
+      "category": "Status",
+      "context": "Deterministic field merge history",
+      "review": "approved",
+      "reason": "Factual winner/supersession status required by change review.",
+      "textSHA256": "8d099b128a4772d03a4c8e625497bad8d958a70a10bef7067d12f9af7e47f6a7"
+    },
+    "sync.resolution.partiallySuperseded": {
+      "category": "Status",
+      "context": "Deterministic field merge history",
+      "review": "approved",
+      "reason": "Factual winner/supersession status required by change review.",
+      "textSHA256": "9ec2fc1666307734fa189621a85e75359bbf38928fef8c3e3a755cf698f2c3b3"
+    },
+    "device.title": {
+      "category": "Navigation",
+      "context": "Device enrollment / management / explicit legacy migration",
+      "review": "approved",
+      "reason": "Functional control or factual security/recovery guidance required by the current user request; no invented records or decorative prose.",
+      "textSHA256": "7e708dd49f0a4215f9f1d601ecd67644f64854e7b52b9ba836e99e040a386fcc"
+    },
+    "device.action.add": {
+      "category": "Action",
+      "context": "Device enrollment / management / explicit legacy migration",
+      "review": "approved",
+      "reason": "Functional control or factual security/recovery guidance required by the current user request; no invented records or decorative prose.",
+      "textSHA256": "acc04a164a392ca54a4374661383ba5e199856d92d5fcebaf0edbbc878fdbdc8"
+    },
+    "device.action.importOffer": {
+      "category": "Action",
+      "context": "Device enrollment / management / explicit legacy migration",
+      "review": "approved",
+      "reason": "Functional control or factual security/recovery guidance required by the current user request; no invented records or decorative prose.",
+      "textSHA256": "001a209ae60955c524990608ef4c264c81fdb1f69f4bed24a0363b26e07f8254"
+    },
+    "device.action.exportOffer": {
+      "category": "Action",
+      "context": "Device enrollment / management / explicit legacy migration",
+      "review": "approved",
+      "reason": "Functional control or factual security/recovery guidance required by the current user request; no invented records or decorative prose.",
+      "textSHA256": "3f8cece99bc0ab1716561e68cfdb6c3967407335b8bb68186c2d5c3d6976fbe2"
+    },
+    "device.action.importRequest": {
+      "category": "Action",
+      "context": "Device enrollment / management / explicit legacy migration",
+      "review": "approved",
+      "reason": "Functional control or factual security/recovery guidance required by the current user request; no invented records or decorative prose.",
+      "textSHA256": "092e7247d92f7d0d9998ca313a696d34e36c7321212edde25f3fc21fc23fbec4"
+    },
+    "device.action.exportRequest": {
+      "category": "Action",
+      "context": "Device enrollment / management / explicit legacy migration",
+      "review": "approved",
+      "reason": "Functional control or factual security/recovery guidance required by the current user request; no invented records or decorative prose.",
+      "textSHA256": "46e2369c00f44011f30365b12ab538cb25acb1a236fa2cdacf27c4ae16dfcb12"
+    },
+    "device.action.authorize": {
+      "category": "Action",
+      "context": "Device enrollment / management / explicit legacy migration",
+      "review": "approved",
+      "reason": "Functional control or factual security/recovery guidance required by the current user request; no invented records or decorative prose.",
+      "textSHA256": "afff8b9e6bc6d0df58ab958a71ff3c8793c1e5b1b73dd6fc8beaedc990cd5bf6"
+    },
+    "device.action.exportCompletion": {
+      "category": "Action",
+      "context": "Device enrollment / management / explicit legacy migration",
+      "review": "approved",
+      "reason": "Functional control or factual security/recovery guidance required by the current user request; no invented records or decorative prose.",
+      "textSHA256": "3ecb86c423a4a73b3067fe2859c673cc114af2ef8d0bcdbeee753ad4e2e89750"
+    },
+    "device.action.importCompletion": {
+      "category": "Action",
+      "context": "Device enrollment / management / explicit legacy migration",
+      "review": "approved",
+      "reason": "Functional control or factual security/recovery guidance required by the current user request; no invented records or decorative prose.",
+      "textSHA256": "725c3c86a14735ca370114ad8c36eac6bd31f0a3b92052c15d1d03bc45f6f0a5"
+    },
+    "device.action.use": {
+      "category": "Action",
+      "context": "Device enrollment / management / explicit legacy migration",
+      "review": "approved",
+      "reason": "Functional control or factual security/recovery guidance required by the current user request; no invented records or decorative prose.",
+      "textSHA256": "cc559cb1c229e64c10504750de62097586fad46894ac7a7d4dd9cbf56d9c4f1b"
+    },
+    "device.action.revoke": {
+      "category": "Action",
+      "context": "Device enrollment / management / explicit legacy migration",
+      "review": "approved",
+      "reason": "Functional control or factual security/recovery guidance required by the current user request; no invented records or decorative prose.",
+      "textSHA256": "3bba148d392b296aa671b59c29418347563df9ef5d54f12168f6220bd3dd65c0"
+    },
+    "device.action.exportMigration": {
+      "category": "Action",
+      "context": "Device enrollment / management / explicit legacy migration",
+      "review": "approved",
+      "reason": "Functional control or factual security/recovery guidance required by the current user request; no invented records or decorative prose.",
+      "textSHA256": "9b5925d2874f72c3c9d9a2429a510f08f5e26fd2972085d0333d22e7c656f604"
+    },
+    "device.action.importMigration": {
+      "category": "Action",
+      "context": "Device enrollment / management / explicit legacy migration",
+      "review": "approved",
+      "reason": "Functional control or factual security/recovery guidance required by the current user request; no invented records or decorative prose.",
+      "textSHA256": "0b3c53564a3fe74a96f573275d63d50230b80c9f468566f5d8a277d67667184e"
+    },
+    "device.action.signMigration": {
+      "category": "Action",
+      "context": "Device enrollment / management / explicit legacy migration",
+      "review": "approved",
+      "reason": "Functional control or factual security/recovery guidance required by the current user request; no invented records or decorative prose.",
+      "textSHA256": "599f8f3c854e00b587c08d09f556ae8dfdef78614570226342e810c2d9bb39fd"
+    },
+    "device.action.activateMigration": {
+      "category": "Action",
+      "context": "Device enrollment / management / explicit legacy migration",
+      "review": "approved",
+      "reason": "Functional control or factual security/recovery guidance required by the current user request; no invented records or decorative prose.",
+      "textSHA256": "7ba584f40023e8cb55831c88b6d1663bce262d4e209dce119431f2368a2264c7"
+    },
+    "device.field.name": {
+      "category": "Guidance",
+      "context": "Device enrollment / management / explicit legacy migration",
+      "review": "approved",
+      "reason": "Functional control or factual security/recovery guidance required by the current user request; no invented records or decorative prose.",
+      "textSHA256": "65d8f92232ae77b0ab6c7cb5910aa4dbb215875c9faafe6d078734c58dda2e03"
+    },
+    "device.default.name": {
+      "category": "Status",
+      "context": "Device enrollment / management / explicit legacy migration",
+      "review": "approved",
+      "reason": "Functional control or factual security/recovery guidance required by the current user request; no invented records or decorative prose.",
+      "textSHA256": "8b3795aa25390811064d8e7276e56384b720d78e3ab2780e415c7dc9d4e9522b"
+    },
+    "device.migration.title": {
+      "category": "Navigation",
+      "context": "Device enrollment / management / explicit legacy migration",
+      "review": "approved",
+      "reason": "Functional control or factual security/recovery guidance required by the current user request; no invented records or decorative prose.",
+      "textSHA256": "e1b86c6f2d13b3a6d242d46185ec28ed8a70f98f165bfe725ed8a667c0da70ea"
+    },
+    "device.guidance.migration": {
+      "category": "Guidance",
+      "context": "Device enrollment / management / explicit legacy migration",
+      "review": "approved",
+      "reason": "Functional control or factual security/recovery guidance required by the current user request; no invented records or decorative prose.",
+      "textSHA256": "96abfebb14256e544dcd819028330b0ee7eb26432cd11670bace63f37dd0ed41"
+    },
+    "device.guidance.checkMigration": {
+      "category": "Guidance",
+      "context": "Device enrollment / management / explicit legacy migration",
+      "review": "approved",
+      "reason": "Functional control or factual security/recovery guidance required by the current user request; no invented records or decorative prose.",
+      "textSHA256": "458e3fd5f5d560a9079150d6f0944cf2bb5c6cda25dba2e62b1fbcb556dd6d0a"
+    },
+    "device.guidance.offer": {
+      "category": "Guidance",
+      "context": "Device enrollment / management / explicit legacy migration",
+      "review": "approved",
+      "reason": "Functional control or factual security/recovery guidance required by the current user request; no invented records or decorative prose.",
+      "textSHA256": "7a4bef453473b55e48f66d14857717c44675a48c2da1434baf9be6fbc937612e"
+    },
+    "device.guidance.offerCheck": {
+      "category": "Guidance",
+      "context": "Device enrollment / management / explicit legacy migration",
+      "review": "approved",
+      "reason": "Functional control or factual security/recovery guidance required by the current user request; no invented records or decorative prose.",
+      "textSHA256": "b6b0f552044d563cc2afe99bb494fba08852b691b2a712238e67d01ea311635d"
+    },
+    "device.guidance.checkOffer": {
+      "category": "Guidance",
+      "context": "Device enrollment / management / explicit legacy migration",
+      "review": "approved",
+      "reason": "Functional control or factual security/recovery guidance required by the current user request; no invented records or decorative prose.",
+      "textSHA256": "2b168396494fa1f2e5beeadd18a2bb4c3567f86f33a7200a4d439fbe7a1d65bc"
+    },
+    "device.guidance.checkRequest": {
+      "category": "Guidance",
+      "context": "Device enrollment / management / explicit legacy migration",
+      "review": "approved",
+      "reason": "Functional control or factual security/recovery guidance required by the current user request; no invented records or decorative prose.",
+      "textSHA256": "d0a62e03aecc309df361af90f7e28173314c2da85e6c996be5b96a3cc026cd36"
+    },
+    "device.guidance.checkCompletion": {
+      "category": "Guidance",
+      "context": "Device enrollment / management / explicit legacy migration",
+      "review": "approved",
+      "reason": "Functional control or factual security/recovery guidance required by the current user request; no invented records or decorative prose.",
+      "textSHA256": "863dceec8fc90e9361b9c7113d913ab630c22a52c7cbbf34773bf27f3af6d7cc"
+    },
+    "device.guidance.preserve": {
+      "category": "Guidance",
+      "context": "Device enrollment / management / explicit legacy migration",
+      "review": "approved",
+      "reason": "Functional control or factual security/recovery guidance required by the current user request; no invented records or decorative prose.",
+      "textSHA256": "59bd6237da3d8fe39efc7379d4790a434d82400387e7c938891dd631099b6a5e"
+    },
+    "device.guidance.controller": {
+      "category": "Guidance",
+      "context": "Device enrollment / management / explicit legacy migration",
+      "review": "approved",
+      "reason": "Functional control or factual security/recovery guidance required by the current user request; no invented records or decorative prose.",
+      "textSHA256": "f893f8b2afa40c66ff5ddd9ce5e4472093f1c726c4a2b0fd5d88cfe7bb549e42"
+    },
+    "device.guidance.revoke": {
+      "category": "Guidance",
+      "context": "Device enrollment / management / explicit legacy migration",
+      "review": "approved",
+      "reason": "Functional control or factual security/recovery guidance required by the current user request; no invented records or decorative prose.",
+      "textSHA256": "0998e99de8a74bef0c277762c0352b5b69caf40982cceba1f6f309f66acd34ed"
+    },
+    "device.status.authorized": {
+      "category": "Status",
+      "context": "Device enrollment / management / explicit legacy migration",
+      "review": "approved",
+      "reason": "Functional control or factual security/recovery guidance required by the current user request; no invented records or decorative prose.",
+      "textSHA256": "40214211d3f54d7c1d0c78eed86f61ebd03a09b591a35b6e93e1da48dcf51a7c"
+    },
+    "device.status.revoked": {
+      "category": "Status",
+      "context": "Device enrollment / management / explicit legacy migration",
+      "review": "approved",
+      "reason": "Functional control or factual security/recovery guidance required by the current user request; no invented records or decorative prose.",
+      "textSHA256": "fef96e34f77b742b32120dac448c1d90f3a2ee2c9bb6942fec13b70d7816cd06"
+    },
+    "device.status.thisDevice": {
+      "category": "Status",
+      "context": "Device enrollment / management / explicit legacy migration",
+      "review": "approved",
+      "reason": "Functional control or factual security/recovery guidance required by the current user request; no invented records or decorative prose.",
+      "textSHA256": "625644b3dcb68833585c28ebccd6719475fbbc7869212543e38ca998ad7c8e98"
+    },
+    "device.status.online": {
+      "category": "Status",
+      "context": "Device enrollment / management / explicit legacy migration",
+      "review": "approved",
+      "reason": "Functional control or factual security/recovery guidance required by the current user request; no invented records or decorative prose.",
+      "textSHA256": "b9086662b1df1f201abb3c367862af46ffb4dd98d9d748e12e9649a3d58f9e0c"
+    },
+    "device.status.offline": {
+      "category": "Status",
+      "context": "Device enrollment / management / explicit legacy migration",
+      "review": "approved",
+      "reason": "Functional control or factual security/recovery guidance required by the current user request; no invented records or decorative prose.",
+      "textSHA256": "be1b4f3c6c1cda1e6f4989ef1258bab7ceb0361f2fafc0ba9620e3ace8ff8360"
+    },
+    "device.status.migrated": {
+      "category": "Status",
+      "context": "Device enrollment / management / explicit legacy migration",
+      "review": "approved",
+      "reason": "Functional control or factual security/recovery guidance required by the current user request; no invented records or decorative prose.",
+      "textSHA256": "f7065826bad4b3ef551bc2f8d8500b709f9d1dd9544d3fcc1600b281d739c176"
+    },
+    "device.status.historyReady": {
+      "category": "Status",
+      "context": "Device enrollment / management / explicit legacy migration",
+      "review": "approved",
+      "reason": "Functional control or factual security/recovery guidance required by the current user request; no invented records or decorative prose.",
+      "textSHA256": "10922e2ddb6a4ca3714e07544326d79a183e6501d7a262aaf1e76977dbeccd45"
+    },
+    "device.status.historyPending": {
+      "category": "Status",
+      "context": "Device enrollment / management / explicit legacy migration",
+      "review": "approved",
+      "reason": "Functional control or factual security/recovery guidance required by the current user request; no invented records or decorative prose.",
+      "textSHA256": "24cb493225e298727faf15431feb4c70075c996d883ab62d5ec5e03bfd875b2a"
+    },
+    "device.error.expired": {
+      "category": "Error",
+      "context": "Device enrollment / management / explicit legacy migration",
+      "review": "approved",
+      "reason": "Functional control or factual security/recovery guidance required by the current user request; no invented records or decorative prose.",
+      "textSHA256": "0ee26e3cc1080ff03eb3ee71511e9aadf6fa5e65bbf5027e2508b08fdc5e4579"
+    },
+    "device.error.confirm": {
+      "category": "Error",
+      "context": "Device enrollment / management / explicit legacy migration",
+      "review": "approved",
+      "reason": "Functional control or factual security/recovery guidance required by the current user request; no invented records or decorative prose.",
+      "textSHA256": "1ab2c35f702a8bf02797b237a587d59a5ef00f1d08f6c9507b2912bbf8d5ef17"
+    },
+    "device.error.existingData": {
+      "category": "Error",
+      "context": "Device enrollment / management / explicit legacy migration",
+      "review": "approved",
+      "reason": "Functional control or factual security/recovery guidance required by the current user request; no invented records or decorative prose.",
+      "textSHA256": "6d99e2141055a322a4e3d0c9a9a5a6a47c805b5238f0808d495e6addeff92404"
+    },
+    "device.error.workspace": {
+      "category": "Error",
+      "context": "Device enrollment / management / explicit legacy migration",
+      "review": "approved",
+      "reason": "Functional control or factual security/recovery guidance required by the current user request; no invented records or decorative prose.",
+      "textSHA256": "322d2d22c57ae863479dd5d0c377598f151c30223752e17603ba8278d04137b3"
+    },
+    "device.error.historyChanged": {
+      "category": "Error",
+      "context": "Device enrollment / management / explicit legacy migration",
+      "review": "approved",
+      "reason": "Functional control or factual security/recovery guidance required by the current user request; no invented records or decorative prose.",
+      "textSHA256": "c72564997f39ca849293b4cddd7fadb9847b13d274f8dcff29a17604ed9b9594"
+    },
+    "device.file.offer": {
+      "category": "Status",
+      "context": "Device enrollment / management / explicit legacy migration",
+      "review": "approved",
+      "reason": "Functional control or factual security/recovery guidance required by the current user request; no invented records or decorative prose.",
+      "textSHA256": "5002dacd58ca2864b24d379d7bf2ecf1d79c9284d019f8dc67fcd1f938a96335"
+    },
+    "device.file.request": {
+      "category": "Status",
+      "context": "Device enrollment / management / explicit legacy migration",
+      "review": "approved",
+      "reason": "Functional control or factual security/recovery guidance required by the current user request; no invented records or decorative prose.",
+      "textSHA256": "a93d9d0b57ea1b90df6a06aeff84ca3efc2a128224e6bdd6200774211eb95102"
+    },
+    "device.file.completion": {
+      "category": "Status",
+      "context": "Device enrollment / management / explicit legacy migration",
+      "review": "approved",
+      "reason": "Functional control or factual security/recovery guidance required by the current user request; no invented records or decorative prose.",
+      "textSHA256": "d2c0cbafa7bf238c7a1cf95f451b68571f2d031e086df82687e2fc2214c93271"
+    },
+    "device.file.migration": {
+      "category": "Status",
+      "context": "Device enrollment / management / explicit legacy migration",
+      "review": "approved",
+      "reason": "Functional control or factual security/recovery guidance required by the current user request; no invented records or decorative prose.",
+      "textSHA256": "3abafdbf9e113e122bc90b704cbb46ab265dacafc792fe3aa26de0b971e47c49"
+    },
+    "device.error.identityUnavailable": {
+      "category": "Error",
+      "context": "Missing enrollment identity; explicit recovery gate",
+      "review": "approved",
+      "reason": "User-requested key-loss safety; report actual failure and preserve data.",
+      "textSHA256": "4cc9345fddef22742611cf96f051fed5b851f9ae3d6b6340ba0f173bee58f0ac"
+    },
+    "device.guidance.relayMigration": {
+      "category": "Guidance",
+      "context": "DeviceManagementView legacy TCP migration prerequisite",
+      "review": "approved",
+      "reason": "Functional prerequisite for user-requested explicit P3 to P4 migration; no automatic re-pairing.",
+      "textSHA256": "b10be68c89b40dd415e4feca5e2f99015a401fb5cdfea3808f7c571e3bd392d9"
     }
   }
 }

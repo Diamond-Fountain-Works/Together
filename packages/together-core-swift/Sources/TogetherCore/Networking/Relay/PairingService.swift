@@ -16,10 +16,12 @@ public enum PairingConnectionState: String, Sendable { case unpaired = "Unpaired
     public private(set) var busy = false
     public private(set) var pairedFeedback = 0
     public var isOnline: Bool { state == .connected || state == .syncing }
+    public var partnerIsOnline:Bool {if let multiDeviceService{return multiDeviceService.connectedDevices.contains{engine.context.devices[$0]?.userId==engine.context.peer?.userId}};return isOnline}
     public var isConfigured: Bool { api != nil }
     public var needsMigration: Bool { engine.peer != nil && binding == nil }
     @ObservationIgnored private let engine: ReplicaEngine
     @ObservationIgnored private let transport: any SyncTransport
+    public private(set) var multiDeviceService:C1ReplicationService?
     @ObservationIgnored private var api: RelayAPI?
     @ObservationIgnored private var binding: RelayBinding?
     @ObservationIgnored private var pendingRoute: RelayRoute?
@@ -27,6 +29,7 @@ public enum PairingConnectionState: String, Sendable { case unpaired = "Unpaired
     @ObservationIgnored private var ephemeral = Curve25519.KeyAgreement.PrivateKey()
     @ObservationIgnored private var hello: RelaySignedHello?
     @ObservationIgnored private var secure: RelaySecureSession?
+    @ObservationIgnored private var handshakeHistory=RelayHandshakeHistory()
     @ObservationIgnored private var localApproved = false
     @ObservationIgnored private var remoteApproved = false
     @ObservationIgnored private var serverPaired = false
@@ -45,7 +48,8 @@ public enum PairingConnectionState: String, Sendable { case unpaired = "Unpaired
     public init(engine: ReplicaEngine, serviceURL: URL?, transport: (any SyncTransport)? = nil) {
         self.engine = engine; self.transport = transport ?? RelayWebSocketTransport()
         binding = try? engine.repository.load(RelayBinding.self, key: "relay-binding")
-        let address = binding?.serviceURL ?? serviceURL
+        let c1=try? engine.repository.load(C1ReplicationBinding.self,key:"replication4/relay-binding")
+        let address = c1?.serviceURL ?? binding?.serviceURL ?? serviceURL
         if let address { api = try? RelayAPI(base: address, identity: engine.identity) }
         state = engine.peer == nil ? .unpaired : .offline
         engine.onOperationsChanged = { [weak self] in self?.synchronize() }
@@ -60,12 +64,16 @@ public enum PairingConnectionState: String, Sendable { case unpaired = "Unpaired
     }
     public func restore() {
         enabled = true
+        if engine.usesReplication4 {
+            Task { @MainActor [weak self] in await self?.restoreReplication4() };return
+        }
         guard let binding else { return }; routeId = binding.routeId
         Task { @MainActor [weak self] in await self?.resumeRoute() }
     }
     public func createInvitation() async {
         guard !busy else { return }; busy = true; defer { busy = false }
         do {
+            guard !engine.usesReplication4 else {throw ReplicationError.incompatibleProtocol}
             guard let api else { throw TogetherError.invalid(Copy.text("copy.error.ac046ade4c99")) }
             enabled = true
             let invite = try await api.createInvitation(name: engine.ownProfile?.displayName ?? "我", expectedPeer: engine.peer?.descriptor)
@@ -83,6 +91,7 @@ public enum PairingConnectionState: String, Sendable { case unpaired = "Unpaired
     public func joinInvitation(_ code: String) async {
         guard !busy else { return }; busy = true; defer { busy = false }
         do {
+            guard !engine.usesReplication4 else {throw ReplicationError.incompatibleProtocol}
             guard let api else { throw TogetherError.invalid(Copy.text("copy.error.ac046ade4c99")) }
             enabled = true
             let route = try await api.join(code: code, name: engine.ownProfile?.displayName ?? "我")
@@ -101,10 +110,38 @@ public enum PairingConnectionState: String, Sendable { case unpaired = "Unpaired
     }
     public func rejectPairing() { disconnect(); proposal = nil; invitationCode = nil }
     public func disconnect() {
+        multiDeviceService?.stop()
         enabled = false; poll?.cancel(); poll = nil; retry?.cancel(); retry = nil; resetSession(); transport.disconnect(); state = engine.peer == nil ? .unpaired : .offline
     }
-    public func synchronize() { guard isOnline else { return }; logSession?.synchronize() }
-    public func reconnect() { enabled = true; attempt = 0; retry?.cancel(); retry = nil; Task { @MainActor [weak self] in await self?.resumeRoute() } }
+    public func synchronize() { if let multiDeviceService {multiDeviceService.synchronize();return};guard isOnline else { return }; logSession?.synchronize() }
+    public func reconnect() { if let multiDeviceService {Task{await multiDeviceService.reconnect()};return};enabled = true; attempt = 0; retry?.cancel(); retry = nil; Task { @MainActor [weak self] in await self?.resumeRoute() } }
+    private func restoreReplication4()async {
+        guard enabled else{return}
+        do{
+            if let multiDeviceService {await multiDeviceService.start();return}
+            guard let binding=try engine.repository.load(C1ReplicationBinding.self,key:"replication4/relay-binding"),let archive=try engine.repository.load(AuthorizationArchive.self,key:"replication4/authorization") else{throw ReplicationError.unauthorized}
+            let store=try AuthorizedReplicationStore(repository:engine.repository,identity:engine.identity,authorization:SpaceAuthorization.restore(archive))
+            try await store.restore()
+            let service=try C1ReplicationService(engine:engine,binding:binding,store:store)
+            service.onStateChanged={ [weak self] state in self?.state=state;self?.errorMessage=self?.multiDeviceService?.errorMessage }
+            service.onConverged={ [weak self] in self?.lastSynchronizedAt = .now;self?.completedSyncCount+=1;self?.errorMessage=nil }
+            multiDeviceService=service
+            await service.start()
+        }catch{errorMessage=error.localizedDescription;state = .error}
+    }
+    public func activateMigration(_ exchange: LegacyMigrationExchange, verified: Bool) async throws {
+        guard verified else { throw DeviceEnrollmentError.confirmationRequired }
+        try await exchange.validate(engine)
+        try exchange.genesis.verify(existingPins: engine.context)
+        busy = true; defer { busy = false }
+        let service = try await C1ReplicationService.migrate(engine: engine, genesis: exchange.genesis)
+        // Only stop the old transport after the new trust/binding is durable.
+        retry?.cancel(); poll?.cancel(); resetSession(); transport.disconnect()
+        multiDeviceService = service; enabled = true
+        service.onStateChanged = { [weak self] value in self?.state = value; self?.errorMessage = self?.multiDeviceService?.errorMessage }
+        service.onConverged = { [weak self] in self?.lastSynchronizedAt = .now; self?.completedSyncCount += 1 }
+        await service.start()
+    }
     private func validateRoute(_ route: RelayRoute) throws {
         guard !route.revoked, route.members.count == 2,
               route.members.contains(where: { $0.descriptor.deviceId == engine.identity.descriptor.deviceId && $0.descriptor.publicKey == engine.identity.descriptor.publicKey }),
@@ -113,6 +150,7 @@ public enum PairingConnectionState: String, Sendable { case unpaired = "Unpaired
         if let binding { guard binding.peerDeviceId == remote.descriptor.deviceId, binding.peerPublicKey == remote.descriptor.publicKey, binding.localDeviceId == engine.identity.descriptor.deviceId, binding.routeId == route.routeId else { throw TogetherError.invalid(Copy.text("copy.error.a23d12dc2813")) } }
     }
     private func resumeRoute() async {
+        if engine.usesReplication4 {await restoreReplication4();return}
         guard enabled, !openingRoute, let api, let id = binding?.routeId ?? routeId else { return }
         openingRoute = true; defer { openingRoute = false }
         do { let route = try await api.route(id); try validateRoute(route); pendingRoute = route; routeId = id; try await openRoute(route) }
@@ -134,6 +172,7 @@ public enum PairingConnectionState: String, Sendable { case unpaired = "Unpaired
     private func resetSession() {
         clearPeerHandshake()
         hello = nil; ephemeral = Curve25519.KeyAgreement.PrivateKey(); helloSentForPeer = false
+        handshakeHistory=RelayHandshakeHistory()
     }
     private func receive(_ data: Data) {
         do {
@@ -171,6 +210,7 @@ public enum PairingConnectionState: String, Sendable { case unpaired = "Unpaired
                 }
                 guard let hello else { throw TogetherError.invalid(Copy.text("copy.error.92daf69006a1")) }
                 let secure = try RelaySecureSession(identity: engine.identity, ephemeral: ephemeral, local: hello, remote: remote, expectedPeer: engine.peer?.descriptor)
+                try handshakeHistory.accept(remote)
                 self.secure = secure
                 if binding != nil {
                     localApproved = true; enqueue(try CanonicalJSON.encode(RelayPacket(kind: "consent", consent: secure.consent(identity: engine.identity))))

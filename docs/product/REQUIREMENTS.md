@@ -149,3 +149,15 @@ make qa 分开报告 Build、业务/服务/UI Tests、Copy QA、Visual QA 和 Se
 只接受两台已人工确认、认证设备的签名业务与资源。角色只影响文案，不认证身份。应用层会话加密机制已实现，仍需独立协议审查；没有静态加密或已实现离线邮箱。删除不能保证清除另存副本。系统时间不用于操作排序。
 
 真实 localhost NWConnection/URLSession 测试不算不同 Wi-Fi 双 Mac。麦克风硬件、系统权限、实际两端跨网络、人工动画和截图基线批准需独立验收。部署权限与邮箱验证已完成；Cloudflare 服务实际上线，公网 HTTPS/WSS 集成已通过。它仍不等于真实双 Mac 跨 Wi-Fi 验收。
+
+## Git-like C1 multi-device increment
+
+Two stable partner User IDs may own independently authorized device keys in one existing SharedSpace. Add My Device is an owner-root authorization operation, separate from partner invitation. Preserve original key/identity/pins/space/logs. New replication 4/API 2 is an explicit opt-in capability; raw Protocol 3 facts keep their exact historic signed encoding and must not be silently reinterpreted.
+
+New requirements are paged content/certificate anti-entropy, durable per-device ACK, deterministic old domain projection, local universal change review and directed encrypted C1 routing. Relay remains online-only, with no business ledger/media mailbox. Partner-synced means at least one active partner device persisted the operation; media receipt also requires hash verification. Reviewed and wish/domain confirmation remain separate.
+
+Implementation, tested evidence and remaining desktop/recovery/deployment work are tracked in [GITLIKE_REPLICATION](../architecture/GITLIKE_REPLICATION.md) and [C1 QA](../qa/reports/GITLIKE_C1_QA.md), not inferred from this requirement text. Eight-hour invitation correction is independent PR #3; no production Worker deployment is authorized here.
+
+## C1 hardening and own-device enrollment scope
+
+A two-person space may authorize independent devices for each stable user. Native device management and a signed public-file offer/request/completion flow must keep existing identities, original space, bindings and operation bytes; adding a device is separate from inviting a partner. Both original Macs explicitly sign the same content checkpoint before opting into P4. Newly enrolled devices start with an independent key and empty replica, fetch complete verified history, and report waiting/synchronized/revoked states truthfully. Root recovery, authorization pagination and physical interoperability remain separate gates; no automatic identity replacement, API2 production rollout or installation is implied. [Wire contract](../../protocol/DEVICE_ENROLLMENT.md) and [hardening QA](../qa/reports/C1_HARDENING.md) record actual boundaries.
