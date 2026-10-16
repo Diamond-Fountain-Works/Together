@@ -336,8 +336,16 @@ extension RelayAPI {
     try request.verify(offer: offer)
     if let done = try engine.repository.load(DeviceEnrollmentCompletion.self, key: prefix + "complete/" + id) {
       guard try done.body.requestDigest == request.digest else { throw ReplicationError.contentCollision }
-      guard await store.authorization.containsActive(request.body.device) else { throw ReplicationError.revoked }
-      return done
+      let current = await store.authorization
+      guard current.containsActive(request.body.device) else { throw ReplicationError.revoked }
+      if done.body.archive == current.archive { return done }
+      // A retry must not export trust older than revocations already known by
+      // the issuer. Re-sign the same request against current public history;
+      // this does not issue another device grant or change its identity.
+      let refreshed = try DeviceEnrollmentCompletion.issue(request: request, offer: offer,
+        trust: current, binding: binding, identity: engine.identity)
+      try engine.repository.save(refreshed, key: prefix + "complete/" + id)
+      return refreshed
     }
     _ = try offer.verify(now: now)
     if let claimed = try engine.repository.load(String.self, key: prefix + "claimed/" + id) {

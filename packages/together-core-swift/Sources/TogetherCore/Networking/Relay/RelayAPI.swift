@@ -23,6 +23,11 @@ struct RelayAPI {
         self.base = try Self.validatedBase(base); self.identity = identity; self.session = session ?? RelayURLSession.make()
     }
     static func validatedBase(_ base: URL) throws -> URL {
+        #if DEBUG
+        if ["com.together.app.qa", "com.together.app.qa.UITests.xctrunner"].contains(Bundle.main.bundleIdentifier ?? "") {
+            try requireQAOrigin(base, origin: ProcessInfo.processInfo.environment["TOGETHER_UI_RELAY_URL"])
+        }
+        #endif
         let local = ["127.0.0.1", "localhost", "::1"].contains(base.host ?? "")
         #if DEBUG
         let allowed = base.scheme == "https" || (base.scheme == "http" && local)
@@ -32,6 +37,17 @@ struct RelayAPI {
         guard allowed, base.host?.isEmpty == false, base.path.isEmpty || base.path == "/", base.user == nil, base.password == nil, base.query == nil, base.fragment == nil else { throw TogetherError.invalid(Copy.text("copy.error.183f34eaecaa")) }
         return base
     }
+    #if DEBUG
+    static func requireQAOrigin(_ base: URL, origin: String?) throws {
+        guard let origin, let expected = URL(string: origin),
+              expected.scheme == "http", expected.host == "127.0.0.1", expected.port != nil,
+              expected.user == nil, expected.password == nil, expected.query == nil, expected.fragment == nil,
+              expected.path.isEmpty || expected.path == "/",
+              base.scheme == expected.scheme, base.host == expected.host, base.port == expected.port else {
+            throw TogetherError.invalid(Copy.text("qa.error.isolatedLaunch"))
+        }
+    }
+    #endif
     func createInvitation(name: String, expectedPeer: DeviceDescriptor?) async throws -> RelayInvitation {
         try await request("POST", path: "/v1/invitations", body: CanonicalJSON.encode(RelayIdentityRequest(descriptor: identity.descriptor, profileName: name, expectedPeer: expectedPeer)), as: RelayInvitation.self)
     }

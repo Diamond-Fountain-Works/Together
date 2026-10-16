@@ -36,6 +36,16 @@ struct DeviceEnrollmentTests {
     #expect(try v.offer.verificationCode == v.offerCode && v.request.verificationCode == v.requestCode)
     #expect(!String(decoding: try CanonicalJSON.encode(v), as: UTF8.self).contains("privateKey"))
   }
+  #if DEBUG
+  @Test func qaNetworkOriginCannotFallBackToProductionOrImportedDestination() throws {
+    let local = URL(string: "http://127.0.0.1:18787")!
+    try RelayAPI.requireQAOrigin(local, origin: local.absoluteString)
+    #expect(throws: (any Error).self) { try RelayAPI.requireQAOrigin(local, origin: nil) }
+    #expect(throws: (any Error).self) { try RelayAPI.requireQAOrigin(URL(string: "https://relay.example.invalid")!, origin: local.absoluteString) }
+    #expect(throws: (any Error).self) { try RelayAPI.requireQAOrigin(URL(string: "http://127.0.0.1:8787")!, origin: local.absoluteString) }
+    #expect(throws: (any Error).self) { try RelayAPI.requireQAOrigin(local, origin: "http://127.0.0.1:18787/path") }
+  }
+  #endif
   @Test func independentRequestExpiryAndTamper() throws {
     let (f, trust, binding, root) = try fixture(); defer { try? FileManager.default.removeItem(at: root) }
     let now = Date(timeIntervalSince1970: 1791550000)
@@ -55,6 +65,32 @@ struct DeviceEnrollmentTests {
     let bytes = try CanonicalJSON.encode(request)
     #expect(!String(decoding: bytes, as: UTF8.self).contains("privateKey"))
     #expect(try request.verificationCode == CanonicalJSON.decode(DeviceEnrollmentRequest.self, from: bytes).verificationCode)
+  }
+  @Test func reexportedCompletionIncludesAllKnownRevocations() async throws {
+    let (f, initial, binding, root) = try fixture(); defer { try? FileManager.default.removeItem(at: root) }
+    let offer = try DeviceEnrollmentOffer.issue(identity: f.a, trust: initial, binding: binding, now: .now)
+    let target = try DeviceIdentity(userId: f.a.descriptor.userId, initialSpaceId: initial.spaceId, protocolVersion: 4)
+    let request = try DeviceEnrollmentRequest.create(offer: offer, identity: target, now: .now)
+    var original = initial; try original.apply(original.grant(target.descriptor, authorizedBy: f.a))
+    let stale = try DeviceEnrollmentCompletion.issue(request: request, offer: offer, trust: original, binding: binding, identity: f.a)
+    var latest = original
+    let other = try DeviceIdentity(userId: f.a.descriptor.userId, initialSpaceId: initial.spaceId, protocolVersion: 4)
+    try latest.apply(latest.grant(other.descriptor, authorizedBy: f.a))
+    try latest.apply(latest.revoke(other.descriptor.deviceId, at: .init(), authorizedBy: f.a))
+    let repository = try TogetherRepository(inMemory: true)
+    let store = try AuthorizedReplicationStore(repository: repository, identity: f.a, authorization: latest)
+    try await store.restore()
+    let engine = try ReplicaEngine(repository: repository, identity: f.a)
+    let service = try C1ReplicationService(engine: engine, binding: binding, store: store)
+    defer { service.stop() }
+    try repository.save(offer, key: "replication4/enrollment/offer/\(offer.body.id)")
+    try repository.save(stale, key: "replication4/enrollment/complete/\(offer.body.id)")
+    let refreshed = try await service.approveDeviceRequest(request, verified: true)
+    let verified = try refreshed.verify(request: request, offer: offer)
+    #expect(verified.devices[other.descriptor.deviceId]?.isActive == false)
+    #expect(refreshed.body.archive == latest.archive)
+    // A repeated request does not mint another grant or another identity.
+    #expect(try await service.approveDeviceRequest(request, verified: true) == refreshed)
   }
   @Test func completionIsBoundToRequestOwnerSpaceAndIndependentKey() throws {
     let (f, initial, binding, root) = try fixture(); defer { try? FileManager.default.removeItem(at: root) }

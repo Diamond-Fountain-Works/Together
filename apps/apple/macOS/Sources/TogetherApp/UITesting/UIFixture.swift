@@ -32,7 +32,7 @@ struct UIFixture {
             // production Application Support path or starts a relay session.
             let expected = try CanonicalJSON.decode(ExistingUIStore.self, from: Data(contentsOf: root.appendingPathComponent("existing-expected.json")))
             let m = expected.metadata
-            let identity = try DeviceIdentity.persistent(deviceId: m.deviceId, userId: m.userId, spaceId: m.spaceId, directory: root.appendingPathComponent("Identity"), needsExistingIdentity: true, migrateLegacy: true, timeZoneIdentifier: expected.timeZone, protocolVersion: 3)
+            let identity = try DeviceIdentity.persistent(deviceId: m.deviceId, userId: m.userId, spaceId: m.spaceId, directory: root.appendingPathComponent("Identity"), needsExistingIdentity: true, migrateLegacy: false, timeZoneIdentifier: expected.timeZone, protocolVersion: 3)
             let engine = try ReplicaEngine(repository: TogetherRepository(url: root.appendingPathComponent("legacy.store")), identity: identity, mediaRoot: root.appendingPathComponent("Media"), dateProvider: FixedDateProvider(expected.capturedAt))
             let defaults = UserDefaults(suiteName: "com.together.upgrade-fixture." + UUID().uuidString)!
             let preferences = LocalAppPreferences(defaults: defaults)
@@ -44,8 +44,8 @@ struct UIFixture {
         let now = ISO8601DateFormatter().date(from: "2026-10-09T04:00:00Z")!, clock = FixedDateProvider(now)
         let deviceCase = page.hasPrefix("devices") ? "Synthetic device UI " + snapshotName + page : nil
         func deviceID(_ role: String, fallback: String) -> UUID { deviceCase.map { StableID.make($0 + role) } ?? UUID(uuidString: fallback)! }
-        let ia = try DeviceIdentity(deviceId: deviceID("a", fallback: "00000000-0000-0000-0000-000000000001"), userId: UUID(uuidString: "00000000-0000-0000-0000-000000000101")!, initialSpaceId: UUID(uuidString: "00000000-0000-0000-0000-000000000201")!, privateKeyData: Data(repeating: 1, count: 32), timeZoneIdentifier: "Asia/Shanghai", protocolVersion: 3)
-        let ib = try DeviceIdentity(deviceId: deviceID("b", fallback: "00000000-0000-0000-0000-000000000002"), userId: UUID(uuidString: "00000000-0000-0000-0000-000000000102")!, initialSpaceId: UUID(uuidString: "00000000-0000-0000-0000-000000000202")!, privateKeyData: Data(repeating: 2, count: 32), timeZoneIdentifier: "Asia/Shanghai", protocolVersion: 3)
+        let ia = try DeviceIdentity(deviceId: deviceID("a", fallback: "00000000-0000-0000-0000-000000000001"), userId: UUID(uuidString: "00000000-0000-0000-0000-000000000101")!, initialSpaceId: deviceID("space-a", fallback: "00000000-0000-0000-0000-000000000201"), privateKeyData: Data(repeating: 1, count: 32), timeZoneIdentifier: "Asia/Shanghai", protocolVersion: 3)
+        let ib = try DeviceIdentity(deviceId: deviceID("b", fallback: "00000000-0000-0000-0000-000000000002"), userId: UUID(uuidString: "00000000-0000-0000-0000-000000000102")!, initialSpaceId: deviceID("space-b", fallback: "00000000-0000-0000-0000-000000000202"), privateKeyData: Data(repeating: 2, count: 32), timeZoneIdentifier: "Asia/Shanghai", protocolVersion: 3)
         let a = try ReplicaEngine(repository: TogetherRepository(url: root.appendingPathComponent("fixture.store")), identity: ia, mediaRoot: root.appendingPathComponent("media"), dateProvider: clock)
         let b = try ReplicaEngine(repository: TogetherRepository(inMemory: true), identity: ib, mediaRoot: root.appendingPathComponent("partner-media"), dateProvider: clock)
         if (try a.repository.load(Bool.self, key: "ui-fixture-built")) != true {

@@ -29,13 +29,24 @@ if build.returncode==0:
     try:
         candidates=list((derived/'Build/Products').glob('Together_*.xctestrun'))
         runfile=max(candidates,key=lambda path:path.stat().st_mtime)
-        config=plistlib.loads(runfile.read_bytes())['TogetherUITests']
+        run_configuration=plistlib.loads(runfile.read_bytes())
+        config=run_configuration['TogetherUITests']
         host=Path(config['UITargetAppPath'].replace('__TESTROOT__',str(runfile.parent)))
         runner=Path(config['TestHostPath'].replace('__TESTROOT__',str(runfile.parent)))
         for bundle_path,expected in [(host,'com.together.app.qa'),(runner,'com.together.app.qa.UITests.xctrunner')]:
             assert bundle_path.resolve().is_relative_to(derived.resolve()), 'Bundle escaped private derived data'
             info=plistlib.loads((bundle_path/'Contents/Info.plist').read_bytes())
             assert info['CFBundleIdentifier']==expected, 'QA bundle identifier mismatch'
+        # xcodebuild does not promise to propagate arbitrary parent variables
+        # into the sandboxed test host. Declare the one loopback origin needed
+        # by device fixtures explicitly in the generated test configuration.
+        if origin := env.get('TOGETHER_UI_RELAY_URL'):
+            from urllib.parse import urlsplit
+            address=urlsplit(origin)
+            assert address.scheme=='http' and address.hostname=='127.0.0.1' and address.port, 'UI fixtures require an explicit loopback Worker'
+            assert address.path in ('','/') and not address.username and not address.password and not address.query and not address.fragment, 'Invalid QA origin'
+            config.setdefault('EnvironmentVariables',{})['TOGETHER_UI_RELAY_URL']=origin
+            runfile.write_bytes(plistlib.dumps(run_configuration))
     except (AssertionError,KeyError,ValueError,OSError) as error:
         isolation_error=str(error)
 command=['xcodebuild','test-without-building','-xctestrun',str(runfile),'-destination',f'platform=macOS,arch={platform.machine()}','-resultBundlePath',str(bundle),'-test-timeouts-enabled','YES','-default-test-execution-time-allowance','300','-maximum-test-execution-time-allowance','300']
