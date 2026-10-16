@@ -5,7 +5,7 @@ Development baseline: `eff5f8420728470ca2d9444f54a39e356537b953`, independent br
 | Gate | Result | Evidence / limits |
 | --- | --- | --- |
 | Native Debug APK | PASS | `make android-qa`; actual APK under `apps/android/app/build/outputs/apk/debug/app-debug.apk`; debug RSA/v2 signature verified, not a production Android signing identity |
-| Kotlin JVM | PASS | 30 tests: protocol 14 (including live local C1), domain 16. >10k bidirectional facts, collisions, keys/revocations, exact ACK, money/AA/calendar/bill/quota/merge, shared vectors |
+| Kotlin JVM | PASS | 31 tests: protocol 15 (including live local C1), domain 16. >10k bidirectional facts, collisions, keys/revocations, exact ACK, money/AA/calendar/bill/quota/merge, shared vectors |
 | Android runtime/UI | PASS | 7 tests on dedicated `Together_PhaseA_QA_API35`, Android 15/API35 ARM64; Room/Keystore/transaction recovery, task flow, independent enrollment/retained data and Room-backed actual local C1 |
 | Native Swift regression | PASS, 3 SKIP | 138 PASS / 0 FAIL / 3 explicitly skipped performance/export cases; includes 2 new native Kotlin compatibility tests. No Mac GUI automation or App launch |
 | Existing Relay/Python | PASS | Existing Relay typecheck/tests and 17 portable conformance tests passed in `./scripts/qa.sh --skip-ui` |
@@ -42,3 +42,5 @@ Full Android Wishes/Finances/Gift/media editors and original attachment transfer
 This is a tested development foundation and Debug APK, not production Android/network release approval. Latest artifact hash, screenshots and GitHub/CI links are appended after final capture/publication.
 
 Initial hosted Android workflow failed before compilation because that runner did not expose `sdkmanager`. The follow-up CI bootstrap reuses an existing SDK when available, otherwise fetches the official Linux command-line tools with a pinned SHA-256 before installing only required components. This is CI setup, not an App/network failure; latest hosted result is reported separately. Standard Windows wrapper line endings are normalized in Git via `.gitattributes`, preserving CRLF on Windows.
+
+Foreground hardening serializes repeated client starts, joins a cancelled session before opening another, and uses atomic StateFlow updates so connection changes cannot overwrite a new projection (or vice versa). A delayed-HTTP regression proves concurrent starts do not open two sessions. Clean Linux CI also exposed parent POM/BOM files absent from the warm Mac cache; their official Maven hashes were added without relaxing strict dependency verification.

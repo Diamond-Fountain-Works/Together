@@ -31,7 +31,8 @@ class TogetherRepository(private val context: Context, private val scope: Corout
     private lateinit var db: TogetherDatabase; private lateinit var store: RoomReplicaStore; private lateinit var identity: DeviceIdentity
     private var replica: Replica? = null; private var client: C1Client? = null; private var connectionJob: Job? = null
     private var refreshJob: Job? = null
-    private var foreground = false; private var binding: C1Binding? = null
+    private val connectionLock = Mutex()
+    @Volatile private var foreground = false; private var binding: C1Binding? = null
     private val marker = AtomicFile(File(workspaceRoot, "active-replica.json"))
     init {
         refreshJob = scope.launch(Dispatchers.IO) {
@@ -63,7 +64,7 @@ class TogetherRepository(private val context: Context, private val scope: Corout
             store.records().forEach { it.record.operation.verify(identity.descriptor) }
         }
         val pending = store.local("pending-enrollment")?.let { Canonical.parse(it).jsonObject }
-        _state.value = _state.value.copy(descriptor = identity.descriptor, offer = pending?.get("offer")?.model(), request = pending?.get("request")?.model())
+        _state.update { it.copy(descriptor = identity.descriptor, offer = pending?.get("offer")?.model(), request = pending?.get("request")?.model()) }
     }
     private fun configureClient() {
         val r = replica ?: return
@@ -97,15 +98,16 @@ class TogetherRepository(private val context: Context, private val scope: Corout
     private fun reload() {
         reconcile()
         val reviewed = store.local("reviewed")?.let { Canonical.parse(it).model<Set<String>>() } ?: emptySet()
-        _state.value = _state.value.copy(loaded = true, historyReady = replica?.legacyComplete() ?: true, descriptor = identity.descriptor, authorization = replica?.trust, snapshot = snapshot(), reviewed = reviewed)
+        val projected = snapshot(); val currentTrust = replica?.trust; val historyReady = replica?.legacyComplete() ?: true
+        _state.update { it.copy(loaded = true, historyReady = historyReady, descriptor = identity.descriptor, authorization = currentTrust, snapshot = projected, reviewed = reviewed) }
     }
-    private fun failed(e: Exception) { _state.value = _state.value.copy(loaded = true, historyReady = false, error = (e as? ProtocolException)?.code ?: "LOCAL_OPERATION_FAILED") }
+    private fun failed(e: Exception) { connectionJob?.cancel(); _state.update { it.copy(loaded = true, historyReady = false, error = (e as? ProtocolException)?.code ?: "LOCAL_OPERATION_FAILED") } }
     private suspend fun <T> command(block: () -> T): T = withContext(Dispatchers.IO) { lock.withLock { block().also { reload(); client?.changed() } } }
     suspend fun close() {
-        connectionJob?.cancelAndJoin(); refreshJob?.cancelAndJoin()
+        connectionLock.withLock { connectionJob?.cancelAndJoin(); connectionJob = null }; refreshJob?.cancelAndJoin()
         withContext(Dispatchers.IO) { lock.withLock { if (::db.isInitialized) db.close() } }
     }
-    fun clearError() { _state.value = _state.value.copy(error = null) }
+    fun clearError() { _state.update { it.copy(error = null) } }
     suspend fun localWrite(entityId: String, type: String, action: String, fields: Map<String, JsonObject>, now: Instant = clock.now()): String = command {
         val r = replica
         // SQLite transaction serializes quota validation, candidate projection, facts and Lamport.
@@ -149,7 +151,7 @@ class TogetherRepository(private val context: Context, private val scope: Corout
             EnrollmentRequest.create(offer, newIdentity, clock.now().toEpochMilli(), com.together.android.BuildConfig.DEBUG)
         }
         store.local("pending-enrollment", Canonical.bytes(buildJsonObject { put("offer", offer.json()); put("request", request.json()) }))
-        _state.value = _state.value.copy(offer = offer, request = request)
+        _state.update { it.copy(offer = offer, request = request) }
         Canonical.encode(request)
     }
     suspend fun completeEnrollment(bytes: ByteArray, confirmed: Boolean) = command {
@@ -173,7 +175,7 @@ class TogetherRepository(private val context: Context, private val scope: Corout
             val output = marker.startWrite()
             try { output.write(Canonical.bytes(buildJsonObject { put("offerId", offer.body.id) })); marker.finishWrite(output) } catch (e: Exception) { marker.failWrite(output); throw e }
         } finally { newDb.close() }
-        db.close(); replica = null; open(); _state.value = _state.value.copy(offer = null, request = null)
+        db.close(); replica = null; open(); _state.update { it.copy(offer = null, request = null) }
     }
     suspend fun revoke(deviceId: String) = command {
         val r = replica ?: throw ProtocolException("NOT_PAIRED"); val trust = r.trust
@@ -189,16 +191,23 @@ class TogetherRepository(private val context: Context, private val scope: Corout
         val state = RelayApi(binding!!, identity, com.together.android.BuildConfig.DEBUG).authorize(event)
         val next = state.verify(identity.descriptor, trust); r.updateAuthorization(next.archive)
     }
-    fun foreground(value: Boolean) {
-        foreground = value
-        if (value) startConnection() else { connectionJob?.cancel(); connectionJob = null }
-    }
+    fun foreground(value: Boolean) { foreground = value; startConnection() }
     private fun startConnection() {
-        if (connectionJob?.isActive == true) return
-        val c = client ?: return
-        connectionJob = scope.launch(Dispatchers.IO) {
-            launch { combine(c.state, c.error) { s, e -> s to e }.collect { (s, e) -> _state.value = _state.value.copy(connection = s, error = e ?: _state.value.error) } }
-            c.run()
+        scope.launch(Dispatchers.IO) {
+            connectionLock.withLock {
+                if (!foreground) { connectionJob?.cancelAndJoin(); connectionJob = null; _state.update { it.copy(connection = "offline") }; return@withLock }
+                if (connectionJob?.isActive == true) return@withLock
+                // A cancelled job may still be completing a bounded HTTP request. Join it before
+                // another session can observe/mutate the same peer channels or connection state.
+                connectionJob?.join()
+                val c = client ?: return@withLock
+                connectionJob = scope.launch(Dispatchers.IO) {
+                    launch { combine(c.state, c.error) { s, e -> s to e }.collect { (s, e) ->
+                        _state.update { old -> old.copy(connection = s, error = e ?: old.error?.takeUnless { it in setOf("CONNECTION_FAILED", "SERVICE_UNAVAILABLE", "RATE_LIMITED") }) }
+                    } }
+                    c.run()
+                }
+            }
         }
     }
 }

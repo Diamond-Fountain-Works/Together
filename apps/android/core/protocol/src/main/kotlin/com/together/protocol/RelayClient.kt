@@ -2,6 +2,8 @@ package com.together.protocol
 
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.flow.*
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.*
@@ -103,17 +105,18 @@ class C1Client(private val replica: Replica, private val binding: C1Binding, pri
         var secure: SecureChannel? = null, var approved: Boolean = false, var sync: AntiEntropy? = null,
         val seenHellos: MutableSet<String> = mutableSetOf())
     private val peers = mutableMapOf<String, Peer>()
+    private val runLock = Mutex()
     private val changes = Channel<Unit>(Channel.CONFLATED)
     private sealed interface Event { data class Bytes(val value: ByteArray) : Event; data object Changed : Event }
     private var attempt = 0
     fun changed() { changes.trySend(Unit) }
-    suspend fun run() = withContext(Dispatchers.IO.limitedParallelism(1)) { coroutineScope {
+    suspend fun run() = runLock.withLock { withContext(Dispatchers.IO.limitedParallelism(1)) { coroutineScope {
         try {
             while (isActive) {
                 try {
                     _state.value = "connecting"; val space = api.space(); requireProtocol(space.legacyRouteId == binding.legacyRouteId, "ROUTE_MISMATCH")
-                    val trust = space.verify(replica.identity.descriptor, replica.trust); replica.updateAuthorization(trust.archive)
-                    val ticket = api.ticket()
+                    currentCoroutineContext().ensureActive(); val trust = space.verify(replica.identity.descriptor, replica.trust); replica.updateAuthorization(trust.archive)
+                    val ticket = api.ticket(); currentCoroutineContext().ensureActive()
                     transport.connect(api.socketURL, ticket.ticket); _state.value = "waiting"; _error.value = null
                     coroutineScope {
                         val events = Channel<Event>(16)
@@ -128,11 +131,12 @@ class C1Client(private val replica: Replica, private val binding: C1Binding, pri
                     }
                     attempt = 0
                 } catch (e: CancellationException) { throw e }
-                catch (e: Exception) { _state.value = "offline"; _error.value = (e as? ProtocolException)?.code ?: "CONNECTION_FAILED" }
+                catch (e: Exception) { currentCoroutineContext().ensureActive(); _state.value = "offline"; _error.value = (e as? ProtocolException)?.code ?: "CONNECTION_FAILED" }
                 finally { peers.values.forEach { it.sync?.close(); it.ephemeral.fill(0) }; peers.clear(); transport.disconnect() }
                 delay(minOf(60_000L, 1000L shl minOf(attempt++, 6)))
             }
         } finally { _state.value = "offline"; transport.disconnect() }
+    }
     }
     }
     private suspend fun send(p: Peer, packet: RelayPacket) = transport.send(Canonical.encode(Directed(senderDeviceId = replica.identity.descriptor.deviceId, recipientDeviceId = p.device.deviceId, packet = packet)))

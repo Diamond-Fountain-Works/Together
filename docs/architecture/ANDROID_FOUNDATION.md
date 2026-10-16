@@ -47,3 +47,5 @@ Receive/application queues are bounded. OkHttp itself assembles messages before 
 Android app version/code, Protocol 4/API 2 and Room schema 1 are independent; Apple version/schema stay unchanged. P3 history is verified only through the explicit P4 migration checkpoint, not exposed as a P3 Android transport. Invitation behavior remains 10 minutes; Issue #1/PR #3 owns the separate 8-hour change.
 
 Actual results: [Android QA](../qa/reports/ANDROID_PHASE_A.md). Full Android Wishes/Finance/Gift/media UI, physical phone/tablet acceptance, real Mac↔Android networking, independent cryptographic review and production deployment remain separate gates.
+
+Foreground session startup has a per-client mutex and lifecycle join; cancelled HTTP work cannot overlap a new run or publish a stale connection state. Repository StateFlow changes use atomic updates, with projection computed separately. The delayed-HTTP regression covers concurrent startup while a challenge is outstanding.

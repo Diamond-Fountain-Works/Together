@@ -4069,5 +4069,10 @@
             <sha256 value="1239e9dbe1397cd5971342956b2511bc3ace7b641842e4372a088dcfa8b9ad55" origin="Verified official Maven Central metadata used by clean Linux CI" />
          </artifact>
       </component>
+      <component group="com.google.guava" name="guava-parent" version="33.2.1-jre">
+         <artifact name="guava-parent-33.2.1-jre.pom">
+            <sha256 value="9095f6d8ee3765950207510785830cc2280e781067915fa99cfe1740d4865c14" origin="Verified official Maven Central parent POM referenced by resolved dependencies" />
+         </artifact>
+      </component>
    </components>
 </verification-metadata>

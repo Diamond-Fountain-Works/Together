@@ -1,6 +1,8 @@
 package com.together.protocol
 
 import kotlinx.serialization.json.*
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.cancel
 import org.junit.Assert.*
 import org.junit.Test
 import java.io.File
@@ -177,5 +179,29 @@ class DeviceSecurityTest {
         val membership = Canonical.parse(r.store.local(key)!!).model<AckMembership>()
         r.store.local(key, Canonical.encode(membership.copy(signature = a.sign("unrelated".toByteArray()))))
         assertFalse(r.partnerPersisted(record.entry))
+    }
+}
+
+class ClientLifecycleTest {
+    @Test fun concurrentForegroundRunsCannotOpenTwoSessionsDuringHTTP() = kotlinx.coroutines.runBlocking {
+        val server = okhttp3.mockwebserver.MockWebServer()
+        server.start()
+        val a = identity(81); val b = identity(82); val t = testTrust(a, b)
+        val challenge = "{\"id\":\"${uid()}\",\"nonce\":\"synthetic-nonce\",\"expiresAt\":1791532800000}"
+        server.enqueue(okhttp3.mockwebserver.MockResponse().setBody(challenge).setHeadersDelay(1, java.util.concurrent.TimeUnit.SECONDS))
+        server.enqueue(okhttp3.mockwebserver.MockResponse().setResponseCode(403).setBody("{\"error\":\"SERVICE_UNAVAILABLE\"}"))
+        val r = Replica(MemoryStore(), a, t).also { it.restore() }
+        val binding = C1Binding(server.url("/").toString().trimEnd('/'), t.spaceId, uid(), a.descriptor.deviceId)
+        val client = C1Client(r, binding, RelayApi(binding, a, true))
+        val scope = kotlinx.coroutines.CoroutineScope(kotlinx.coroutines.SupervisorJob() + kotlinx.coroutines.Dispatchers.IO)
+        val first = scope.launch { client.run() }
+        try {
+            kotlinx.coroutines.withTimeout(5000) { while (server.requestCount == 0) kotlinx.coroutines.delay(10) }
+            val second = scope.launch { client.run() }
+            try {
+                kotlinx.coroutines.delay(200)
+                assertEquals(1, server.requestCount)
+            } finally { second.cancel(); second.join() }
+        } finally { first.cancel(); first.join(); scope.cancel(); server.shutdown() }
     }
 }
