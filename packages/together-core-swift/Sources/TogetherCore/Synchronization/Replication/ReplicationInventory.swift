@@ -52,8 +52,14 @@ public struct InventoryEntry: Codable, Equatable, Hashable, Sendable {
   }
 }
 public enum ReplicationHash {
+  public static func hex<S: Sequence>(_ bytes: S) -> String where S.Element == UInt8 {
+    let digits = Array("0123456789abcdef".utf8)
+    var result: [UInt8] = []; result.reserveCapacity(bytes.underestimatedCount * 2)
+    for byte in bytes { result.append(digits[Int(byte >> 4)]); result.append(digits[Int(byte & 15)]) }
+    return String(decoding: result, as: UTF8.self)
+  }
   public static func digest(_ bytes: Data) -> String {
-    SHA256.hash(data: bytes).map { String(format: "%02x", $0) }.joined()
+    hex(SHA256.hash(data: bytes))
   }
   public static func valid(_ text: String) -> Bool {
     text.utf8.count == 64
@@ -73,7 +79,7 @@ public enum ReplicationHash {
     hash.update(data: Data("Together-Inventory-4\n".utf8))
     for entry in sorted { hash.update(data: inventoryLine(entry)) }
     return InventoryCheckpoint(
-      count: sorted.count, digest: hash.finalize().map { String(format: "%02x", $0) }.joined())
+      count: sorted.count, digest: ReplicationHash.hex(hash.finalize()))
   }
 }
 public struct InventoryCheckpoint: Codable, Equatable, Sendable {
@@ -226,7 +232,7 @@ public actor OperationInventoryIndex {
       throw ReplicationError.inventoryChanged
     }
     let result = InventoryCheckpoint(
-      count: count, digest: hash.finalize().map { String(format: "%02x", $0) }.joined())
+      count: count, digest: ReplicationHash.hex(hash.finalize()))
     return InventorySnapshot(id: snapshotId, checkpoint: result)
   }
   public func page(after: UUID?, checkpoint: InventoryCheckpoint) async throws -> InventoryPage {

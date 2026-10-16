@@ -167,7 +167,7 @@ public actor PagedReplicationSession {
       return
     }
     guard let checkpoint = remoteCheckpoint, receivedCount == checkpoint.count,
-      incomingHash.finalize().map({ String(format: "%02x", $0) }).joined() == checkpoint.digest
+      ReplicationHash.hex(incomingHash.finalize()) == checkpoint.digest
     else { throw ReplicationError.invalidPage }
     finishedInbound = true
     inbound = nil

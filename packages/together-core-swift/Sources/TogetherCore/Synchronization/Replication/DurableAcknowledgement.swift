@@ -49,11 +49,24 @@ public struct AcknowledgedOperation: Codable, Sendable {
   public var certificationDigest: String?
   public var receiptDigest: String
 }
+private struct AcknowledgementMembership: Codable {
+  struct Body: Codable {
+    var purpose = "Together-Local-Ack-Membership-1"
+    var localDeviceId: UUID
+    var remoteDeviceId: UUID
+    var receiptDigest: String
+    var entries: [InventoryEntry]
+  }
+  var body: Body
+  var signature: Data
+}
 
 public actor DeviceAcknowledgementLedger {
   private let repository: TogetherRepository
   private let index: OperationInventoryIndex
   private let identity: DeviceIdentity
+  private var accepting = false
+  private var acceptWaiters: [CheckedContinuation<Void, Never>] = []
   public init(
     repository: TogetherRepository, index: OperationInventoryIndex, identity: DeviceIdentity
   ) {
@@ -95,6 +108,8 @@ public actor DeviceAcknowledgementLedger {
   @discardableResult public func accept(
     _ receipt: SignedAcknowledgement, from remote: DeviceDescriptor, trust: SpaceAuthorization
   ) async throws -> Bool {
+    await lockAcceptance()
+    defer { unlockAcceptance() }
     try receipt.verify(in: trust, from: remote)
     let proofKey =
       "replication4/ack-proof/" + remote.deviceId.uuidString + "/" + (try receipt.digest)
@@ -110,7 +125,7 @@ public actor DeviceAcknowledgementLedger {
         var cursor: UUID?
         repeat {
           let page = try await index.page(after: cursor, snapshot: frozen)
-          try await persist(receipt, entries: page.entries, proofKey: proofKey)
+          try await persistMembership(receipt, entries: page.entries)
           cursor = page.next
         } while cursor != nil
         try await index.releaseSnapshot(frozen)
@@ -118,8 +133,12 @@ public actor DeviceAcknowledgementLedger {
         try? await index.releaseSnapshot(frozen)
         throw error
       }
-      try await repository.save(
-        receipt, key: "replication4/converged/" + remote.deviceId.uuidString)
+      try await repository.saveAtomically([
+        proofKey: CanonicalJSON.encode(receipt),
+        "replication4/ack-membership-current/" + remote.deviceId.uuidString: CanonicalJSON.encode(receipt.digest),
+        "replication4/converged/" + remote.deviceId.uuidString: CanonicalJSON.encode(receipt),
+      ])
+      try await cleanupMembership(remote: remote.deviceId, current: receipt.digest)
       return try await index.checkpoint() == checkpoint
     } else {
       guard try await index.missing(receipt.body.entries).isEmpty else {
@@ -128,6 +147,22 @@ public actor DeviceAcknowledgementLedger {
       try await persist(receipt, entries: receipt.body.entries, proofKey: proofKey)
     }
     return true
+  }
+  private func lockAcceptance() async {
+    if accepting { await withCheckedContinuation { acceptWaiters.append($0) } } else { accepting = true }
+  }
+  private func unlockAcceptance() {
+    if acceptWaiters.isEmpty { accepting = false } else { acceptWaiters.removeFirst().resume() }
+  }
+  private func cleanupMembership(remote: UUID, current: String) async throws {
+    let prefix = "replication4/ack-membership/\(remote)/", kept = prefix + current + "/"
+    var cursor: String?
+    repeat {
+      let rows = try await repository.localPage(prefix: prefix, after: cursor, limit: 256)
+      let obsolete = rows.filter { !$0.id.hasPrefix(kept) }.map(\.id)
+      if !obsolete.isEmpty { try await repository.commitReplication([], records: [:], removing: obsolete) }
+      cursor = rows.count == 256 ? rows.last?.id : nil
+    } while cursor != nil
   }
   private func persist(
     _ receipt: SignedAcknowledgement, entries: [InventoryEntry], proofKey: String
@@ -143,6 +178,34 @@ public actor DeviceAcknowledgementLedger {
     }
     try await repository.saveAtomically(records)
   }
+  /// A whole-set receipt uses 128-entry signed membership cache pages, rather
+  /// than 100,000 individual SwiftData models. The remote checkpoint is still
+  /// verified against a frozen local inventory before any page is signed.
+  /// Local signatures prevent a corrupted cache row from inventing membership.
+  private func persistMembership(_ receipt: SignedAcknowledgement, entries: [InventoryEntry]) async throws {
+    guard let first = entries.first else { return }
+    let digest = try receipt.digest
+    let body = AcknowledgementMembership.Body(localDeviceId: identity.descriptor.deviceId,
+      remoteDeviceId: receipt.body.deviceId, receiptDigest: digest, entries: entries)
+    let page = AcknowledgementMembership(body: body, signature: try identity.sign(CanonicalJSON.encode(body)))
+    let prefix = "replication4/ack-membership/\(receipt.body.deviceId)/\(digest)/"
+    try await repository.save(page, key: prefix + first.operationId.uuidString)
+  }
+  private func checkpointContains(_ entry: InventoryEntry, remote: DeviceDescriptor, trust: SpaceAuthorization) async throws -> Bool {
+    guard let digest = try await repository.load(String.self, key: "replication4/ack-membership-current/\(remote.deviceId)"),
+      ReplicationHash.valid(digest), let proof = try await repository.load(SignedAcknowledgement.self, key: "replication4/ack-proof/\(remote.deviceId)/\(digest)"),
+      proof.body.checkpoint != nil, try proof.digest == digest,
+      (try? proof.verify(in: trust, from: remote)) != nil,
+      let row = try await repository.localAtOrBefore(prefix: "replication4/ack-membership/\(remote.deviceId)/\(digest)/", suffix: entry.operationId.uuidString),
+      let page = try? CanonicalJSON.decode(AcknowledgementMembership.self, from: row.bytes),
+      page.body.purpose == "Together-Local-Ack-Membership-1", page.body.localDeviceId == identity.descriptor.deviceId,
+      page.body.remoteDeviceId == remote.deviceId, page.body.receiptDigest == digest,
+      page.body.entries.count <= ReplicationProtocol.inventoryPageSize,
+      page.body.entries.contains(entry),
+      SignedSpaceGenesis.verify(page.signature, bytes: try CanonicalJSON.encode(page.body), key: identity.descriptor.publicKey)
+    else { return false }
+    return true
+  }
   public func persistedDevices(for entry: InventoryEntry, trust: SpaceAuthorization) async throws
     -> Set<UUID>
   {
@@ -155,12 +218,22 @@ public actor DeviceAcknowledgementLedger {
         let proof = try await repository.load(
           SignedAcknowledgement.self,
           key: "replication4/ack-proof/\(device.id)/\(saved.receiptDigest)"),
-        (try? proof.verify(in: trust, from: device.descriptor)) != nil
+        (try? proof.verify(in: trust, from: device.descriptor)) != nil,
+        try await legacyProofContains(entry, proof: proof)
       {
         result.insert(device.id)
       }
+      if !result.contains(device.id), try await checkpointContains(entry, remote: device.descriptor, trust: trust) { result.insert(device.id) }
     }
     return result
+  }
+  private func legacyProofContains(_ entry: InventoryEntry, proof: SignedAcknowledgement) async throws -> Bool {
+    if proof.body.entries.contains(entry) { return true }
+    // Old versions stored one membership row per operation for a whole-set
+    // receipt. Without a signed membership page, verify that checkpoint against
+    // the current index. If it is stale, wait for the next truthful receipt.
+    guard let checkpoint = proof.body.checkpoint else { return false }
+    return try await index.checkpoint() == checkpoint
   }
   public func progress(
     for entry: InventoryEntry, trust: SpaceAuthorization, transferringTo: Set<UUID> = []
