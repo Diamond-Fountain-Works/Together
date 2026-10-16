@@ -1,12 +1,13 @@
 # Together
 
-Native macOS, Local-first shared space for two people. Tasks, Wishes and Daily Love Gifts use a signed operation log; Our Finances uses one Expenses ledger and derived reserve balances. SwiftUI, SwiftData and the current C1 WebSocket Relay remain the architecture. No central business database, offline mailbox, banking connection or Android app is included.
+Native macOS, Local-first shared space for two people. Tasks, Wishes and Daily Love Gifts use a signed operation log; Our Finances uses one Expenses ledger and derived reserve balances. SwiftUI, SwiftData and the current C1 WebSocket Relay remain the architecture. No central business database, offline mailbox or banking connection is included. Android Phase A adds an isolated native Kotlin client; complete Android business UI and physical cross-device acceptance remain pending.
 
 ## Source of truth
 
 | Location | Responsibility |
 | --- | --- |
 | `apps/apple/macOS/` | Xcode project, SwiftUI app, UI tests and release scripts |
+| `apps/android/` | Kotlin/Compose app, Room/Keystore adapters, Protocol 4 and domain JVM modules |
 | `packages/together-core-swift/` | TogetherCore library, services, storage/network adapters and Swift tests |
 | `services/relay/` | Cloudflare Workers / Durable Objects source, local tests and deployment instructions |
 | `protocol/` | Platform-neutral DTO schemas, compatibility notes and synthetic vectors |
@@ -16,7 +17,7 @@ Native macOS, Local-first shared space for two people. Tasks, Wishes and Daily L
 | `qa/visual/` | Human-approved synthetic baselines; unreviewed candidates stay local |
 | `scripts/` | Build/QA orchestration and publication safety checks |
 
-Current source is not copied per version. Old tracked source is recoverable in Git; local ignored build/release artifacts are retained. [Migration and rollback](docs/architecture/MONOREPO_MIGRATION.md) records the checkpoint and path changes. TogetherCore is currently macOS-tested and still contains Apple adapters; iOS/watchOS require further adapter work. [Android boundary](apps/android/README.md) documents future Kotlin/Compose/Room work without a template app.
+Current source is not copied per version. Old tracked source is recoverable in Git; local ignored build/release artifacts are retained. [Migration and rollback](docs/architecture/MONOREPO_MIGRATION.md) records the checkpoint and path changes. TogetherCore is currently macOS-tested and still contains Apple adapters; iOS/watchOS require further adapter work. [Android Phase A](apps/android/README.md) records the actual Kotlin/Compose/Room build and its remaining UI/device limits.
 
 ## Build and QA
 
@@ -59,3 +60,7 @@ App, sync protocol and storage generation are [separate dimensions](protocol/ver
 Local integration uses four native Swift clients and an actual loopback Worker, including media verification, offline catch-up and revocation. [Draft stacked PR #4](https://github.com/Diamond-Fountain-Works/Together/pull/4) depends on Monorepo PR #2; neither is automatically merged. [C1 QA](docs/qa/reports/GITLIKE_C1_QA.md) records fresh counts, 100,000-operation measurements and explicit release blockers. This is not physical cross-WiFi or Android acceptance. The independent [8-hour invitation PR #3](https://github.com/Diamond-Fountain-Works/Together/pull/3) has not been deployed; ten minutes remains the core branch/last-known deployment behavior.
 
 [Device enrollment](protocol/DEVICE_ENROLLMENT.md) and [ADR 006](docs/architecture/adr/006-native-device-enrollment.md) describe the native add/list/revoke workflow and independent-key storage. [Hardening evidence](docs/qa/reports/C1_HARDENING.md) separates incident findings, actual 100k measurements, headless tests and blocked desktop acceptance. QA must use the dedicated host and loopback service, never normal Debug as a fallback.
+
+## Android Phase A (stacked on Protocol 4)
+
+`make android-qa` builds a real Debug APK, runs shared Kotlin protocol/domain vectors, Android lint and Android copy audit. An explicit loopback Relay URL enables the three-device actual WebSocket integration test; absent URL is reported SKIP. Native Swift validates Kotlin-produced certificates, projection and encrypted packets without changing the Mac business implementation. [Android instructions](apps/android/README.md) distinguish JVM, instrumented runtime, emulator and physical-device evidence. No production Relay deployment, Mac installation or real-user Protocol 4 activation is authorized.

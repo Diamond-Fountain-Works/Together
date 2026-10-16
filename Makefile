@@ -25,3 +25,13 @@ protocol-test:
 security-qa:
 	python3 scripts/test_repository_safety.py
 	python3 scripts/audit_repository_safety.py --json qa/results/repository-safety.json
+
+.PHONY: android-qa android-copy-qa android-connected-test
+android-qa:
+	cd apps/android && ./gradlew :core:protocol:test :core:domain:test :app:assembleDebug :app:lintDebug --console=plain
+	python3 scripts/test_android_copy.py
+	python3 scripts/audit_android_copy.py --json qa/results/android-copy.json
+android-copy-qa:
+	python3 scripts/audit_android_copy.py --json qa/results/android-copy.json
+android-connected-test:
+	cd apps/android && ./gradlew :app:connectedDebugAndroidTest --console=plain

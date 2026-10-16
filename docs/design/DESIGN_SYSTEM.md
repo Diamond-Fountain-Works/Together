@@ -49,3 +49,7 @@ Window screenshots cover ordinary pages. For native sheets or popovers that exte
 Use a native menu-driven sheet with one domain filter and concise rows. Show actual actor/device origin and before/after business values; superseded changes stay labelled in history and do not create new-change banners. Gift review uses creation/deletion metadata only, preserving sealed content. Clicking View reuses the existing domain editor/detail. No extra sidebar, persistent welcome panel, approval workflow or technical hash/clock labels. New candidates require human review; legacy approved images are not automatically replaced.
 
 Device management uses the existing native sheet/card typography, fixed identity comparison code, a scrollable body and a pinned Close footer. Grant/revoke controls are functional, with explicit confirmation; no celebratory banner or new navigation section is added. Light/dark/Reduce Motion screenshots remain candidates until actual desktop capture and human approval.
+
+## Android Phase A
+
+Use native Jetpack Compose Material controls with the same ivory (#FBF7F0), warm charcoal (#1B181A), soft rose, 4/8/12/16/20/24 spacing and 12/16dp shapes. One shared state/domain system serves phone bottom navigation and ≥600dp tablet rail. Keep system font scaling, scrolling editors, reachable dismiss actions and system animation scale support. No fake Wishes/Finances/Gift/Story pages. Initial candidates require human review; macOS approved images are not Android baselines.

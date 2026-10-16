@@ -18,5 +18,16 @@
     1,
     2
   ],
-  "replication4Activation": "Explicit co-signed legacy checkpoint migration plus authenticated Relay API 2; no silent Protocol 3 semantic change"
+  "replication4Activation": "Explicit co-signed legacy checkpoint migration plus authenticated Relay API 2; no silent Protocol 3 semantic change",
+  "android": {
+    "appVersionSource": "apps/android/app/build.gradle.kts",
+    "databaseSchemaVersion": 1,
+    "syncProtocols": [
+      4
+    ],
+    "relayAPIs": [
+      2
+    ],
+    "status": "development-foundation; physical-device and independent-security acceptance pending"
+  }
 }

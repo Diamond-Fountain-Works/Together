@@ -4,7 +4,7 @@ sys.path.insert(0,str(Path(__file__).parent))
 from audit_repository_safety import findings
 class RepositorySafetyTests(unittest.TestCase):
     def test_private_data_and_keys_block_publication(self):
-        for path in ['private/Together.store','old/device.key','config/.env','cert/signing.p12','photos/private.heic','audio/private.m4a','qa/results/runtime.log']:
+        for path in ['private/Together.store','old/device.key','config/.env','cert/signing.p12','photos/private.heic','audio/private.m4a','qa/results/runtime.log','apps/android/app/build/outputs/app.apk','apps/android/.gradle/cache.bin','apps/android/debug.keystore']:
             self.assertTrue(findings(path,b'','test'),path)
         self.assertTrue(findings('misnamed.dat',b'SQLite format 3\x00','test'))
     def test_detects_generated_credential_without_exposing_it(self):

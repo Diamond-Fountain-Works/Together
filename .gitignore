@@ -49,3 +49,13 @@ output/playwright/
 
 # Dedicated UI-test host build products.
 .ui-derived/
+
+# Native Android (sources, exported Room schemas and wrapper are tracked)
+.gradle/
+.kotlin/
+**/build/
+local.properties
+*.apk
+*.aab
+.cxx/
+.externalNativeBuild/

@@ -130,3 +130,7 @@ AuthorizedReplicationStore serializes fact/proof/head transactions and stages in
 ChangeReviewService derives successful before/after effects in one audited replay, labels superseded history and distinguishes my other device from my partner. Review/presentation state is local; it does not approve ordinary business changes. Gift content remains sealed. The native menu history reuses existing task/wish/finance/gift details. The dedicated UITesting configuration uses com.together.app.qa and refuses an ordinary production bootstrap; production Debug/Release remain com.together.app.
 
 Activation and rollback, outstanding control-history/root-recovery/indexing limits and enrollment UI gaps are explicit in the replication document. No migration helper can manufacture the partner's signature or copy another device's private key.
+
+## Android Phase A — additive client boundary
+
+[Android architecture](ANDROID_FOUNDATION.md) defines pure Kotlin Protocol 4/domain modules and Android-specific Compose, Room and Keystore adapters. Shared wire semantics, existing SwiftData models, space/user/device identities and the Relay are unchanged. Local-only unpaired facts are not advertised as certified Protocol 4; enrollment activates a separate authorized workspace, preserving the previous one. Room schema generation 1 is independent from SwiftData generation 1 and device protocol 4. Full business UI, original media transfer, physical phone/Mac acceptance and independent security review are explicitly unfinished.

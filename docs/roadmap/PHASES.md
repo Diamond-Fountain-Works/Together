@@ -1,3 +1,11 @@
+# Android Phase A — current incremental stage
+
+Independent `feature/android-foundation` worktree starts at `eff5f8420728470ca2d9444f54a39e356537b953`; PRs #2/#3/#4 remain Draft. Android PR must target `feature/gitlike-c1-multidevice`. No parent/network branch, production App/data or Worker deployment changed.
+
+Actual scope: native Android project, signed Protocol 4/domain port, Room/Keystore adapters, local tasks, signed-file enrollment, foreground C1, copy gate and CI. Build/JVM/native cross-language checks are executable. Runtime/device/visual results and unfinished gates are recorded in [ANDROID_PHASE_A](../qa/reports/ANDROID_PHASE_A.md); no missing test is PASS.
+
+The historical macOS phase records below remain point-in-time evidence, not Android completion claims.
+
 # Monorepo execution stage
 
 Precondition Build 4 completed before baseline publication. Raw Git/reflog backup, verified restoration, standard `.git`, Public Organization baseline and invitation-gap Issue #1 are complete. Directory changes are on `refactor/monorepo-foundation`; native/Universal builds, domain/protocol/relay/migration tests and hosted CI passed. Final native UI: 15 PASS / 0 FAIL / 1 intentional SKIP; 68 captures complete, raw visual 18 PASS / 50 minor REVIEW REQUIRED / 0 FAIL. A frozen image-hash review is pending, so the PR remains Draft rather than merge-ready. Implementation/results/rollback: [migration](../architecture/MONOREPO_MIGRATION.md), [QA](../qa/reports/MONOREPO_QA.md). No product installation, production-data edits, C2, Android or Worker deployment.
