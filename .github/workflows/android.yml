@@ -34,7 +34,7 @@ jobs:
           cache: npm
           cache-dependency-path: services/relay/package-lock.json
       - name: SDK (reuse runner installation)
-        run: sdkmanager 'platforms;android-36' 'build-tools;35.0.0'
+        run: ./scripts/setup_android_sdk_ci.sh
       - name: Local isolated Relay
         working-directory: services/relay
         run: |
