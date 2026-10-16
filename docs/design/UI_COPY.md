@@ -49,3 +49,7 @@ The `sync.*` additions name actual domains, device origins, projected operations
 ## Device management copy review
 
 `device.*` names requested native enrollment/migration actions, explicit identity comparison, truthful device/history states and recovery errors. Public exchange filenames are user-visible save defaults, not network credentials. All exact values are in the catalog/review index. Copy QA is **WARN: 0 errors / 14 warnings**. The prior 13 dispositions remain unchanged; the additional `device.status.revoked` / `finance.status.revoked` equal-text warning is retained because revoking device authorization and revoking a ledger entry are separate translation contexts. No suppression or audit rule change was made. Human candidate-screen approval is still separate.
+
+## Android Phase A resources
+
+Android uses native `apps/android/app/src/main/res/values*/strings.xml`, with exact-text/category/context SHA-256 records in `qa/android_copy_review.json`. `make android-copy-qa` checks base/Chinese coverage, unreviewed changes, forbidden placeholders, copy budgets and visible Kotlin literals without reading Room or user text. This is the native Android equivalent of the Apple String Catalog gate; it does not suppress or approve the 14 existing Apple warnings. Functional identity verification/recovery guidance is necessary copy. No new emotional wording or fake delivery state was added.

@@ -26,7 +26,7 @@ FinanceChange derives real before/after data from validated operation history an
 
 Production 0.2.1 DeviceDescriptor uses protocolVersion 3 with the same private key, UUIDs and space. Relay hello is signed with its descriptor; V2/V3 mismatch is rejected before operation exchange. Pinned identity matching ignores only the supported version upgrade, not device/user/public key/initial space. Saved V2 routes can reconnect with both upgraded V3 clients without an invitation. Workers routing accepts both versions and leaves existing Durable Objects intact; the legacy TCP adapter also rejects mixed clients.
 
-The wire data is Codable JSON, not SwiftData objects. FinanceMoney minor-unit strings, ISO codes, CivilDate, user UUID allocation, explicit bill/month and rule effective month are platform-independent. Existing LogValue.data wraps canonical UTF-8 finance JSON in base64; a future Kotlin client must follow the existing signed-envelope canonicalization and uppercase UUID StableID scheme. See FINANCE_PROTOCOL.md. No Android code or C2 mailbox added.
+The wire data is Codable JSON, not SwiftData objects. FinanceMoney minor-unit strings, ISO codes, CivilDate, user UUID allocation, explicit bill/month and rule effective month are platform-independent. Existing LogValue.data wraps canonical UTF-8 finance JSON in base64. The additive Android Phase A client follows the existing signed-envelope canonicalization and uppercase UUID StableID scheme; see [Android architecture](ANDROID_FOUNDATION.md) and FINANCE_PROTOCOL.md. No C2 or offline mailbox is included.
 
 ## Retained architecture history
 
@@ -130,3 +130,7 @@ AuthorizedReplicationStore serializes fact/proof/head transactions and stages in
 ChangeReviewService derives successful before/after effects in one audited replay, labels superseded history and distinguishes my other device from my partner. Review/presentation state is local; it does not approve ordinary business changes. Gift content remains sealed. The native menu history reuses existing task/wish/finance/gift details. The dedicated UITesting configuration uses com.together.app.qa and refuses an ordinary production bootstrap; production Debug/Release remain com.together.app.
 
 Activation and rollback, outstanding control-history/root-recovery/indexing limits and enrollment UI gaps are explicit in the replication document. No migration helper can manufacture the partner's signature or copy another device's private key.
+
+## Android Phase A — additive client boundary
+
+[Android architecture](ANDROID_FOUNDATION.md) defines pure Kotlin Protocol 4/domain modules and Android-specific Compose, Room and Keystore adapters. Shared wire semantics, existing SwiftData models, space/user/device identities and the Relay are unchanged. Local-only unpaired facts are not advertised as certified Protocol 4; enrollment activates a separate authorized workspace, preserving the previous one. Room schema generation 1 is independent from SwiftData generation 1 and device protocol 4. Full business UI, original media transfer, physical phone/Mac acceptance and independent security review are explicitly unfinished.

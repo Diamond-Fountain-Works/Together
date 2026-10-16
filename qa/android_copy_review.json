@@ -1,0 +1,1290 @@
+{
+  "values-zh-rCN/app_name": {
+    "category": "Status",
+    "context": "Android Phase A / app_name",
+    "state": "reviewed",
+    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
+    "sha256": "330e6de0a0e3008fc7b01075f2723ee7e7c28b509fb95aa418de2748ff667615"
+  },
+  "values-zh-rCN/nav_home": {
+    "category": "Navigation",
+    "context": "Android Phase A / nav_home",
+    "state": "reviewed",
+    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
+    "sha256": "203c08e0d44ac3753a3c5b96644a6e10403bc0cbc5770b55cd1f775745a0a978"
+  },
+  "values-zh-rCN/nav_plans": {
+    "category": "Navigation",
+    "context": "Android Phase A / nav_plans",
+    "state": "reviewed",
+    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
+    "sha256": "0f6b1949b093e35266991fbea7a832212d428e874cc0666634faf37f51d4c63b"
+  },
+  "values-zh-rCN/nav_connection": {
+    "category": "Navigation",
+    "context": "Android Phase A / nav_connection",
+    "state": "reviewed",
+    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
+    "sha256": "a5574109f0208e899feb6b620feb3f1f686aded4ec939631420afc1bec51c400"
+  },
+  "values-zh-rCN/nav_settings": {
+    "category": "Navigation",
+    "context": "Android Phase A / nav_settings",
+    "state": "reviewed",
+    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
+    "sha256": "df3d58c7d84b85f2037cdd20ffca0f386668645ea53008c11b0c8887182b0356"
+  },
+  "values-zh-rCN/action_new_task": {
+    "category": "Action",
+    "context": "Android Phase A / action_new_task",
+    "state": "reviewed",
+    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
+    "sha256": "6bee2372805a2fd73ff12149f28844dea40e194a0a074087c421d67c53ae3515"
+  },
+  "values-zh-rCN/action_save": {
+    "category": "Action",
+    "context": "Android Phase A / action_save",
+    "state": "reviewed",
+    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
+    "sha256": "a3030bf8f16dc63c6b277564c68f78a3be5abe5f2907c51826dee7184ff793fd"
+  },
+  "values-zh-rCN/action_cancel": {
+    "category": "Action",
+    "context": "Android Phase A / action_cancel",
+    "state": "reviewed",
+    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
+    "sha256": "2cd0f3be8738a86cede1a1452f874f31d569864bbb00cacd4130990f4610cb5c"
+  },
+  "values-zh-rCN/action_close": {
+    "category": "Action",
+    "context": "Android Phase A / action_close",
+    "state": "reviewed",
+    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
+    "sha256": "3fd47edce45b3603d4192f61dbf3e51162589b0951042a18d244132ac92e7bb7"
+  },
+  "values-zh-rCN/action_delete": {
+    "category": "Action",
+    "context": "Android Phase A / action_delete",
+    "state": "reviewed",
+    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
+    "sha256": "2f9daa828907b93ff8a00d41a16828e0c6388bf3a95dadf816c8ee9c3bdac37d"
+  },
+  "values-zh-rCN/action_edit": {
+    "category": "Action",
+    "context": "Android Phase A / action_edit",
+    "state": "reviewed",
+    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
+    "sha256": "051836569928a9f91145a70e00b212b62a06c21a97d2d828cb75acd3fbe851b9"
+  },
+  "values-zh-rCN/filter_pending": {
+    "category": "Guidance",
+    "context": "Android Phase A / filter_pending",
+    "state": "reviewed",
+    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
+    "sha256": "7f750504c5bac7d8914076b6f4611a3d87b7a00c490568b7460ce5f2e07700de"
+  },
+  "values-zh-rCN/filter_completed": {
+    "category": "Guidance",
+    "context": "Android Phase A / filter_completed",
+    "state": "reviewed",
+    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
+    "sha256": "f28461bb49c8564716309d575f90f72cf15b5c4667e40c2d037434bedb54a01a"
+  },
+  "values-zh-rCN/empty_tasks": {
+    "category": "Empty State",
+    "context": "Android Phase A / empty_tasks",
+    "state": "reviewed",
+    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
+    "sha256": "da9688984cdcb675834dd63fd9242878e4219bb6cf30f663567619b8553ef605"
+  },
+  "values-zh-rCN/label_title": {
+    "category": "Guidance",
+    "context": "Android Phase A / label_title",
+    "state": "reviewed",
+    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
+    "sha256": "c3405f8c7d9d392aa3e2d073d5793bce795353c5f7ef0d27f3d6c1c8d2832681"
+  },
+  "values-zh-rCN/label_notes": {
+    "category": "Guidance",
+    "context": "Android Phase A / label_notes",
+    "state": "reviewed",
+    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
+    "sha256": "daede9881787abe74c94e686be78a4eabc85a09688433027ea55ac583919bc1e"
+  },
+  "values-zh-rCN/label_display_name": {
+    "category": "Guidance",
+    "context": "Android Phase A / label_display_name",
+    "state": "reviewed",
+    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
+    "sha256": "65d8f92232ae77b0ab6c7cb5910aa4dbb215875c9faafe6d078734c58dda2e03"
+  },
+  "values-zh-rCN/action_complete": {
+    "category": "Action",
+    "context": "Android Phase A / action_complete",
+    "state": "reviewed",
+    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
+    "sha256": "56be09301c39591338998a4dc83217667744a8fc6f12521d557eb90128ca378a"
+  },
+  "values-zh-rCN/action_reopen": {
+    "category": "Action",
+    "context": "Android Phase A / action_reopen",
+    "state": "reviewed",
+    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
+    "sha256": "73edc944dfc0fa30c80c7050ebac50aaf3d364ce3bbcd9d386bfc6f0e6555c78"
+  },
+  "values-zh-rCN/status_local": {
+    "category": "Status",
+    "context": "Android Phase A / status_local",
+    "state": "reviewed",
+    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
+    "sha256": "04627c2bc960ad984eb2700a0482ccb2a44196a36cac9e16ff74545e675bffea"
+  },
+  "values-zh-rCN/status_offline": {
+    "category": "Status",
+    "context": "Android Phase A / status_offline",
+    "state": "reviewed",
+    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
+    "sha256": "be1b4f3c6c1cda1e6f4989ef1258bab7ceb0361f2fafc0ba9620e3ace8ff8360"
+  },
+  "values-zh-rCN/status_connecting": {
+    "category": "Status",
+    "context": "Android Phase A / status_connecting",
+    "state": "reviewed",
+    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
+    "sha256": "a898478be1813b95eb1c01e0ee91bdd98fee7f9f498fa8fcd52891cb2e26e5d1"
+  },
+  "values-zh-rCN/status_waiting": {
+    "category": "Status",
+    "context": "Android Phase A / status_waiting",
+    "state": "reviewed",
+    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
+    "sha256": "bc3fd5b76af0fcb934574bc570a0dbae916b2c55a4c0e7030c9c4b7aca8eebb8"
+  },
+  "values-zh-rCN/status_syncing": {
+    "category": "Status",
+    "context": "Android Phase A / status_syncing",
+    "state": "reviewed",
+    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
+    "sha256": "bb429d0227b7d9d6c5298844921dff92531e89f5ef68c26b390c7e9b2a2fd050"
+  },
+  "values-zh-rCN/status_connected": {
+    "category": "Status",
+    "context": "Android Phase A / status_connected",
+    "state": "reviewed",
+    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
+    "sha256": "5be0323e8adcaeae8a644b6e8e4ad05864ec03c7b841504f91c911ff06dabd6d"
+  },
+  "values-zh-rCN/status_pending_sync": {
+    "category": "Status",
+    "context": "Android Phase A / status_pending_sync",
+    "state": "reviewed",
+    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
+    "sha256": "e09cbaccf1dd8bf8480f4171be701f7f17222775825a68bed12da14feabd7ec0"
+  },
+  "values-zh-rCN/status_partner_synced": {
+    "category": "Status",
+    "context": "Android Phase A / status_partner_synced",
+    "state": "reviewed",
+    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
+    "sha256": "04c87a251dc11e62075366938fc0da9c650b1747210c14befd21e0de2cc84f0b"
+  },
+  "values-zh-rCN/empty_changes": {
+    "category": "Empty State",
+    "context": "Android Phase A / empty_changes",
+    "state": "reviewed",
+    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
+    "sha256": "815347a7ad901ec74dade8999db0976931d4650ed9c78362eac92fbae3cf40fd"
+  },
+  "values-zh-rCN/action_changes": {
+    "category": "Action",
+    "context": "Android Phase A / action_changes",
+    "state": "reviewed",
+    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
+    "sha256": "6a44819f991b4c49c290784a28baa425f3d7cebe6ec2a25c4c3c899f914b7314"
+  },
+  "values-zh-rCN/action_review": {
+    "category": "Action",
+    "context": "Android Phase A / action_review",
+    "state": "reviewed",
+    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
+    "sha256": "88999d857336ebc476f3b9252727786348da4248c82fa18d22cb47ea96afb9c5"
+  },
+  "values-zh-rCN/label_my_device": {
+    "category": "Guidance",
+    "context": "Android Phase A / label_my_device",
+    "state": "reviewed",
+    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
+    "sha256": "8a94c4a1cdbd821ebbd32eff1549e6ae9ebcbc540dcd39c933d1ea2177d1ce5f"
+  },
+  "values-zh-rCN/label_devices": {
+    "category": "Guidance",
+    "context": "Android Phase A / label_devices",
+    "state": "reviewed",
+    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
+    "sha256": "b87a1ef7ecaa76af5a97d4caf2efa4aa95ba58b162de1d382dd161f0de049b71"
+  },
+  "values-zh-rCN/status_active": {
+    "category": "Status",
+    "context": "Android Phase A / status_active",
+    "state": "reviewed",
+    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
+    "sha256": "521e65ffc7d0ff2d26d81ba880438feb59dd0478f67d098c8f4c455a7f1fd084"
+  },
+  "values-zh-rCN/status_revoked": {
+    "category": "Status",
+    "context": "Android Phase A / status_revoked",
+    "state": "reviewed",
+    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
+    "sha256": "fef96e34f77b742b32120dac448c1d90f3a2ee2c9bb6942fec13b70d7816cd06"
+  },
+  "values-zh-rCN/action_add_my_device": {
+    "category": "Action",
+    "context": "Android Phase A / action_add_my_device",
+    "state": "reviewed",
+    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
+    "sha256": "ccb3f41a5469c8474dbe9a68a0956f58ba6a33e10bd0c2694070a72e3095ba00"
+  },
+  "values-zh-rCN/action_import_offer": {
+    "category": "Action",
+    "context": "Android Phase A / action_import_offer",
+    "state": "reviewed",
+    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
+    "sha256": "6f70ceaeba2baad25036bbf3118bec7e3b5253f579af5346151ce45021fb3fb4"
+  },
+  "values-zh-rCN/action_export_request": {
+    "category": "Action",
+    "context": "Android Phase A / action_export_request",
+    "state": "reviewed",
+    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
+    "sha256": "c17ab6d4ab01daf87b11c306d2f928d726a62f2f6e8da68bbfa0a345627e5c65"
+  },
+  "values-zh-rCN/action_import_completion": {
+    "category": "Action",
+    "context": "Android Phase A / action_import_completion",
+    "state": "reviewed",
+    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
+    "sha256": "725c3c86a14735ca370114ad8c36eac6bd31f0a3b92052c15d1d03bc45f6f0a5"
+  },
+  "values-zh-rCN/label_verification_code": {
+    "category": "Guidance",
+    "context": "Android Phase A / label_verification_code",
+    "state": "reviewed",
+    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
+    "sha256": "8d5d9ee6f3494da825365035c1d0fd4e19a3453a890dd652431f997806f8f03f"
+  },
+  "values-zh-rCN/label_fingerprint": {
+    "category": "Guidance",
+    "context": "Android Phase A / label_fingerprint",
+    "state": "reviewed",
+    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
+    "sha256": "52f073edd2f7bef29ab9f7ef231e7047a1253a82891fbb555f4a9a1c21fc1c5a"
+  },
+  "values-zh-rCN/guidance_add_device": {
+    "category": "Guidance",
+    "context": "Android Phase A / guidance_add_device",
+    "state": "reviewed",
+    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
+    "sha256": "bf21bdf0d5d67a0b5badb3186c701d8c70e0bc20c2b75709ea6cdb42c0209b2f"
+  },
+  "values-zh-rCN/guidance_request": {
+    "category": "Guidance",
+    "context": "Android Phase A / guidance_request",
+    "state": "reviewed",
+    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
+    "sha256": "aa8cf9806c336576f15a799a9c7bc1346eb4f18f96a3dab0fcc13a0fee562358"
+  },
+  "values-zh-rCN/confirm_identity": {
+    "category": "Guidance",
+    "context": "Android Phase A / confirm_identity",
+    "state": "reviewed",
+    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
+    "sha256": "7e5953c9c2cd157326707da49f4aa39f2ab438a4443fcedbed3801154d8e1e94"
+  },
+  "values-zh-rCN/action_create_request": {
+    "category": "Action",
+    "context": "Android Phase A / action_create_request",
+    "state": "reviewed",
+    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
+    "sha256": "506b929b6c1a5fecc4c4ba3685962d4fce4782b02561dfc7507ca3299646007f"
+  },
+  "values-zh-rCN/action_authorize": {
+    "category": "Action",
+    "context": "Android Phase A / action_authorize",
+    "state": "reviewed",
+    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
+    "sha256": "f1bb7767e7013b72a7c1be1ea8d28c13817e5ab7f6b4ac7d5bb0475f228bef48"
+  },
+  "values-zh-rCN/action_revoke": {
+    "category": "Action",
+    "context": "Android Phase A / action_revoke",
+    "state": "reviewed",
+    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
+    "sha256": "3bba148d392b296aa671b59c29418347563df9ef5d54f12168f6220bd3dd65c0"
+  },
+  "values-zh-rCN/confirm_revoke": {
+    "category": "Guidance",
+    "context": "Android Phase A / confirm_revoke",
+    "state": "reviewed",
+    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
+    "sha256": "95eb277614d173ccaaad8326bd7a85e4cdd619b1bc29685a72ccb63d83e6f618"
+  },
+  "values-zh-rCN/guidance_root_required": {
+    "category": "Guidance",
+    "context": "Android Phase A / guidance_root_required",
+    "state": "reviewed",
+    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
+    "sha256": "ea6a6695221174a53e5b1b210689a5943c9e9936faed56ce7833b5fc98983b9d"
+  },
+  "values-zh-rCN/guidance_offline": {
+    "category": "Guidance",
+    "context": "Android Phase A / guidance_offline",
+    "state": "reviewed",
+    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
+    "sha256": "b45d427a2a59e015699ee2b034d695f2e7d7f357d1a33c451a288650640c9662"
+  },
+  "values-zh-rCN/label_user": {
+    "category": "Guidance",
+    "context": "Android Phase A / label_user",
+    "state": "reviewed",
+    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
+    "sha256": "0fe5ee2cee4e9b732d2f5122c2cb0289d351f206e7d35572929a249573f35eb8"
+  },
+  "values-zh-rCN/label_device": {
+    "category": "Guidance",
+    "context": "Android Phase A / label_device",
+    "state": "reviewed",
+    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
+    "sha256": "1628b59870ffa0a295071412f45e6dd48a66d959100e91b243f30a428337437d"
+  },
+  "values-zh-rCN/label_version": {
+    "category": "Guidance",
+    "context": "Android Phase A / label_version",
+    "state": "reviewed",
+    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
+    "sha256": "5f76b2bf82dd2c5d820c26010d44246643f3010308e8821e7054c6c44f6c9f95"
+  },
+  "values-zh-rCN/error_generic": {
+    "category": "Error",
+    "context": "Android Phase A / error_generic",
+    "state": "reviewed",
+    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
+    "sha256": "2813ff748ea416396fdeca58f90d80a59ccac34e4585e648d7f5ce95edce1188"
+  },
+  "values-zh-rCN/error_identity": {
+    "category": "Error",
+    "context": "Android Phase A / error_identity",
+    "state": "reviewed",
+    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
+    "sha256": "a7da8b0cd2f828f602a7cd2e7eb031d7255b11f53cc0ebd64f8efccb2cc71b6e"
+  },
+  "values-zh-rCN/error_offer_expired": {
+    "category": "Error",
+    "context": "Android Phase A / error_offer_expired",
+    "state": "reviewed",
+    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
+    "sha256": "9b88cb7b6588f88aeb805b3542ab291ee92238f7915be04f1414bb435f1691a0"
+  },
+  "values-zh-rCN/error_existing_data": {
+    "category": "Error",
+    "context": "Android Phase A / error_existing_data",
+    "state": "reviewed",
+    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
+    "sha256": "10ca00ee82573f15afc6ef75446873b9ddb5cac3315266d86acec733d1447bbe"
+  },
+  "values-zh-rCN/error_invalid_file": {
+    "category": "Error",
+    "context": "Android Phase A / error_invalid_file",
+    "state": "reviewed",
+    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
+    "sha256": "fac37304dc1ae0b5e33d91864da8652c30573b5b7c468d207ba7913b88900875"
+  },
+  "values-zh-rCN/error_network": {
+    "category": "Error",
+    "context": "Android Phase A / error_network",
+    "state": "reviewed",
+    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
+    "sha256": "0a0447b1e2ba246c4f3393e5992ebeef97279bf5535e016375729bc37697c957"
+  },
+  "values-zh-rCN/label_pending_tasks": {
+    "category": "Guidance",
+    "context": "Android Phase A / label_pending_tasks",
+    "state": "reviewed",
+    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
+    "sha256": "884dcdc845bc6297c55c10eaa04abb8603531a5fad7ca3d0eceec7482d254769"
+  },
+  "values-zh-rCN/label_you": {
+    "category": "Guidance",
+    "context": "Android Phase A / label_you",
+    "state": "reviewed",
+    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
+    "sha256": "b70bb4acc0484cf040de4c07c60f9db722283da2c4a672c39291de621e92c33f"
+  },
+  "values-zh-rCN/label_other_device": {
+    "category": "Guidance",
+    "context": "Android Phase A / label_other_device",
+    "state": "reviewed",
+    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
+    "sha256": "179da81e0e481a17fbd9cc28cb62c39a970393fbedae9fee5da7477e3d3db36c"
+  },
+  "values-zh-rCN/label_partner": {
+    "category": "Guidance",
+    "context": "Android Phase A / label_partner",
+    "state": "reviewed",
+    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
+    "sha256": "7c4bbd93aa6e2e18f09631a918993bf3b758cb2127f707b279ade08a3e28b7d2"
+  },
+  "values-zh-rCN/action_view_plans": {
+    "category": "Action",
+    "context": "Android Phase A / action_view_plans",
+    "state": "reviewed",
+    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
+    "sha256": "aed5b2af529bf103f6e9ef05f76c6ce2ab9a1b5d33688866d7940fc20bee744e"
+  },
+  "values-zh-rCN/label_task": {
+    "category": "Guidance",
+    "context": "Android Phase A / label_task",
+    "state": "reviewed",
+    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
+    "sha256": "5253040db8643c857d0bd7823551422f0c2f91855d0d3656b4efd8b30b3edb95"
+  },
+  "values-zh-rCN/label_profile": {
+    "category": "Guidance",
+    "context": "Android Phase A / label_profile",
+    "state": "reviewed",
+    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
+    "sha256": "cba1ec75f4ca2162a80da5a8ebe16af41fc4cf0aad8bb9769354dc80a1e63d89"
+  },
+  "values-zh-rCN/label_wish": {
+    "category": "Guidance",
+    "context": "Android Phase A / label_wish",
+    "state": "reviewed",
+    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
+    "sha256": "3a21aa8fffc41265fe70dc2fa4201fc910d614cccff4b9459e307057e773bf52"
+  },
+  "values-zh-rCN/label_finance": {
+    "category": "Guidance",
+    "context": "Android Phase A / label_finance",
+    "state": "reviewed",
+    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
+    "sha256": "506c068a2a1eb95aabf52a2a3518cdeddffb2bb78b0497158bcf16654ce8fb2e"
+  },
+  "values-zh-rCN/label_gift": {
+    "category": "Guidance",
+    "context": "Android Phase A / label_gift",
+    "state": "reviewed",
+    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
+    "sha256": "95139c7154d54b893292bc500f3f0d123aec126e7dda51f5e1aa8613906c0822"
+  },
+  "values-zh-rCN/status_created": {
+    "category": "Status",
+    "context": "Android Phase A / status_created",
+    "state": "reviewed",
+    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
+    "sha256": "80bfa30db2096589d11e93f8e9540bd1accfac8d54845d495da4d5efb8c977f1"
+  },
+  "values-zh-rCN/status_modified": {
+    "category": "Status",
+    "context": "Android Phase A / status_modified",
+    "state": "reviewed",
+    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
+    "sha256": "682d211b7142758a2655363b0aa593e47af92ebdb63517372601d8e43d2636ac"
+  },
+  "values-zh-rCN/status_deleted": {
+    "category": "Status",
+    "context": "Android Phase A / status_deleted",
+    "state": "reviewed",
+    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
+    "sha256": "077a6d37719a0e21e68abe1bf3ec7b83cd05069cec86570c16de88640ffc519f"
+  },
+  "values-zh-rCN/status_reviewed": {
+    "category": "Status",
+    "context": "Android Phase A / status_reviewed",
+    "state": "reviewed",
+    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
+    "sha256": "8028201c37f466c72ecb2883fd4e0a3f92f1f94cddd5c69514515404f7cdd515"
+  },
+  "values-zh-rCN/label_before": {
+    "category": "Guidance",
+    "context": "Android Phase A / label_before",
+    "state": "reviewed",
+    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
+    "sha256": "1dedf4a92ad50a01bbb233c27f44913be3c84dc7073f70f207aace15b32f2286"
+  },
+  "values-zh-rCN/label_after": {
+    "category": "Guidance",
+    "context": "Android Phase A / label_after",
+    "state": "reviewed",
+    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
+    "sha256": "8d6d51f14a6e67ae8536e1f206b257fa298293e79ec36f54b8eaa37fee3e3ea4"
+  },
+  "values-zh-rCN/status_superseded": {
+    "category": "Status",
+    "context": "Android Phase A / status_superseded",
+    "state": "reviewed",
+    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
+    "sha256": "8d099b128a4772d03a4c8e625497bad8d958a70a10bef7067d12f9af7e47f6a7"
+  },
+  "values-zh-rCN/status_partially_superseded": {
+    "category": "Status",
+    "context": "Android Phase A / status_partially_superseded",
+    "state": "reviewed",
+    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
+    "sha256": "9ec2fc1666307734fa189621a85e75359bbf38928fef8c3e3a755cf698f2c3b3"
+  },
+  "values-zh-rCN/filename_device_request": {
+    "category": "Guidance",
+    "context": "Android Phase A / filename_device_request",
+    "state": "reviewed",
+    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
+    "sha256": "1e8f1a734d9f74f2cb90f7b5cf04094fef922f6368a0d12c2f5d31ca5c752629"
+  },
+  "values/app_name": {
+    "category": "Status",
+    "context": "Android Phase A / app_name",
+    "state": "reviewed",
+    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
+    "sha256": "330e6de0a0e3008fc7b01075f2723ee7e7c28b509fb95aa418de2748ff667615"
+  },
+  "values/nav_home": {
+    "category": "Navigation",
+    "context": "Android Phase A / nav_home",
+    "state": "reviewed",
+    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
+    "sha256": "3a78695388b38b5cceefaf6796b0137877514593543b91af2752d5a17e3d736c"
+  },
+  "values/nav_plans": {
+    "category": "Navigation",
+    "context": "Android Phase A / nav_plans",
+    "state": "reviewed",
+    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
+    "sha256": "dfe8b2f0de26bb87c6d6066acf6668807a27d8270cc08ade10018769ee380101"
+  },
+  "values/nav_connection": {
+    "category": "Navigation",
+    "context": "Android Phase A / nav_connection",
+    "state": "reviewed",
+    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
+    "sha256": "639a40e82b9a96f0cbeed5f006cf5634c8d1b990b3c83753c00a910fc268d2a6"
+  },
+  "values/nav_settings": {
+    "category": "Navigation",
+    "context": "Android Phase A / nav_settings",
+    "state": "reviewed",
+    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
+    "sha256": "74a883a037bc227f91891ab654a753d3a99f31ab06ae5b5d2b6e594a692b41f8"
+  },
+  "values/action_new_task": {
+    "category": "Action",
+    "context": "Android Phase A / action_new_task",
+    "state": "reviewed",
+    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
+    "sha256": "3e992276b2298a1fb8035727de54620ff01bbcfc451133124145633b2c8f8475"
+  },
+  "values/action_save": {
+    "category": "Action",
+    "context": "Android Phase A / action_save",
+    "state": "reviewed",
+    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
+    "sha256": "1509f561f2416598629b886ad7d3c05a7e221e4e0675c84bbff4ee6d9e03913d"
+  },
+  "values/action_cancel": {
+    "category": "Action",
+    "context": "Android Phase A / action_cancel",
+    "state": "reviewed",
+    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
+    "sha256": "19766ed6ccb2f4a32778eed80d1928d2c87a18d7c275ccb163ec6709d3eb2e27"
+  },
+  "values/action_close": {
+    "category": "Action",
+    "context": "Android Phase A / action_close",
+    "state": "reviewed",
+    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
+    "sha256": "7d9eb7acb13e24625c404401d8e88b2350e32162455885f18276cf802f7701ed"
+  },
+  "values/action_delete": {
+    "category": "Action",
+    "context": "Android Phase A / action_delete",
+    "state": "reviewed",
+    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
+    "sha256": "e2d0a54968ead24efc0dffa6ac78fc606dceec34a0f586177a74a54cc2272cf8"
+  },
+  "values/action_edit": {
+    "category": "Action",
+    "context": "Android Phase A / action_edit",
+    "state": "reviewed",
+    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
+    "sha256": "464c4ffd019e1e9691dcf0537c797353ef2b1c1d4833d3d463e5b74ae4547344"
+  },
+  "values/filter_pending": {
+    "category": "Guidance",
+    "context": "Android Phase A / filter_pending",
+    "state": "reviewed",
+    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
+    "sha256": "331551b0de4157c9abc7b72b61b96a2a928fd6db3cdf029c1fc44b08ad633aa6"
+  },
+  "values/filter_completed": {
+    "category": "Guidance",
+    "context": "Android Phase A / filter_completed",
+    "state": "reviewed",
+    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
+    "sha256": "22a970d2e5b1cc233e462be7c7b64e135a275bb09d83d87683bf4236c43113a1"
+  },
+  "values/empty_tasks": {
+    "category": "Empty State",
+    "context": "Android Phase A / empty_tasks",
+    "state": "reviewed",
+    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
+    "sha256": "cca8d533c8d58553c1e1668a3f9cb3635a77385540ca509175583b6bdcd0e8c5"
+  },
+  "values/label_title": {
+    "category": "Guidance",
+    "context": "Android Phase A / label_title",
+    "state": "reviewed",
+    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
+    "sha256": "7e8cd2056da73a7fefb6cd91f4e5d199d08d9058c517b9a2476b1b520324d674"
+  },
+  "values/label_notes": {
+    "category": "Guidance",
+    "context": "Android Phase A / label_notes",
+    "state": "reviewed",
+    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
+    "sha256": "8a7525b1492fb84833f5c4a69b30f4bfbb134f9b666b61a2c1872d63d234c085"
+  },
+  "values/label_display_name": {
+    "category": "Guidance",
+    "context": "Android Phase A / label_display_name",
+    "state": "reviewed",
+    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
+    "sha256": "155106be1173d7573d45e29f95a38e17bc3ce399535654f159ef4dd5a99e33ba"
+  },
+  "values/action_complete": {
+    "category": "Action",
+    "context": "Android Phase A / action_complete",
+    "state": "reviewed",
+    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
+    "sha256": "f9126d256e3defda1eb577dfb67a0831d9bd27682a191b3aa74de06fccb54bbf"
+  },
+  "values/action_reopen": {
+    "category": "Action",
+    "context": "Android Phase A / action_reopen",
+    "state": "reviewed",
+    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
+    "sha256": "91ada2114c37394df78b2f3e293acede642441b00fac4ec15e452830972b7fad"
+  },
+  "values/status_local": {
+    "category": "Status",
+    "context": "Android Phase A / status_local",
+    "state": "reviewed",
+    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
+    "sha256": "c905013aab298856be9d5fb2d1eafccb5ba2d10f28086c45e0b46816b7711676"
+  },
+  "values/status_offline": {
+    "category": "Status",
+    "context": "Android Phase A / status_offline",
+    "state": "reviewed",
+    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
+    "sha256": "a1794783aab72d205dc532b1170d1be63ebdce8816b57c21acb451c15dab969a"
+  },
+  "values/status_connecting": {
+    "category": "Status",
+    "context": "Android Phase A / status_connecting",
+    "state": "reviewed",
+    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
+    "sha256": "d403c686f6a1048014bdd230f59963271b0123ea48245754fc9f264b962a2182"
+  },
+  "values/status_waiting": {
+    "category": "Status",
+    "context": "Android Phase A / status_waiting",
+    "state": "reviewed",
+    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
+    "sha256": "223e8b2c76c229573249bf0764a4468f0282c94bdc331bc4d9d04eacfacab83c"
+  },
+  "values/status_syncing": {
+    "category": "Status",
+    "context": "Android Phase A / status_syncing",
+    "state": "reviewed",
+    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
+    "sha256": "5c8b9e1ce0a2bc3181602873e9c5ec0208909539a46c5f1947427657b01a6713"
+  },
+  "values/status_connected": {
+    "category": "Status",
+    "context": "Android Phase A / status_connected",
+    "state": "reviewed",
+    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
+    "sha256": "22965568d22a14ee17af055d2870b50afcfe9fd94a83eec3196e266932297bb2"
+  },
+  "values/status_pending_sync": {
+    "category": "Status",
+    "context": "Android Phase A / status_pending_sync",
+    "state": "reviewed",
+    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
+    "sha256": "e45ceb73ca49c69878fc83fe02efe5b420fb90ce5dfc94ae2bc4c4b8ee9f2c34"
+  },
+  "values/status_partner_synced": {
+    "category": "Status",
+    "context": "Android Phase A / status_partner_synced",
+    "state": "reviewed",
+    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
+    "sha256": "b6b67d3fc493ce6c0aab4c3c2935c719822b8e4f676d6edcb5c513f0c7452e80"
+  },
+  "values/empty_changes": {
+    "category": "Empty State",
+    "context": "Android Phase A / empty_changes",
+    "state": "reviewed",
+    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
+    "sha256": "db591dc55a9950b540cdd0d9f69b8c4ad9bab180f06a6440aacd69ddace799fb"
+  },
+  "values/action_changes": {
+    "category": "Action",
+    "context": "Android Phase A / action_changes",
+    "state": "reviewed",
+    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
+    "sha256": "964de7c92efed6df5691a3c05dd99b3796e103ba8696692a5b6cdeee3f5d61fd"
+  },
+  "values/action_review": {
+    "category": "Action",
+    "context": "Android Phase A / action_review",
+    "state": "reviewed",
+    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
+    "sha256": "f73cf2143127e953bea3c7ef037ffeb96ae4fbf9ba82ec298e31da845a4c9900"
+  },
+  "values/label_my_device": {
+    "category": "Guidance",
+    "context": "Android Phase A / label_my_device",
+    "state": "reviewed",
+    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
+    "sha256": "d052579c6a317b1b81f020a5ba300deafc57dc64ef56cb04e755a1d3fbe884ce"
+  },
+  "values/label_devices": {
+    "category": "Guidance",
+    "context": "Android Phase A / label_devices",
+    "state": "reviewed",
+    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
+    "sha256": "9a17e6990f44a85ee06c87269e32c82cd8bf283d28f75b86f13f2aed14e020c2"
+  },
+  "values/status_active": {
+    "category": "Status",
+    "context": "Android Phase A / status_active",
+    "state": "reviewed",
+    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
+    "sha256": "67f542ba6d8fd057de40b59420a25dbdfb4a6f780407442ada59d9595595e11f"
+  },
+  "values/status_revoked": {
+    "category": "Status",
+    "context": "Android Phase A / status_revoked",
+    "state": "reviewed",
+    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
+    "sha256": "f6f738d043929f59fe41b1a5b414b33ea28ca9a6ddc74e682bdb7167b5a6ac6e"
+  },
+  "values/action_add_my_device": {
+    "category": "Action",
+    "context": "Android Phase A / action_add_my_device",
+    "state": "reviewed",
+    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
+    "sha256": "17d5f9f4e2a3328206dc956fd6949c60ec0fcc464e6025e551a2f80b8ef7ffd1"
+  },
+  "values/action_import_offer": {
+    "category": "Action",
+    "context": "Android Phase A / action_import_offer",
+    "state": "reviewed",
+    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
+    "sha256": "d6e2fe7f8c56b4acddb00047f255960f0576243a4ed9e3e2af0f3950a610fc5c"
+  },
+  "values/action_export_request": {
+    "category": "Action",
+    "context": "Android Phase A / action_export_request",
+    "state": "reviewed",
+    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
+    "sha256": "b3d05491f44d64fc76f9ab3c595f02aa4d50b216e90e6eeab423ea8b0e581df4"
+  },
+  "values/action_import_completion": {
+    "category": "Action",
+    "context": "Android Phase A / action_import_completion",
+    "state": "reviewed",
+    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
+    "sha256": "1b863c6188b7be03a1f7c81b53fc0ca171d7f2dbf775b6507fd980656fe18022"
+  },
+  "values/label_verification_code": {
+    "category": "Guidance",
+    "context": "Android Phase A / label_verification_code",
+    "state": "reviewed",
+    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
+    "sha256": "3ee75029c70e284c46b5af29eb87592f923e747f460353b02059a645f332b990"
+  },
+  "values/label_fingerprint": {
+    "category": "Guidance",
+    "context": "Android Phase A / label_fingerprint",
+    "state": "reviewed",
+    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
+    "sha256": "c6a420bdc7b1ec364974c4bee9d80578e5b654f6648463cda2331c6394cf159d"
+  },
+  "values/guidance_add_device": {
+    "category": "Guidance",
+    "context": "Android Phase A / guidance_add_device",
+    "state": "reviewed",
+    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
+    "sha256": "91b93c23818441cae924d1ac8c842d96faf8349fcb7288fcee826ef20195d6b7"
+  },
+  "values/guidance_request": {
+    "category": "Guidance",
+    "context": "Android Phase A / guidance_request",
+    "state": "reviewed",
+    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
+    "sha256": "8dba394c34355d232c9d2cd545ee73dbc83991f676270e3e2d91406476e43c45"
+  },
+  "values/confirm_identity": {
+    "category": "Guidance",
+    "context": "Android Phase A / confirm_identity",
+    "state": "reviewed",
+    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
+    "sha256": "f7d749544aecd769518d8ed8e490def8351def2b9e6a9be6aed5512682866d1d"
+  },
+  "values/action_create_request": {
+    "category": "Action",
+    "context": "Android Phase A / action_create_request",
+    "state": "reviewed",
+    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
+    "sha256": "f9434a3c1ebd7069777f10770af65534b01e7fef6bfbdd8214a894e1e6366530"
+  },
+  "values/action_authorize": {
+    "category": "Action",
+    "context": "Android Phase A / action_authorize",
+    "state": "reviewed",
+    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
+    "sha256": "906887ba5fcd2266acc6c2164bb0071fbafa5e4f4c09e8f2899e5923b994fe76"
+  },
+  "values/action_revoke": {
+    "category": "Action",
+    "context": "Android Phase A / action_revoke",
+    "state": "reviewed",
+    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
+    "sha256": "548139b9e4bc6f9cbf01702b544e3860dee6b829ca6f0bb3dddffe1b18b61e4f"
+  },
+  "values/confirm_revoke": {
+    "category": "Guidance",
+    "context": "Android Phase A / confirm_revoke",
+    "state": "reviewed",
+    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
+    "sha256": "a0cafc3aece2eb6091049c6adcde1c671e37d803b5d708aa1f526601bc4e7d50"
+  },
+  "values/guidance_root_required": {
+    "category": "Guidance",
+    "context": "Android Phase A / guidance_root_required",
+    "state": "reviewed",
+    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
+    "sha256": "b540170c7365384acfc22b5ffb9af14653480059dd9daf113d6c5fec2bad1286"
+  },
+  "values/guidance_offline": {
+    "category": "Guidance",
+    "context": "Android Phase A / guidance_offline",
+    "state": "reviewed",
+    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
+    "sha256": "8597d913ccbd07e739c08508aff95b42fbd13f679fd8a1dd249d4f9c5a22a02f"
+  },
+  "values/label_user": {
+    "category": "Guidance",
+    "context": "Android Phase A / label_user",
+    "state": "reviewed",
+    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
+    "sha256": "7967e089a7b94464ee1b0c6d4b8271e99bcf36f9e5481e40a5eec5c5a5108d01"
+  },
+  "values/label_device": {
+    "category": "Guidance",
+    "context": "Android Phase A / label_device",
+    "state": "reviewed",
+    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
+    "sha256": "6e0a0b9d8c5ee4d9fb14be1c846a402634b77030c53b3f328007cd1c9cd43ece"
+  },
+  "values/label_version": {
+    "category": "Guidance",
+    "context": "Android Phase A / label_version",
+    "state": "reviewed",
+    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
+    "sha256": "dd167905de0defcaf72de673ee44c07431770d129ccffab286bd2edfdaf62396"
+  },
+  "values/error_generic": {
+    "category": "Error",
+    "context": "Android Phase A / error_generic",
+    "state": "reviewed",
+    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
+    "sha256": "7b524e3a00cb0e00263516ed24714e120dfec15fb59c13a1234d5ad8059952f4"
+  },
+  "values/error_identity": {
+    "category": "Error",
+    "context": "Android Phase A / error_identity",
+    "state": "reviewed",
+    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
+    "sha256": "7c8ada572f96f8796610dcf387e0010a1ff952dd612691703640b8d044fd7932"
+  },
+  "values/error_offer_expired": {
+    "category": "Error",
+    "context": "Android Phase A / error_offer_expired",
+    "state": "reviewed",
+    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
+    "sha256": "a6d427d551df559d7f9ff2999fec1f0c4176b1b1229fb3f3c3f5e9ff5e7530d1"
+  },
+  "values/error_existing_data": {
+    "category": "Error",
+    "context": "Android Phase A / error_existing_data",
+    "state": "reviewed",
+    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
+    "sha256": "f45a2cfa0f93142e91cfcf6df39d5b22d4dabf2385268e96639a43e069fceda4"
+  },
+  "values/error_invalid_file": {
+    "category": "Error",
+    "context": "Android Phase A / error_invalid_file",
+    "state": "reviewed",
+    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
+    "sha256": "9954337e8878ddabe463ccb4a247388081a88078f18dc8e07a0b91e80ab97e82"
+  },
+  "values/error_network": {
+    "category": "Error",
+    "context": "Android Phase A / error_network",
+    "state": "reviewed",
+    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
+    "sha256": "6315e1b0e8bc226b2e6a860ee8bc04fc4cdfe36ef370c4247bb075ed7f153d3a"
+  },
+  "values/label_pending_tasks": {
+    "category": "Guidance",
+    "context": "Android Phase A / label_pending_tasks",
+    "state": "reviewed",
+    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
+    "sha256": "47b14c56bc3a92735bd2e2320c94ab54a3301da132ff812f3adbb85eb859488f"
+  },
+  "values/label_you": {
+    "category": "Guidance",
+    "context": "Android Phase A / label_you",
+    "state": "reviewed",
+    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
+    "sha256": "d30af076b0dc85cc5b0074b403f74770b73af84a70c2f77f7a3609d0db23112e"
+  },
+  "values/label_other_device": {
+    "category": "Guidance",
+    "context": "Android Phase A / label_other_device",
+    "state": "reviewed",
+    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
+    "sha256": "2513a4bb4f3cc54eb54be053d4bcdbde71ab5f2f8648bb3ce1d29ab786153b89"
+  },
+  "values/label_partner": {
+    "category": "Guidance",
+    "context": "Android Phase A / label_partner",
+    "state": "reviewed",
+    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
+    "sha256": "29035e784f9305c0eb62aa33662b296306f6a77bedaca7c67f2e3432dd43ace2"
+  },
+  "values/action_view_plans": {
+    "category": "Action",
+    "context": "Android Phase A / action_view_plans",
+    "state": "reviewed",
+    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
+    "sha256": "a72e2bd3e148c05ef792271130809ada4aea480931121b82839c2a5bb438f093"
+  },
+  "values/label_task": {
+    "category": "Guidance",
+    "context": "Android Phase A / label_task",
+    "state": "reviewed",
+    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
+    "sha256": "4bc74b21357c6cf5cca8f66b4d4ee948be64d0396feb434c9645e168ad61ceaf"
+  },
+  "values/label_profile": {
+    "category": "Guidance",
+    "context": "Android Phase A / label_profile",
+    "state": "reviewed",
+    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
+    "sha256": "d696a35bdd1883da07a8d6c41bb7a3153381b23aa197629ee273479a6eaa5a9c"
+  },
+  "values/label_wish": {
+    "category": "Guidance",
+    "context": "Android Phase A / label_wish",
+    "state": "reviewed",
+    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
+    "sha256": "3ab8a8811496055f520fc5ff9e577a1c1b4c38d76a4c96bf71201610bf3d8294"
+  },
+  "values/label_finance": {
+    "category": "Guidance",
+    "context": "Android Phase A / label_finance",
+    "state": "reviewed",
+    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
+    "sha256": "b696d75511dc16f2b52563e3113a498311a79866f4672862197aa9a8c5c0da12"
+  },
+  "values/label_gift": {
+    "category": "Guidance",
+    "context": "Android Phase A / label_gift",
+    "state": "reviewed",
+    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
+    "sha256": "d01399f8c23353f733ec5001b71adfb42ce6b2acb6cee1ac1bacc69d62a4bac8"
+  },
+  "values/status_created": {
+    "category": "Status",
+    "context": "Android Phase A / status_created",
+    "state": "reviewed",
+    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
+    "sha256": "d70b9e24bca26b409b9458ceca6c9e5c2b5c3171c37ff050c6f6a0d7a4420d2a"
+  },
+  "values/status_modified": {
+    "category": "Status",
+    "context": "Android Phase A / status_modified",
+    "state": "reviewed",
+    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
+    "sha256": "e8ce5dcaf408935ff76747226d2e8bee4319a2f593c1d7a838115e56183d1f37"
+  },
+  "values/status_deleted": {
+    "category": "Status",
+    "context": "Android Phase A / status_deleted",
+    "state": "reviewed",
+    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
+    "sha256": "b48ff39c2e0f5451b9b29b09c2a74d2760db230749ffd48a6e901cc91fef9a8d"
+  },
+  "values/status_reviewed": {
+    "category": "Status",
+    "context": "Android Phase A / status_reviewed",
+    "state": "reviewed",
+    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
+    "sha256": "fad6057bb5403e59709e79e0679965bd362af5fc0841b06c08f48efa21fc588b"
+  },
+  "values/label_before": {
+    "category": "Guidance",
+    "context": "Android Phase A / label_before",
+    "state": "reviewed",
+    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
+    "sha256": "9bb725005055412c75a8e8d1fb5a0780595174ac8bbe5a24f768647bd4e4debe"
+  },
+  "values/label_after": {
+    "category": "Guidance",
+    "context": "Android Phase A / label_after",
+    "state": "reviewed",
+    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
+    "sha256": "7b68fe5510851da3d89100c569d3265e044d8656d95750c376b7a0972dea7330"
+  },
+  "values/status_superseded": {
+    "category": "Status",
+    "context": "Android Phase A / status_superseded",
+    "state": "reviewed",
+    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
+    "sha256": "e5830d265452f1ed47a8fb8891fdc488ab355a71ff18cebee2fe3dd1df2f295b"
+  },
+  "values/status_partially_superseded": {
+    "category": "Status",
+    "context": "Android Phase A / status_partially_superseded",
+    "state": "reviewed",
+    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
+    "sha256": "9cf718a3f93c14314f82a436aa7e08d5b11d75e339a1e4721472125fb6a9dfc4"
+  },
+  "values/filename_device_request": {
+    "category": "Guidance",
+    "context": "Android Phase A / filename_device_request",
+    "state": "reviewed",
+    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
+    "sha256": "1e8f1a734d9f74f2cb90f7b5cf04094fef922f6368a0d12c2f5d31ca5c752629"
+  },
+  "values-zh-rCN/status_restoring_history": {
+    "category": "Status",
+    "context": "Android certified baseline download; local mutations disabled until complete",
+    "state": "reviewed",
+    "reason": "Factual recovery status; no empty-data claim while history is incomplete.",
+    "sha256": "d6d0775a5a36d72dfec9ae837ce8a5e1fe0e66a4453fb7dabc5a38530ed844a8"
+  },
+  "values/status_restoring_history": {
+    "category": "Status",
+    "context": "Android certified baseline download; local mutations disabled until complete",
+    "state": "reviewed",
+    "reason": "Factual recovery status; no empty-data claim while history is incomplete.",
+    "sha256": "eec08df7decb9a9e2d7193241a6e58789cf2e413a8557fdd05387e8e9d2947db"
+  },
+  "values/label_details": {
+    "category": "Status",
+    "context": "Android actual business change value label",
+    "state": "reviewed",
+    "reason": "Factual label for existing operation before/after values; user content remains unchanged and gifts stay sealed.",
+    "sha256": "45989de49fb7f66dfe17a8fc26f3a02c7abcd74f7e8e6cf9f39fa0e3775780df"
+  },
+  "values/label_amount": {
+    "category": "Status",
+    "context": "Android actual business change value label",
+    "state": "reviewed",
+    "reason": "Factual label for existing operation before/after values; user content remains unchanged and gifts stay sealed.",
+    "sha256": "49e96d7cdf58069cc793555324e2226642f2f7f8bfff4cebe0c11a61eecef60a"
+  },
+  "values/label_payment": {
+    "category": "Status",
+    "context": "Android actual business change value label",
+    "state": "reviewed",
+    "reason": "Factual label for existing operation before/after values; user content remains unchanged and gifts stay sealed.",
+    "sha256": "a891cbbe1e482086da475a97668b975a63a69435ba791f45127213085efa9023"
+  },
+  "values/label_quantity": {
+    "category": "Status",
+    "context": "Android actual business change value label",
+    "state": "reviewed",
+    "reason": "Factual label for existing operation before/after values; user content remains unchanged and gifts stay sealed.",
+    "sha256": "822bab8d41bca8d7976cd69963d93a335ee21fa46160c4b866e0df7ea4b33196"
+  },
+  "values/label_status": {
+    "category": "Status",
+    "context": "Android actual business change value label",
+    "state": "reviewed",
+    "reason": "Factual label for existing operation before/after values; user content remains unchanged and gifts stay sealed.",
+    "sha256": "920e413c7d411b61ef3e8c63b1cb6ad058d5f95f8b481dbafe60248387d8c355"
+  },
+  "values/label_date": {
+    "category": "Status",
+    "context": "Android actual business change value label",
+    "state": "reviewed",
+    "reason": "Factual label for existing operation before/after values; user content remains unchanged and gifts stay sealed.",
+    "sha256": "99c40ab405926cb5ad1def9cff4d7ce624f8f8abfff4e85f655347fcb949d08e"
+  },
+  "values/label_shared_reserves": {
+    "category": "Status",
+    "context": "Android actual business change value label",
+    "state": "reviewed",
+    "reason": "Factual label for existing operation before/after values; user content remains unchanged and gifts stay sealed.",
+    "sha256": "2a84cd13ccdac724fa73f88e5df4fb1ae21580182c1666c9553075393b83d4bc"
+  },
+  "values-zh-rCN/label_details": {
+    "category": "Status",
+    "context": "Android actual business change value label",
+    "state": "reviewed",
+    "reason": "Factual label for existing operation before/after values; user content remains unchanged and gifts stay sealed.",
+    "sha256": "979a332955c855bf1b800021f3e645b9f555b4e2da354b14c5810d6621d8375b"
+  },
+  "values-zh-rCN/label_amount": {
+    "category": "Status",
+    "context": "Android actual business change value label",
+    "state": "reviewed",
+    "reason": "Factual label for existing operation before/after values; user content remains unchanged and gifts stay sealed.",
+    "sha256": "ffc624300de8f2e11d6e1cf279dc73c7ee630a4a896c52cb1ff530fd83fd83fd"
+  },
+  "values-zh-rCN/label_payment": {
+    "category": "Status",
+    "context": "Android actual business change value label",
+    "state": "reviewed",
+    "reason": "Factual label for existing operation before/after values; user content remains unchanged and gifts stay sealed.",
+    "sha256": "01238fedca676f2bd0cfa6b7cb0c7624cd3367b155c08fdde418d630f60f732b"
+  },
+  "values-zh-rCN/label_quantity": {
+    "category": "Status",
+    "context": "Android actual business change value label",
+    "state": "reviewed",
+    "reason": "Factual label for existing operation before/after values; user content remains unchanged and gifts stay sealed.",
+    "sha256": "5e29d121dda011c50d1a2d539dde959645ab8f53aa813d3864d957100329f39e"
+  },
+  "values-zh-rCN/label_status": {
+    "category": "Status",
+    "context": "Android actual business change value label",
+    "state": "reviewed",
+    "reason": "Factual label for existing operation before/after values; user content remains unchanged and gifts stay sealed.",
+    "sha256": "6320b4a8722a851fb99566e4eac1cfd4b93bc684b3a33d9f5cae37a116b8c734"
+  },
+  "values-zh-rCN/label_date": {
+    "category": "Status",
+    "context": "Android actual business change value label",
+    "state": "reviewed",
+    "reason": "Factual label for existing operation before/after values; user content remains unchanged and gifts stay sealed.",
+    "sha256": "70d0c1b33626ba4be4e1d36dd7caaff6fda083f227da2728f9afebff0c500659"
+  },
+  "values-zh-rCN/label_shared_reserves": {
+    "category": "Status",
+    "context": "Android actual business change value label",
+    "state": "reviewed",
+    "reason": "Factual label for existing operation before/after values; user content remains unchanged and gifts stay sealed.",
+    "sha256": "bbbe663028b3cd152881b01cbd17d301098905512fe626782d1f14edc92b138f"
+  },
+  "values/status_wish_open": {
+    "category": "Status",
+    "context": "Android validated wish/finance change history state",
+    "state": "reviewed",
+    "reason": "Human-readable existing domain state; reconciliation is not bank or partner approval.",
+    "sha256": "ed077f3d8125d60dca1979c7133601bd187d47c73ed9975028f677e49e709942"
+  },
+  "values/status_wish_requested": {
+    "category": "Status",
+    "context": "Android validated wish/finance change history state",
+    "state": "reviewed",
+    "reason": "Human-readable existing domain state; reconciliation is not bank or partner approval.",
+    "sha256": "69c5c0ada7d85e0614dbd6ffc86023a7bac694f2e4d2d4b5fb6d0257a827ed1a"
+  },
+  "values/status_wish_fulfilled": {
+    "category": "Status",
+    "context": "Android validated wish/finance change history state",
+    "state": "reviewed",
+    "reason": "Human-readable existing domain state; reconciliation is not bank or partner approval.",
+    "sha256": "b7c6220ada3d1bc4d2365d306a468e5ad4f5df7cc2d432284d9bbb3d8dad0003"
+  },
+  "values/status_conflict": {
+    "category": "Status",
+    "context": "Android validated wish/finance change history state",
+    "state": "reviewed",
+    "reason": "Human-readable existing domain state; reconciliation is not bank or partner approval.",
+    "sha256": "014659ab9d98c8fea5fed2a5a3bc3c41d6478904a9184c65a57769c439940d14"
+  },
+  "values/status_provisional": {
+    "category": "Status",
+    "context": "Android validated wish/finance change history state",
+    "state": "reviewed",
+    "reason": "Human-readable existing domain state; reconciliation is not bank or partner approval.",
+    "sha256": "9b46c2e6d68c16f55ac7f5c1bbb0760788c64303df7fc2689aa90ec699baf0b6"
+  },
+  "values/status_reconciled": {
+    "category": "Status",
+    "context": "Android validated wish/finance change history state",
+    "state": "reviewed",
+    "reason": "Human-readable existing domain state; reconciliation is not bank or partner approval.",
+    "sha256": "2d5676cba29e28db72c69131a239475456a6d0e43accbf522fed36b9004576c3"
+  },
+  "values/status_skipped": {
+    "category": "Status",
+    "context": "Android validated wish/finance change history state",
+    "state": "reviewed",
+    "reason": "Human-readable existing domain state; reconciliation is not bank or partner approval.",
+    "sha256": "f76fb64eb5f2f646a12f6c3b20034a0cfd336c012dffa7a0794168a9b6569fcc"
+  },
+  "values-zh-rCN/status_wish_open": {
+    "category": "Status",
+    "context": "Android validated wish/finance change history state",
+    "state": "reviewed",
+    "reason": "Human-readable existing domain state; reconciliation is not bank or partner approval.",
+    "sha256": "4ae5ac1507bd206fb78adcf2e4ef316336397e9a1c704540010f7dcb3a91dc45"
+  },
+  "values-zh-rCN/status_wish_requested": {
+    "category": "Status",
+    "context": "Android validated wish/finance change history state",
+    "state": "reviewed",
+    "reason": "Human-readable existing domain state; reconciliation is not bank or partner approval.",
+    "sha256": "201729f9204139a3cdd4af133fddcccaf497796c7ef6bb15a83c4738566538b7"
+  },
+  "values-zh-rCN/status_wish_fulfilled": {
+    "category": "Status",
+    "context": "Android validated wish/finance change history state",
+    "state": "reviewed",
+    "reason": "Human-readable existing domain state; reconciliation is not bank or partner approval.",
+    "sha256": "95a0284ff84fd6eb6586c37942ba455c4efeb3f816cdfa130f2e3862e9eb8f18"
+  },
+  "values-zh-rCN/status_conflict": {
+    "category": "Status",
+    "context": "Android validated wish/finance change history state",
+    "state": "reviewed",
+    "reason": "Human-readable existing domain state; reconciliation is not bank or partner approval.",
+    "sha256": "2013adbbe45e60b6567be5f7ea5d2e033650bce01da245cfbfb9cc71316be365"
+  },
+  "values-zh-rCN/status_provisional": {
+    "category": "Status",
+    "context": "Android validated wish/finance change history state",
+    "state": "reviewed",
+    "reason": "Human-readable existing domain state; reconciliation is not bank or partner approval.",
+    "sha256": "33df16b4afab2d5faa163834cb2257029c21cdcf3d6b488f6ac1d72351057523"
+  },
+  "values-zh-rCN/status_reconciled": {
+    "category": "Status",
+    "context": "Android validated wish/finance change history state",
+    "state": "reviewed",
+    "reason": "Human-readable existing domain state; reconciliation is not bank or partner approval.",
+    "sha256": "b69f0137d3b95a23573a6b90b3ee85338183ce1a1aa8f850b4daeca8f1e364f4"
+  },
+  "values-zh-rCN/status_skipped": {
+    "category": "Status",
+    "context": "Android validated wish/finance change history state",
+    "state": "reviewed",
+    "reason": "Human-readable existing domain state; reconciliation is not bank or partner approval.",
+    "sha256": "5b9a9aa85857a8575fb91fba51756c08166d8c2923fb644694839f33ddcb4c4f"
+  }
+}

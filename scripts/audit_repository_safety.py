@@ -15,8 +15,8 @@ RULES = {
     'aws_access_key': re.compile(rb'\b(?:AKIA|ASIA)[A-Z0-9]{16}\b'),
     'literal_credential': re.compile(rb'''(?i)(?:password|api[_-]?key|cloudflare[_-]?api[_-]?token|auth[_-]?secret|pairing[_-]?secret|relay[_-]?secret)\s*[=:]\s*["']([^"'\r\n]{8,})["']'''),
 }
-FORBIDDEN = re.compile(r'(?i)(?:^|/)(?:\.env(?:\.[^/]+)?|\.dev\.vars(?:\.[^/]+)?|[^/]+\.(?:sqlite|sqlite3|db|store)(?:-wal|-shm)?|[^/]+\.(?:key|p12|pfx|jks|keystore|mobileprovision)|[^/]+\.(?:m4a|mp3|wav|aiff|mp4|mov|heic|jpe?g))$')
-RUNTIME = re.compile(r'(?:^|/)(?:node_modules|DerivedData|\.derivedData|\.build|\.wrangler|\.git|\.qa-runtime|\.QA-runtime|dist)(?:/|$)|^qa/(?:results|reports/local)/')
+FORBIDDEN = re.compile(r'(?i)(?:^|/)(?:\.env(?:\.[^/]+)?|\.dev\.vars(?:\.[^/]+)?|[^/]+\.(?:sqlite|sqlite3|db|store)(?:-wal|-shm)?|[^/]+\.(?:key|p12|pfx|jks|keystore|mobileprovision|apk|aab)|[^/]+\.(?:m4a|mp3|wav|aiff|mp4|mov|heic|jpe?g))$')
+RUNTIME = re.compile(r'(?:^|/)(?:node_modules|build|\.gradle|\.kotlin|\.cxx|DerivedData|\.derivedData|\.build|\.wrangler|\.git|\.qa-runtime|\.QA-runtime|dist)(?:/|$)|^qa/(?:results|reports/local)/')
 
 def git(*args):
     return subprocess.run(['git', '-C', str(ROOT), *args], check=True, capture_output=True).stdout

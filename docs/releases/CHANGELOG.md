@@ -1,3 +1,10 @@
+# Unreleased — Android Phase A
+
+- Add isolated Kotlin/Compose/Room client and real Debug APK build; no macOS version or binary change.
+- Port existing Protocol 4 signatures, enrollment, paged log synchronization, exact ACK and domain vectors; add Swift verification of Kotlin output.
+- Add local task editor, authorized-device enrollment/status, native copy gate and Android CI.
+- Full Android business/media UI, physical phone/cross-Mac acceptance and independent protocol review remain pending. No production deployment or App installation.
+
 # Development — 0.2.1 Build 10 (unreleased)
 
 - Isolated XCTest now owns and awaits the existing host's native reopen, checks the PID, and carries its fixture arguments/environment. Removed the QA delegate's asynchronous self-relaunch and stale external notification-center query. Production startup remains unchanged.
