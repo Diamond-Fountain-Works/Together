@@ -29,6 +29,8 @@ The final selected XCUITest retry failed before executing assertions: “Timed o
 
 During that inspection, after the fixture process exited, the app selector launched the normal source Debug bundle without fixture arguments. It was stopped immediately without any UI action or business edit; nothing was installed. Ordinary startup accessed production storage/preferences and may have run automatic reconciliation. Those effects are **not proven unchanged**; no real-data rollback, cleanup or key reset was attempted. Private diagnostic details remain in ignored local QA output. This is an execution incident, not a successful production-data isolation check.
 
+Follow-up: [read-only incident investigation](STARTUP_INCIDENT_REVIEW.md) confirms unchanged identity content, no new business operation/bill in retained history, and an actual startup LocalRecord/preference write. Historical preference differences remain UNKNOWN. Frozen copies and detailed evidence remain outside public Git; no production restoration was performed.
+
 The follow-up adds a dedicated `UITesting` Xcode configuration with `com.together.app.qa` and a fail-closed `TOGETHER_UI_TEST_HOST` bootstrap. Core production startup also rejects that QA bundle. Normal Debug/Release keep `com.together.app`. All further UI automation must target a confirmed live QA-host fixture; the primary installation is not launched/replaced. Retain the original Build 4 approved hashes and Build 5 18 PASS / 50 REVIEW REQUIRED / 0 FAIL states.
 
 ## Compatibility and recovery limits
