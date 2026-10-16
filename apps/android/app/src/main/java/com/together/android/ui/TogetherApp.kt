@@ -33,7 +33,7 @@ import kotlinx.coroutines.*
 
 @Composable private fun TogetherTheme(content: @Composable () -> Unit) {
     val dark = isSystemInDarkTheme()
-    val colors = if (dark) darkColorScheme(primary = Color(0xFFE6A1B1), secondary = Color(0xFFD1A4B0), secondaryContainer = Color(0xFF51343D), onSecondaryContainer = Color(0xFFFFDBE5), background = Color(0xFF1B181A), surface = Color(0xFF242024), surfaceContainerLow = Color(0xFF241F22), surfaceContainer = Color(0xFF2A2428), surfaceContainerHigh = Color(0xFF342B30), surfaceContainerHighest = Color(0xFF3E343B))
+    val colors = if (dark) darkColorScheme(primary = Color(0xFFE6A1B1), onPrimary = Color(0xFF451F2B), secondary = Color(0xFFD1A4B0), secondaryContainer = Color(0xFF51343D), onSecondaryContainer = Color(0xFFFFDBE5), background = Color(0xFF1B181A), surface = Color(0xFF242024), surfaceContainerLow = Color(0xFF241F22), surfaceContainer = Color(0xFF2A2428), surfaceContainerHigh = Color(0xFF342B30), surfaceContainerHighest = Color(0xFF3E343B))
         else lightColorScheme(primary = Color(0xFFAD4F65), secondary = Color(0xFF855562), secondaryContainer = Color(0xFFF3DFE3), onSecondaryContainer = Color(0xFF44232C), background = Color(0xFFFBF7F0), surface = Color(0xFFFFFBF6), surfaceContainerLow = Color(0xFFFFF9F4), surfaceContainer = Color(0xFFF6EFE8), surfaceContainerHigh = Color(0xFFF0E8E0), surfaceContainerHighest = Color(0xFFE9E0DC))
     MaterialTheme(colorScheme = colors, shapes = Shapes(medium = RoundedCornerShape(16.dp), small = RoundedCornerShape(12.dp)), content = content)
 }
