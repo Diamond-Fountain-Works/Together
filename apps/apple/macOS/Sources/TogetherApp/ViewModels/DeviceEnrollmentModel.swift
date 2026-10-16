@@ -21,6 +21,9 @@ import UniformTypeIdentifiers
     var devices: [AuthorizedDevice] = []
     init(model: ApplicationModel) {
         self.model = model
+        #if DEBUG
+        if UIFixture.enabled { deviceName = Copy.text("device.default.name") }
+        #endif
         if let root = model.engine.enrollmentRoot {
             let workspace = DeviceEnrollmentWorkspace(root: root)
             if let pending = workspace.pendingOffers.first {

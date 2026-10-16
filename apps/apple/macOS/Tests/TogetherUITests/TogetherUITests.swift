@@ -31,7 +31,13 @@ import TogetherCore
         root = URL(fileURLWithPath: "/private/tmp/together-ui-qa", isDirectory: true).appendingPathComponent("together-ui-" + UUID().uuidString)
         do { try FileManager.default.createDirectory(at: root, withIntermediateDirectories: true, attributes: [.posixPermissions: 0o700]) }
         catch { XCTFail("Cannot create isolated QA root: \(error)"); return }
-        app = XCUIApplication(bundleIdentifier: "com.together.app.qa")
+        guard let verifiedPath = ProcessInfo.processInfo.environment["TOGETHER_UI_VERIFIED_APP_PATH"],
+              Bundle(path: verifiedPath)?.bundleIdentifier == "com.together.app.qa" else {
+            XCTFail("Launch refused: verified QA host path is missing or invalid"); return
+        }
+        // The default instance uses the verified xctestrun target URL. A bundle
+        // ID lookup can select an older QA build registered in Launch Services.
+        app = XCUIApplication()
         app.launchArguments = ["--ui-testing", "-AppleLanguages", "(zh-Hans)", "-AppleLocale", "zh_CN", "-NSDoubleLocalizedStrings", "NO", "-ApplePersistenceIgnoreState", "YES"]
         app.launchEnvironment = ["TOGETHER_UI_ROOT":root.path, "TOGETHER_UI_PAGE":page, "TOGETHER_UI_STATE":populated ? "populated" : "empty", "TOGETHER_UI_MODE":dark ? "dark" : "light", "TOGETHER_UI_REDUCE_MOTION":reduce ? "1" : "0", "TOGETHER_UI_COMPACT":compact ? "1" : "0", "TOGETHER_UI_CASE":name]
         if let relay = ProcessInfo.processInfo.environment["TOGETHER_UI_RELAY_URL"] { app.launchEnvironment["TOGETHER_UI_RELAY_URL"] = relay }
@@ -152,16 +158,44 @@ import TogetherCore
         }
         XCTAssertFalse(app.radioGroups["plans.mode"].exists)
     }
-    private func saveDeviceFile() {
+    private func saveDeviceFile(_ filename: String) {
         let save = app.dialogs["save-panel"].buttons["OKButton"]
         XCTAssertTrue(save.waitForExistence(timeout: 8)); save.click()
+        // A click has returned before runModal's caller has necessarily written
+        // the export. Wait for the observable file, not a guessed delay.
+        let file = root.appendingPathComponent("user-export").appendingPathComponent(filename)
+        let saved = XCTNSPredicateExpectation(predicate: NSPredicate { _, _ in
+            FileManager.default.fileExists(atPath: file.path)
+        }, object: nil)
+        XCTAssertEqual(XCTWaiter.wait(for: [saved], timeout: 10), .completed)
     }
     private func openDeviceFile(_ filename: String) {
         let panel = app.dialogs["open-panel"]
         XCTAssertTrue(panel.waitForExistence(timeout: 8))
-        let stem = (filename as NSString).deletingPathExtension
-        let file = panel.descendants(matching: .any).matching(NSPredicate(format: "label BEGINSWITH %@ OR value BEGINSWITH %@", stem, stem)).firstMatch
-        XCTAssertTrue(file.waitForExistence(timeout: 8)); file.click()
+        // A column browser's ScrollView aggregates its children's labels. Do
+        // not match that container as though it were the selectable filename.
+        // Use the native Go to Folder field and a committed paste, preserving
+        // the user's input source and clipboard just as currency search does.
+        panel.typeKey("g", modifierFlags: [.command, .shift])
+        let field = app.textFields["PathTextField"]
+        XCTAssertTrue(field.waitForExistence(timeout: 8))
+        let pasteboard = NSPasteboard.general
+        let saved = (pasteboard.pasteboardItems ?? []).map { item in
+            let copy = NSPasteboardItem()
+            for type in item.types { if let bytes = item.data(forType: type) { copy.setData(bytes, forType: type) } }
+            return copy
+        }
+        pasteboard.clearContents()
+        pasteboard.setString(root.appendingPathComponent("user-export").appendingPathComponent(filename).path, forType: .string)
+        let testChange = pasteboard.changeCount
+        defer {
+            if pasteboard.changeCount == testChange {
+                pasteboard.clearContents()
+                if !saved.isEmpty { pasteboard.writeObjects(saved) }
+            }
+        }
+        field.click(); field.typeKey("a", modifierFlags: .command); field.typeKey("v", modifierFlags: .command)
+        app.typeKey(.return, modifierFlags: [])
         let button = panel.buttons["OKButton"]; XCTAssertTrue(button.isEnabled); button.click()
     }
     private func deviceButton(_ id: String) -> XCUIElement {
@@ -183,16 +217,16 @@ import TogetherCore
         let add = deviceButton("devices.add")
         let enabled = XCTNSPredicateExpectation(predicate: NSPredicate(format: "enabled == true"), object: add)
         XCTAssertEqual(XCTWaiter.wait(for: [enabled], timeout: 25), .completed)
-        add.click(); saveDeviceFile()
+        add.click(); saveDeviceFile("Together-Device-Offer.json")
         let output = root.appendingPathComponent("user-export")
         let offer = try CanonicalJSON.decode(DeviceEnrollmentOffer.self, from: Data(contentsOf: output.appendingPathComponent("Together-Device-Offer.json")))
         let workspace = DeviceEnrollmentWorkspace(root: root.appendingPathComponent("independent-device"))
         let request = try workspace.stage(offer: offer, name: "UI_INDEPENDENT_DEVICE", verified: true, now: .now)
         try CanonicalJSON.encode(request).write(to: output.appendingPathComponent("Together-Device-Request.json"))
         deviceButton("devices.importRequest").click(); openDeviceFile("Together-Device-Request.json")
-        XCTAssertFalse(deviceButton("devices.authorize").isEnabled)
+        XCTAssertTrue(app.buttons["devices.authorize"].waitForExistence(timeout: 8)); XCTAssertFalse(app.buttons["devices.authorize"].isEnabled)
         checkDeviceToggle("devices.verifyRequest")
-        deviceButton("devices.authorize").click(); saveDeviceFile()
+        deviceButton("devices.authorize").click(); saveDeviceFile("Together-Device-Authorization.json")
         let completion = try CanonicalJSON.decode(DeviceEnrollmentCompletion.self, from: Data(contentsOf: output.appendingPathComponent("Together-Device-Authorization.json")))
         let device = try workspace.complete(completion, offerId: offer.body.id, verified: true)
         let trust = try SpaceAuthorization.restore(completion.body.archive)
@@ -202,7 +236,7 @@ import TogetherCore
         defer { service.stop() }
         await service.start()
         let deadline = ContinuousClock.now.advanced(by: .seconds(30))
-        while service.state != .connected {
+        while service.state != .connected || service.completedSyncCount == 0 || device.operations.isEmpty {
             guard ContinuousClock.now < deadline else { return XCTFail("Independent device failed to sync: \(service.errorMessage ?? "none")") }
             try await Task.sleep(for: .milliseconds(100))
         }
@@ -215,39 +249,42 @@ import TogetherCore
             guard ContinuousClock.now < stopped else { return XCTFail("Revoked device still appeared connected") }
             try await Task.sleep(for: .milliseconds(100))
         }
-        XCTAssertTrue(app.staticTexts["已撤销"].exists)
+        let revoked = app.descendants(matching: .any)["devices.state." + device.identity.descriptor.deviceId.uuidString]
+        XCTAssertTrue(revoked.waitForExistence(timeout: 8))
+        XCTAssertTrue(revoked.label.contains("已撤销") || (revoked.value as? String)?.contains("已撤销") == true)
         deviceButton("devices.close").click()
     }
     func testNewDeviceJoinsThroughNativeFilesAndSyncsHistory() throws {
         launch(page: "devices-join", dark: true, reduce: true, name: "device-join")
         deviceButton("devices.importOffer").click(); openDeviceFile("Together-Device-Offer.json")
-        XCTAssertFalse(deviceButton("devices.exportRequest").isEnabled)
+        XCTAssertTrue(app.buttons["devices.exportRequest"].waitForExistence(timeout: 8)); XCTAssertFalse(app.buttons["devices.exportRequest"].isEnabled)
         checkDeviceToggle("devices.verifyOffer")
-        deviceButton("devices.exportRequest").click(); saveDeviceFile()
+        deviceButton("devices.exportRequest").click(); saveDeviceFile("Together-Device-Request.json")
         let completion = root.appendingPathComponent("user-export/Together-Device-Authorization.json")
         let received = XCTNSPredicateExpectation(predicate: NSPredicate { _, _ in FileManager.default.fileExists(atPath: completion.path) }, object: nil)
         XCTAssertEqual(XCTWaiter.wait(for: [received], timeout: 25), .completed)
         deviceButton("devices.importCompletion").click(); openDeviceFile("Together-Device-Authorization.json")
-        XCTAssertFalse(deviceButton("devices.use").isEnabled)
+        XCTAssertTrue(app.buttons["devices.use"].waitForExistence(timeout: 8)); XCTAssertFalse(app.buttons["devices.use"].isEnabled)
         checkDeviceToggle("devices.verifyCompletion")
         deviceButton("devices.use").click()
         XCTAssertTrue(app.descendants(matching: .any)["nav.connection"].waitForExistence(timeout: 15))
         app.descendants(matching: .any)["nav.connection"].click()
         deviceButton("connection.devices").click()
         let history = app.staticTexts["devices.historyState"]
-        let synced = XCTNSPredicateExpectation(predicate: NSPredicate(format: "label == %@", "本次历史同步已完成"), object: history)
+        // Native macOS StaticText exposes its string as AXValue on this SDK.
+        let synced = XCTNSPredicateExpectation(predicate: NSPredicate(format: "label == %@ OR value == %@", "本次历史同步已完成", "本次历史同步已完成"), object: history)
         XCTAssertEqual(XCTWaiter.wait(for: [synced], timeout: 30), .completed)
         try screenshot("devices-joined-dark-reduced-candidate")
         deviceButton("devices.close").click()
     }
     func testLegacyMigrationRequiresTwoSignedConfirmations() throws {
         launch(page: "devices-migration", name: "device-migration")
-        deviceButton("devices.migration.begin").click(); saveDeviceFile()
+        deviceButton("devices.migration.begin").click(); saveDeviceFile("Together-Migration.json")
         let file = root.appendingPathComponent("user-export/Together-Migration-Cosigned.json")
         let signed = XCTNSPredicateExpectation(predicate: NSPredicate { _, _ in FileManager.default.fileExists(atPath: file.path) }, object: nil)
         XCTAssertEqual(XCTWaiter.wait(for: [signed], timeout: 25), .completed)
         deviceButton("devices.migration.import").click(); openDeviceFile("Together-Migration-Cosigned.json")
-        XCTAssertFalse(deviceButton("devices.migration.activate").isEnabled)
+        XCTAssertTrue(app.buttons["devices.migration.activate"].waitForExistence(timeout: 8)); XCTAssertFalse(app.buttons["devices.migration.activate"].isEnabled)
         checkDeviceToggle("devices.migration.verify")
         deviceButton("devices.migration.activate").click()
         XCTAssertTrue(app.buttons["devices.add"].waitForExistence(timeout: 25))

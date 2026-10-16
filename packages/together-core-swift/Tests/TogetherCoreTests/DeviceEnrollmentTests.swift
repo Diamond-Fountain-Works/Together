@@ -91,6 +91,10 @@ struct DeviceEnrollmentTests {
     #expect(refreshed.body.archive == latest.archive)
     // A repeated request does not mint another grant or another identity.
     #expect(try await service.approveDeviceRequest(request, verified: true) == refreshed)
+    var revokedTarget = latest
+    try revokedTarget.apply(revokedTarget.revoke(target.descriptor.deviceId, at: .init(), authorizedBy: f.a))
+    try await store.updateAuthorization(revokedTarget.archive)
+    await #expect(throws: ReplicationError.revoked) { try await service.approveDeviceRequest(request, verified: true) }
   }
   @Test func completionIsBoundToRequestOwnerSpaceAndIndependentKey() throws {
     let (f, initial, binding, root) = try fixture(); defer { try? FileManager.default.removeItem(at: root) }

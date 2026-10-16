@@ -14,14 +14,15 @@ import TogetherCore
             throw TogetherError.invalid("Device UI tests require an isolated loopback Worker")
         }
         let output = root.appendingPathComponent("user-export")
+        try b.setProfile(name: "测试成员 B", label: .girlfriend)
         try FileManager.default.createDirectory(at: output, withIntermediateDirectories: true, attributes: [.posixPermissions: 0o700])
         let pa = PairingService(engine: a, serviceURL: url), pb = PairingService(engine: b, serviceURL: url)
         await pa.createInvitation()
-        guard let code = pa.invitationCode else { throw TogetherError.invalid("Synthetic invitation failed") }
+        guard let code = pa.invitationCode else { throw TogetherError.invalid("Synthetic invitation failed: \(pa.errorMessage ?? "unknown")") }
         await pb.joinInvitation(code)
         try await wait { pa.proposal != nil && pb.proposal != nil }
         await pa.confirmPairing(); await pb.confirmPairing()
-        try await wait { pa.isOnline && pb.isOnline && a.snapshot == b.snapshot }
+        try await wait { pa.isOnline && pb.isOnline && a.snapshot == b.snapshot && Set(a.operations.map(\.id)) == Set(b.operations.map(\.id)) }
         pa.disconnect()
         if page == "devices-migration" {
             let model = ApplicationModel(engine: a, defaults: original.localDefaults, serviceURL: url, useBundledService: false, filePanelDirectory: output)

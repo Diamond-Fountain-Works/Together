@@ -7,7 +7,7 @@ struct DeviceManagementView: View {
     init(model: ApplicationModel) { self.model = model; _manager = State(initialValue: DeviceEnrollmentModel(model: model)) }
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            Text(Copy.text("device.title")).font(.title2.bold()).padding(26)
+            Text(Copy.text("device.title")).font(.title2.bold()).padding(26).accessibilityIdentifier("devices.title")
             ScrollView {
                 VStack(alignment: .leading, spacing: 20) {
                     deviceList
@@ -29,7 +29,6 @@ struct DeviceManagementView: View {
                 Button(Copy.text("copy.action.f867f3417859")) { model.dismissSheet() }.keyboardShortcut(.cancelAction).accessibilityIdentifier("devices.close")
             }.padding(20)
         }.frame(width: 720, height: 650)
-        .accessibilityIdentifier("devices.sheet")
         .onChange(of: model.engine.changeNumber) { _, _ in manager.refresh() }
         .confirmationDialog(Copy.text("device.action.revoke"), isPresented: Binding(get: { manager.revoking != nil }, set: { if !$0 { manager.revoking = nil } })) {
             if let device = manager.revoking {
@@ -70,11 +69,14 @@ struct DeviceManagementView: View {
             HStack {
                 Image(systemName: "desktopcomputer")
                 Text(verbatim: descriptor.displayName).fontWeight(.medium)
+                if let owner = model.engine.snapshot.profiles[descriptor.userId] {
+                    Text(verbatim: owner.displayName).font(.caption).foregroundStyle(.secondary)
+                }
                 Text(Copy.text(revoked ? "device.status.revoked" : own ? "device.status.thisDevice" : online ? "device.status.online" : "device.status.offline"))
-                    .font(.caption).foregroundStyle(online && !revoked ? Color.green : Color.secondary)
+                    .font(.caption).foregroundStyle(online && !revoked ? Color.green : Color.secondary).accessibilityIdentifier("devices.state." + descriptor.deviceId.uuidString)
             }
             Text(verbatim: descriptor.fingerprint).font(.caption.monospaced()).foregroundStyle(.secondary).textSelection(.enabled)
-        }.accessibilityIdentifier("devices.row." + descriptor.deviceId.uuidString)
+        }.accessibilityElement(children: .contain).accessibilityIdentifier("devices.row." + descriptor.deviceId.uuidString)
     }
     @ViewBuilder private var controller: some View {
         if manager.isController {

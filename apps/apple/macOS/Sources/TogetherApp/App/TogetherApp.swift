@@ -82,7 +82,12 @@ import AppKit
         // XCTest starts the host without a Launch Services reopen event.
         // Present the already-created QA scene; never instantiate a second
         // production model or fall back to a different app bundle.
-        DispatchQueue.main.async { NSApp.windows.first(where: { $0.canBecomeMain })?.makeKeyAndOrderFront(nil) }
+        DispatchQueue.main.async {
+            let configuration = NSWorkspace.OpenConfiguration()
+            configuration.activates = true
+            configuration.createsNewApplicationInstance = false
+            NSWorkspace.shared.openApplication(at: Bundle.main.bundleURL, configuration: configuration) { _, _ in }
+        }
         #endif
     }
     func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool { false }
