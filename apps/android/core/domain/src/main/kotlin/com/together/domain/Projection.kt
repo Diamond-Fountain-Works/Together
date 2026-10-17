@@ -76,7 +76,7 @@ object Projector {
         drafts.values.forEach { result.entities[it.base.entityId] = it.entity() }
         wishes(ops, context, result); gifts(ops, context, result); FinanceProjection.apply(ops, context, result)
         val invalid = result.conflicts.map { it.operationId }.toSet()
-        result.changes.removeAll { it.operationId in invalid || it.entityType in setOf("mediaAsset", "sharedSpace", "recurrenceRule") || (it.entityType == "wishItem" && result.wishes[it.entityId]?.status == "conflict") }
+        result.changes.removeAll { it.operationId in invalid || it.entityType in setOf("mediaAsset", "sharedSpace") || (it.entityType == "recurrenceRule" && it.action == "create") || (it.entityType == "wishItem" && result.wishes[it.entityId]?.status == "conflict") }
         val order = ops.associateBy { it.operationId }; val winners = mutableSetOf<String>()
         val reviewed = result.changes.sortedByDescending { order.getValue(it.operationId) }.map { e ->
             val fields = (e.before.keys + e.after.keys).filter { e.before[it] != e.after[it] }

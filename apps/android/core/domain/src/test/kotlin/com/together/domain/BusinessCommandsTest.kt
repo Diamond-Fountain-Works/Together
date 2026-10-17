@@ -413,6 +413,40 @@ class BusinessCommandsTest {
     }
 
     @Test
+    fun ruleOnlyEditsRemainVisibleAsTaskChangeReviewWithoutCreationNoise() {
+        command {
+            task(
+                null,
+                "Synthetic recurring",
+                "",
+                null,
+                null,
+                BusinessCommands.Repeat("regular", "day", 1, "Asia/Shanghai"),
+            )
+        }
+        assertEquals(1, snapshot().changes.size)
+        val task = snapshot().of("task").single()
+        val rule = snapshot().entities.getValue(task.fields.id("recurrenceRuleId")!!)
+        command {
+            this.task(
+                task.id,
+                "Synthetic recurring",
+                "",
+                null,
+                null,
+                BusinessCommands.Repeat("regular", "day", 2, "Asia/Shanghai"),
+                task,
+                rule,
+            )
+        }
+        val change = ChangeReview.page(facts, c, snapshot(), "task", 0).first()
+        assertEquals("recurrenceRule", change.entityType)
+        assertEquals(1L, change.before.number("interval"))
+        assertEquals(2L, change.after.number("interval"))
+        assertEquals(snapshot(), Projector.replay((facts + facts).shuffled(), c))
+    }
+
+    @Test
     fun deletingGiftUsesGiftProjectionAndDoesNotRefundSlot() {
         val id = stableId("gift:$space:${a.descriptor.userId}:2026-10-09")
         command {
