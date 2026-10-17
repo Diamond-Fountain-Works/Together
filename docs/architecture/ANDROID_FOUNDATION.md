@@ -1,5 +1,7 @@
 # Android Phase A architecture
 
+Historical Phase A scope at `1dfce291ac02726e48717558f48f76f196662032`. Statements below about missing business/media UI describe that foundation, not the current client. Current implementation: [Android Phase B](ANDROID_BUSINESS_PHASE_B.md), with separate [QA evidence](../qa/reports/ANDROID_PHASE_B.md).
+
 ## Authority and scope
 
 Incremental Kotlin client on Protocol 4 / Relay API 2 at `eff5f8420728470ca2d9444f54a39e356537b953`. Parent PR #4 is unmerged; Android work lives in an independent worktree/stacked branch. Apple application code, SwiftData, original stable members/space/identity/route and production service behavior are unchanged. New Swift code is a test of Kotlin output, not a second Swift SyncEngine.

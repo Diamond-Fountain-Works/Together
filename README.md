@@ -1,6 +1,6 @@
 # Together
 
-Native macOS, Local-first shared space for two people. Tasks, Wishes and Daily Love Gifts use a signed operation log; Our Finances uses one Expenses ledger and derived reserve balances. SwiftUI, SwiftData and the current C1 WebSocket Relay remain the architecture. No central business database, offline mailbox or banking connection is included. Android Phase A adds an isolated native Kotlin client; complete Android business UI and physical cross-device acceptance remain pending.
+Native macOS and Android, Local-first shared space for two people. Tasks, Wishes and Daily Love Gifts use a signed operation log; Our Finances uses one Expenses ledger and derived reserve balances. SwiftUI, SwiftData and the current C1 WebSocket Relay remain the architecture. No central business database, offline mailbox or banking connection is included. Android Phase B adds native Tasks, Wishes, Finances, event-driven Gifts and change review on the existing Kotlin Protocol 4 core. Physical cross-device acceptance and independent security review remain release gates.
 
 ## Source of truth
 
@@ -61,6 +61,8 @@ Local integration uses four native Swift clients and an actual loopback Worker, 
 
 [Device enrollment](protocol/DEVICE_ENROLLMENT.md) and [ADR 006](docs/architecture/adr/006-native-device-enrollment.md) describe the native add/list/revoke workflow and independent-key storage. [Hardening evidence](docs/qa/reports/C1_HARDENING.md) separates incident findings, actual 100k measurements, headless tests and blocked desktop acceptance. QA must use the dedicated host and loopback service, never normal Debug as a fallback.
 
-## Android Phase A (stacked on Protocol 4)
+## Android clients (stacked on Protocol 4)
 
 `make android-qa` builds a real Debug APK, runs shared Kotlin protocol/domain vectors, Android lint and Android copy audit. An explicit loopback Relay URL enables the three-device actual WebSocket integration test; absent URL is reported SKIP. Native Swift validates Kotlin-produced certificates, projection and encrypted packets without changing the Mac business implementation. [Android instructions](apps/android/README.md) distinguish JVM, instrumented runtime, emulator and physical-device evidence. No production Relay deployment, Mac installation or real-user Protocol 4 activation is authorized.
+
+[Android Phase B architecture](docs/architecture/ANDROID_BUSINESS_PHASE_B.md) and [QA report](docs/qa/reports/ANDROID_PHASE_B.md) distinguish native/JVM C1, Android emulator, actual APK replacement and physical-device results. No parent PR is merged. Shared original-media bytes and receipts reuse the existing authenticated channel; no mailbox, C2 or Worker deployment is added.

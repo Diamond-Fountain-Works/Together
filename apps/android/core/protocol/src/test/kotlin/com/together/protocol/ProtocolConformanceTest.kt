@@ -14,20 +14,6 @@ fun testTrust(a: DeviceIdentity, b: DeviceIdentity): SpaceAuthorization {
     val body = GenesisBody(4, space, listOf(a.descriptor.userId, b.descriptor.userId).sorted(), listOf(a.descriptor, b.descriptor).sortedBy { it.deviceId }, listOf(a.descriptor.initialSpaceId, b.descriptor.initialSpaceId, space).distinct().sorted(), "Asia/Shanghai", checkpoint(emptyList()))
     return SpaceAuthorization.restore(AuthorizationArchive(SignedGenesis(body, listOf(a, b).sortedBy { it.descriptor.deviceId }.map { DeviceSignature(it.descriptor.deviceId, it.sign(Canonical.encode(body))) }), emptyList()))
 }
-class MemoryStore : ReplicaStore {
-    val facts = sortedMapOf<String, StoredRecord>(); val locals = mutableMapOf<String, ByteArray>(); val snapshots = mutableMapOf<String, List<InventoryEntry>>()
-    override fun <T> transaction(block: () -> T): T { val f = facts.toMap(); val l = locals.toMap(); val s = snapshots.toMap(); try { return block() } catch (e: Throwable) { facts.clear(); facts.putAll(f); locals.clear(); locals.putAll(l); snapshots.clear(); snapshots.putAll(s); throw e } }
-    override fun get(id: String) = facts[id]
-    override fun sequence(epoch: String, sequence: Long) = facts.values.filter { it.record.authorized?.body?.let { b -> b.epochId == epoch && b.sequence == sequence } == true }
-    override fun put(row: StoredRecord) { facts[row.id] = row }
-    override fun rows(after: String?, limit: Int, acceptedOnly: Boolean) = facts.values.filter { (after == null || it.id > after) && (!acceptedOnly || it.accepted) }.take(limit)
-    override fun local(key: String) = locals[key]
-    override fun local(key: String, bytes: ByteArray) { locals[key] = bytes }
-    override fun removeLocal(key: String) { locals.remove(key) }
-    override fun snapshot(id: String, after: String?, page: List<InventoryEntry>?) { snapshots["$id/$after"] = page!! }
-    override fun snapshot(id: String, after: String?) = snapshots["$id/$after"]
-    override fun clearSnapshot(id: String) { snapshots.keys.removeAll { it.startsWith("$id/") } }
-}
 class ProtocolConformanceTest {
     @Test fun swiftProtocol4SignaturesAndExactDigests() {
         val f = fixture("replication-v4.json")

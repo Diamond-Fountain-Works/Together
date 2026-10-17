@@ -52,4 +52,8 @@ Device management uses the existing native sheet/card typography, fixed identity
 
 ## Android Phase A
 
-Use native Jetpack Compose Material controls with the same ivory (#FBF7F0), warm charcoal (#1B181A), soft rose, 4/8/12/16/20/24 spacing and 12/16dp shapes. One shared state/domain system serves phone bottom navigation and ≥600dp tablet rail. Keep system font scaling, scrolling editors, reachable dismiss actions and system animation scale support. No fake Wishes/Finances/Gift/Story pages. Initial candidates require human review; macOS approved images are not Android baselines.
+Use native Jetpack Compose Material controls with the same ivory (#FBF7F0), warm charcoal (#1B181A), soft rose, 4/8/12/16/20/24 spacing and 12/16dp shapes. One shared state/domain system serves phone drawer navigation and ≥600dp tablet rail. Keep system font scaling, scrolling editors, reachable dismiss actions and system animation scale support. No fake Wishes/Finances/Gift/Story pages. Initial candidates require human review; macOS approved images are not Android baselines.
+
+## Android Phase B business surfaces
+
+Phone drawer / ≥600dp rail use Home, Our Plans, Wishes, Our Finances, Connection and Settings with one state/domain layer. Finances has exactly three tabs; Gift send/history are overflow actions, not destinations or permanent Home cards. Forms scroll inside a bounded native dialog with pinned close/save actions. Original media uses independent previews; sealing hides private content and semantics until explicit opening. Use system font scaling and animation duration scale, including zero-duration transitions; ordinary task inserts use small native item movement. Android candidates require human review and never replace Apple baselines.

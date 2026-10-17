@@ -7,12 +7,11 @@ import java.math.RoundingMode
 
 object Money {
     const val MAX_MINOR = 90_000_000_000_000L
-    val precisions: Map<String, Int> by lazy {
-        val resource = Money::class.java.getResourceAsStream("/FinanceCurrencies.json") ?: error("Missing bundled ISO currencies")
-        wireJson.parseToJsonElement(resource.bufferedReader().use { it.readText() }).jsonObject.getValue("currencies").jsonArray.associate {
-            it.jsonObject.getValue("code").jsonPrimitive.content to it.jsonObject.getValue("minorDigits").jsonPrimitive.int
-        }
+    val currencies: Map<String, JsonObject> by lazy {
+        val resource=Money::class.java.getResourceAsStream("/FinanceCurrencies.json")?:error("Missing bundled ISO currencies")
+        wireJson.parseToJsonElement(resource.bufferedReader().use{it.readText()}).jsonObject.getValue("currencies").jsonArray.associate{it.jsonObject.getValue("code").jsonPrimitive.content to it.jsonObject}
     }
+    val precisions: Map<String,Int> by lazy { currencies.mapValues{it.value.getValue("minorDigits").jsonPrimitive.int} }
     fun decimal(text: String): BigDecimal {
         val s = text.trim(); requireProtocol(s.length <= 64 && Regex("[+-]?[0-9]+(?:\\.[0-9]+)?").matches(s), "INVALID_AMOUNT")
         return BigDecimal(s)

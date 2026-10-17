@@ -16,7 +16,7 @@ class FoundationUiTest {
         val title = "Synthetic Android QA " + com.together.protocol.uid()
         val edited = title + " edited"
         compose.waitUntil(15000) { compose.onAllNodesWithTag("connection.status").fetchSemanticsNodes().isNotEmpty() }
-        compose.onNodeWithTag("nav.plans").performClick()
+        navigate("plans")
         compose.onNodeWithTag("task.new").performClick()
         compose.onNodeWithTag("task.title").performTextInput(title)
         compose.onNodeWithTag("task.notes").performTextInput("Synthetic offline notes")
@@ -34,13 +34,14 @@ class FoundationUiTest {
         compose.onNodeWithText(edited).assertIsDisplayed()
         compose.onNodeWithTag("task.delete.$id").performClick()
         compose.waitUntil(15000) { compose.onAllNodesWithText(edited).fetchSemanticsNodes().isEmpty() }
-        compose.onNodeWithTag("nav.home").performClick()
+        navigate("home")
         compose.onNodeWithTag("changes.open").performClick()
         compose.onNodeWithTag("changes.close").performClick()
-        compose.onNodeWithTag("nav.connection").performClick()
+        navigate("connection")
         compose.onNodeWithTag("device.add").performClick()
         compose.onNodeWithTag("device.importOffer").assertIsDisplayed()
         compose.onNodeWithText(compose.activity.getString(R.string.action_close)).performClick()
     }
+    private fun navigate(page:String) { compose.onNodeWithTag("navigation.open").performClick(); compose.onNodeWithTag("nav.$page").performClick() }
     private fun hasTestTagPrefix(prefix: String) = SemanticsMatcher("testTagPrefix") { node -> node.config.getOrElse(androidx.compose.ui.semantics.SemanticsProperties.TestTag) { "" }.startsWith(prefix) }
 }

@@ -98,7 +98,8 @@ class OkHttpSyncTransport(private val client: OkHttpClient = OkHttpClient.Builde
 /** Foreground-owned coroutine. New challenge/ticket/ephemeral on every connection;
  * cancelling the foreground scope closes sockets without discarding local facts. */
 class C1Client(private val replica: Replica, private val binding: C1Binding, private val api: RelayApi,
-    private val transport: SyncTransport = OkHttpSyncTransport(), private val onPersisted: () -> Unit = {}) {
+    private val transport: SyncTransport = OkHttpSyncTransport(), private val media: MediaChannel? = null,
+    private val onPersisted: () -> Unit = {}) {
     private val _state = MutableStateFlow("offline"); val state = _state.asStateFlow()
     private val _error = MutableStateFlow<String?>(null); val error = _error.asStateFlow()
     private data class Peer(val device: DeviceDescriptor, val ephemeral: ByteArray, val hello: SignedHello,
@@ -125,14 +126,14 @@ class C1Client(private val replica: Replica, private val binding: C1Binding, pri
                         try {
                             for (event in events) when (event) {
                                 is Event.Bytes -> receive(event.value)
-                                Event.Changed -> { if (peers.values.any { it.approved }) _state.value = "syncing"; for (p in peers.values.filter { it.approved }) p.sync!!.localChanged().forEach { sendContent(p, it) } }
+                                Event.Changed -> { if (peers.values.any { it.approved }) _state.value = "syncing"; for (p in peers.values.filter { it.approved }) { p.sync!!.localChanged().forEach { sendContent(p, it) }; media?.synchronize(p.device)?.forEach { sendMedia(p, it) } } }
                             }
                         } finally { receiver.cancelAndJoin(); sender.cancelAndJoin(); events.close() }
                     }
                     attempt = 0
                 } catch (e: CancellationException) { throw e }
                 catch (e: Exception) { currentCoroutineContext().ensureActive(); _state.value = "offline"; _error.value = (e as? ProtocolException)?.code ?: "CONNECTION_FAILED" }
-                finally { peers.values.forEach { it.sync?.close(); it.ephemeral.fill(0) }; peers.clear(); transport.disconnect() }
+                finally { peers.values.forEach { media?.disconnected(it.device.deviceId); it.sync?.close(); it.ephemeral.fill(0) }; peers.clear(); transport.disconnect() }
                 delay(minOf(60_000L, 1000L shl minOf(attempt++, 6)))
             }
         } finally { _state.value = "offline"; transport.disconnect() }
@@ -141,6 +142,9 @@ class C1Client(private val replica: Replica, private val binding: C1Binding, pri
     }
     private suspend fun send(p: Peer, packet: RelayPacket) = transport.send(Canonical.encode(Directed(senderDeviceId = replica.identity.descriptor.deviceId, recipientDeviceId = p.device.deviceId, packet = packet)))
     private suspend fun sendContent(p: Peer, f: ReplicationFrame) { requireProtocol(p.approved, "UNAUTHENTICATED_CHANNEL"); send(p, p.secure!!.seal(Canonical.encode(Content("replication", frame = f)))) }
+    private suspend fun sendMedia(p: Peer, payload: JsonObject) {
+        requireProtocol(p.approved, "UNAUTHENTICATED_CHANNEL"); send(p, p.secure!!.seal(Canonical.encode(Content("media", payload = payload))))
+    }
     private suspend fun receive(bytes: ByteArray) {
         val objectValue = Canonical.parse(bytes).jsonObject
         when (objectValue["kind"]?.jsonPrimitive?.content) {
@@ -149,7 +153,7 @@ class C1Client(private val replica: Replica, private val binding: C1Binding, pri
                 val s = objectValue.model<Presence>(); val trust = replica.trust
                 requireProtocol(s.spaceId == trust.spaceId && s.devices.size <= 32 && s.devices.distinct().size == s.devices.size && s.authorizationDigest == trust.digest, "AUTHORIZATION_CHANGED")
                 val online = s.devices.toSet() - replica.identity.descriptor.deviceId
-                (peers.keys - online).forEach { peers.remove(it)?.let { p -> p.sync?.close(); p.ephemeral.fill(0) } }
+                (peers.keys - online).forEach { peers.remove(it)?.let { p -> media?.disconnected(p.device.deviceId); p.sync?.close(); p.ephemeral.fill(0) } }
                 for (id in online.sorted()) if (id !in peers) {
                     val d = trust.devices[id]?.takeIf { it.active }?.descriptor ?: throw ProtocolException("UNAUTHORIZED_DEVICE")
                     val ephemeral = Crypto.seed(); val p = Peer(d, ephemeral, SecureChannel.hello(replica.identity, ephemeral, trust)); peers[id] = p
@@ -178,7 +182,7 @@ class C1Client(private val replica: Replica, private val binding: C1Binding, pri
                 d.packet.consent?.verify(p.device, secure.transcript) ?: throw ProtocolException("MISSING_CONSENT")
                 if (p.approved) return
                 p.approved = true; p.sync = AntiEntropy(replica, p.device); _state.value = "syncing"
-                p.sync!!.start().forEach { sendContent(p, it) }
+                p.sync!!.start().forEach { sendContent(p, it) }; media?.synchronize(p.device)?.forEach { sendMedia(p, it) }
             }
             "encrypted" -> {
                 requireProtocol(p.approved, "UNAUTHENTICATED_CHANNEL")
@@ -186,12 +190,13 @@ class C1Client(private val replica: Replica, private val binding: C1Binding, pri
                 when (content.kind) {
                     "replication" -> {
                         p.sync!!.receive(content.frame ?: throw ProtocolException("MISSING_FRAME")).forEach { sendContent(p, it) }
-                        onPersisted()
+                        onPersisted(); media?.synchronize(p.device)?.forEach { sendMedia(p, it) }
                         if (p.sync!!.converged) { attempt = 0; _state.value = "connected"; _error.value = null }
                     }
-                    // Media is retained as metadata, never falsely acknowledged complete. Native media UI
-                    // and WirePayload binary transfer are explicitly separate from Phase A text/log sync.
-                    "media" -> Unit
+                    "media" -> {
+                        val payload = content.payload ?: throw ProtocolException("MISSING_MEDIA_PAYLOAD")
+                        media?.receive(p.device, payload)?.forEach { sendMedia(p, it) }; onPersisted()
+                    }
                     else -> throw ProtocolException("UNKNOWN_CONTENT")
                 }
             }

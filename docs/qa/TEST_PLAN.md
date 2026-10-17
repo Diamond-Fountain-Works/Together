@@ -219,3 +219,15 @@ Physical test, NOT RUN: after separately authorized compatible API2 rollout and 
 ## Android Phase A
 
 `make android-qa` runs Kotlin shared-fixture/business/security checks, native APK assembly, Android lint and XML copy audit. With an explicit loopback Relay URL it also tests actual three-device WebSockets/offline catch-up; without that URL the network test is SKIP. Connected tests require a dedicated emulator and the isolated Debug package, and use test-only namespaces/keys/Room stores. [Android QA](reports/ANDROID_PHASE_A.md) records actual results and hardware limits. Native Swift independently checks Kotlin-produced certificates/projection/BC ciphertext. Screenshots remain local candidates. Physical phone/Tablet, Mac↔Android and production API2 deployment are separate manual gates.
+
+## Android Phase B gates
+
+- `TOGETHER_LOCAL_RELAY_URL=http://127.0.0.1:8797 TOGETHER_RUN_SWIFT_ANDROID=1 make android-qa`: exact shared vectors, signed native/JVM original-media C1, Debug APK, lint and copy audit. No URL/native flag means conditional tests SKIP, never PASS.
+- Dedicated emulator only: `apps/android/gradlew -p apps/android -Ptogether.testRelay=http://127.0.0.1:8797 :app:connectedDebugAndroidTest`. Covers real Room/Keystore, grouped commands, quota/restart, encrypted media interruption, task/wish/finance Compose and recording. Standalone process/upgrade cases explicitly SKIP here and run below with their required orchestration.
+- `scripts/test_android_apk_upgrade.py`: checksum-pinned Phase A APK → B via actual `adb install -r`, retained Room1 facts/key/pairing and new signature with the old public key. No uninstall/data wipe.
+- `scripts/test_android_gift_lifecycle.py --serial emulator-5568 --relay http://127.0.0.1:8797`: removes only the test adb reverse, cached sealed reveal offline, force-stop/relaunch once-only state, explicit player and native SAF byte-identical export, then restores reverse in `finally`.
+- Before that standalone lifecycle driver, explicitly install both built Debug APKs on the identified QA emulator: `adb -s emulator-5568 install -r apps/android/app/build/outputs/apk/debug/app-debug.apk`, then `adb -s emulator-5568 install -r apps/android/app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk`. Gradle connected tests normally uninstall their target/test packages; the standalone driver refuses to proceed without the isolated host/Runner and does not install or clear anything itself.
+- Capture light/dark, phone/tablet, larger text and zero-animation variants as local candidates. No Android approved baseline exists. Preserve Apple visual dispositions.
+- Run source/history publication scanning and security diff review separately. CI includes Linux JVM/APK/lint/copy/local C1 and native macOS Swift/JVM C1; hosted jobs do not claim emulator/physical UI or independent cryptographic review.
+
+Actual outcomes, retained failed attempts, artifact hashes and physical NOT RUN matrix: [ANDROID_PHASE_B](reports/ANDROID_PHASE_B.md).

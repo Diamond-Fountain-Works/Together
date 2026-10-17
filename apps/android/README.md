@@ -1,64 +1,52 @@
-# Together Android — Phase A
+# Together Android — Phase B
 
-Native Kotlin / Jetpack Compose / Room client, isolated from the Apple build. Android phone and tablet use the same domain/state/Room implementation; width ≥600dp selects a navigation rail. Minimum Android 9 (API 28), compile/target 36, JDK 21 running Gradle 8.13, Java/Kotlin bytecode 17. No production Relay address, user records or credentials are bundled.
+Native Kotlin / Jetpack Compose / Room client. Phone drawer and ≥600dp tablet rail share one domain/state/persistence implementation. Minimum Android 9/API28, compile/target36, JDK21, Gradle8.13, Java/Kotlin bytecode17. No production Relay origin, user records or credentials are bundled. [Phase A](../../docs/qa/reports/ANDROID_PHASE_A.md) remains historical evidence; [Phase B QA](../../docs/qa/reports/ANDROID_PHASE_B.md) records current results and remaining gates.
 
-## Build
+## Build and tests
 
 ```sh
-# At repository root; point ANDROID_HOME at an existing SDK, or use ignored local.properties.
+# Repository root, existing SDK or ignored apps/android/local.properties:
 make android-qa
-# Requires a dedicated emulator (the automated Runner rejects physical hardware):
-cd apps/android
-./gradlew :app:connectedDebugAndroidTest
+# Dedicated emulator + explicit loopback Relay; the Runner rejects physical hardware:
+apps/android/gradlew -p apps/android -Ptogether.testRelay=http://127.0.0.1:8797 :app:connectedDebugAndroidTest
 ```
 
-Debug APK: `apps/android/app/build/outputs/apk/debug/app-debug.apk`; application ID `com.together.android.debug`. Normal production ID is reserved as `com.together.android`; there is no signed production Android release. A debug build is not a Play Store release, physical-phone acceptance or production API 2 activation. Do not uninstall an installation holding real data to resolve a signing mismatch.
+Debug APK: `apps/android/app/build/outputs/apk/debug/app-debug.apk`, application ID `com.together.android.debug`, version `0.2.1-phaseB`, code2. The reserved normal ID is `com.together.android`; no signed production Android release is delivered. Do not uninstall real user data to solve a signing mismatch. The Debug emulator-only QA activity can reopen an existing synthetic namespace, never create a replacement identity; it is absent from Release.
 
-`app` owns Compose, lifecycle, Android Keystore and Room adapters. `core/protocol` is a pure JVM implementation of the existing Protocol 4 contracts and native OkHttp transport. `core/domain` projects authorized facts and implements existing money/calendar/task/wish/gift/finance rules. Shared fixtures are read directly from `protocol/fixtures`; ISO precision is packaged from the existing authoritative Swift resource, not a second currency list. Room schema JSON is checked in. SwiftData, Apple identities, original SharedSpace IDs and production Relay code are unchanged.
+## Business implementation
 
-## Functional scope
+- Home / Our Plans / Wishes / Our Finances / Connection / Settings. No false Our Story page or permanent Love Gift destination/card.
+- One Tasks editor, assignee/due dates, Pending/Upcoming/Completed, regular every-N calendar recurrence and flexible Set Next Time/complete-later. Atomic command groups validate a fresh projection; unchanged editor fields do not overwrite concurrent changes.
+- Separate Wishes grants/history, two real member directions, beneficiary items, fulfillment request/beneficiary confirm/reject and auditable quota adjustments/conflicts. Ordinary changes never require partner approval.
+- Exactly Reserves/Expenses/Bills: integer CNY, original currency/frozen rates, deterministic AA, negative reserves, one expense ledger, bill/month uniqueness, provisional/confirmed/skipped, next-natural-month default revisions, forecasts, financial cycles and local/private or shared four-digit card metadata. Reminders are in-app, not a promise of background system notification.
+- Overflow Send Gift / Gift History, local drafts, one shared-zone day per sender, immutable sends and no deletion refund. Original photo/audio are streamed, separate thumbnail caches, 64KiB existing encrypted media frames, durable partial offsets and SHA-256/format validation. Recipient content receipt is separate from operation ACK. Explicit Android recording, manual player and SAF original export; no auto-play or automatic public export.
+- Cached startup gifts open sealed once, only when ready; normal-use arrival is a nonblocking unread notice. Force-stop/relaunch presentation state is independent of sync/What’s New. Review metadata never exposes sealed text/assets. Review pages compute effective before/after values from logical prefixes off-main; reviewed/notified state is local.
 
-- Real local task create/edit/complete/reopen/delete; one editor. Private unpaired workspace can work offline. Joining an existing space refuses to overwrite local business data; the old database is preserved.
-- Add My Device imports a public signed Mac offer, shows the comparison code/fingerprint, generates an independent identity, saves a proof-of-possession request via Storage Access Framework, imports the root-signed completion and activates a separate Room workspace atomically. Same stable user/space, independent device/key. No third partner and no private-key import/export.
-- Authorized device list, active/revoked state, owner-root authorization boundary. Protocol 4 v1 permits only the original owner root to grant/revoke. An enrolled Android is not silently promoted to root: management requiring that root is performed on the original Mac. Domain/API revocation support is present for an identity that actually is the root.
-- Signed inner operations and outer device certificates, staged chain/baseline recovery, Lamport/UUID merge, tombstones, 128-entry inventory, 32-operation/240000-byte batches, exact signed per-device ACK and protected local membership. Data commits precede receipts. Change history/review is local and separate from domain confirmation.
-- Foreground C1 API 2 challenge/ticket, directed per-device encrypted WebSockets, automatic exponential retry/catch-up. Background lifecycle cancels sockets; reopening reconnects. Pure real-time Relay, no offline mailbox. Local saved, pending synchronization, partner persisted and global connection are distinct; no Delivered/read/payment claim.
-- Domain layer covers Tasks/Regular/Flexible recurrence, wishes/confirmation, one finance ledger, frozen CNY/AA/reserves/calendar bills/revisions, daily gift quota and sealed change metadata. Complete Android Wishes/Finance/Gift/media UI is subsequent work, not a set of placeholder pages.
+## Identity, enrollment and lifecycle
 
-## Safety and limits
+Add My Device retains the Phase A signed-file workflow: import a public Mac offer, compare code/fingerprint, generate an independent key, save a proof-of-possession request via Android SAF, import the root-signed completion and atomically activate its own Room workspace. Old unpaired facts are preserved separately. Same user/space, no third partner, no private-key import/export.
 
-Each Ed25519 seed is generated independently using Bouncy Castle primitives and AES-GCM wrapped by an Android Keystore AES key. Ed25519 is software, not advertised as hardware-backed. Android backup and device transfer exclude app facts/identity. Missing/invalidated wrapping keys fail closed. Uninstall/device loss can destroy Keystore access: there is no secret recovery or root-key replacement protocol; preserve the original trusted root and reenroll a genuinely new device. Existing local records are never silently reset.
+Authorized devices show active/revoked state. Existing Protocol4-v1 permits only the original owner root to grant/revoke. An enrolled Android is not silently promoted to root; original-Mac authorization/revocation UI remains required. The root device must stay available. This is not invitation-based creation of a new partner pair on Android.
 
-Pairwise X25519/HKDF-SHA256/ChaCha20-Poly1305 and canonical signing match existing Swift fixtures. Independent protocol review remains a release gate. No new cryptographic design, C2, server deployment or real-user activation is implied. The current control archive remains bounded at 128KiB/32 active devices; paging/root-loss recovery remain absent upstream. Revocation freshness while offline cannot be guaranteed.
+Foreground C1 API2 challenge/ticket and directed authenticated-encrypted WebSockets use the existing SyncEngine; offline edits persist, foreground reconnect catches up, background cancels sockets. No permanent background connection, C2, offline mailbox or central business database. Local saved / pending / remote persisted / converged / reviewed / domain confirmed are distinct. No Delivered/read/bank-payment claim.
 
-Media manifests/history are retained, but Android binary attachment transfer, original-image UI and gift/media receipts are not implemented in Phase A. The client does not acknowledge media as complete. OkHttp callbacks enforce bounded frame/application queues, but OkHttp assembles an incoming message before the callback; an adversarial-server oversized-message memory boundary needs separate transport review. Replay and content validation do not establish independent security approval. Projection/recovery remains linear in history; no Android 100k performance claim.
+Each software Ed25519 seed is independently generated and AES-GCM wrapped by an Android Keystore AES key. This does not claim hardware Ed25519 or encryption of the entire Room database. App backup/device-transfer excludes facts/identity. Missing/invalidated keys fail closed; uninstall/device loss can destroy access. There is no root-loss recovery or silent identity rotation. Preserve the trusted root and authorize a genuinely new device.
 
-## Local integration and interoperability
-
-Run the existing Worker only locally, with separate state:
+## Local native interoperability
 
 ```sh
 cd services/relay
 npm ci --legacy-peer-deps
-./node_modules/.bin/wrangler dev --local --ip 127.0.0.1 --port 8796 --persist-to ../../qa/results/android-phase-a/relay-state
+./node_modules/.bin/wrangler dev --local --ip 127.0.0.1 --port 8797 --persist-to ../../qa/results/android-business-relay
 # In another shell, repository root:
-TOGETHER_LOCAL_RELAY_URL=http://127.0.0.1:8796 make android-qa
+TOGETHER_LOCAL_RELAY_URL=http://127.0.0.1:8797 TOGETHER_RUN_SWIFT_ANDROID=1 \
+  apps/android/gradlew -p apps/android -Ptogether.jvmOnly=true :core:domain:test :core:protocol:test
 ```
 
-Without the explicit loopback URL, the local-runtime integration test reports SKIP, not PASS. It provisions only synthetic legacy roots, bootstraps API 2, authorizes a same-user third device, tests simultaneous sessions/offline catch-up and checks exact ACKs. It never calls the production Worker.
+A native Swift process hosting two clients and Kotlin use independent keys and actual local C1 encrypted transport. Tasks, wishes, CNY/AA/reserves/bills, original PNG/WAV hashes, media receipts and offline field merge are asserted. Shared JSON conformance vectors remain authoritative. This is native test runtime interoperability, not physical Mac↔Samsung acceptance or Mac GUI editor acceptance. No Mac runtime source or production Worker is changed.
 
-`AndroidPhaseAConformanceTests.swift` verifies Kotlin-produced public certificates/business projection and opens its Bouncy Castle packet with CryptoKit. For the reverse response test:
+`test_android_apk_upgrade.py` verifies checksum-pinned Phase A APK → B with real `adb install -r`, retained Room1 facts, old key signatures, binding and new signature. `test_android_gift_lifecycle.py` exercises actual process death, cached gift with Relay route removed, once-only display, explicit player and native SAF byte-exact original export. Both require an identified dedicated emulator and synthetic local identities; see root TEST_PLAN and QA report.
 
-```sh
-mkdir -p qa/results/android-phase-a
-TOGETHER_ANDROID_RESPONSE_PATH="$PWD/qa/results/android-phase-a/cryptokit-response.json" swift test --package-path packages/together-core-swift --filter AndroidPhaseAConformanceTests
-TOGETHER_ANDROID_RESPONSE_PATH="$PWD/qa/results/android-phase-a/cryptokit-response.json" apps/android/gradlew -p apps/android :core:domain:test --rerun-tasks
-```
+## Limits and release gates
 
-The deterministic synthetic fixture is exported only by an explicit developer flag; normal tests cannot overwrite it. Cryptographic fixtures/native library tests are not physical Mac↔phone acceptance.
-
-Toolchain basis: [AGP compatibility](https://developer.android.com/build/releases/agp-8-13-0-release-notes), [Compose compiler](https://developer.android.com/develop/ui/compose/setup-compose-dependencies-and-compiler), [Room](https://developer.android.com/jetpack/androidx/releases/room), [Bouncy Castle Java](https://www.bouncycastle.org/documentation/documentation-java/). Dependency versions are pinned to a tested baseline; lint upgrade advisories remain visible.
-
-Status/evidence and next steps: [Android Phase A QA](../../docs/qa/reports/ANDROID_PHASE_A.md).
-
-The final local source/Debug APK, exact SHA-256, 31 JVM / 7 emulator results and 17 unapproved screenshot candidates are recorded there. Android instrumentation was run on Android 15/API35 ARM64 only; minimum API28, physical phones/tablets and real Mac↔Android acceptance remain NOT RUN. [Draft PR #5](https://github.com/Diamond-Fountain-Works/Together/pull/5) is stacked on the unmerged Protocol 4 branch; hosted CI does not claim emulator coverage.
+Independent protocol review, physical Samsung/dual-device use, minimum API28, real tablet/TalkBack and human visual approval remain separate gates. Upstream authorization archive remains bounded (128KiB/32 active devices), root-loss recovery/archive paging are absent, and offline revocation freshness cannot be guaranteed. OkHttp assembles messages before application bounds; adversarial-server memory behavior remains an upstream transport review item. Projection/recovery is linear in history; no Android100k claim. Unsupported platform codecs report an error and preserve original bytes. No C2, production deployment, Mac installation or real-user Protocol4 activation is implied.

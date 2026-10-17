@@ -10,12 +10,24 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 
 class TogetherApplication : Application(), DefaultLifecycleObserver {
-    lateinit var repository: TogetherRepository; private set
+    private var openedRepository: TogetherRepository? = null
+    val repository: TogetherRepository
+        get() =
+            openedRepository
+                ?: TogetherRepository(this, applicationScope).also { openedRepository = it }
+
     private val applicationScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
+
     override fun onCreate() {
-        super<Application>.onCreate(); repository = TogetherRepository(this, applicationScope)
+        super<Application>.onCreate()
         ProcessLifecycleOwner.get().lifecycle.addObserver(this)
     }
-    override fun onStart(owner: LifecycleOwner) { repository.foreground(true) }
-    override fun onStop(owner: LifecycleOwner) { repository.foreground(false) }
+
+    override fun onStart(owner: LifecycleOwner) {
+        openedRepository?.foreground(true)
+    }
+
+    override fun onStop(owner: LifecycleOwner) {
+        openedRepository?.foreground(false)
+    }
 }

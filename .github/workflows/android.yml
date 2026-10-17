@@ -1,9 +1,9 @@
-name: Android foundation
+name: Android clients
 on:
   push:
-    branches: ['feature/android-foundation']
+    branches: ['feature/android-foundation', 'feature/android-business-phase-b']
   pull_request:
-    branches: [main, 'feature/gitlike-c1-multidevice']
+    branches: [main, 'feature/gitlike-c1-multidevice', 'feature/android-foundation']
   workflow_dispatch:
 permissions:
   contents: read
@@ -54,7 +54,7 @@ jobs:
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: android-phase-a-tests
+          name: android-client-tests
           path: |
             apps/android/core/**/build/test-results/test/*.xml
             apps/android/app/build/reports/lint-results-debug.xml
@@ -62,3 +62,47 @@ jobs:
             qa/results/android-safety.json
           retention-days: 7
       # Emulator/TalkBack/physical phone and Mac↔Android UI are not claimed by this job.
+  native-interop:
+    name: Swift–Kotlin business and original-media C1
+    runs-on: macos-26
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-java@cf277c60eb25467037889841efdb72551f06f6c3
+        with:
+          distribution: temurin
+          java-version: '21'
+          cache: gradle
+          cache-dependency-path: apps/android/**/*.gradle.kts
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24'
+          cache: npm
+          cache-dependency-path: services/relay/package-lock.json
+      - name: Local isolated Relay
+        working-directory: services/relay
+        run: |
+          npm ci --legacy-peer-deps
+          ./node_modules/.bin/wrangler dev --local --ip 127.0.0.1 --port 8797 --persist-to "$RUNNER_TEMP/android-business-relay" > "$RUNNER_TEMP/android-business-relay.log" 2>&1 &
+          for i in $(seq 1 40); do
+            if curl -fsS http://127.0.0.1:8797/health >/dev/null; then exit 0; fi
+            sleep 1
+          done
+          exit 1
+      - name: Independent native and JVM clients
+        env:
+          TOGETHER_LOCAL_RELAY_URL: http://127.0.0.1:8797
+          TOGETHER_RUN_SWIFT_ANDROID: '1'
+        run: apps/android/gradlew -p apps/android -Ptogether.jvmOnly=true :core:domain:test --tests com.together.domain.NativeBridgeIntegrationTest --console=plain
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: android-business-native-conformance
+          path: |
+            apps/android/core/domain/build/test-results/test/*.xml
+            qa/results/android-phase-b/native-result.json
+          retention-days: 7
+      # This job is native/JVM interop; it does not claim a phone, emulator UI or independent security review.

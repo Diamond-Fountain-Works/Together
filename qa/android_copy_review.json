@@ -15,10 +15,10 @@
   },
   "values-zh-rCN/nav_plans": {
     "category": "Navigation",
-    "context": "Android Phase A / nav_plans",
+    "context": "Android Phase B nav_plans",
     "state": "reviewed",
-    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
-    "sha256": "0f6b1949b093e35266991fbea7a832212d428e874cc0666634faf37f51d4c63b"
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "b6bc587a3210a8adb0eb467bc7b5b34161ed2085c5d619d594e9a558f8897166"
   },
   "values-zh-rCN/nav_connection": {
     "category": "Navigation",
@@ -176,17 +176,10 @@
   },
   "values-zh-rCN/status_pending_sync": {
     "category": "Status",
-    "context": "Android Phase A / status_pending_sync",
+    "context": "Android Phase B status_pending_sync",
     "state": "reviewed",
-    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
     "sha256": "e09cbaccf1dd8bf8480f4171be701f7f17222775825a68bed12da14feabd7ec0"
-  },
-  "values-zh-rCN/status_partner_synced": {
-    "category": "Status",
-    "context": "Android Phase A / status_partner_synced",
-    "state": "reviewed",
-    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
-    "sha256": "04c87a251dc11e62075366938fc0da9c650b1747210c14befd21e0de2cc84f0b"
   },
   "values-zh-rCN/empty_changes": {
     "category": "Empty State",
@@ -208,13 +201,6 @@
     "state": "reviewed",
     "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
     "sha256": "88999d857336ebc476f3b9252727786348da4248c82fa18d22cb47ea96afb9c5"
-  },
-  "values-zh-rCN/label_my_device": {
-    "category": "Guidance",
-    "context": "Android Phase A / label_my_device",
-    "state": "reviewed",
-    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
-    "sha256": "8a94c4a1cdbd821ebbd32eff1549e6ae9ebcbc540dcd39c933d1ea2177d1ce5f"
   },
   "values-zh-rCN/label_devices": {
     "category": "Guidance",
@@ -306,13 +292,6 @@
     "state": "reviewed",
     "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
     "sha256": "506b929b6c1a5fecc4c4ba3685962d4fce4782b02561dfc7507ca3299646007f"
-  },
-  "values-zh-rCN/action_authorize": {
-    "category": "Action",
-    "context": "Android Phase A / action_authorize",
-    "state": "reviewed",
-    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
-    "sha256": "f1bb7767e7013b72a7c1be1ea8d28c13817e5ab7f6b4ac7d5bb0475f228bef48"
   },
   "values-zh-rCN/action_revoke": {
     "category": "Action",
@@ -433,13 +412,6 @@
     "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
     "sha256": "7c4bbd93aa6e2e18f09631a918993bf3b758cb2127f707b279ade08a3e28b7d2"
   },
-  "values-zh-rCN/action_view_plans": {
-    "category": "Action",
-    "context": "Android Phase A / action_view_plans",
-    "state": "reviewed",
-    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
-    "sha256": "aed5b2af529bf103f6e9ef05f76c6ce2ab9a1b5d33688866d7940fc20bee744e"
-  },
   "values-zh-rCN/label_task": {
     "category": "Guidance",
     "context": "Android Phase A / label_task",
@@ -554,10 +526,10 @@
   },
   "values/nav_plans": {
     "category": "Navigation",
-    "context": "Android Phase A / nav_plans",
+    "context": "Android Phase B nav_plans",
     "state": "reviewed",
-    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
-    "sha256": "dfe8b2f0de26bb87c6d6066acf6668807a27d8270cc08ade10018769ee380101"
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "90c61f6a6d33797566ddbc35820087b78f5f127594bc79a9d87e4b76f5b05997"
   },
   "values/nav_connection": {
     "category": "Navigation",
@@ -715,17 +687,10 @@
   },
   "values/status_pending_sync": {
     "category": "Status",
-    "context": "Android Phase A / status_pending_sync",
+    "context": "Android Phase B status_pending_sync",
     "state": "reviewed",
-    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
     "sha256": "e45ceb73ca49c69878fc83fe02efe5b420fb90ce5dfc94ae2bc4c4b8ee9f2c34"
-  },
-  "values/status_partner_synced": {
-    "category": "Status",
-    "context": "Android Phase A / status_partner_synced",
-    "state": "reviewed",
-    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
-    "sha256": "b6b67d3fc493ce6c0aab4c3c2935c719822b8e4f676d6edcb5c513f0c7452e80"
   },
   "values/empty_changes": {
     "category": "Empty State",
@@ -747,13 +712,6 @@
     "state": "reviewed",
     "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
     "sha256": "f73cf2143127e953bea3c7ef037ffeb96ae4fbf9ba82ec298e31da845a4c9900"
-  },
-  "values/label_my_device": {
-    "category": "Guidance",
-    "context": "Android Phase A / label_my_device",
-    "state": "reviewed",
-    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
-    "sha256": "d052579c6a317b1b81f020a5ba300deafc57dc64ef56cb04e755a1d3fbe884ce"
   },
   "values/label_devices": {
     "category": "Guidance",
@@ -845,13 +803,6 @@
     "state": "reviewed",
     "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
     "sha256": "f9434a3c1ebd7069777f10770af65534b01e7fef6bfbdd8214a894e1e6366530"
-  },
-  "values/action_authorize": {
-    "category": "Action",
-    "context": "Android Phase A / action_authorize",
-    "state": "reviewed",
-    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
-    "sha256": "906887ba5fcd2266acc6c2164bb0071fbafa5e4f4c09e8f2899e5923b994fe76"
   },
   "values/action_revoke": {
     "category": "Action",
@@ -971,13 +922,6 @@
     "state": "reviewed",
     "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
     "sha256": "29035e784f9305c0eb62aa33662b296306f6a77bedaca7c67f2e3432dd43ace2"
-  },
-  "values/action_view_plans": {
-    "category": "Action",
-    "context": "Android Phase A / action_view_plans",
-    "state": "reviewed",
-    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
-    "sha256": "a72e2bd3e148c05ef792271130809ada4aea480931121b82839c2a5bb438f093"
   },
   "values/label_task": {
     "category": "Guidance",
@@ -1286,5 +1230,2637 @@
     "state": "reviewed",
     "reason": "Human-readable existing domain state; reconciliation is not bank or partner approval.",
     "sha256": "5b9a9aa85857a8575fb91fba51756c08166d8c2923fb644694839f33ddcb4c4f"
+  },
+  "values/nav_wishes": {
+    "category": "Navigation",
+    "context": "Android Phase B nav_wishes",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "403cc21502ebdc1e5204b05b193d722bb4bf4fb8146ee0b0b71e8e111bd21ee3"
+  },
+  "values/nav_finances": {
+    "category": "Navigation",
+    "context": "Android Phase B nav_finances",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "33734a35d8a51c1c1f2a5a5aac3ce8ad38c20c019fd3bffb7d3904f0a6a29eff"
+  },
+  "values/filter_upcoming": {
+    "category": "Status",
+    "context": "Android Phase B filter_upcoming",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "5f1a2542e4e4ca5ed784e15fb756dbfc32f4b68ae08bc1d44f957761566c8c41"
+  },
+  "values/label_none": {
+    "category": "Status",
+    "context": "Android Phase B label_none",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "dc937b59892604f5a86ac96936cd7ff09e25f18ae6b758e8014a24c7fa039e91"
+  },
+  "values/label_unassigned": {
+    "category": "Status",
+    "context": "Android Phase B label_unassigned",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "14d33bd014e6b4e7c3590a8a12e1ec4951d777593d6d6aef9ebe5faac9c8dac0"
+  },
+  "values/label_assignee": {
+    "category": "Guidance",
+    "context": "Android Phase B label_assignee",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "5e20d20e3978dcf8550bd758d863b782ac0d139d51be8034836ed21e35104567"
+  },
+  "values/label_due_date": {
+    "category": "Guidance",
+    "context": "Android Phase B label_due_date",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "e1cb6d30fa3f17ee1e50b2bcf1967374467748ba3b8acd64be2df8a70c2ddc46"
+  },
+  "values/label_time": {
+    "category": "Guidance",
+    "context": "Android Phase B label_time",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "ec98d77d631eef2adc0f78479a32f32d526f7c51b4912a480de2028fc3b2cb84"
+  },
+  "values/label_recurrence": {
+    "category": "Guidance",
+    "context": "Android Phase B label_recurrence",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "b6b7a0065808a62e7d5781b356c5ddba4e000433c34b5d561d200158a4443eb1"
+  },
+  "values/label_regular": {
+    "category": "Status",
+    "context": "Android Phase B label_regular",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "b455784ab53072773e72df494aa4b12ac467976447e250c694c11b6f1268e235"
+  },
+  "values/label_flexible": {
+    "category": "Status",
+    "context": "Android Phase B label_flexible",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "9622d2850be8f41ad8688c247d756ca4894d4b488e8f5599579b549b4f6eddde"
+  },
+  "values/label_unit": {
+    "category": "Guidance",
+    "context": "Android Phase B label_unit",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "d77a711d0c8c87e967693899f722e511024891a059f967c2aa5a1092b0f2a44c"
+  },
+  "values/label_daily": {
+    "category": "Status",
+    "context": "Android Phase B label_daily",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "b36c2611dcdfa190ede846948d9aba8f39581de0177cbd98586506019f979b75"
+  },
+  "values/label_weekly": {
+    "category": "Status",
+    "context": "Android Phase B label_weekly",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "2975132481a7a6957cfa95055d04e706f21f1a613f448d0a17463f2eacca4636"
+  },
+  "values/label_monthly": {
+    "category": "Status",
+    "context": "Android Phase B label_monthly",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "9b11f6b707d2a03e0265465f32520bc1bc213de121de958539662d0ec1453fcb"
+  },
+  "values/label_every_n": {
+    "category": "Guidance",
+    "context": "Android Phase B label_every_n",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "15f282fd573fe2d942a3df78aa02762d5abffd2164a00b698017f0307bf5e882"
+  },
+  "values/label_time_zone": {
+    "category": "Guidance",
+    "context": "Android Phase B label_time_zone",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "bdbc243ff5167bda5c697ef0acfcd6167ac026bdcf597d4f1bf9826727443570"
+  },
+  "values/action_set_next": {
+    "category": "Action",
+    "context": "Android Phase B action_set_next",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "b035124f912564a33a587a3c6380ac48d4d0ecb6337c59e499aa9fda94eb7e75"
+  },
+  "values/action_complete_later": {
+    "category": "Action",
+    "context": "Android Phase B action_complete_later",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "896f56fc5904566f8a3c7cbd1f54f9f7a0acba2ddecf49e140bdae0adf48ea36"
+  },
+  "values/action_clear": {
+    "category": "Action",
+    "context": "Android Phase B action_clear",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "83b12c2216efb4fdc924e1deb5182e905e4926ed0c1c324d467107f46d5a26a9"
+  },
+  "values/label_month_day": {
+    "category": "Guidance",
+    "context": "Android Phase B label_month_day",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "d15f47202352035b71e1bd723ccfafa012b7b3c86573f54468e0f63849739915"
+  },
+  "values/label_currency": {
+    "category": "Navigation",
+    "context": "Android Phase B label_currency",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "3ac1a9ec4fa7a9fa612a30803f3d88fa479a45431f644190ebcc18d3eaafdb3a"
+  },
+  "values/action_search": {
+    "category": "Action",
+    "context": "Android Phase B action_search",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "49c266baaaa70981ea188fa714d5c40cf13830d786a861c9943ae0d26a7f3fe9"
+  },
+  "values/label_original_amount": {
+    "category": "Guidance",
+    "context": "Android Phase B label_original_amount",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "473ee33f7eaab6438990f0992b64b888eb2028ed5eb457ad8ffc13b2cfb6503a"
+  },
+  "values/label_final_cny": {
+    "category": "Guidance",
+    "context": "Android Phase B label_final_cny",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "0ebc3c92ab01e95d46302854ec6876348cbd2c222ab4d2b350bd489aaea2b3bc"
+  },
+  "values/guidance_actual_cny": {
+    "category": "Guidance",
+    "context": "Android Phase B guidance_actual_cny",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "6a3c1784b42e0310fd273bf43ecf2a27c5a320fab38f6710f268150a00d5f98d"
+  },
+  "values/label_exchange_rate": {
+    "category": "Guidance",
+    "context": "Android Phase B label_exchange_rate",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "aec17444e8a979e33ab68302ea943ce1051c796871edb45c19dfd37d0a572be8"
+  },
+  "values/label_rate_source": {
+    "category": "Guidance",
+    "context": "Android Phase B label_rate_source",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "bb5ccc73da57f8b2ae21d045aff5516552a53e0f8598688c6b1e553ed4e645f2"
+  },
+  "values/label_rate_date": {
+    "category": "Guidance",
+    "context": "Android Phase B label_rate_date",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "c21131c509540ddfcd2ce443cb375d1039508ff4676bc5d93cadf50894d4af18"
+  },
+  "values/action_add_wishes": {
+    "category": "Action",
+    "context": "Android Phase B action_add_wishes",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "6e1cdcfafd4810831a2ff967802c8be3b2726a116831e0a65684fa4fdec37251"
+  },
+  "values/guidance_partner_needed": {
+    "category": "Guidance",
+    "context": "Android Phase B guidance_partner_needed",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "a05bb6f89047344e4b7de17241fa2323a02b94529c0b59d4ba88b773009cbc4b"
+  },
+  "values/wish_totals": {
+    "category": "Status",
+    "context": "Android Phase B wish_totals",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "e0ab8ca8dfea9db1478de4189fce59ea1e54b8e659dafc5b606f2a522698b0f1"
+  },
+  "values/grant_added": {
+    "category": "Status",
+    "context": "Android Phase B grant_added",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "af02dd847793fbf61d5a628d698ba196c01fdecf3c65f129c4da6264da9b0ad1"
+  },
+  "values/grant_remaining": {
+    "category": "Status",
+    "context": "Android Phase B grant_remaining",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "024e63fa583303deef86542f74022718339ae29f2f3f164785cc0a756e6c590d"
+  },
+  "values/empty_grants": {
+    "category": "Empty State",
+    "context": "Android Phase B empty_grants",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "c7d72a7012cea89334f9d371526a56c211489b5aee3e776c5c0d523f7dc9e565"
+  },
+  "values/label_fulfiller": {
+    "category": "Guidance",
+    "context": "Android Phase B label_fulfiller",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "3eb99b2eb15d84d574aaa006f90b6bc65f35beb353b98c408b07c417ba6405a4"
+  },
+  "values/action_new_wish": {
+    "category": "Action",
+    "context": "Android Phase B action_new_wish",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "55f0136882bf790bd334bf2fab3194c1272e024a31e2a7f7b926d8ddb8943eac"
+  },
+  "values/action_adjust_quota": {
+    "category": "Action",
+    "context": "Android Phase B action_adjust_quota",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "2cdedaffdade00ec0931deb593e9935c9414fbab459f8de11adda894f3184c5c"
+  },
+  "values/label_adjustment": {
+    "category": "Guidance",
+    "context": "Android Phase B label_adjustment",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "c56e0782e9c675a9f284c7fa9645a456b82d74ac459be69c00d8c226ba5869b1"
+  },
+  "values/label_reason": {
+    "category": "Guidance",
+    "context": "Android Phase B label_reason",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "f81ab834de5f84918dc040b884267c2b61cb1a52d46442de10e97f35a94d0500"
+  },
+  "values/label_grant_history": {
+    "category": "Navigation",
+    "context": "Android Phase B label_grant_history",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "989690812766a5829a06d9940bd183859c2c09bfed96e45b063cafc22ea6d8bb"
+  },
+  "values/action_request_fulfillment": {
+    "category": "Action",
+    "context": "Android Phase B action_request_fulfillment",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "535aa27734286a1f56b052e31ec7db04b709937633b2beeb16518898a5d3621c"
+  },
+  "values/action_confirm_fulfillment": {
+    "category": "Action",
+    "context": "Android Phase B action_confirm_fulfillment",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "1ac053ba33aeb19b8afb21196f3cb53d4329404e153f941a1b1238bab66c2da7"
+  },
+  "values/action_reject_fulfillment": {
+    "category": "Action",
+    "context": "Android Phase B action_reject_fulfillment",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "d53436c2e2168268cecf4878448664484b27fc5c3aed4e43321d01baf54d8925"
+  },
+  "values/tab_reserves": {
+    "category": "Navigation",
+    "context": "Android Phase B tab_reserves",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "1a1000fecc4cbda77f2380a761b1135365653df59607714f7a052d6ed7af9aee"
+  },
+  "values/tab_expenses": {
+    "category": "Navigation",
+    "context": "Android Phase B tab_expenses",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "d311416fa3aadb4d8cbf54c9a8d48cef3a272ef469a075328909de18e34f6fb9"
+  },
+  "values/tab_bills": {
+    "category": "Navigation",
+    "context": "Android Phase B tab_bills",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "245ad028f7d23252d681e4f0e9a19885aa95442414d13b9395f0c8b9ac70f08e"
+  },
+  "values/action_finance_settings": {
+    "category": "Action",
+    "context": "Android Phase B action_finance_settings",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "959436e59835888c3afaa1a9549f32dd69f0fed2ec2ca5bfd709d448700db2ab"
+  },
+  "values/label_period": {
+    "category": "Guidance",
+    "context": "Android Phase B label_period",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "6e795d4d3cc21c5ca8349ab5e917482197aa612d1a218f9e9411467db73242bb"
+  },
+  "values/filter_all": {
+    "category": "Status",
+    "context": "Android Phase B filter_all",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "a52ace420f2175d08b1577a1bea5445e36801229c074ef9ed6c55a73401fd9c2"
+  },
+  "values/label_shared_cycle": {
+    "category": "Status",
+    "context": "Android Phase B label_shared_cycle",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "e8c39733e7e0e64aa9379fcd6bbf7ef54b9b162e193feebd256847bb217c5255"
+  },
+  "values/label_my_cycle": {
+    "category": "Status",
+    "context": "Android Phase B label_my_cycle",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "f8942e0052d3fb0d17596224010b51e849007dbad1fc773d94f02eb131c1fa1d"
+  },
+  "values/label_book_balance": {
+    "category": "Status",
+    "context": "Android Phase B label_book_balance",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "5fe29831564fbee1a18db44bb81ab6e6c6f1654f5a2575c8457c47d520b6919f"
+  },
+  "values/label_verified_balance": {
+    "category": "Status",
+    "context": "Android Phase B label_verified_balance",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "d8937b398eb843b33bc40caba45e4b65db18f68e33b294d88043bbe7c20b683a"
+  },
+  "values/label_provisional_amount": {
+    "category": "Status",
+    "context": "Android Phase B label_provisional_amount",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "469e4591d25cb77b02dae9d7b1522c875c88e23122a8369f38d3434e55d4cf43"
+  },
+  "values/action_opening_balance": {
+    "category": "Action",
+    "context": "Android Phase B action_opening_balance",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "d11d57418070e315e5d7373c180d4d9f6838b641043bd944cde52fecc6ea19fe"
+  },
+  "values/empty_deposits": {
+    "category": "Empty State",
+    "context": "Android Phase B empty_deposits",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "4574472bb47411d7f05aee9371dcc48823fd6faa3df685dc5f08a2ce75533d68"
+  },
+  "values/label_shared_spending": {
+    "category": "Navigation",
+    "context": "Android Phase B label_shared_spending",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "1556eafb4b5b0a52d326013c7612cff3e38b9e5482a2f0900821ad3761c14ab3"
+  },
+  "values/label_total_expenses": {
+    "category": "Status",
+    "context": "Android Phase B label_total_expenses",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "668da715579c26f6c63680d91ada14e13080726c0ce1f036a9ec24330b6f0510"
+  },
+  "values/payment_me": {
+    "category": "Status",
+    "context": "Android Phase B payment_me",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "6a01cebc13c33f8d3af9b19674951b8de987437e0240b84a7a277ebb73c89edb"
+  },
+  "values/payment_partner": {
+    "category": "Status",
+    "context": "Android Phase B payment_partner",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "5635b475ecdb91c72a7536f49ff3f1421490b115f9187bd5e2ae16333cb90e58"
+  },
+  "values/payment_aa": {
+    "category": "Status",
+    "context": "Android Phase B payment_aa",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "4ff212be460fa5c487490411c95a778052ccbe7343f07d85e6e0c794afcecf6f"
+  },
+  "values/label_payment_tool": {
+    "category": "Guidance",
+    "context": "Android Phase B label_payment_tool",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "d700933cf5ebefc3fc39e0c8caabf1ef42233072e095350563545159b94d8647"
+  },
+  "values/label_source": {
+    "category": "Guidance",
+    "context": "Android Phase B label_source",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "0e570ca6fabe24f94e52c1833f3ffd25567022beb826fa16891f3322051bc221"
+  },
+  "values/label_standalone": {
+    "category": "Status",
+    "context": "Android Phase B label_standalone",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "c697bed3453e1b35c19af7ab68c36ae3b28c4ff8f3d04e4599347777fd0ff28a"
+  },
+  "values/label_date_event": {
+    "category": "Navigation",
+    "context": "Android Phase B label_date_event",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "557c45b41041f9c13619df9bbbd68955c64c650808a10aa5247d8f67d4b07785"
+  },
+  "values/label_date_events": {
+    "category": "Navigation",
+    "context": "Android Phase B label_date_events",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "6cfab7474ded7472e6a9885fabb5d0de1c7a53b8ff63cd6a0bf01b2d5be6725e"
+  },
+  "values/label_category_filter": {
+    "category": "Guidance",
+    "context": "Android Phase B label_category_filter",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "95ac132f4b5f914fce092a25e3177459b291c4b2d85e18db0551ec83c2929926"
+  },
+  "values/label_category": {
+    "category": "Guidance",
+    "context": "Android Phase B label_category",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "292c06f0045a45d044be282b132b7055ae224e18e02b523a451d8ea96fadfd24"
+  },
+  "values/label_uncategorized": {
+    "category": "Status",
+    "context": "Android Phase B label_uncategorized",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "8d40d123b2e1e296abdb30fe018ab76c8ec3d7fad9d1837db1410b1601ce9b28"
+  },
+  "values/empty_expenses": {
+    "category": "Empty State",
+    "context": "Android Phase B empty_expenses",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "3c75737c31a4d7d03bf079fbf7fd2d10dcd390b10527a6510dab20fd4cd544ad"
+  },
+  "values/empty_bills": {
+    "category": "Empty State",
+    "context": "Android Phase B empty_bills",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "e20411680cd2d60249ffe0927c4060491555915bb92b5668b84d35ea2fba4c41"
+  },
+  "values/bill_day": {
+    "category": "Status",
+    "context": "Android Phase B bill_day",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "327d1a7ec5d0af0e5afbbe0e25d4859eb1e4ed4912cc7702e8d68d94f48bcc2f"
+  },
+  "values/status_paused": {
+    "category": "Status",
+    "context": "Android Phase B status_paused",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "e159b06187d369a0615f66ce577582b5c983d4ea59b3a62b702049f61753f0bf"
+  },
+  "values/action_override_occurrence": {
+    "category": "Action",
+    "context": "Android Phase B action_override_occurrence",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "7a96fd3fa2124c9ea62e072d9df8f6f7d6adae6348691fbe23d807c77d8df231"
+  },
+  "values/action_deposit": {
+    "category": "Action",
+    "context": "Android Phase B action_deposit",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "0da00b600a2df4981e1ecea7973a4a13d50c722b7cf177e878ffdbf8ec0af351"
+  },
+  "values/action_recurring_bill": {
+    "category": "Action",
+    "context": "Android Phase B action_recurring_bill",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "2c46195ceac94829b3e687ae6650954ff75879a619b1969245d26585a5333a01"
+  },
+  "values/action_expense": {
+    "category": "Action",
+    "context": "Android Phase B action_expense",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "a0417ba8010e87282999019267c0fce178d0d7a16cc2f294fb15662e0ac9a547"
+  },
+  "values/label_deposited_by": {
+    "category": "Guidance",
+    "context": "Android Phase B label_deposited_by",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "020def5d99fd5acfe86a1c0c3c562df5ee243c7b95f2813813ef11891822caa4"
+  },
+  "values/guidance_next_month": {
+    "category": "Guidance",
+    "context": "Android Phase B guidance_next_month",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "2f4393743d222c8afa4a7b1cf204296caa19333a7a9b59fc6634991078fbce51"
+  },
+  "values/action_toggle_bill": {
+    "category": "Action",
+    "context": "Android Phase B action_toggle_bill",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "6b1c3a8c70120fb45803638cbc97d7f0d7ae38d8ba4bd04076b41b29b96fe841"
+  },
+  "values/label_occurrence_month": {
+    "category": "Guidance",
+    "context": "Android Phase B label_occurrence_month",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "0d6007c687bf305f584aecd1e9114f6f72564b1a3cd4451d5177a2199dde06a5"
+  },
+  "values/action_confirm_bill": {
+    "category": "Action",
+    "context": "Android Phase B action_confirm_bill",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "b36620e88908edfa5903c982b8282d125396d379e458f0aecae3e2f0b0163ed4"
+  },
+  "values/action_skip_bill": {
+    "category": "Action",
+    "context": "Android Phase B action_skip_bill",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "f76fb64eb5f2f646a12f6c3b20034a0cfd336c012dffa7a0794168a9b6569fcc"
+  },
+  "values/reminder_before_bill": {
+    "category": "Guidance",
+    "context": "Android Phase B reminder_before_bill",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "969eeabd52330a88ce53ca7098e1911a667c548170917e9ecc9a4771cb1d14b7"
+  },
+  "values/reminder_review_bill": {
+    "category": "Guidance",
+    "context": "Android Phase B reminder_review_bill",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "08679c942696ce5274bef1e68cbe7657f9fa8a7c83b659c9f6ee16a7ca1613da"
+  },
+  "values/action_review_bill": {
+    "category": "Action",
+    "context": "Android Phase B action_review_bill",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "aff0766a5290e117b8433c351bae7b7b23bed682b2369bd822d88a647cc58512"
+  },
+  "values/action_dismiss": {
+    "category": "Action",
+    "context": "Android Phase B action_dismiss",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "48845bff334a50a59aaecf499f28a7a24c3b4b891b8b18a9f1169ad8e8a6b261"
+  },
+  "values/label_financial_cycle": {
+    "category": "Guidance",
+    "context": "Android Phase B label_financial_cycle",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "5d4a25522a239339a4f5933f6c3654ca26326052ce0a559365dd33214156d92f"
+  },
+  "values/label_salary_day": {
+    "category": "Guidance",
+    "context": "Android Phase B label_salary_day",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "dcf86a9aaf3d086aea860d3ff757e62572bd4dff8b64248a57715bb829f14ca2"
+  },
+  "values/label_planned_deposit": {
+    "category": "Guidance",
+    "context": "Android Phase B label_planned_deposit",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "35271063ff216bcd0d18c3021a6c88281fb284298abac05ae7f208b78de2f0f4"
+  },
+  "values/guidance_planned_deposit": {
+    "category": "Guidance",
+    "context": "Android Phase B guidance_planned_deposit",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "383a39317b42774c2a6740f307fb5f6063bba9f684903d9c717a19a58ab87810"
+  },
+  "values/label_payment_methods": {
+    "category": "Navigation",
+    "context": "Android Phase B label_payment_methods",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "16d26116c2f4536efa19544df15395cc5386508fa6846305d4855bec622dc056"
+  },
+  "values/label_bank": {
+    "category": "Guidance",
+    "context": "Android Phase B label_bank",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "a5f8fdf1860573bc62a44442b1618792ed1caa868e1697fef82b1809a09a5b31"
+  },
+  "values/label_card_name": {
+    "category": "Guidance",
+    "context": "Android Phase B label_card_name",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "e260ce2668950ee5a635d96c5a744331773034af44454f2f1a7d6cccbc1f08bd"
+  },
+  "values/label_last_four": {
+    "category": "Guidance",
+    "context": "Android Phase B label_last_four",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "1b179cd818f3f5127fb18d095891716a204d015587cbe3d621cc638c8e227ccf"
+  },
+  "values/label_holder": {
+    "category": "Guidance",
+    "context": "Android Phase B label_holder",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "1120d5f61a14abaf275f315c8bc7ec996ba0a7beedf0727b42e36c3c97cee716"
+  },
+  "values/label_card_kind": {
+    "category": "Guidance",
+    "context": "Android Phase B label_card_kind",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "2a855d548016b400f8f600a4c73ba6befa7d70b535afc33a44d58c5adac76814"
+  },
+  "values/label_debit": {
+    "category": "Status",
+    "context": "Android Phase B label_debit",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "ae224acb87e2e940b74478398ea002778f8d29538decc84156deb173a349f1e2"
+  },
+  "values/label_credit": {
+    "category": "Status",
+    "context": "Android Phase B label_credit",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "fb1875d0a5e85f29f239c293e5837e234fa07068b040fd11c2078c28df7d72d4"
+  },
+  "values/label_shared_visibility": {
+    "category": "Guidance",
+    "context": "Android Phase B label_shared_visibility",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "2c7b4a7814c333e166912a49ad057337b8acb784d3a8f5171b1c5a7b5f75eacc"
+  },
+  "values/guidance_card_history": {
+    "category": "Guidance",
+    "context": "Android Phase B guidance_card_history",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "00723dbeb75f08e0e5dcfc93e882d855b90a9acee03bc51ae0fcec4541b14bc3"
+  },
+  "values/action_add_card": {
+    "category": "Action",
+    "context": "Android Phase B action_add_card",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "0aeb816097dcab664e375eb5b51e697b75f4e934b247d976ecd61f8c1d819034"
+  },
+  "values/label_photo": {
+    "category": "Status",
+    "context": "Android Phase B label_photo",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "d84eebada93efee12b029e5b61e4df3270f0356886ceaa44a78eb52166a8f312"
+  },
+  "values/label_avatar": {
+    "category": "Status",
+    "context": "Android Phase B label_avatar",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "ca8e826d9c2ec401e9ac82cd0aa710cf234d5cac4e6ee967b3588c63fce9681b"
+  },
+  "values/action_play": {
+    "category": "Action",
+    "context": "Android Phase B action_play",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "436e61016e26fcb773b9725745cbbf0afe7f001ea26041a814a7712c2925c442"
+  },
+  "values/action_pause": {
+    "category": "Action",
+    "context": "Android Phase B action_pause",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "858e4ba7a29fd38b630ed73a79e2738333b3fc6778fafa90252f5556c1262fdc"
+  },
+  "values/action_resume": {
+    "category": "Action",
+    "context": "Android Phase B action_resume",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "d640c7421da066618a39daf4266da5f61f66a9b1afcd626481b831a17064965d"
+  },
+  "values/action_send_gift": {
+    "category": "Action",
+    "context": "Android Phase B action_send_gift",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "759cf8a5171cf568fa3f735ab21b88e42d7bd03919a02ba18ee8ec8b978bb265"
+  },
+  "values/action_send_with_love": {
+    "category": "Action",
+    "context": "Android Phase B action_send_with_love",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "1a1a433b6d1e22c91d4ba93cfedd81716bf7ceb86b9e7f40bc77f21a6492030f"
+  },
+  "values/gift_prompt_boy": {
+    "category": "Emotional",
+    "context": "Android Phase B gift_prompt_boy",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "04a82071ebdb4daede09a320b7f23795f893221c17576739d28ae6dde3033990"
+  },
+  "values/gift_prompt_girl": {
+    "category": "Emotional",
+    "context": "Android Phase B gift_prompt_girl",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "080e149841cf94024c1993ee54449e7f1fa5a997182fdc2d216f61d950f84ae8"
+  },
+  "values/gift_prompt_unknown": {
+    "category": "Emotional",
+    "context": "Android Phase B gift_prompt_unknown",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "e41dc479482df2b9217443259cf401a3c37068161e832df4b8e6e12c41aba7ac"
+  },
+  "values/gift_quota_used": {
+    "category": "Status",
+    "context": "Android Phase B gift_quota_used",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "166dc429e831033029d7689188c8c9646cf4d5805436ca0c1ebf49da964103dc"
+  },
+  "values/gift_input_hint": {
+    "category": "Emotional",
+    "context": "Android Phase B gift_input_hint",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "cced4b4679f79f0990d8a79c78edc2fc323ee302daf0d22106476c29a8627488"
+  },
+  "values/action_add_photo": {
+    "category": "Action",
+    "context": "Android Phase B action_add_photo",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "c0660be88304265626fa6385299f2465fb6205d452c70c0549974e999874012c"
+  },
+  "values/action_import_audio": {
+    "category": "Action",
+    "context": "Android Phase B action_import_audio",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "77fd626f8915f0a3ae0881cc0b41ed0bb06a201cd540a31251725eb0ca715607"
+  },
+  "values/action_record_audio": {
+    "category": "Action",
+    "context": "Android Phase B action_record_audio",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "9a3616b04beb2bea53f938dce3fc380319dbce9e3bc939d5a329bda07d32fe70"
+  },
+  "values/action_stop_recording": {
+    "category": "Action",
+    "context": "Android Phase B action_stop_recording",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "3d591e826d5459191fd5be2539bd138b17318f021ed3c687c6975e4089a0bcec"
+  },
+  "values/guidance_photo_metadata": {
+    "category": "Guidance",
+    "context": "Android Phase B guidance_photo_metadata",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "1dbbffb512f0d857eb477442d498dd92fc019c16cbf28a180c188e72e05f4417"
+  },
+  "values/action_remove_photo": {
+    "category": "Action",
+    "context": "Android Phase B action_remove_photo",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "f46512ab2099fb0c1fecaaa5b24c230b0019c6974f266ad72d2d10c0c091c95e"
+  },
+  "values/action_remove_audio": {
+    "category": "Action",
+    "context": "Android Phase B action_remove_audio",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "4a4c9e8ddf9dff41e0269651249d56df47e2c3c69bbd366f4352d0f71835b5b8"
+  },
+  "values/action_gift_history": {
+    "category": "Action",
+    "context": "Android Phase B action_gift_history",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "986fc179b2df606f9d579e98959210911e9947eb2996d89c0e8876a346c69fb6"
+  },
+  "values/empty_gifts": {
+    "category": "Empty State",
+    "context": "Android Phase B empty_gifts",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "e7bce3bb7fb1406a0dfa5887fbc998aea0983ba58cff75910287a1d7c2188a8b"
+  },
+  "values/status_gift_synced": {
+    "category": "Status",
+    "context": "Android Phase B status_gift_synced",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "cd83b530012071512c3d28c5c58e422131238367debc9cf6aabd1101e216a102"
+  },
+  "values/status_unopened": {
+    "category": "Status",
+    "context": "Android Phase B status_unopened",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "9718269aa205a3558f23359f4d8d3df576bf2cb51c437eff4a33faf2092711cb"
+  },
+  "values/status_opened": {
+    "category": "Status",
+    "context": "Android Phase B status_opened",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "9be5ec4db198cc411c5ca122ae7d68223944b7c2ba632dd338ec1ee8008fed54"
+  },
+  "values/action_view_gift": {
+    "category": "Action",
+    "context": "Android Phase B action_view_gift",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "8baafaedeefda5dfb5aacd6210cd4fbeddff9dfb2288a421f64c96654e116427"
+  },
+  "values/label_sent_gift": {
+    "category": "Navigation",
+    "context": "Android Phase B label_sent_gift",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "abd0f0320dc30e95cd4c720236561e296453699d38cc9ce557f2c321f288dfb7"
+  },
+  "values/gift_title_boy_text": {
+    "category": "Emotional",
+    "context": "Android Phase B gift_title_boy_text",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "3ad902d282e75817394115156af0359a9ea180dafe1929b9df85c3c9b4382719"
+  },
+  "values/gift_title_boy_media": {
+    "category": "Emotional",
+    "context": "Android Phase B gift_title_boy_media",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "e6161e750f64c38accbdb4c50c3049fa3a634fb5427ab3cea1468920069d1787"
+  },
+  "values/gift_title_girl_text": {
+    "category": "Emotional",
+    "context": "Android Phase B gift_title_girl_text",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "abf91b8fdf13c8d7605261e763e01ba775a6ab70343f16d26a340579681b595c"
+  },
+  "values/gift_title_girl_media": {
+    "category": "Emotional",
+    "context": "Android Phase B gift_title_girl_media",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "d6a4cc360b3cafd0f8e6313c1051177ffdc297d9791313439364874b9a69e38f"
+  },
+  "values/gift_title_unknown_text": {
+    "category": "Emotional",
+    "context": "Android Phase B gift_title_unknown_text",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "e6d49f1f1991f4c258c9ac04397a528e5ac111387e9578ebf453a86934d44647"
+  },
+  "values/gift_title_unknown_media": {
+    "category": "Emotional",
+    "context": "Android Phase B gift_title_unknown_media",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "1bfa8068c2ea76fd7f1a94a19192f246f6379ffe9609213b0f4a821db500281c"
+  },
+  "values/label_sealed_gift": {
+    "category": "Status",
+    "context": "Android Phase B label_sealed_gift",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "59330c7c0443c15e8f4bef5a5b871fa4006e87f993a1ab1cf0f298f475dcb87f"
+  },
+  "values/gift_sealed_title": {
+    "category": "Emotional",
+    "context": "Android Phase B gift_sealed_title",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "3c503fc7aaff76ecff61122f2fdab8dda64b9c53b83ce8535fac4ecc82e4f15d"
+  },
+  "values/status_media_pending": {
+    "category": "Status",
+    "context": "Android Phase B status_media_pending",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "6ce769fbbd4d9be19b82f2a41315f3f7d0cc02b0bcc5152691f4188eccb92e0c"
+  },
+  "values/status_media_failed": {
+    "category": "Status",
+    "context": "Android Phase B status_media_failed",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "073e1e248a8e2f9cec04c45fb3e825c9c4abb73d0f9abae95b416cfe2cad6532"
+  },
+  "values/status_media_verified": {
+    "category": "Status",
+    "context": "Android Phase B status_media_verified",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "ef94253b73f4d815704a6ed4ebd478fbd40c8fb77ae37ab9c6bdeb2c597fa683"
+  },
+  "values/action_save_photo": {
+    "category": "Action",
+    "context": "Android Phase B action_save_photo",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "8118dc48c01048f54ded2e25f9d8806033187bb202ed24743754247d715252cc"
+  },
+  "values/gift_ending_boy": {
+    "category": "Emotional",
+    "context": "Android Phase B gift_ending_boy",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "0041997779636160fd760a53bc265ff2fcf34cfb63d04835a8d017e99d318511"
+  },
+  "values/gift_ending_girl": {
+    "category": "Emotional",
+    "context": "Android Phase B gift_ending_girl",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "b0075cb519a4b01f3a09e0270e3f6a129db8341928f23ce610a744727a970368"
+  },
+  "values/gift_ending_unknown": {
+    "category": "Emotional",
+    "context": "Android Phase B gift_ending_unknown",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "2bb69c98c0266765b404ca664037a2e9488b70354eff29f66323480af97e9d8e"
+  },
+  "values/action_reply_love": {
+    "category": "Action",
+    "context": "Android Phase B action_reply_love",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "ddb27564baa1c4da6ebcfacce924dcc2dff3fd371d045668d57fa36cc0549388"
+  },
+  "values/action_open_gift": {
+    "category": "Action",
+    "context": "Android Phase B action_open_gift",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "0fe0176cc04df7420ddfafc3092a46460ea436f1f4d9760ff4ad7fd794378ed0"
+  },
+  "values/action_gift_received": {
+    "category": "Action",
+    "context": "Android Phase B action_gift_received",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "ab147b306bc295e9ee10b66a9335d47b91292a9ac3896ec66abd0aa66eff9d4d"
+  },
+  "values/label_nickname": {
+    "category": "Guidance",
+    "context": "Android Phase B label_nickname",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "2b7f6a84de917e387539dbe441ca22056e793d738e6c50db30c3f569e4448df3"
+  },
+  "values/label_relationship": {
+    "category": "Guidance",
+    "context": "Android Phase B label_relationship",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "e30c78d501d055af415b031c74b9d59ef972141936878450a75c5007661d3b55"
+  },
+  "values/role_boyfriend": {
+    "category": "Status",
+    "context": "Android Phase B role_boyfriend",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "88330e460cb91f5244ab10e06c5b197091e0a6567e0b87f8a201eb69ebcf9fc9"
+  },
+  "values/role_girlfriend": {
+    "category": "Status",
+    "context": "Android Phase B role_girlfriend",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "31f884bb2fb4a8b9843079d722963814ba96c5e15e5974823919f61e3325e25f"
+  },
+  "values/role_unknown": {
+    "category": "Status",
+    "context": "Android Phase B role_unknown",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "8d2dd4e8c7caa1acb407c161aad48d1201e93e0f6dcf54c8f19ae6fb3fd15127"
+  },
+  "values/action_choose_avatar": {
+    "category": "Action",
+    "context": "Android Phase B action_choose_avatar",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "777794058c732b179842c9d9e83605a54054f619e1a17c39ebde20915f48a7e5"
+  },
+  "values/action_navigation": {
+    "category": "Action",
+    "context": "Android Phase B action_navigation",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "3db65f8c2a7d1861b4bca37da3adec5aa7905931eb6faddbc595a35f75e6ca40"
+  },
+  "values/action_add_record": {
+    "category": "Action",
+    "context": "Android Phase B action_add_record",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "950eea0391ccfaa29720068f8ea00b08c58a11b838f50da37f4cd9826ac99855"
+  },
+  "values/action_more": {
+    "category": "Action",
+    "context": "Android Phase B action_more",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "f8d46c2570e70736d62beb6e2e8df321d7cb4842a2b894f2025c47b31871d9f1"
+  },
+  "values/action_retry": {
+    "category": "Action",
+    "context": "Android Phase B action_retry",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "942087cc2d41e01304b7195558d093d10c72af8e838c7556d6a02d471ee71852"
+  },
+  "values/gift_unread_count": {
+    "category": "Status",
+    "context": "Android Phase B gift_unread_count",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "faa2a2a400ac4abb4efeef9e71415b124aaa89e0c8fb27c94c7797ed97b75dcb"
+  },
+  "values/guidance_identity_recovery": {
+    "category": "Guidance",
+    "context": "Android Phase B guidance_identity_recovery",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "06e999611708cc97564471f5d02b042166f372c75d67ec4bcfd2559e31a2f98a"
+  },
+  "values/error_amount": {
+    "category": "Error",
+    "context": "Android Phase B error_amount",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "0a8f14bcea7d31ccf46697511a964516389cf2c7ad114875b0473e305db1a8e3"
+  },
+  "values/error_quota": {
+    "category": "Error",
+    "context": "Android Phase B error_quota",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "74b1515bf22a5f0579cdb31a5856ff36dd02d0482ba9414beb8a8339ee72bc7a"
+  },
+  "values/error_media": {
+    "category": "Error",
+    "context": "Android Phase B error_media",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "053dd780809bafa9206c611ac8c6cac9ce5463021ad7cf5fccb5aad07efa0626"
+  },
+  "values/error_mic": {
+    "category": "Error",
+    "context": "Android Phase B error_mic",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "3be58d9efa46d3e2b7ea4144d21e34ed4b1fbc718460f22f2291e02eff9739d2"
+  },
+  "values/error_record_changed": {
+    "category": "Error",
+    "context": "Android Phase B error_record_changed",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "1adb8f001893b7d553125a09bbbedf9f14d5cae9c39c91df054e24b9be2e8192"
+  },
+  "values/error_no_quota": {
+    "category": "Error",
+    "context": "Android Phase B error_no_quota",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "1a884ac355b71c10379d3acaf17cbcaf41e2984f77e1605a207b092843581e7b"
+  },
+  "values/error_export": {
+    "category": "Error",
+    "context": "Android Phase B error_export",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "55799e806f1a542fc6e0d75938d4c7d0125d1bd265dee43962f7037ce3ea00cc"
+  },
+  "values/error_clock_back": {
+    "category": "Error",
+    "context": "Android Phase B error_clock_back",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "5e9f57f632684116df35409755ab4e5f914241fd5ea31e5c40a655a29d2227be"
+  },
+  "values-zh-rCN/nav_wishes": {
+    "category": "Navigation",
+    "context": "Android Phase B nav_wishes",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "3a21aa8fffc41265fe70dc2fa4201fc910d614cccff4b9459e307057e773bf52"
+  },
+  "values-zh-rCN/nav_finances": {
+    "category": "Navigation",
+    "context": "Android Phase B nav_finances",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "6400f9010789ace29c3b1fa232546f29496fc5583356948e78fd1054cdbdb6b3"
+  },
+  "values-zh-rCN/filter_upcoming": {
+    "category": "Status",
+    "context": "Android Phase B filter_upcoming",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "d3bec7add37b7acffa63ae0d6110413395e9bca979d7491bc47de014e5b5029f"
+  },
+  "values-zh-rCN/label_none": {
+    "category": "Status",
+    "context": "Android Phase B label_none",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "484d55613910eb8c0917fe308b499d474115ced993cd002a17d7cc75254330a4"
+  },
+  "values-zh-rCN/label_unassigned": {
+    "category": "Status",
+    "context": "Android Phase B label_unassigned",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "350c68309b7bfcd82938658a307655ae93d632f132740c7e8f7b0d61e2b07dd6"
+  },
+  "values-zh-rCN/label_assignee": {
+    "category": "Guidance",
+    "context": "Android Phase B label_assignee",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "a525346277ed54bd52d3cd3cd128174e3a99decdd474364256a4b4ad014c378a"
+  },
+  "values-zh-rCN/label_due_date": {
+    "category": "Guidance",
+    "context": "Android Phase B label_due_date",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "31802424217f51b030512cf9a6a8392c52e844b367f7e809e581f7391bad229c"
+  },
+  "values-zh-rCN/label_time": {
+    "category": "Guidance",
+    "context": "Android Phase B label_time",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "2847b41dc50fa2f2c713ffc20873e6c283db1d9c56d9d806ba18dbbb17320947"
+  },
+  "values-zh-rCN/label_recurrence": {
+    "category": "Guidance",
+    "context": "Android Phase B label_recurrence",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "609cf2fdf6ffcc614b99ca051b0611be0705c403db6c8f222e17070726cb0d06"
+  },
+  "values-zh-rCN/label_regular": {
+    "category": "Status",
+    "context": "Android Phase B label_regular",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "240c47d0be8365435aec0c704cfc15a429198c956abbe762bb3479acbbc0242e"
+  },
+  "values-zh-rCN/label_flexible": {
+    "category": "Status",
+    "context": "Android Phase B label_flexible",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "a653804370774f5f800f45b488f359161eba1167cbe2ad0670855de5d1fd2a9c"
+  },
+  "values-zh-rCN/label_unit": {
+    "category": "Guidance",
+    "context": "Android Phase B label_unit",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "681cfab22690130e7c806a454588c2cf19e444575b37b6b717d35b818e3eadd2"
+  },
+  "values-zh-rCN/label_daily": {
+    "category": "Status",
+    "context": "Android Phase B label_daily",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "eea1694c235b5ddf637772cbe15f04fcdc22261f6ebf73a10e0c4ad5721a7168"
+  },
+  "values-zh-rCN/label_weekly": {
+    "category": "Status",
+    "context": "Android Phase B label_weekly",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "92845d3b531d9fec186eba9baa580886c353afe9d93683a1b496efea57607810"
+  },
+  "values-zh-rCN/label_monthly": {
+    "category": "Status",
+    "context": "Android Phase B label_monthly",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "68b21af949decffb23d26143f641f08d40fe4f75d78a1c1ca58e13a4849cd896"
+  },
+  "values-zh-rCN/label_every_n": {
+    "category": "Guidance",
+    "context": "Android Phase B label_every_n",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "70ccbe927bb39e6871ae6f7628c6a270b66b1febd49a4fba4c1afc52162f8358"
+  },
+  "values-zh-rCN/label_time_zone": {
+    "category": "Guidance",
+    "context": "Android Phase B label_time_zone",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "0e6741b5e32380aa4e5697126d9b1a8f558f4eae457d7aaf55e48aa74aa8b267"
+  },
+  "values-zh-rCN/action_set_next": {
+    "category": "Action",
+    "context": "Android Phase B action_set_next",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "4378c3e17baa5c97ae05d12981f14b8c42cfb4d47e6ef8282835c4bcf768baa0"
+  },
+  "values-zh-rCN/action_complete_later": {
+    "category": "Action",
+    "context": "Android Phase B action_complete_later",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "1206855c15bc26d154848114c7173bf243d9df19a1d6590e42f9caf3968229d8"
+  },
+  "values-zh-rCN/action_clear": {
+    "category": "Action",
+    "context": "Android Phase B action_clear",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "bce2377283c2455ab8b1deb7711af90638f10ef82e345eb354e9296ff9397a56"
+  },
+  "values-zh-rCN/label_month_day": {
+    "category": "Guidance",
+    "context": "Android Phase B label_month_day",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "75c4f683318f440f3d37b81f2a5f3c3aa7c9c6734d133f0b344be7801d7e0196"
+  },
+  "values-zh-rCN/label_currency": {
+    "category": "Navigation",
+    "context": "Android Phase B label_currency",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "9677f386bdcdd9c4d0a9a6ca485a420470bbd60813608a4176c837f5b1d2ad2e"
+  },
+  "values-zh-rCN/action_search": {
+    "category": "Action",
+    "context": "Android Phase B action_search",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "44ce7ae909bbb28bbbe3cbbba8d617b71217869d62741b4c104dc123a6ef603d"
+  },
+  "values-zh-rCN/label_original_amount": {
+    "category": "Guidance",
+    "context": "Android Phase B label_original_amount",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "fee8c0943c6c369125c3fe1c9debd4a20ac68c7dde27e5bbc4f9fadf75a9b703"
+  },
+  "values-zh-rCN/label_final_cny": {
+    "category": "Guidance",
+    "context": "Android Phase B label_final_cny",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "4658bc163bc995551a2d2e3b014d209f7dcabd46395c9778b38dc62f30939847"
+  },
+  "values-zh-rCN/guidance_actual_cny": {
+    "category": "Guidance",
+    "context": "Android Phase B guidance_actual_cny",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "d81ac73d5cbe3439a617de09a925c4cc8673e5b568da4f54408871b91e0dec72"
+  },
+  "values-zh-rCN/label_exchange_rate": {
+    "category": "Guidance",
+    "context": "Android Phase B label_exchange_rate",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "f64de91818925db80b06b2d6b485d2d3bc52c765ea213aca8e7a1b8d8db9d288"
+  },
+  "values-zh-rCN/label_rate_source": {
+    "category": "Guidance",
+    "context": "Android Phase B label_rate_source",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "f66e8279fea22773576b591121c20bc88772e019f8774ee15107084d72fb7c95"
+  },
+  "values-zh-rCN/label_rate_date": {
+    "category": "Guidance",
+    "context": "Android Phase B label_rate_date",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "51cc2c49e001368bdb0a45a84a91405c4c7a82cf6cf7fc556634ae4eed41dc83"
+  },
+  "values-zh-rCN/action_add_wishes": {
+    "category": "Action",
+    "context": "Android Phase B action_add_wishes",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "3022c345293a33702d59c17dc3b6f68533ea864cf02de971e19e899e56332649"
+  },
+  "values-zh-rCN/guidance_partner_needed": {
+    "category": "Guidance",
+    "context": "Android Phase B guidance_partner_needed",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "d866f1532ea6e6401d25fa21785a9b73c31aa938d0d43be25376bb72ebb6f7cc"
+  },
+  "values-zh-rCN/wish_totals": {
+    "category": "Status",
+    "context": "Android Phase B wish_totals",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "1f88f0fe10c2ab20b9e878f8f8815f19f982b43677e9580f9ce58a6264e333f5"
+  },
+  "values-zh-rCN/grant_added": {
+    "category": "Status",
+    "context": "Android Phase B grant_added",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "06091e6f50c979eed18453b70974c066675b021dec6c3edb7d774a687b658f49"
+  },
+  "values-zh-rCN/grant_remaining": {
+    "category": "Status",
+    "context": "Android Phase B grant_remaining",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "be9c4ae2debb1422f2e32cb072fbf8c89260b2d24394821e26c54050ce9692d0"
+  },
+  "values-zh-rCN/empty_grants": {
+    "category": "Empty State",
+    "context": "Android Phase B empty_grants",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "691a26b98e2461f711bf2ed2b78d63e2032291c136be8261b7f1922e7214ddd6"
+  },
+  "values-zh-rCN/label_fulfiller": {
+    "category": "Guidance",
+    "context": "Android Phase B label_fulfiller",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "08dcdf90fcc3abb377b868ec6189ebff91fb1ed5b28529ef927740aa84f95436"
+  },
+  "values-zh-rCN/action_new_wish": {
+    "category": "Action",
+    "context": "Android Phase B action_new_wish",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "3d4a799b170ee67d2f0d5fcbefa5ae26d63abe705e8ab074edc1774a9eb54b06"
+  },
+  "values-zh-rCN/action_adjust_quota": {
+    "category": "Action",
+    "context": "Android Phase B action_adjust_quota",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "3b09c4395d812f5c2e647ffdf8e9dea214534c38079bc886aa2ce816c20bf4a0"
+  },
+  "values-zh-rCN/label_adjustment": {
+    "category": "Guidance",
+    "context": "Android Phase B label_adjustment",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "0258822d7e95374b16205278d34fd8a7040eb585d7aab8c6daece1d147db10ad"
+  },
+  "values-zh-rCN/label_reason": {
+    "category": "Guidance",
+    "context": "Android Phase B label_reason",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "f029d9cb4a7614ef86725b1fafa5e78adb6eaff8efc5967ee952ac73cb39bd62"
+  },
+  "values-zh-rCN/label_grant_history": {
+    "category": "Navigation",
+    "context": "Android Phase B label_grant_history",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "fc10aa325ea5baf99756c2d588ce31a5738f21c5979bdc44e824dc8e2557dc6a"
+  },
+  "values-zh-rCN/action_request_fulfillment": {
+    "category": "Action",
+    "context": "Android Phase B action_request_fulfillment",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "5bc29a63dc61d205eed7c44bfde97ad12eb80a320e165dd5d5592895818b9adc"
+  },
+  "values-zh-rCN/action_confirm_fulfillment": {
+    "category": "Action",
+    "context": "Android Phase B action_confirm_fulfillment",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "dad277e51ae218609e997d382efa0c0ca507ddcd338fadebf8af6ce6abcc2c6c"
+  },
+  "values-zh-rCN/action_reject_fulfillment": {
+    "category": "Action",
+    "context": "Android Phase B action_reject_fulfillment",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "aa236217ac45785ca31834d3f64a9463899418362a3eabd7c17837e43418e904"
+  },
+  "values-zh-rCN/tab_reserves": {
+    "category": "Navigation",
+    "context": "Android Phase B tab_reserves",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "bbbe663028b3cd152881b01cbd17d301098905512fe626782d1f14edc92b138f"
+  },
+  "values-zh-rCN/tab_expenses": {
+    "category": "Navigation",
+    "context": "Android Phase B tab_expenses",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "e679096865859f36a8673f3cc36de45bafcafff0429bbff669a66456861c2ef0"
+  },
+  "values-zh-rCN/tab_bills": {
+    "category": "Navigation",
+    "context": "Android Phase B tab_bills",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "6fdb22e034e8c877b569050f5b1fb8623e2ec48fa4403eb9d206c9af8bd076b2"
+  },
+  "values-zh-rCN/action_finance_settings": {
+    "category": "Action",
+    "context": "Android Phase B action_finance_settings",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "d55aa6b6aa14329b0bec50f15d596be67f6b84afd48aa6255b119d484ca69745"
+  },
+  "values-zh-rCN/label_period": {
+    "category": "Guidance",
+    "context": "Android Phase B label_period",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "878000ecadf607b0f1706190e873a8b517961158ef6397fdb70bce7f1befdc9b"
+  },
+  "values-zh-rCN/filter_all": {
+    "category": "Status",
+    "context": "Android Phase B filter_all",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "5c55a67935af8f4508ba05d6d81c9eb240a2ea0ba886d8428b985e305470da3f"
+  },
+  "values-zh-rCN/label_shared_cycle": {
+    "category": "Status",
+    "context": "Android Phase B label_shared_cycle",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "bb07c838f14ce896f13a2d6a78499cdb2a8190f12b0c63d9c2857e68bb1552ef"
+  },
+  "values-zh-rCN/label_my_cycle": {
+    "category": "Status",
+    "context": "Android Phase B label_my_cycle",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "43003ae933eff01d889380b7e60aa818d9d0c8441a178c6a8ad8fc4af69b51e9"
+  },
+  "values-zh-rCN/label_book_balance": {
+    "category": "Status",
+    "context": "Android Phase B label_book_balance",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "b5c7ff4fa89b94927ec5ab3d537ac6bf35b7bb196f26644ba690ee98c27d90a1"
+  },
+  "values-zh-rCN/label_verified_balance": {
+    "category": "Status",
+    "context": "Android Phase B label_verified_balance",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "a0404c33ae517757e26a47fa3dd88f353e4e57b3f31473bba3233ffdc8d3d969"
+  },
+  "values-zh-rCN/label_provisional_amount": {
+    "category": "Status",
+    "context": "Android Phase B label_provisional_amount",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "1c3e41a335013191307a95dea270b2d91d0bc0e2183d0a31d7ddacf55b8fd757"
+  },
+  "values-zh-rCN/action_opening_balance": {
+    "category": "Action",
+    "context": "Android Phase B action_opening_balance",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "b2d9c1b1bdfd8f95bf7be1241bda7a95b226a7f6098432a73695e82e6963543f"
+  },
+  "values-zh-rCN/empty_deposits": {
+    "category": "Empty State",
+    "context": "Android Phase B empty_deposits",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "dabf9952319e19c1732e94a026ebadbb88a2afdf22d6e9c846d0de25664fab59"
+  },
+  "values-zh-rCN/label_shared_spending": {
+    "category": "Navigation",
+    "context": "Android Phase B label_shared_spending",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "c7a935157337324e65a5cd5f3553ff3298388f0e7a4181010b637d34f9c516de"
+  },
+  "values-zh-rCN/label_total_expenses": {
+    "category": "Status",
+    "context": "Android Phase B label_total_expenses",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "315edda866fc6b584b406e9b572f3d48a797316571525128cf18f5a185a956f0"
+  },
+  "values-zh-rCN/payment_me": {
+    "category": "Status",
+    "context": "Android Phase B payment_me",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "7e9a6bb5df76879d0eee8973277d577c7a2de9e435f08a5c2995b219db5cc008"
+  },
+  "values-zh-rCN/payment_partner": {
+    "category": "Status",
+    "context": "Android Phase B payment_partner",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "6d00a770918568b9546b40aa14da6ad9afbc73784af030248740efa44ea00a3e"
+  },
+  "values-zh-rCN/payment_aa": {
+    "category": "Status",
+    "context": "Android Phase B payment_aa",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "eefe9a603858a96633b8c82245cfc457e77a3eb57826b8d0003411647b768ef6"
+  },
+  "values-zh-rCN/label_payment_tool": {
+    "category": "Guidance",
+    "context": "Android Phase B label_payment_tool",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "4822a0a9478450e3f4a0ff13bb44a40ed7c05198814227728b41f30b18c652cb"
+  },
+  "values-zh-rCN/label_source": {
+    "category": "Guidance",
+    "context": "Android Phase B label_source",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "a488e93d69cc12961ea26e97b7d246d03a9af7334d2d84881dd7f702e801bf74"
+  },
+  "values-zh-rCN/label_standalone": {
+    "category": "Status",
+    "context": "Android Phase B label_standalone",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "804428f49d223b266ef1ea77a4168c3caa9fcd8f539e924fd7156e2bbc95dc4e"
+  },
+  "values-zh-rCN/label_date_event": {
+    "category": "Navigation",
+    "context": "Android Phase B label_date_event",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "390161338aed5f780f7e5fd7a883c63d5ec8c33bafcbd252c3da646172847d63"
+  },
+  "values-zh-rCN/label_date_events": {
+    "category": "Navigation",
+    "context": "Android Phase B label_date_events",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "60ebc41e479bee6e5e42d5b1b686f66bde6b3d48886f169469d7613e4c472387"
+  },
+  "values-zh-rCN/label_category_filter": {
+    "category": "Guidance",
+    "context": "Android Phase B label_category_filter",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "31a08fb7362e20685949337a6cbe3ad82889d8dd0cc8588d3d154ba978f27077"
+  },
+  "values-zh-rCN/label_category": {
+    "category": "Guidance",
+    "context": "Android Phase B label_category",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "515559957fd3acbdd96991b2e6bc90e608ef779aa8177c97286bfc16f0ceb606"
+  },
+  "values-zh-rCN/label_uncategorized": {
+    "category": "Status",
+    "context": "Android Phase B label_uncategorized",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "54b89f901274588b3771688dff6fc07fa0fe44c04639ea8a825d0fef952d2272"
+  },
+  "values-zh-rCN/empty_expenses": {
+    "category": "Empty State",
+    "context": "Android Phase B empty_expenses",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "f03fb3b526769eed18a1bc9d2496fb17a4bf48c14ef3c140d27a91190518f707"
+  },
+  "values-zh-rCN/empty_bills": {
+    "category": "Empty State",
+    "context": "Android Phase B empty_bills",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "af25d3344346187a680764b8fbf1aece7b5a0e2420b80fa4ba42f348a1bd0f3d"
+  },
+  "values-zh-rCN/bill_day": {
+    "category": "Status",
+    "context": "Android Phase B bill_day",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "b689d3d243385fb43b271238e7fd1f8f9a991d7e73c955be53d2f8a89b80a25e"
+  },
+  "values-zh-rCN/status_paused": {
+    "category": "Status",
+    "context": "Android Phase B status_paused",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "eb0c326b60ae897a19080c0b21565029be8da614a7dd6ecad97da24f4cb8fc90"
+  },
+  "values-zh-rCN/action_override_occurrence": {
+    "category": "Action",
+    "context": "Android Phase B action_override_occurrence",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "1f739ea1d6b58d06e4ec92025164468c3e08f7ccd71eb2678230a8e1d20768ba"
+  },
+  "values-zh-rCN/action_deposit": {
+    "category": "Action",
+    "context": "Android Phase B action_deposit",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "773badd32bd8e498fbe8e2640723b24b48d797121cdf8f172fbd714a9e2c285f"
+  },
+  "values-zh-rCN/action_recurring_bill": {
+    "category": "Action",
+    "context": "Android Phase B action_recurring_bill",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "6fdb22e034e8c877b569050f5b1fb8623e2ec48fa4403eb9d206c9af8bd076b2"
+  },
+  "values-zh-rCN/action_expense": {
+    "category": "Action",
+    "context": "Android Phase B action_expense",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "e679096865859f36a8673f3cc36de45bafcafff0429bbff669a66456861c2ef0"
+  },
+  "values-zh-rCN/label_deposited_by": {
+    "category": "Guidance",
+    "context": "Android Phase B label_deposited_by",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "c504039f1ffcbce37d22b2d8efe443a94b33c06f7083fcf02354eff2bab41781"
+  },
+  "values-zh-rCN/guidance_next_month": {
+    "category": "Guidance",
+    "context": "Android Phase B guidance_next_month",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "73319f5b878f5f4ce38d19fb70b0f4b0721ef5e05a815794a7cccd89d3955552"
+  },
+  "values-zh-rCN/action_toggle_bill": {
+    "category": "Action",
+    "context": "Android Phase B action_toggle_bill",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "09764747c40fe9621531bd4e02bf320c058b82bd2c99b0c9a56a82fdee963f6d"
+  },
+  "values-zh-rCN/label_occurrence_month": {
+    "category": "Guidance",
+    "context": "Android Phase B label_occurrence_month",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "3cd0c252fb1d56abc5342771f8f7d65fb4e4a64708a84069fa9ae3b967ebe2b5"
+  },
+  "values-zh-rCN/action_confirm_bill": {
+    "category": "Action",
+    "context": "Android Phase B action_confirm_bill",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "909009a4821ef09eba5b9f3bb5a56ca1e7c1167b84a39443891cc744488c3117"
+  },
+  "values-zh-rCN/action_skip_bill": {
+    "category": "Action",
+    "context": "Android Phase B action_skip_bill",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "553e94225c32d3eaa1cea332ff63e2ff7a337413211b123934f923e287df4ecc"
+  },
+  "values-zh-rCN/reminder_before_bill": {
+    "category": "Guidance",
+    "context": "Android Phase B reminder_before_bill",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "2e60604e0c0744b0641a8bf6fb9657c484561e1450dc7923f01b3403860f277b"
+  },
+  "values-zh-rCN/reminder_review_bill": {
+    "category": "Guidance",
+    "context": "Android Phase B reminder_review_bill",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "ae6a41215b017f998cbe384156b6347646c3b7514e9fdb72d2cab8d8fa4f3635"
+  },
+  "values-zh-rCN/action_review_bill": {
+    "category": "Action",
+    "context": "Android Phase B action_review_bill",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "2e81b3dff58090231b9e74f4a9d90e76fcf46ad4c483e5ffc36e3b152a24e4fb"
+  },
+  "values-zh-rCN/action_dismiss": {
+    "category": "Action",
+    "context": "Android Phase B action_dismiss",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "d301bc1258334c7c70efe8fd3ce59b45d587e6c4d50c56568453478ba217db64"
+  },
+  "values-zh-rCN/label_financial_cycle": {
+    "category": "Guidance",
+    "context": "Android Phase B label_financial_cycle",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "8db49d7055bb118dba424177f6e4f8849da994a9dcd31827b8adb1e6508bb9c6"
+  },
+  "values-zh-rCN/label_salary_day": {
+    "category": "Guidance",
+    "context": "Android Phase B label_salary_day",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "af719d43c81fd80f373c3d96154d72c44282397484e46f9269bca8bd6aedea31"
+  },
+  "values-zh-rCN/label_planned_deposit": {
+    "category": "Guidance",
+    "context": "Android Phase B label_planned_deposit",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "33871a64016e779f3195feb1f3d610c198be8d9250fd0747fbaa6dfea2f89368"
+  },
+  "values-zh-rCN/guidance_planned_deposit": {
+    "category": "Guidance",
+    "context": "Android Phase B guidance_planned_deposit",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "fad3e887dd20091dc89165ef39702cdaeaf773807ca0ccc1456505c2f3964e0a"
+  },
+  "values-zh-rCN/label_payment_methods": {
+    "category": "Navigation",
+    "context": "Android Phase B label_payment_methods",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "9aba5da586c22eb08c1e43dd05261ac0e90919d6e23c6a424a0709b0a5838c2b"
+  },
+  "values-zh-rCN/label_bank": {
+    "category": "Guidance",
+    "context": "Android Phase B label_bank",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "641a9c1dbd555899ba755c4fa11bc1d305194bf07647d15eff23c6b61374a5bf"
+  },
+  "values-zh-rCN/label_card_name": {
+    "category": "Guidance",
+    "context": "Android Phase B label_card_name",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "a41ec76ecac2ec5853a7d5069fe53766354d09b6e53a7a0b62d9b7651294b3ae"
+  },
+  "values-zh-rCN/label_last_four": {
+    "category": "Guidance",
+    "context": "Android Phase B label_last_four",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "38aa98e736e7acecce214782525a0aa081e282f5890be3615d31ff78c21778cb"
+  },
+  "values-zh-rCN/label_holder": {
+    "category": "Guidance",
+    "context": "Android Phase B label_holder",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "b2bd2ee5fb35bd135eaa053e12cbfe22a024be180c12dfdd300cf072a845281c"
+  },
+  "values-zh-rCN/label_card_kind": {
+    "category": "Guidance",
+    "context": "Android Phase B label_card_kind",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "71ce8b6758f2b21c1815fba2d6ce31d842391a3bb3e678132915e9872e298e31"
+  },
+  "values-zh-rCN/label_debit": {
+    "category": "Status",
+    "context": "Android Phase B label_debit",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "31fc5f8a25795e9f70acb6e3ca670d5c1796d720b6bed733f8874ca5da730342"
+  },
+  "values-zh-rCN/label_credit": {
+    "category": "Status",
+    "context": "Android Phase B label_credit",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "bf4fe76a26686e0e18787e5056ca9b8a6c235e5923b5f030cff2e429eeb29b65"
+  },
+  "values-zh-rCN/label_shared_visibility": {
+    "category": "Guidance",
+    "context": "Android Phase B label_shared_visibility",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "5eda8c9b1ac94997c6330b70e0248afe9555bee029b055d77cef70209b22e818"
+  },
+  "values-zh-rCN/guidance_card_history": {
+    "category": "Guidance",
+    "context": "Android Phase B guidance_card_history",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "f53cf5b9400d8822523ee0c82a5acd8114e75fec8cd189ce54bcaeb7e6f468a5"
+  },
+  "values-zh-rCN/action_add_card": {
+    "category": "Action",
+    "context": "Android Phase B action_add_card",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "29b0e4f4eeef38c819c5480da1c8bf969d364c7da3e17fffca1321bccf842796"
+  },
+  "values-zh-rCN/label_photo": {
+    "category": "Status",
+    "context": "Android Phase B label_photo",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "7b50017ae47eca327bf1f92c1afb647811242711589b51de5c6009817d042310"
+  },
+  "values-zh-rCN/label_avatar": {
+    "category": "Status",
+    "context": "Android Phase B label_avatar",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "3ea2d23c902cfa31238e5ebbbe0722f7dee5b534ada436f81641a4e127414873"
+  },
+  "values-zh-rCN/action_play": {
+    "category": "Action",
+    "context": "Android Phase B action_play",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "c3396195e91ccdd8468b38f08c58e5a7f13220f16ed29e668ffd4f58ef04f443"
+  },
+  "values-zh-rCN/action_pause": {
+    "category": "Action",
+    "context": "Android Phase B action_pause",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "8d12fc0d4eb26021d93db693a076e474b8fc6e01f8808666744816c8ba72b746"
+  },
+  "values-zh-rCN/action_resume": {
+    "category": "Action",
+    "context": "Android Phase B action_resume",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "7c9691192f1b73408bbe4c0cb6d00db94375ca9d8fce0a0d5985e7a5178f083f"
+  },
+  "values-zh-rCN/action_send_gift": {
+    "category": "Action",
+    "context": "Android Phase B action_send_gift",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "b70352b8b2fadd86f8b1d01493cd9240db9d9b4bae0ce47db07298a30aa49a76"
+  },
+  "values-zh-rCN/action_send_with_love": {
+    "category": "Action",
+    "context": "Android Phase B action_send_with_love",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "1a1a433b6d1e22c91d4ba93cfedd81716bf7ceb86b9e7f40bc77f21a6492030f"
+  },
+  "values-zh-rCN/gift_prompt_boy": {
+    "category": "Emotional",
+    "context": "Android Phase B gift_prompt_boy",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "124dc97bf3504de304fae4c60c103414f7ae4748641998936ecd916ef3ecf1fa"
+  },
+  "values-zh-rCN/gift_prompt_girl": {
+    "category": "Emotional",
+    "context": "Android Phase B gift_prompt_girl",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "29aec0570b8112b3a4a60a83e7b3b2bf454e5a4b2d3d4f053b9e92d2f796b39a"
+  },
+  "values-zh-rCN/gift_prompt_unknown": {
+    "category": "Emotional",
+    "context": "Android Phase B gift_prompt_unknown",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "a248339fcf7be73c7e5c33e1bea369e0dfb4fc049202202a19d7e87725760dbd"
+  },
+  "values-zh-rCN/gift_quota_used": {
+    "category": "Status",
+    "context": "Android Phase B gift_quota_used",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "9aab56ff5b73d1e3497ffa191cc58e3e4e7427ea036a3be2506c59278782b91b"
+  },
+  "values-zh-rCN/gift_input_hint": {
+    "category": "Emotional",
+    "context": "Android Phase B gift_input_hint",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "2c30c02277888bdd4091a1d4cb08ad3acb9995c06728f78a019ca18e5f5ea58d"
+  },
+  "values-zh-rCN/action_add_photo": {
+    "category": "Action",
+    "context": "Android Phase B action_add_photo",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "8d6cbbfa6e54e4d8f6a81bbdff782b5dacc08d745f80631b5d1c1cfaaff9c371"
+  },
+  "values-zh-rCN/action_import_audio": {
+    "category": "Action",
+    "context": "Android Phase B action_import_audio",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "4b5e4c9623054a3ef28e249d18900855b15b792f86fe84ef728a46cda7d5992e"
+  },
+  "values-zh-rCN/action_record_audio": {
+    "category": "Action",
+    "context": "Android Phase B action_record_audio",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "e37fc2d399020d9ab6b553cb7e7adaee01e662a2e4eba5b5824216a8fa688076"
+  },
+  "values-zh-rCN/action_stop_recording": {
+    "category": "Action",
+    "context": "Android Phase B action_stop_recording",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "84e3135a0e3059abd61dabe2d464f9c87f29be77f82bae910ba642052a59419c"
+  },
+  "values-zh-rCN/guidance_photo_metadata": {
+    "category": "Guidance",
+    "context": "Android Phase B guidance_photo_metadata",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "4679f52577892a78cd6486888b5c028b578116f3052fecfdeb92c3dcc8419093"
+  },
+  "values-zh-rCN/action_remove_photo": {
+    "category": "Action",
+    "context": "Android Phase B action_remove_photo",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "0e30cc1b76def5b66f4309f64b66d64e6f114455186f921259d4c4899e193d0d"
+  },
+  "values-zh-rCN/action_remove_audio": {
+    "category": "Action",
+    "context": "Android Phase B action_remove_audio",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "c8b8b3212a668f3f89a20a8c2944afa8e7a6ee31fffc4ea0e9a808800d5fa8ee"
+  },
+  "values-zh-rCN/action_gift_history": {
+    "category": "Action",
+    "context": "Android Phase B action_gift_history",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "ef6d58432d65bb1cbeb5a174a657aa43b512b5c0b666e56c7f86edfbefd23054"
+  },
+  "values-zh-rCN/empty_gifts": {
+    "category": "Empty State",
+    "context": "Android Phase B empty_gifts",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "ca565bf6854b82606ec79734853fcc7e1c77bc7797d97b9dce37c1f73d7af08c"
+  },
+  "values-zh-rCN/status_gift_synced": {
+    "category": "Status",
+    "context": "Android Phase B status_gift_synced",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "e025d0fd30b7f3e4daf91d0a12f0d801cc5becee48e2992219a0f6bf116ee4b7"
+  },
+  "values-zh-rCN/status_unopened": {
+    "category": "Status",
+    "context": "Android Phase B status_unopened",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "8dc97a30e142f3f417b8898baeacc1d66c9ee6b90906aa52a189d92254730e5b"
+  },
+  "values-zh-rCN/status_opened": {
+    "category": "Status",
+    "context": "Android Phase B status_opened",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "06f8e5e9e3cd8a2fff484c21a4b56991ea9db3bef48e611f3ea288084f25cb16"
+  },
+  "values-zh-rCN/action_view_gift": {
+    "category": "Action",
+    "context": "Android Phase B action_view_gift",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "e75521002da21b8a6850c1f998ffacc855a51274497e06433770aba76db5427f"
+  },
+  "values-zh-rCN/label_sent_gift": {
+    "category": "Navigation",
+    "context": "Android Phase B label_sent_gift",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "4e0721fd4cd0a8f25895d01a0c08b6bf612b777f1bda0013a3e10811b3669390"
+  },
+  "values-zh-rCN/gift_title_boy_text": {
+    "category": "Emotional",
+    "context": "Android Phase B gift_title_boy_text",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "a32ad0ece734e84bba9646f2355ac6a165637321c234ed50dd6776ae938919f4"
+  },
+  "values-zh-rCN/gift_title_boy_media": {
+    "category": "Emotional",
+    "context": "Android Phase B gift_title_boy_media",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "88c83dca86b73ca1539452e4189096b90fb641a2de537b7edd525662a8f63d26"
+  },
+  "values-zh-rCN/gift_title_girl_text": {
+    "category": "Emotional",
+    "context": "Android Phase B gift_title_girl_text",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "dcd1f823c04de6d14bcb6a2f3eca2d5377a1bd7e49f92887806869a0ec5d4851"
+  },
+  "values-zh-rCN/gift_title_girl_media": {
+    "category": "Emotional",
+    "context": "Android Phase B gift_title_girl_media",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "d2fdc707303b52acfaada96296d15fb357b820b482439c23ca29428e103983a3"
+  },
+  "values-zh-rCN/gift_title_unknown_text": {
+    "category": "Emotional",
+    "context": "Android Phase B gift_title_unknown_text",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "8935db691b300c89f790d74e85f8fe291274138ac87909e8e370410e2877cdd1"
+  },
+  "values-zh-rCN/gift_title_unknown_media": {
+    "category": "Emotional",
+    "context": "Android Phase B gift_title_unknown_media",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "a4cd1e0dd2339916d43a0a1d0dc1c06fe753d9256ae84588c583c98922e25ce4"
+  },
+  "values-zh-rCN/label_sealed_gift": {
+    "category": "Status",
+    "context": "Android Phase B label_sealed_gift",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "69adac9655a1259354f1db88dbbc7cc6122d75f949c20459da0d329b396b14a0"
+  },
+  "values-zh-rCN/gift_sealed_title": {
+    "category": "Emotional",
+    "context": "Android Phase B gift_sealed_title",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "8b163a3c22b36e36be4de557d1e6ff3ff63fed3aac07c630af86312d2aad0c3b"
+  },
+  "values-zh-rCN/status_media_pending": {
+    "category": "Status",
+    "context": "Android Phase B status_media_pending",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "158714474a442b9e06f2bfa7e4438dd313c85af564d24f582a597ca7e494ba32"
+  },
+  "values-zh-rCN/status_media_failed": {
+    "category": "Status",
+    "context": "Android Phase B status_media_failed",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "c881efc47cfddc7cc456bf612cd49ed59296c8abfa6e48ae7f766cbf9c1e2de0"
+  },
+  "values-zh-rCN/status_media_verified": {
+    "category": "Status",
+    "context": "Android Phase B status_media_verified",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "7f7d2a66ecd25674b249325492637fd313c5b66a65c11e24062fdfa531503721"
+  },
+  "values-zh-rCN/action_save_photo": {
+    "category": "Action",
+    "context": "Android Phase B action_save_photo",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "3b1ccae783f1422b872f5bacead41c3e652ea309f27c2c017db01c65190ca233"
+  },
+  "values-zh-rCN/gift_ending_boy": {
+    "category": "Emotional",
+    "context": "Android Phase B gift_ending_boy",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "67227d912d73c751d00540bc1793420a497f8179bd3073835ac8c0cb3ec7cd66"
+  },
+  "values-zh-rCN/gift_ending_girl": {
+    "category": "Emotional",
+    "context": "Android Phase B gift_ending_girl",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "794a203cea6a49e217a9e7f8c799506b9ffc8b0a11511c9ab56499bbe0139302"
+  },
+  "values-zh-rCN/gift_ending_unknown": {
+    "category": "Emotional",
+    "context": "Android Phase B gift_ending_unknown",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "e897ce0b55cf65fcd5a1ed9dc4660d2b185858e572db489ce360228424124928"
+  },
+  "values-zh-rCN/action_reply_love": {
+    "category": "Action",
+    "context": "Android Phase B action_reply_love",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "8bd6be42784cb5e9f321d5a3dd412cf2bbc388e16c5f0dc428bd006e59f612fa"
+  },
+  "values-zh-rCN/action_open_gift": {
+    "category": "Action",
+    "context": "Android Phase B action_open_gift",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "29c3819edebfb46f2932acc45823617946c4335178fe1402b64b8564a5f8fb8a"
+  },
+  "values-zh-rCN/action_gift_received": {
+    "category": "Action",
+    "context": "Android Phase B action_gift_received",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "b26ee65bfb3b16afdfec7a7bdecabb9fccac7db544bbe426ec7135a08ec5e970"
+  },
+  "values-zh-rCN/label_nickname": {
+    "category": "Guidance",
+    "context": "Android Phase B label_nickname",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "7a1e2b964b67224c75ff57ffd9fc81f91042cde766bcabfe83cfc5c42d2988eb"
+  },
+  "values-zh-rCN/label_relationship": {
+    "category": "Guidance",
+    "context": "Android Phase B label_relationship",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "14b6a7f9c93a46fc07974cf1dc593bdf63871994bf0dee7119d70ced3d934fc2"
+  },
+  "values-zh-rCN/role_boyfriend": {
+    "category": "Status",
+    "context": "Android Phase B role_boyfriend",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "8da927115e674aad5c283a10a0ac924f4e42f2ccd16b451af0abcb5029e2512a"
+  },
+  "values-zh-rCN/role_girlfriend": {
+    "category": "Status",
+    "context": "Android Phase B role_girlfriend",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "f7d17744be2297c2c21b2e32d35e4a95157a0032642e2abf132fbae6d149d475"
+  },
+  "values-zh-rCN/role_unknown": {
+    "category": "Status",
+    "context": "Android Phase B role_unknown",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "2f5f1d6fbfb061ed02def5f4a3a151303da034681e38179744c7d1b1401f1caf"
+  },
+  "values-zh-rCN/action_choose_avatar": {
+    "category": "Action",
+    "context": "Android Phase B action_choose_avatar",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "e3cfc03028c9d822226194226b876a0e8d0e7a2460e8d166bcca4a077297cfd4"
+  },
+  "values-zh-rCN/action_navigation": {
+    "category": "Action",
+    "context": "Android Phase B action_navigation",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "e72622fe470d04bc588375b9a788202c36a9a133eba8701f2ce12ecdb8924e0d"
+  },
+  "values-zh-rCN/action_add_record": {
+    "category": "Action",
+    "context": "Android Phase B action_add_record",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "9007ba40674f31554e30e840620949559a3dfaab805dc0177fd58c25ad3761da"
+  },
+  "values-zh-rCN/action_more": {
+    "category": "Action",
+    "context": "Android Phase B action_more",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "9f07d2ce4115f575694847a5da6bdc5cbbf67aad7db91922c31cd289cca8fb96"
+  },
+  "values-zh-rCN/action_retry": {
+    "category": "Action",
+    "context": "Android Phase B action_retry",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "b8784c8dd5636ff231b121892144e4a3977d5b874f21934c53f850cde7bac0ea"
+  },
+  "values-zh-rCN/gift_unread_count": {
+    "category": "Status",
+    "context": "Android Phase B gift_unread_count",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "cb7c116899a51a73e7e310140b4510f7ddcd2f03a2b431763347e1e310b663d1"
+  },
+  "values-zh-rCN/guidance_identity_recovery": {
+    "category": "Guidance",
+    "context": "Android Phase B guidance_identity_recovery",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "a5762ce998d140d5a88a6f63aee0e1a0a2b9b64108aa8faa3ce5da5e50b07d12"
+  },
+  "values-zh-rCN/error_amount": {
+    "category": "Error",
+    "context": "Android Phase B error_amount",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "9e3297f9fbae601a155ab1e43342a83826b3099bf2de5557ac6283d2a0647cf1"
+  },
+  "values-zh-rCN/error_quota": {
+    "category": "Error",
+    "context": "Android Phase B error_quota",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "3e87f80cd6fdef9be0479c699e9b5e0516ffd58ce20e767a73e97e920d19dd32"
+  },
+  "values-zh-rCN/error_media": {
+    "category": "Error",
+    "context": "Android Phase B error_media",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "75a9667608d6eb87743c1af3efd9724ad37388337eac2b0f7a2e3b38dedfcdd0"
+  },
+  "values-zh-rCN/error_mic": {
+    "category": "Error",
+    "context": "Android Phase B error_mic",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "2dcccd168a779111d5ed991f3da7689d3775d86d4eb5563a81bf8a8053c61be5"
+  },
+  "values-zh-rCN/error_record_changed": {
+    "category": "Error",
+    "context": "Android Phase B error_record_changed",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "ca9d1a4370210c0b4e52d7b65f39e977f729bf996f3eef1fbcc5cde0ea1580d3"
+  },
+  "values-zh-rCN/error_no_quota": {
+    "category": "Error",
+    "context": "Android Phase B error_no_quota",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "452cf39ab75e249baa80e493db0f789b74329bae1b3940eec02b7779af8533e6"
+  },
+  "values-zh-rCN/error_export": {
+    "category": "Error",
+    "context": "Android Phase B error_export",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "1a0313b1a663e6865e76fef4366ee0094c789b79a924314d9e0e8a80fbf58e4f"
+  },
+  "values-zh-rCN/error_clock_back": {
+    "category": "Error",
+    "context": "Android Phase B error_clock_back",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "604b451a425c36baea4bcf4e9c5d50242e5785f3770897b6bc4fbb00aeb20ff8"
+  },
+  "values/action_add_date_event": {
+    "category": "Action",
+    "context": "Android Phase B action_add_date_event",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "4a7bc20074da8ae8aaed13c4e7cb61edfc881d1b5c1bcac270adad52c1d9006c"
+  },
+  "values-zh-rCN/action_add_date_event": {
+    "category": "Action",
+    "context": "Android Phase B action_add_date_event",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "9d060f4e9bd727b3e253d0a8a2d47105e2fbc502ac6d4ea7a9ec1f075d7f3401"
+  },
+  "values/label_domain": {
+    "category": "Guidance",
+    "context": "Android Phase B label_domain",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "79fa33618d8eaa1fc55f6f8a2d34c65ececc4c5961ac2b1433802c2629d55ca1"
+  },
+  "values/status_local_saved": {
+    "category": "Status",
+    "context": "Android Phase B status_local_saved",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "d7b6284e6c18fbde35222606fc9a4cddb75813958d8f809d427150ef6387b010"
+  },
+  "values/status_remote_persisted": {
+    "category": "Status",
+    "context": "Android Phase B status_remote_persisted",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "3296011c339f89963200178b36180522e0b12a8ac56092bce1afb8f87af8002e"
+  },
+  "values/status_converged": {
+    "category": "Status",
+    "context": "Android Phase B status_converged",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "5e46e1a748bcb4b68580ce5aaee074d8d7fc9fe3b8cef5a23f7c01c097fb205a"
+  },
+  "values/status_domain_confirmed": {
+    "category": "Status",
+    "context": "Android Phase B status_domain_confirmed",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "ecac80f6320de58c7a4bddc96522a7b93d1c2dc262670d8e7a34045be658fff6"
+  },
+  "values/notice_synced_changes": {
+    "category": "Status",
+    "context": "Android Phase B notice_synced_changes",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "dad3807737d674e770f2336aede039fc6f01659da7f6cfc7c4534445aa7a328f"
+  },
+  "values/action_view": {
+    "category": "Action",
+    "context": "Android Phase B action_view",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "dcc839a4015c4b7dd9db959a8f757833b8adb92462a751b973386e453c6d58a3"
+  },
+  "values-zh-rCN/label_domain": {
+    "category": "Guidance",
+    "context": "Android Phase B label_domain",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "66c18677edc72c39696d12a586765ef4a8755ffc976a5da7a48a355766fea9a0"
+  },
+  "values-zh-rCN/status_local_saved": {
+    "category": "Status",
+    "context": "Android Phase B status_local_saved",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "e78374fe9c4367965f107ef864856eb5fa0627cf347a3f0a16eb55473c80ad8b"
+  },
+  "values-zh-rCN/status_remote_persisted": {
+    "category": "Status",
+    "context": "Android Phase B status_remote_persisted",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "2de940a7d166e3679e76f0f47484ae3336d4c5b2239003ba2277968fe1c9bfe9"
+  },
+  "values-zh-rCN/status_converged": {
+    "category": "Status",
+    "context": "Android Phase B status_converged",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "39eca3ab742ea987764adae46643e466f18182960c89f20df07e1e5ec3765d2f"
+  },
+  "values-zh-rCN/status_domain_confirmed": {
+    "category": "Status",
+    "context": "Android Phase B status_domain_confirmed",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "1412a7bdaddfbbb80ab539f1c20c31a2a4c3829674147911f763285d53ca361f"
+  },
+  "values-zh-rCN/notice_synced_changes": {
+    "category": "Status",
+    "context": "Android Phase B notice_synced_changes",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "b7371a58b882fdd43d250210fb8d72427ce235f96d2baa0c9d723601909c4acd"
+  },
+  "values-zh-rCN/action_view": {
+    "category": "Action",
+    "context": "Android Phase B action_view",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "db8db0530432bd1596cd1ef21016dfc12392548a4b82019f1b1d7a315e0a55c0"
+  },
+  "values/currency_cny": {
+    "category": "Status",
+    "context": "Android Phase B currency_cny",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "657408ccad5c69b05c13d87ad4e653582de92caa5e720ce5ebf9fa294dce39be"
+  },
+  "values/currency_usd": {
+    "category": "Status",
+    "context": "Android Phase B currency_usd",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "3b7733a4723c0b7239c874371b89e1a8f2b06693b64593c1a840a57cc161425e"
+  },
+  "values/currency_eur": {
+    "category": "Status",
+    "context": "Android Phase B currency_eur",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "8bd0b436b489560e73e403e055dd0a15518a254cad0d9e2aa4771d1b561d78f6"
+  },
+  "values/currency_jpy": {
+    "category": "Status",
+    "context": "Android Phase B currency_jpy",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "6c5999756cb5e722cbfd3a75af72bfe18a8df20b65f5ec8ea6e9968a514d465b"
+  },
+  "values/currency_gbp": {
+    "category": "Status",
+    "context": "Android Phase B currency_gbp",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "3bc252118bea1f2f25f2cfe808cdc42efadae27970f166e1b9b3bf29edb65129"
+  },
+  "values/currency_hkd": {
+    "category": "Status",
+    "context": "Android Phase B currency_hkd",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "e32d2fc086601524c5e8afa34f524fefac5f25712278a2939629e1f7c049f3e1"
+  },
+  "values/currency_krw": {
+    "category": "Status",
+    "context": "Android Phase B currency_krw",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "9ad749de12b266aed4d174162725445814c19ecd7785de88c05256b07d2824cb"
+  },
+  "values/currency_sgd": {
+    "category": "Status",
+    "context": "Android Phase B currency_sgd",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "f5739981c0c42fc226223d77a52abcdad99f3fa29f30cf57137994a137ac58a5"
+  },
+  "values/reminder_planned_deposit": {
+    "category": "Guidance",
+    "context": "Android Phase B reminder_planned_deposit",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "9ed74e5da1dd9e637eb6ffddd12f7216972a15e316e64c5c102ccd5518b9d871"
+  },
+  "values-zh-rCN/currency_cny": {
+    "category": "Status",
+    "context": "Android Phase B currency_cny",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "ba9771ca730db58fec6782e8bb84034a1e7d8d2f8ab26f897168a2c175fe8419"
+  },
+  "values-zh-rCN/currency_usd": {
+    "category": "Status",
+    "context": "Android Phase B currency_usd",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "dcdd3b5c450b378708a720dee8f388bf77bad0ac8750032eae31112d1f0e2eea"
+  },
+  "values-zh-rCN/currency_eur": {
+    "category": "Status",
+    "context": "Android Phase B currency_eur",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "383c900abf8a83d757ba4703f1356677eb8b7882a017206159218d19208bae91"
+  },
+  "values-zh-rCN/currency_jpy": {
+    "category": "Status",
+    "context": "Android Phase B currency_jpy",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "b650f21f60ced8e5d186a00f38bab4ba3e829e8849fbde9758558a7d31d8a5f7"
+  },
+  "values-zh-rCN/currency_gbp": {
+    "category": "Status",
+    "context": "Android Phase B currency_gbp",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "ef90fd11dd549699a10f549815721218b2fffb95ad7830c1557d308fd1cd0ec2"
+  },
+  "values-zh-rCN/currency_hkd": {
+    "category": "Status",
+    "context": "Android Phase B currency_hkd",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "86e7ba554eed12a0b30fa1c7cd8baf82a646b1f2f490c6d461f017b4867fea83"
+  },
+  "values-zh-rCN/currency_krw": {
+    "category": "Status",
+    "context": "Android Phase B currency_krw",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "724a5caa0b368523387c263af74ff46b6962cfc66ba7a68b0a8f9572107f442c"
+  },
+  "values-zh-rCN/currency_sgd": {
+    "category": "Status",
+    "context": "Android Phase B currency_sgd",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "38bd18373a9ce67da6f9d9d3d97d021cb1662b48779f78979d91e80acd6378b2"
+  },
+  "values-zh-rCN/reminder_planned_deposit": {
+    "category": "Guidance",
+    "context": "Android Phase B reminder_planned_deposit",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "63838ce4ffc1b01a868f92e5ec938bb7a655d22104eed6c4344fcfcdda8261f6"
+  },
+  "values/action_newer": {
+    "category": "Action",
+    "context": "Android Phase B action_newer",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "718c45696575a3aae41c3701a734767de3f3d1d7658c292804a6e3e90b1ce3a5"
+  },
+  "values/action_older": {
+    "category": "Action",
+    "context": "Android Phase B action_older",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "03281c889c2869e091390f9ad5dd13f0f0e46b42c9c4698f857902451deb3450"
+  },
+  "values-zh-rCN/action_newer": {
+    "category": "Action",
+    "context": "Android Phase B action_newer",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "2a55c0f908c53c17f877dce4f6ce6034439480d718cf601fe098c82643a270f9"
+  },
+  "values-zh-rCN/action_older": {
+    "category": "Action",
+    "context": "Android Phase B action_older",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "89ad5afafbdc39d505d3674f970484dba4304af098f60cec1f66ae324ac3b1b9"
+  },
+  "values/status_avatar_changed": {
+    "category": "Status",
+    "context": "Android Phase B status_avatar_changed",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "5abf212f48b95068956497fe64d084fa9a4c6a7e033557486c0bb7555ff76dd0"
+  },
+  "values-zh-rCN/status_avatar_changed": {
+    "category": "Status",
+    "context": "Android Phase B status_avatar_changed",
+    "state": "reviewed",
+    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
+    "sha256": "a938ed15b3e547c2901166a94689a5201185a22cb16b54e358ff09bb87d5b404"
+  },
+  "values/error_media_storage": {
+    "category": "Error",
+    "context": "Android media import/download storage recovery",
+    "state": "reviewed",
+    "reason": "Specific storage failure with a recovery action; no fixed file-size limit or decorative text.",
+    "sha256": "dfbdecf6c5ce2ab3bc584a174dea1cc83271e026823512be0a429c71fff2fec5"
+  },
+  "values-zh-rCN/error_media_storage": {
+    "category": "Error",
+    "context": "Android media import/download storage recovery",
+    "state": "reviewed",
+    "reason": "Specific storage failure with a recovery action; no fixed file-size limit or decorative text.",
+    "sha256": "2badde4e77186300af7f1cadaae5fb7f6237703c8c1b2b0f757cf11197a3e3b7"
   }
 }

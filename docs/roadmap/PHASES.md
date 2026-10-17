@@ -1,4 +1,11 @@
-# Android Phase A — current incremental stage
+# Android Phase B — current incremental stage
+
+- Independent `feature/android-business-phase-b` worktree from Phase A `1dfce291ac02726e48717558f48f76f196662032`; PR #5 is its stacked base. Parent PRs, Apple QA state and all production installs/data remain untouched.
+- Tasks/recurrence, wishes/confirmation/audit, one finance ledger/bills/cycles/cards, original photo/audio gifts, sealed reveal/history and cross-domain review are implemented through the existing signed operation framework. No Protocol 4 or Relay API2 semantics are replaced.
+- Validation separates JVM vectors, native Swift/Kotlin encrypted C1, Room/Keystore/instrumentation, actual APK replacement, system SAF/process-restart QA and unapproved visual candidates. Exact results and gaps: [ANDROID_PHASE_B](../qa/reports/ANDROID_PHASE_B.md).
+- No physical Samsung, minimum-API28 or independent security acceptance is inferred. Public production API2 deployment, C2, merges, production Android signing and macOS installation remain outside this stage.
+
+# Android Phase A — historical foundation
 
 Independent `feature/android-foundation` worktree starts at `eff5f8420728470ca2d9444f54a39e356537b953`; PRs #2/#3/#4 remain Draft. Android PR must target `feature/gitlike-c1-multidevice`. No parent/network branch, production App/data or Worker deployment changed.
 
