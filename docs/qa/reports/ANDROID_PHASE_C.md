@@ -150,9 +150,23 @@ the interruption is preserved rather than bypassing that prerequisite.
 
 Review-equivalent source commits: `dedeecc` (physical QA/focus), `9797670` (C1/recovery/workloads),
 `a675ce3` (evidence/CI/protection). This later documentation appendix does not change executable code.
-Final post-commit publication scan, Draft PR and latest-SHA CI are recorded when executed; no
-unexecuted step is a completed gate. Public API2 staging/physical cross-network and independent
-protocol/security review remain NOT RUN/BLOCKED.
+Post-commit publication scan on `2e7409b` PASS:500 tracked files,822 historical blobs,0 rule matches.
+The branch was pushed and [Draft PR #7](https://github.com/Diamond-Fountain-Works/Together/pull/7)
+created against `feature/android-business-phase-b`. Parents #2–#6 remain OPEN Draft with unchanged
+heads. No merge/deploy/Mac installation occurred. Public API2 staging/physical cross-network and
+independent protocol/security review remain NOT RUN/BLOCKED.
+
+Hosted CI on `2e7409b061f1216ded2163b4af9229e483518ccb`: **6 successful checks,0 failed** across
+the push/PR Android runs and Monorepo quality run. These are four unique job types, not six
+independent physical test suites: APK/JVM/local C1/copy, native Swift–Kotlin/media C1, macOS
+build/Swift/local Relay/migration, and Relay/protocol/copy/source safety. Runs39034665387,
+39034622782 and39034622814 all completed successfully. Later documentation-only commit checks
+remain visible in the PR; neither a CI success nor this appendix clears the unfinished phone,
+visual or independent-security gates. PR stays Draft and is not authorized to merge.
+
+Local final-light gallery: `qa/visual/candidates/android-phase-c/final-light/INDEX.html`,20
+unapproved images and per-image hashes. Test Worker8798 was stopped and the run's USB reverse
+removed. No display-setting matrix was started; phone control is paused pending availability.
 
 ## GitHub main protection follow-up
 
