@@ -141,9 +141,18 @@ Twenty final light screenshots plus the separate cached-sealed lifecycle capture
 synthetic fixture data, not user content. Dark/large-text/landscape and human visual approval remain
 open. Original84 Phase B candidates and Apple baselines/review states are preserved.
 
-Publication scan, source diff review, Draft PR and latest-SHA CI are recorded when executed; no
-unexecuted step in this report is a completed gate. Public API2 staging/physical cross-network and
-independent protocol/security review remain NOT RUN/BLOCKED.
+Pre-commit publication scan PASS:500 tracked files and786 refs/reflog-reachable historical blobs,
+0 rule matches. The sealed developer source diff scan `804c73a0-7612-4485-a916-5c130ac2da0f`
+reviewed the34-file patch (20 source inventory files plus14 docs/config),0 reportable findings.
+Canonical report/coverage/model are retained locally. This is not independent protocol certification.
+Native UI automation remains ambient input after tree checks and requires an available foreground;
+the interruption is preserved rather than bypassing that prerequisite.
+
+Review-equivalent source commits: `dedeecc` (physical QA/focus), `9797670` (C1/recovery/workloads),
+`a675ce3` (evidence/CI/protection). This later documentation appendix does not change executable code.
+Final post-commit publication scan, Draft PR and latest-SHA CI are recorded when executed; no
+unexecuted step is a completed gate. Public API2 staging/physical cross-network and independent
+protocol/security review remain NOT RUN/BLOCKED.
 
 ## GitHub main protection follow-up
 
