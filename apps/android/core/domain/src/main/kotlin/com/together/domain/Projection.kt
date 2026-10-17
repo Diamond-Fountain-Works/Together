@@ -19,7 +19,7 @@ data class DomainContext(val spaceId: String, val members: Set<String>, val alia
 }
 data class Conflict(val operationId: String, val entityId: String, val reason: String)
 data class ChangeEvent(val operationId: String, val entityId: String, val entityType: String, val actorId: String, val deviceId: String,
-    val action: String, val before: Map<String, JsonObject>, val after: Map<String, JsonObject>, val resolution: String = "effective")
+    val action: String, val before: Map<String, JsonObject>, val after: Map<String, JsonObject>, val resolution: String = "effective", val createdAt: Long = 0)
 data class ProjectedEntity(val base: SyncOperation, val fields: Map<String, JsonObject>, val deletedAt: Long? = null) {
     val id get() = base.entityId
 }
@@ -93,7 +93,7 @@ object Projector {
             // Gift content remains sealed in change history. No private text/attachment payload leaks.
             val b = if (op.entityType == "loveGift") emptyMap() else before
             val a = if (op.entityType == "loveGift") mapOf("status" to LogValue.string(op.operationType)) else after
-            s.changes.add(ChangeEvent(op.operationId, op.entityId, op.entityType, op.actorId, op.deviceId, op.operationType, b, a))
+            s.changes.add(ChangeEvent(op.operationId, op.entityId, op.entityType, op.actorId, op.deviceId, op.operationType, b, a, createdAt = op.createdAt))
         }
     }
     internal fun space(p: Map<String, JsonObject>, c: DomainContext) = p.id("spaceId") in c.aliases

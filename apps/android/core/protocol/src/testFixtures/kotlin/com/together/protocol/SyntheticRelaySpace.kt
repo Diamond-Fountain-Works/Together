@@ -11,6 +11,7 @@ import java.util.concurrent.TimeUnit
 class SyntheticRelaySpace(val base: String) : AutoCloseable {
     val a: DeviceIdentity; val b: DeviceIdentity; val phone: DeviceIdentity
     val trust: SpaceAuthorization; val binding: C1Binding
+    private val sourceIP = java.util.UUID.randomUUID().hashCode().let { "198.18.${(it ushr 8) and 255}.${it and 255}" }
     private val http = OkHttpClient.Builder().followRedirects(false).callTimeout(15, TimeUnit.SECONDS).build()
     init {
         requireProtocol(base.startsWith("http://127.0.0.1:"), "ISOLATED_RELAY_REQUIRED")
@@ -38,10 +39,10 @@ class SyntheticRelaySpace(val base: String) : AutoCloseable {
         fun fetch(r: Request) = http.newCall(r).execute().use { response ->
             val raw = response.body!!.bytes(); requireProtocol(response.isSuccessful, "TEST_HTTP_${response.code}"); Canonical.parse(raw, 131072).jsonObject
         }
-        val challenge = fetch(Request.Builder().url("$base/v1/challenge").build())
+        val challenge = fetch(Request.Builder().url("$base/v1/challenge").header("CF-Connecting-IP", sourceIP).build())
         val bytes = Canonical.bytes(body)
         val message = listOf("Together-Auth-1", challenge.getValue("nonce").jsonPrimitive.content, method, path, sha256(bytes), identity.descriptor.deviceId).joinToString("\n")
-        return fetch(Request.Builder().url(base + path).header("X-Together-Key", identity.descriptor.publicKey).header("X-Together-Device", identity.descriptor.deviceId)
+        return fetch(Request.Builder().url(base + path).header("CF-Connecting-IP", sourceIP).header("X-Together-Key", identity.descriptor.publicKey).header("X-Together-Device", identity.descriptor.deviceId)
             .header("X-Together-Challenge", challenge.getValue("id").jsonPrimitive.content).header("X-Together-Signature", identity.sign(message.toByteArray()))
             .method(method, bytes.toRequestBody("application/json".toMediaType())).build())
     }
