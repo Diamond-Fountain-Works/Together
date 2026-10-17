@@ -254,14 +254,27 @@ internal fun GiftEditor(
     val recorder = remember { Recorder(context) }
     var recording by remember { mutableStateOf(false) }
     var paused by remember { mutableStateOf(false) }
+    var pendingImport by remember { mutableStateOf<Job?>(null) }
+    var importing by remember { mutableStateOf(false) }
     fun draft() = GiftDraft(text, audio, photo, reply ?: state.draft.replyToGiftId)
-    fun run(block: suspend () -> Unit) {
-        scope.launch {
+    fun run(block: suspend () -> Unit): Job = scope.launch {
+        try {
+            block()
+        } catch (e: Exception) {
+            if (e is CancellationException) throw e
+            onError((e as? ProtocolException)?.code ?: "MEDIA_IO_ERROR")
+        }
+    }
+    fun import(uri: android.net.Uri, type: String) {
+        if (importing) return
+        importing = true
+        pendingImport = run {
             try {
-                block()
-            } catch (e: Exception) {
-                if (e is CancellationException) throw e
-                onError((e as? ProtocolException)?.code ?: "MEDIA_IO_ERROR")
+                val id = repository.importMedia(uri, type).assetId
+                if (type == "photo") photo = id else audio = id
+                repository.saveDraft(draft())
+            } finally {
+                importing = false
             }
         }
     }
@@ -305,19 +318,11 @@ internal fun GiftEditor(
         }
     val photoPicker =
         rememberLauncherForActivityResult(ActivityResultContracts.OpenDocument()) { uri ->
-            if (uri != null)
-                run {
-                    photo = repository.importMedia(uri, "photo").assetId
-                    repository.saveDraft(draft())
-                }
+            if (uri != null) import(uri, "photo")
         }
     val audioPicker =
         rememberLauncherForActivityResult(ActivityResultContracts.OpenDocument()) { uri ->
-            if (uri != null)
-                run {
-                    audio = repository.importMedia(uri, "audio").assetId
-                    repository.saveDraft(draft())
-                }
+            if (uri != null) import(uri, "audio")
         }
     val me = state.descriptor!!.userId
     val zone =
@@ -330,6 +335,7 @@ internal fun GiftEditor(
         runCatching { repository.saveDraft(draft()) }
     }
     fun close() {
+        pendingImport?.cancel()
         if (sent) {
             onClose()
             return
@@ -353,6 +359,7 @@ internal fun GiftEditor(
             partner != null &&
                 !used &&
                 !recording &&
+                !importing &&
                 (text.isNotBlank() || photo != null || audio != null),
         saveLabel = R.string.action_send_with_love,
     ) {
@@ -383,16 +390,23 @@ internal fun GiftEditor(
         Row {
             OutlinedButton(
                 onClick = { photoPicker.launch(arrayOf("image/*")) },
-                enabled = !recording,
+                enabled = !recording && !importing,
             ) {
                 Text(stringResource(R.string.action_add_photo))
             }
-            TextButton(onClick = { audioPicker.launch(arrayOf("audio/*")) }, enabled = !recording) {
+            TextButton(
+                onClick = { audioPicker.launch(arrayOf("audio/*")) },
+                enabled = !recording && !importing,
+            ) {
                 Text(stringResource(R.string.action_import_audio))
             }
         }
+        if (importing) LinearProgressIndicator(Modifier.fillMaxWidth().testTag("media.importing"))
         if (!recording)
-            OutlinedButton(onClick = { permission.launch(Manifest.permission.RECORD_AUDIO) }) {
+            OutlinedButton(
+                onClick = { permission.launch(Manifest.permission.RECORD_AUDIO) },
+                enabled = !importing,
+            ) {
                 Text(stringResource(R.string.action_record_audio))
             }
         else

@@ -76,7 +76,10 @@ internal class BusinessTestSpace(val context: Context, val base: String) : AutoC
         )
         remote = Replica(MemoryStore(), f.b, updated).also { it.restore() }
         remoteMedia =
-            MediaFiles(File(context.cacheDir, "synthetic-media-$namespace"), AndroidMedia::validate)
+            MediaFiles(
+                File(context.cacheDir, "synthetic-media-$namespace"),
+                validateFormat = AndroidMedia::validate,
+            )
         val media =
             MediaExchange(
                 remoteMedia,

@@ -3848,5 +3848,19 @@
     "state": "reviewed",
     "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
     "sha256": "a938ed15b3e547c2901166a94689a5201185a22cb16b54e358ff09bb87d5b404"
+  },
+  "values/error_media_storage": {
+    "category": "Error",
+    "context": "Android media import/download storage recovery",
+    "state": "reviewed",
+    "reason": "Specific storage failure with a recovery action; no fixed file-size limit or decorative text.",
+    "sha256": "dfbdecf6c5ce2ab3bc584a174dea1cc83271e026823512be0a429c71fff2fec5"
+  },
+  "values-zh-rCN/error_media_storage": {
+    "category": "Error",
+    "context": "Android media import/download storage recovery",
+    "state": "reviewed",
+    "reason": "Specific storage failure with a recovery action; no fixed file-size limit or decorative text.",
+    "sha256": "2badde4e77186300af7f1cadaae5fb7f6237703c8c1b2b0f757cf11197a3e3b7"
   }
 }

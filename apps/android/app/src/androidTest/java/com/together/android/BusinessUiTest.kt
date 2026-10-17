@@ -1,7 +1,13 @@
 package com.together.android
 
+import androidx.activity.compose.LocalActivityResultRegistryOwner
+import androidx.activity.result.ActivityResultRegistry
+import androidx.activity.result.ActivityResultRegistryOwner
+import androidx.activity.result.contract.ActivityResultContract
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
+import androidx.core.app.ActivityOptionsCompat
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.together.android.ui.TogetherApp
@@ -17,6 +23,7 @@ import org.junit.runner.RunWith
 @RunWith(AndroidJUnit4::class)
 class BusinessUiTest {
     @get:Rule val compose = createAndroidComposeRule<com.together.android.qa.BusinessQaActivity>()
+    @get:Rule val testName = org.junit.rules.TestName()
     private lateinit var space: BusinessTestSpace
     private val instrumentation
         get() = InstrumentationRegistry.getInstrumentation()
@@ -27,7 +34,46 @@ class BusinessUiTest {
         Assume.assumeTrue("Local C1 UI NOT RUN without explicit URL", base != null)
         space = BusinessTestSpace(instrumentation.targetContext, base!!)
         space.start()
-        compose.setContent { TogetherApp(space.repo) }
+        if (
+            testName.methodName ==
+                "stalledProviderDoesNotBlockEditorDismissalOrLocalCommandsAndCancelsCleanly"
+        ) {
+            // Inject only the system picker result. The real editor callback, provider I/O and
+            // dismissal-owned coroutine run unchanged; native SAF itself has separate runtime QA.
+            val registry =
+                object : ActivityResultRegistry() {
+                    override fun <I, O> onLaunch(
+                        requestCode: Int,
+                        contract: ActivityResultContract<I, O>,
+                        input: I,
+                        options: ActivityOptionsCompat?,
+                    ) {
+                        check(
+                            contract
+                                is
+                                androidx.activity.result.contract.ActivityResultContracts.OpenDocument
+                        )
+                        val uri =
+                            android.net.Uri.parse(
+                                "content://${instrumentation.context.packageName}.stalled-media/synthetic.png"
+                            )
+                        dispatchResult(
+                            requestCode,
+                            android.app.Activity.RESULT_OK,
+                            android.content.Intent().setData(uri),
+                        )
+                    }
+                }
+            val owner =
+                object : ActivityResultRegistryOwner {
+                    override val activityResultRegistry = registry
+                }
+            compose.setContent {
+                CompositionLocalProvider(LocalActivityResultRegistryOwner provides owner) {
+                    TogetherApp(space.repo)
+                }
+            }
+        } else compose.setContent { TogetherApp(space.repo) }
     }
 
     @After
@@ -59,6 +105,46 @@ class BusinessUiTest {
         }
         shell("mkdir -p /data/local/tmp/together-phase-b-candidates")
         shell("screencap -p /data/local/tmp/together-phase-b-candidates/$prefix-$name.png")
+    }
+
+    @Test
+    fun stalledProviderDoesNotBlockEditorDismissalOrLocalCommandsAndCancelsCleanly() = runBlocking {
+        val resolver = instrumentation.targetContext.contentResolver
+        val authority = instrumentation.context.packageName + ".stalled-media"
+        val status = android.net.Uri.parse("content://$authority/status")
+        val release = android.net.Uri.parse("content://$authority/release")
+        compose.onNodeWithTag("app.actions").performClick()
+        compose.onNodeWithTag("menu.gift").performClick()
+        compose.onNodeWithText(text(R.string.action_add_photo)).performScrollTo().performClick()
+        try {
+            waitFor {
+                resolver.query(status, null, null, null, null)?.use {
+                    it.moveToFirst() && it.getInt(0) == 1
+                } == true
+            }
+            withTimeout(3000) {
+                space.repo.saveDraft(GiftDraft("Synthetic draft remains editable"))
+            }
+            compose.onNodeWithTag("media.importing").assertExists()
+            compose.onNodeWithTag("sheet.close").performClick()
+            compose.waitUntil(3000) {
+                compose.onAllNodesWithTag("gift.editor").fetchSemanticsNodes().isEmpty()
+            }
+            compose.onNodeWithTag("gift.editor").assertDoesNotExist()
+            withTimeout(3000) {
+                space.repo.execute { task(null, "Synthetic concurrent edit", "", null, null, null) }
+            }
+            assertTrue(
+                space.repo.state.value.snapshot.of("task").any {
+                    it.fields.text("title") == "Synthetic concurrent edit"
+                }
+            )
+            waitFor { space.repo.mediaFiles.root.listFiles().orEmpty().isEmpty() }
+            assertTrue(space.repo.state.value.staged.isEmpty())
+        } finally {
+            // Bounded escape even if a platform fails to interrupt a provider read.
+            resolver.delete(release, null, null)
+        }
     }
 
     @Test

@@ -87,7 +87,15 @@ data class Transfer(
 )
 
 /** Original files are streamed; only separate previews may be downsampled by the platform. */
-class MediaFiles(val root: File, private val validateFormat: (File, String) -> Unit) {
+class MediaFiles(
+    val root: File,
+    private val availableBytes: () -> Long = { root.usableSpace },
+    private val reserveBytes: () -> Long = {
+        // Preserve room for the database and OS. This is a free-space reserve, never a file limit.
+        (root.totalSpace / 100).coerceIn(8L * 1024 * 1024, 128L * 1024 * 1024)
+    },
+    private val validateFormat: (File, String) -> Unit,
+) {
     companion object {
         const val CHUNK = 65_536
         val extensions =
@@ -111,11 +119,12 @@ class MediaFiles(val root: File, private val validateFormat: (File, String) -> U
                 "flac",
             )
 
-        fun digest(file: File): String {
+        fun digest(file: File, checkCancelled: () -> Unit = {}): String {
             val d = MessageDigest.getInstance("SHA-256")
             file.inputStream().buffered(CHUNK).use { stream ->
                 val b = ByteArray(CHUNK)
                 while (true) {
+                    checkCancelled()
                     val n = stream.read(b)
                     if (n < 0) break
                     d.update(b, 0, n)
@@ -128,6 +137,18 @@ class MediaFiles(val root: File, private val validateFormat: (File, String) -> U
     init {
         root.mkdirs()
         requireProtocol(root.isDirectory, "MEDIA_STORAGE_UNAVAILABLE")
+    }
+
+    fun requireCapacity(incoming: Long) {
+        requireProtocol(
+            incoming >= 0 && incoming <= (availableBytes() - reserveBytes()).coerceAtLeast(0),
+            "MEDIA_STORAGE_FULL",
+        )
+    }
+
+    /** Only called for a newly imported, unpublished asset when its staging transaction fails. */
+    fun discardImport(asset: Asset) {
+        directory(asset).deleteRecursively()
     }
 
     private fun directory(asset: Asset): File {
@@ -185,6 +206,8 @@ class MediaFiles(val root: File, private val validateFormat: (File, String) -> U
         owner: String,
         space: String,
         at: Long,
+        onImported: (Asset) -> Unit = {},
+        checkCancelled: () -> Unit = {},
     ): Asset {
         requireProtocol(
             extension in extensions && type in setOf("photo", "avatar", "audio"),
@@ -196,12 +219,24 @@ class MediaFiles(val root: File, private val validateFormat: (File, String) -> U
         try {
             input.use { src ->
                 FileOutputStream(target).use { out ->
-                    src.copyTo(out, CHUNK)
+                    val buffer = ByteArray(CHUNK)
+                    while (true) {
+                        checkCancelled()
+                        val count = src.read(buffer)
+                        if (count < 0) break
+                        checkCancelled()
+                        synchronized(this) {
+                            requireCapacity(count.toLong())
+                            out.write(buffer, 0, count)
+                        }
+                    }
                     out.fd.sync()
                 }
             }
+            checkCancelled()
             requireProtocol(target.length() > 0, "EMPTY_MEDIA")
             validateFormat(target, type)
+            checkCancelled()
             val asset =
                 Asset(
                     id,
@@ -210,11 +245,12 @@ class MediaFiles(val root: File, private val validateFormat: (File, String) -> U
                     type,
                     filename.take(255),
                     extension,
-                    digest(target),
+                    digest(target, checkCancelled),
                     target.length(),
                     at,
                 )
             mark(asset)
+            onImported(asset)
             return asset
         } catch (e: Exception) {
             dir.deleteRecursively()
@@ -257,6 +293,7 @@ class MediaFiles(val root: File, private val validateFormat: (File, String) -> U
             return current
         }
         requireProtocol(offset == current, "MEDIA_OFFSET_MISMATCH")
+        requireCapacity(bytes.size.toLong())
         RandomAccessFile(partial(asset), "rw").use {
             it.seek(offset)
             it.write(bytes)
@@ -302,8 +339,37 @@ class MediaFiles(val root: File, private val validateFormat: (File, String) -> U
     }
 }
 
+/** Own the result before a cancellable dispatcher handoff can discard it. */
+class MediaImportLease(private val files: MediaFiles) : AutoCloseable {
+    var asset: Asset? = null
+        private set
+
+    private var committed = false
+
+    @Synchronized
+    fun acquired(value: Asset) {
+        check(asset == null)
+        asset = value
+    }
+
+    @Synchronized
+    fun commit() {
+        check(asset != null)
+        committed = true
+    }
+
+    @Synchronized
+    override fun close() {
+        if (!committed) asset?.let(files::discardImport)
+    }
+}
+
 fun giftAssets(gift: Gift) =
     listOfNotNull(gift.entity.fields.id("audioAssetId"), gift.entity.fields.id("photoAssetId"))
+
+private fun referencedAssets(s: Snapshot) =
+    s.of("profile").mapNotNull { it.fields.id("avatarAssetId") }.toSet() +
+        s.gifts.values.filter { it.effective && it.entity.deletedAt == null }.flatMap(::giftAssets)
 
 fun expectedReceipt(gift: Gift, s: Snapshot): JsonObject {
     val pairs =
@@ -383,7 +449,9 @@ class MediaExchange(
         requireProtocol(active(remote), "UNAUTHORIZED_DEVICE")
         val s = snapshot()
         val result = mutableListOf<JsonObject>()
-        for (e in s.of("mediaAsset").sortedBy { it.id }) {
+        val referenced = referencedAssets(s)
+        leases.keys.retainAll(referenced)
+        for (e in s.of("mediaAsset").filter { it.id in referenced }.sortedBy { it.id }) {
             val a = Asset.from(e)
             if (
                 files.verified(a) ||
@@ -393,6 +461,19 @@ class MediaExchange(
             )
                 continue
             val offset = files.offset(a)
+            val reserved =
+                leases.keys.sumOf { id ->
+                    val pending = s.entities[id]?.let(Asset::from)
+                    if (pending == null) 0L
+                    else (pending.byteCount - files.offset(pending)).coerceAtLeast(0)
+                }
+            try {
+                files.requireCapacity(a.byteCount - offset + reserved)
+            } catch (error: ProtocolException) {
+                unavailable.getOrPut(remote.deviceId) { mutableSetOf() }.add(a.assetId)
+                progress(Transfer(a.assetId, offset, a.byteCount, "failed", error.code))
+                continue
+            }
             leases[a.assetId] = remote.deviceId
             progress(Transfer(a.assetId, offset, a.byteCount, "transferring"))
             result.add(wire("mediaRequest", JsonPrimitive(a.assetId), JsonPrimitive(offset)))
@@ -468,7 +549,10 @@ class MediaExchange(
                     )
                 }
                 "mediaChunk" -> {
-                    requireProtocol(leases[id] == remote.deviceId, "UNREQUESTED_MEDIA")
+                    requireProtocol(
+                        leases[id] == remote.deviceId && id in referencedAssets(snapshot()),
+                        "UNREQUESTED_MEDIA",
+                    )
                     val text = p.getValue("_2").jsonPrimitive.content
                     requireProtocol(text.length <= 87_384, "MEDIA_CHUNK_BOUNDS")
                     val next = files.append(a, p.getValue("_1").jsonPrimitive.long, text.unbase64())

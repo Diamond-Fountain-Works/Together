@@ -101,7 +101,7 @@ class NativeBridgeIntegrationTest {
                     withTimeout(120_000) {
                         while (!path.exists()) {
                             if (process?.isAlive != true)
-                                throw AssertionError("Native process exited; see " + log)
+                                throw AssertionError("Native process exited while waiting for $name; see " + log)
                             delay(100)
                         }
                     }
@@ -365,6 +365,8 @@ class NativeBridgeIntegrationTest {
             scope.cancel()
             process?.destroy()
             if (process?.isAlive == true) process?.destroyForcibly()
+            dir.resolve("native-diagnostic.json").takeIf { it.isFile }?.copyTo(
+                File(root, "qa/results/android-phase-b/native-diagnostic.json"), overwrite = true)
             dir.deleteRecursively()
         }
     }

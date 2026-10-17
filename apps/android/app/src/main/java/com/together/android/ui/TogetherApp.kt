@@ -1260,6 +1260,7 @@ private fun errorCopy(code: String) =
         "MICROPHONE_DENIED",
         "MICROPHONE_UNAVAILABLE" -> R.string.error_mic
         "EXPORT_FORMAT_MISMATCH" -> R.string.error_export
+        "MEDIA_STORAGE_FULL" -> R.string.error_media_storage
         "MEDIA_PENDING",
         "MEDIA_IO_ERROR",
         "UNSUPPORTED_MEDIA",

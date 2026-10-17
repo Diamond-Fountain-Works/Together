@@ -1,13 +1,84 @@
 package com.together.android.data
 
+import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.media.MediaMetadataRetriever
+import android.net.Uri
+import android.os.CancellationSignal
+import android.provider.OpenableColumns
 import com.together.domain.*
 import com.together.protocol.*
+import java.io.Closeable
 import java.io.File
+import java.util.concurrent.atomic.AtomicReference
+import kotlinx.coroutines.*
 
 object AndroidMedia {
+    /** Close a provider pipe on cancellation, including a read waiting for bytes/EOF. */
+    suspend fun importDocument(
+        context: Context,
+        uri: Uri,
+        files: MediaFiles,
+        type: String,
+        owner: String,
+        space: String,
+        at: Long,
+        onImported: (Asset) -> Unit = {},
+    ): Asset = coroutineScope {
+        val job = currentCoroutineContext()
+        val signal = CancellationSignal()
+        val resource = AtomicReference<Closeable?>()
+        val closer =
+            launch(Dispatchers.IO, start = CoroutineStart.UNDISPATCHED) {
+                try {
+                    awaitCancellation()
+                } finally {
+                    signal.cancel()
+                    runCatching { resource.getAndSet(null)?.close() }
+                }
+            }
+        try {
+            runInterruptible(Dispatchers.IO) {
+                val resolver = context.contentResolver
+                var name = "media"
+                resolver
+                    .query(uri, arrayOf(OpenableColumns.DISPLAY_NAME), null, null, null, signal)
+                    ?.use { if (it.moveToFirst()) name = it.getString(0) ?: name }
+                job.ensureActive()
+                val descriptor =
+                    resolver.openAssetFileDescriptor(uri, "r", signal)
+                        ?: throw ProtocolException("MEDIA_IO_ERROR")
+                resource.set(descriptor)
+                try {
+                    job.ensureActive()
+                    val input = descriptor.createInputStream()
+                    resource.set(input)
+                    job.ensureActive()
+                    files.import(
+                        input,
+                        name,
+                        name.substringAfterLast('.', "").lowercase(),
+                        type,
+                        owner,
+                        space,
+                        at,
+                        onImported = onImported,
+                        checkCancelled = { job.ensureActive() },
+                    )
+                } finally {
+                    runCatching { resource.getAndSet(null)?.close() }
+                    runCatching { descriptor.close() }
+                }
+            }
+        } catch (error: Exception) {
+            job.ensureActive()
+            throw error
+        } finally {
+            withContext(NonCancellable) { closer.cancelAndJoin() }
+        }
+    }
+
     fun legacyAvatar(bytes: ByteArray): Bitmap? {
         if (bytes.size > 131072) return null
         val options = BitmapFactory.Options().apply { inJustDecodeBounds = true }

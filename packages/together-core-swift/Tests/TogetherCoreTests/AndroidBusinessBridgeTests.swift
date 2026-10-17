@@ -18,7 +18,7 @@ import Testing
         let a = try DeviceIdentity(userId: launch.ownerA, initialSpaceId: launch.space, protocolVersion: 4)
         let b = try DeviceIdentity(userId: launch.ownerB, initialSpaceId: launch.space, protocolVersion: 4)
         try CanonicalJSON.encode(Ready(descriptors: [a.descriptor, b.descriptor])).write(to: root.appendingPathComponent("descriptors.json"), options: .atomic)
-        try await wait { FileManager.default.fileExists(atPath: root.appendingPathComponent("authorization.json").path) }
+        try await wait(label:"authorization") { FileManager.default.fileExists(atPath: root.appendingPathComponent("authorization.json").path) }
         let config = try CanonicalJSON.decode(Configuration.self, from: Data(contentsOf: root.appendingPathComponent("authorization.json")))
         let trust = try SpaceAuthorization.restore(config.archive)
         let clock = FixedDateProvider(Date(timeIntervalSince1970: 1_791_518_400)) // 2026-10-09 04:00Z
@@ -45,15 +45,23 @@ import Testing
         let audio=try await eb.importMedia(from:root.appendingPathComponent("synthetic.wav"),type:.audio)
         var draft=LoveGiftDraft();draft.text="Synthetic native sealed gift";draft.photoAssetId=photo.id;draft.audioAssetId=audio.id
         let gift=try eb.sendGift(draft)
+        var stage="initial task/wish sync"
+        defer {
+            let diagnostic:[String:String] = ["stage":stage,"aState":String(describing:services[0].state),"bState":String(describing:services[1].state),"aError":services[0].errorMessage ?? "","bError":services[1].errorMessage ?? "","aNotes":ea.snapshot.tasks[task]?.notes ?? "missing","bNotes":eb.snapshot.tasks[task]?.notes ?? "missing","bWish":eb.snapshot.wishes.values.map{String(describing:$0.status)}.sorted().joined(separator:","),"bReadyGifts":String(eb.receivedGifts.filter{eb.giftReady($0)}.count),"bOwnGiftState":String(describing:eb.deliveryState(eb.snapshot.gifts[gift]!))]
+            try? CanonicalJSON.encode(diagnostic).write(to:root.appendingPathComponent("native-diagnostic.json"),options:.atomic)
+        }
         try CanonicalJSON.encode(["task":task,"grant":grant,"gift":gift]).write(to:root.appendingPathComponent("native-created.json"),options:.atomic)
-        try await wait(seconds:90) { ea.snapshot.tasks.values.contains{$0.title=="Synthetic Kotlin task"} && eb.snapshot.wishes.values.contains{$0.title=="Synthetic Kotlin wish"} }
+        try await wait(label:stage,seconds:90) { ea.snapshot.tasks.values.contains{$0.title=="Synthetic Kotlin task"} && eb.snapshot.wishes.values.contains{$0.title=="Synthetic Kotlin wish"} }
         let wish=try #require(eb.snapshot.wishes.values.first{$0.title=="Synthetic Kotlin wish"})
         try eb.requestFulfillment(wish.id)
-        try await wait(seconds:90) { ea.snapshot.wishes[wish.id]?.status == .fulfilled && eb.receivedGifts.contains{eb.giftReady($0)} && eb.deliveryState(eb.snapshot.gifts[gift]!) == .synced }
-        try await wait { FileManager.default.fileExists(atPath:root.appendingPathComponent("offline").path) }
+        stage="confirmation and content receipt"
+        try await wait(label:stage,seconds:90) { ea.snapshot.wishes[wish.id]?.status == .fulfilled && eb.receivedGifts.contains{eb.giftReady($0)} && eb.deliveryState(eb.snapshot.gifts[gift]!) == .synced }
+        stage="offline barrier"
+        try await wait(label:stage) { FileManager.default.fileExists(atPath:root.appendingPathComponent("offline").path) }
         try eb.append(entity:task,type:.task,action:.patch,fields:["title":.string("Native offline title")])
         try Data().write(to:root.appendingPathComponent("native-offline-written"),options:.atomic)
-        try await wait(seconds:90) { ea.snapshot.tasks[task]?.notes=="Kotlin offline notes" && eb.snapshot.tasks[task]?.notes=="Kotlin offline notes" }
+        stage="reconnect convergence"
+        try await wait(label:stage,seconds:90) { ea.snapshot.tasks[task]?.notes=="Kotlin offline notes" && eb.snapshot.tasks[task]?.notes=="Kotlin offline notes" }
         let received=try #require(eb.receivedGifts.first)
         let stats=try eb.snapshot.finance.statistics()
         #expect(stats.bookBalance==1967)
@@ -63,10 +71,13 @@ import Testing
         #expect(received.assetIds.allSatisfy{eb.snapshot.mediaAssets[$0].map(eb.mediaStore.hasVerified) == true})
         let result:[String:String] = ["bookBalance":String(stats.bookBalance),"personal":String(stats.personal.values.reduce(0,+)),"wish":"fulfilled","photo":photo.sha256,"audio":audio.sha256,"status":"PASS"]
         try CanonicalJSON.encode(result).write(to:root.appendingPathComponent("native-result.json"),options:.atomic)
-        try await wait { FileManager.default.fileExists(atPath:root.appendingPathComponent("stop").path) }
+        stage="stop barrier"
+        try await wait(label:stage) { FileManager.default.fileExists(atPath:root.appendingPathComponent("stop").path) }
+        stage="complete"
     }
-    private func wait(seconds:Double=60,_ condition:()->Bool) async throws {
+    private struct BridgeTimeout: Error, CustomStringConvertible { let description:String }
+    private func wait(label:String,seconds:Double=60,_ condition:()->Bool) async throws {
         let deadline=Date().addingTimeInterval(seconds)
-        while !condition() { guard Date()<deadline else {throw ReplicationError.bounds};try await Task.sleep(for:.milliseconds(100)) }
+        while !condition() { guard Date()<deadline else {throw BridgeTimeout(description:"Native bridge timed out: \(label)")};try await Task.sleep(for:.milliseconds(100)) }
     }
 }

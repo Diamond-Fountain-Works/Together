@@ -146,7 +146,8 @@ class TogetherRepository(
                     ZoneId.systemDefault().id,
                 )
             }
-        mediaFiles = MediaFiles(File(workspaceRoot, "media-$slot"), AndroidMedia::validate)
+        mediaFiles =
+            MediaFiles(File(workspaceRoot, "media-$slot"), validateFormat = AndroidMedia::validate)
         db = TogetherDatabase.open(context, databaseName)
         store = RoomReplicaStore(db)
         db.dao().clearSnapshots()
@@ -618,51 +619,90 @@ class TogetherRepository(
         runCatching { saveDraft(GiftDraft()) }
     }
 
-    suspend fun importMedia(uri: android.net.Uri, type: String): Asset = command {
-        val resolver = context.contentResolver
-        var name = "media"
-        resolver
-            .query(uri, arrayOf(android.provider.OpenableColumns.DISPLAY_NAME), null, null, null)
-            ?.use { if (it.moveToFirst()) name = it.getString(0) ?: name }
-        val ext = name.substringAfterLast('.', ' '.toString()).lowercase()
-        val input = resolver.openInputStream(uri) ?: throw ProtocolException("MEDIA_IO_ERROR")
-        val asset =
-            mediaFiles.import(
-                input,
-                name,
-                ext,
-                type,
-                identity.descriptor.userId,
-                domainContext().spaceId,
-                clock.now().toEpochMilli(),
-            )
-        val staged = localModel<List<Asset>>("staged-assets") ?: emptyList()
-        store.local("staged-assets", Canonical.encode(staged + asset))
-        asset
+    private data class ImportTarget(val files: MediaFiles, val owner: String, val space: String)
+
+    private suspend fun importTarget() =
+        withContext(Dispatchers.IO) {
+            lock.withLock {
+                ImportTarget(mediaFiles, identity.descriptor.userId, domainContext().spaceId)
+            }
+        }
+
+    private suspend fun importStaged(
+        read: suspend (ImportTarget, MediaImportLease) -> Unit
+    ): Asset {
+        val target = importTarget()
+        val lease = MediaImportLease(target.files)
+        try {
+            read(target, lease)
+            val asset = lease.asset ?: throw ProtocolException("MEDIA_IO_ERROR")
+            return command {
+                // Never attach a file selected in another workspace to the active identity.
+                requireProtocol(
+                    mediaFiles === target.files &&
+                        identity.descriptor.userId == target.owner &&
+                        domainContext().spaceId == target.space,
+                    "INVALID_WORKSPACE",
+                )
+                store.local(
+                    "staged-assets",
+                    Canonical.encode(
+                        (localModel<List<Asset>>("staged-assets") ?: emptyList()) + asset
+                    ),
+                )
+                lease.commit()
+                asset
+            }
+        } finally {
+            withContext(NonCancellable + Dispatchers.IO) { lease.close() }
+        }
     }
+
+    suspend fun importMedia(uri: android.net.Uri, type: String): Asset =
+        importStaged { target, lease ->
+            // A document provider controls I/O latency. It must never own the repository mutex.
+            AndroidMedia.importDocument(
+                context,
+                uri,
+                target.files,
+                type,
+                target.owner,
+                target.space,
+                clock.now().toEpochMilli(),
+                onImported = lease::acquired,
+            )
+        }
 
     suspend fun importRecorded(file: File): Asset = importOwnedMedia(file, "audio")
 
-    suspend fun importOwnedMedia(file: File, type: String): Asset = command {
+    suspend fun importOwnedMedia(file: File, type: String): Asset {
         requireProtocol(
             file.canonicalFile.toPath().startsWith(context.cacheDir.canonicalFile.toPath()),
             "INVALID_MEDIA_PATH",
         )
-        val asset =
-            mediaFiles.import(
-                file.inputStream(),
-                file.name,
-                file.extension.lowercase(),
-                type,
-                identity.descriptor.userId,
-                domainContext().spaceId,
-                clock.now().toEpochMilli(),
-            )
-        store.local(
-            "staged-assets",
-            Canonical.encode((localModel<List<Asset>>("staged-assets") ?: emptyList()) + asset),
-        )
-        asset
+        return importStaged { target, lease ->
+            withContext(Dispatchers.IO) {
+                val job = currentCoroutineContext()
+                try {
+                    runInterruptible {
+                        target.files.import(
+                            file.inputStream(),
+                            file.name,
+                            file.extension.lowercase(),
+                            type,
+                            target.owner,
+                            target.space,
+                            clock.now().toEpochMilli(),
+                            onImported = lease::acquired,
+                            checkCancelled = { job.ensureActive() },
+                        )
+                    }
+                } catch (error: Exception) {
+                    job.ensureActive()
+                    throw error
+                }
+            }
+        }
     }
 
     suspend fun saveProfile(

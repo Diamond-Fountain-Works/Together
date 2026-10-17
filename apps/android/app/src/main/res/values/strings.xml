@@ -250,6 +250,7 @@
     <string name="error_amount">Check the amount, currency, CNY settlement or rate source.</string>
     <string name="error_quota">Today’s gift quota is used. Save a draft for another day.</string>
     <string name="error_media">Cannot read or verify this original file. Retry or choose a supported file.</string>
+    <string name="error_media_storage">Not enough free storage. Free some space, then retry.</string>
     <string name="error_mic">Microphone access is unavailable. Allow it in Android settings or import audio.</string>
     <string name="error_record_changed">This record changed while editing. Reopen it before confirming.</string>
     <string name="error_no_quota">No unused wish slots are available in this grant.</string>
