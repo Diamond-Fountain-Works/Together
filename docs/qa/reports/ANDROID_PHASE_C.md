@@ -100,10 +100,14 @@ Portable conformance17 and Relay18 PASS. Mac UI/visual NOT RUN this phase; exist
 ### Interrupted manual-UI automation
 
 `samsung-lifecycle-1` passed preparation, actual offline cached sealed display, real restart and
-persisted once-only inspection. Before history/native SAF interaction completed, the phone's foreground
-changed away from Together and the UI hierarchy became unavailable. The fail-closed driver stopped
-without operating another application. Overall driver **FAIL (interrupted environment)**; original
-save/photo selection/manual WAV playback/background UI steps remain **NOT RUN**, not PASS.
+persisted once-only inspection. During history interaction the UI hierarchy became unavailable and
+the fail-closed driver stopped. Overall driver **FAIL; cause UNKNOWN**; original save/photo selection/
+manual WAV playback/background UI steps remain **NOT RUN**, not PASS. A later observation of another
+foreground app was made after `finally` had force-stopped Together, so it does **not** prove that a
+user/foreground interruption caused the failure. Three `am start -W` records report successful cold
+QA Activity launches (516/494/475ms); the last retained XML shows Together's own actions menu. The
+retained app-UID Logcat has no matching fatal/start-guard error, but it cannot exclude other product,
+accessibility, idle or lifecycle defects. The original report's environmental attribution is withdrawn.
 The user was asked whether the phone can be left available; dependent device control is paused.
 Dark/font/rotation, large-original/finance benchmarks and the100k corrected full rerun are pending
 that availability. Display settings were not changed by these unexecuted mode tests.
@@ -146,7 +150,9 @@ Pre-commit publication scan PASS:500 tracked files and786 refs/reflog-reachable 
 reviewed the34-file patch (20 source inventory files plus14 docs/config),0 reportable findings.
 Canonical report/coverage/model are retained locally. This is not independent protocol certification.
 Native UI automation remains ambient input after tree checks and requires an available foreground;
-the interruption is preserved rather than bypassing that prerequisite.
+the failed hierarchy query is preserved rather than bypassed. The sealed source review's supplied
+context predates the attribution correction above; its source bytes and no-finding result remain
+unchanged, and it is not evidence that this UI failure has been diagnosed or fixed.
 
 Review-equivalent source commits: `dedeecc` (physical QA/focus), `9797670` (C1/recovery/workloads),
 `a675ce3` (evidence/CI/protection). This later documentation appendix does not change executable code.
