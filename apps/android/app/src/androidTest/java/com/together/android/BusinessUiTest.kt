@@ -360,6 +360,17 @@ class BusinessUiTest {
         capture("gift-opened")
         compose.onNodeWithTag("audio.play").performScrollTo().assertIsDisplayed()
         compose.onNodeWithText(text(R.string.action_play)).assertIsDisplayed()
+        compose.onNodeWithTag("audio.play").performClick()
+        compose.waitUntil(8000) {
+            compose
+                .onAllNodes(
+                    hasText("0:01 / 0:03") or hasText("0:02 / 0:03") or hasText("0:03 / 0:03")
+                )
+                .fetchSemanticsNodes()
+                .isNotEmpty()
+        }
+        compose.onNodeWithText(text(R.string.action_pause)).performClick()
+        compose.onNodeWithText(text(R.string.action_play)).assertIsDisplayed()
         compose.onNodeWithTag("gift.savePhoto").performScrollTo().assertIsDisplayed()
         space.writeRemote {
             listOf(

@@ -1,3 +1,11 @@
+# Android 0.2.1-phaseB (versionCode 2, unreleased)
+
+- Native phone/tablet business workspaces: Tasks/recurrence, Wishes ledger/confirmation, Reserves/Expenses/Bills and finance settings.
+- Original photo/audio gift composition, Android recording/manual playback, resumable authenticated media, sealed reveal/history and explicit original export.
+- Bounded on-demand effective change review; local reviewed/notified state independent of transport receipts/domain confirmation.
+- Actual old Debug APK replacement and independent native Swift/Kotlin C1 tests. Android candidates await human approval; physical device and independent security gates remain open.
+- Existing Protocol 4, API2, Room schema1, SwiftData, production Worker/Apple App and original signed identities are retained. This is a Draft client branch, not production rollout.
+
 # Unreleased — Android Phase A
 
 - Add isolated Kotlin/Compose/Room client and real Debug APK build; no macOS version or binary change.

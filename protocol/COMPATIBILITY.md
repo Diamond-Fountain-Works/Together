@@ -14,7 +14,7 @@ The formally approved lifetime is **8 hours / 28800000ms**, one successful use. 
 
 ## Cross-platform status
 
-macOS Swift Core is extracted and tested. It still contains SwiftData, Network and macOS AppKit/ImageIO adapters; iOS/watchOS builds are not claimed. Future Apple clients can reuse domain logic after narrowing platform adapters. Android is documentation only; fixtures are the common behavioral contract, not an Android implementation.
+macOS Swift Core is extracted and tested. It still contains SwiftData, Network and macOS AppKit/ImageIO adapters; iOS/watchOS builds are not claimed. Future Apple clients can reuse domain logic after narrowing platform adapters. Android now has a native Kotlin/Room client; [Phase B evidence](../docs/qa/reports/ANDROID_PHASE_B.md) separates actual code/runtime tests from unrun physical acceptance. Fixtures remain the shared behavioral contract.
 
 ## Protocol 4 opt-in compatibility
 
@@ -25,3 +25,9 @@ App Build 10 is development evidence, not an automatic rollout. Relay API 2 has 
 ## Android Phase A consumer
 
 `apps/android/core/protocol` consumes the unchanged P4/Enrollment/finance contracts. Pure JVM tests verify existing Swift signatures and `LogValue` bytes; the new public synthetic `android-phase-a-v4.json` is verified/replayed by `AndroidPhaseAConformanceTests.swift`, including BC↔CryptoKit encrypted framing. App version, Room schema 1 and P4/API2 are separate. Android does not speak legacy P3 live transport: it retains/verifies historical signed bytes under the co-signed migration checkpoint. No production P4 activation or physical interoperability is inferred from vectors/local tests.
+
+## Android Phase B media and business consumer
+
+The existing P4 signed envelope, enrollment, authorization epochs, per-device ACK and finance facts are unchanged. Native business editors emit the existing operations atomically into Room1. On-demand effective review is a local derived projection, not another ledger or wire format.
+
+The existing authenticated `media` content channel carries Codable `mediaRequest/Chunk/Complete/Verified/Failure` and `giftReceipt`. Raw chunks are exactly at most65536 bytes; original files are never put in a signed operation payload. Swift UUID-keyed receipt hashes use the existing alternating JSON array encoding, normalized in Kotlin. A content receipt binds gift/creation operation/recipient/exact asset hashes; a same-user device or log ACK cannot claim partner media completion. Actual native Swift/Kotlin C1 tests cover this encoding and SHA equality. No new protocol version, migration or production rollout is introduced.

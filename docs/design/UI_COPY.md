@@ -53,3 +53,9 @@ The `sync.*` additions name actual domains, device origins, projected operations
 ## Android Phase A resources
 
 Android uses native `apps/android/app/src/main/res/values*/strings.xml`, with exact-text/category/context SHA-256 records in `qa/android_copy_review.json`. `make android-copy-qa` checks base/Chinese coverage, unreviewed changes, forbidden placeholders, copy budgets and visible Kotlin literals without reading Room or user text. This is the native Android equivalent of the Apple String Catalog gate; it does not suppress or approve the 14 existing Apple warnings. Functional identity verification/recovery guidance is necessary copy. No new emotional wording or fake delivery state was added.
+
+## Android Phase B copy review
+
+`qa/android_copy_review.json` registers exact English/Chinese resource hashes and the seven established categories. B adds requested task/wish/finance/media controls, necessary validation and the existing approved sender-label Gift copy. Relationship labels use one parser; the verified partner/sender is looked up, never guessed from the current user. Gift status distinguishes pending operation sync from content-verified partner receipt; no Delivered/read/bank-payment claim. Numeric English labels use “Unopened gifts: N” / “Wishes added: N” / “Changes synced: N” so singular counts remain grammatical. Unused action/status strings are removed, not hidden from the scanner. Existing Apple copy warnings retain their original disposition.
+
+The 552 current localized resources include a specific storage recovery error: “Not enough free storage. Free some space, then retry.” / “存储空间不足。请腾出空间后重试。” It describes actual available-capacity failure, not an application-imposed original-file size limit.

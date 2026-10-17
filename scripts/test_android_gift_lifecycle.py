@@ -41,6 +41,8 @@ def main():
 
     adb('wait-for-device')
     assert adb('shell', 'getprop', 'ro.kernel.qemu').strip() == b'1'
+    host = subprocess.run(['adb', '-s', args.serial, 'shell', 'pm', 'path', PACKAGE], capture_output=True, timeout=30)
+    assert host.returncode == 0 and host.stdout.startswith(b'package:'), 'Install both built Debug host/test APKs on this QA emulator before standalone runtime QA'
     assert b'com.together.android.IsolatedAndroidTestRunner' in adb('shell', 'pm', 'list', 'instrumentation')
     port = f'tcp:{parsed.port}'
     mappings = adb('reverse', '--list').decode().splitlines()
@@ -124,12 +126,19 @@ def main():
         # The native panel's displayed Downloads destination was chosen by this explicit QA action.
         exported = adb('exec-out', 'cat', '/sdcard/Download/' + plan['photoFilename'])
         assert hashlib.sha256(exported).hexdigest() == plan['photoHash'] and len(exported) == plan['photoBytes']
-        # uiautomator waits for UI idle; a three-second fixture can finish before a new
-        # tree is returned. Toggle the same tree-located control, then inspect the result.
-        coordinates = tap('Play'); time.sleep(1.2)
-        adb('shell', 'input', 'tap', *coordinates)
-        paused = wait_for('Play')
-        assert not has('0:00 / 0:03', paused), 'Explicit playback must advance'
+        # uiautomator waits for idle. Observe actual completion, not a fixed delay:
+        # the emulator AudioTrack can have >600ms output latency and mm:ss rounds down.
+        # The Compose interaction test separately pauses during actual progress.
+        tap('Play')
+        deadline = time.monotonic() + 15
+        completed = False
+        while time.monotonic() < deadline:
+            current = tree()
+            if has('Play', current) and has('0:03 / 0:03', current):
+                completed = True
+                break
+            time.sleep(.2)
+        assert completed, 'Explicit playback must advance to the known fixture duration'
         capture('opened-after-save')
         tap('Got it ❤️')
         adb('shell', 'am', 'force-stop', PACKAGE)
