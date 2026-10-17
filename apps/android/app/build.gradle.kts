@@ -6,8 +6,8 @@ android {
         applicationId = "com.together.android"
         minSdk = 28
         targetSdk = 36
-        versionCode = 2
-        versionName = "0.2.1-phaseB"
+        versionCode = 5
+        versionName = "0.2.1-phaseC"
         testInstrumentationRunner = "com.together.android.IsolatedAndroidTestRunner"
         providers.gradleProperty("together.testRelay").orNull?.let { testInstrumentationRunnerArguments["relayURL"] = it }
     }
@@ -40,6 +40,7 @@ dependencies {
     androidTestImplementation(testFixtures(project(":core:protocol")))
     androidTestImplementation("androidx.test.ext:junit:1.3.0")
     androidTestImplementation("androidx.test:runner:1.7.0")
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.7.0")
     androidTestImplementation(platform("androidx.compose:compose-bom:2025.10.01"))
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
