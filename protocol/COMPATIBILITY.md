@@ -14,7 +14,7 @@ The formally approved lifetime is **8 hours / 28800000ms**, one successful use. 
 
 ## Cross-platform status
 
-macOS Swift Core is extracted and tested. It still contains SwiftData, Network and macOS AppKit/ImageIO adapters; iOS/watchOS builds are not claimed. Future Apple clients can reuse domain logic after narrowing platform adapters. Android now has a native Kotlin/Room client; [Phase B evidence](../docs/qa/reports/ANDROID_PHASE_B.md) separates actual code/runtime tests from unrun physical acceptance. Fixtures remain the shared behavioral contract.
+macOS Swift Core is extracted and tested. It still contains SwiftData, Network and macOS AppKit/ImageIO adapters; iOS/watchOS builds are not claimed. Future Apple clients can reuse domain logic after narrowing platform adapters. Android now has a native Kotlin/Room client; [Phase B evidence](../docs/qa/reports/ANDROID_PHASE_B.md) is historical. [Phase C](../docs/qa/reports/ANDROID_PHASE_C.md) records physical Samsung/native Swift interoperability through a local USB-reversed Worker, not public cross-WiFi or Mac GUI acceptance. Fixtures remain the shared behavioral contract.
 
 ## Protocol 4 opt-in compatibility
 

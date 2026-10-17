@@ -21,6 +21,7 @@ qa/visual/candidates/
 **/.env.*
 **/.dev.vars
 **/.dev.vars.*
+services/relay/wrangler.*.local.jsonc
 !**/.env.example
 !**/.env.template
 !**/.dev.vars.example

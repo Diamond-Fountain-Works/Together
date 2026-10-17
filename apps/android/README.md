@@ -1,17 +1,24 @@
-# Together Android — Phase B
+# Together Android — Phase C device acceptance
 
-Native Kotlin / Jetpack Compose / Room client. Phone drawer and ≥600dp tablet rail share one domain/state/persistence implementation. Minimum Android 9/API28, compile/target36, JDK21, Gradle8.13, Java/Kotlin bytecode17. No production Relay origin, user records or credentials are bundled. [Phase A](../../docs/qa/reports/ANDROID_PHASE_A.md) remains historical evidence; [Phase B QA](../../docs/qa/reports/ANDROID_PHASE_B.md) records current results and remaining gates.
+Native Kotlin / Jetpack Compose / Room client. Phone drawer and ≥600dp tablet rail share one domain/state/persistence implementation. Minimum Android 9/API28, compile/target36, JDK21, Gradle8.13, Java/Kotlin bytecode17. No production Relay origin, user records or credentials are bundled. [Phase A](../../docs/qa/reports/ANDROID_PHASE_A.md) and [Phase B QA](../../docs/qa/reports/ANDROID_PHASE_B.md) remain historical evidence; [Phase C QA](../../docs/qa/reports/ANDROID_PHASE_C.md) records physical Samsung/native Swift results and remaining gates.
 
 ## Build and tests
 
 ```sh
 # Repository root, existing SDK or ignored apps/android/local.properties:
 make android-qa
-# Dedicated emulator + explicit loopback Relay; the Runner rejects physical hardware:
+# Dedicated emulator + explicit loopback Relay (physical hardware uses the guarded driver below):
 apps/android/gradlew -p apps/android -Ptogether.testRelay=http://127.0.0.1:8797 :app:connectedDebugAndroidTest
 ```
 
-Debug APK: `apps/android/app/build/outputs/apk/debug/app-debug.apk`, application ID `com.together.android.debug`, version `0.2.1-phaseB`, code2. The reserved normal ID is `com.together.android`; no signed production Android release is delivered. Do not uninstall real user data to solve a signing mismatch. The Debug emulator-only QA activity can reopen an existing synthetic namespace, never create a replacement identity; it is absent from Release.
+Debug APK: `apps/android/app/build/outputs/apk/debug/app-debug.apk`, application ID `com.together.android.debug`, version `0.2.1-phaseC`, code5. The reserved normal ID is `com.together.android`; no signed production Android release is delivered. Do not uninstall real user data to solve a signing mismatch. The Debug QA activity can reopen an existing synthetic namespace, never create a replacement identity; it is absent from Release. Physical reopening requires a short-lived namespace-bound local QA permit. Normal test rules use their own explicitly isolated repository, never the default workspace.
+
+Physical runs require live ADB authorization/model verification and
+`scripts/run_android_physical_qa.py --serial <device> --expect-model SM-S9210 --relay http://127.0.0.1:<port> --authorize-physical-test-app`.
+Only this driver's explicit `--install` uses same-signer `install -r`; it checks both APK IDs and
+never uninstalls or clears data. Do **not** use Gradle connected tests on the physical phone.
+Native permissions are handled by the user, not auto-granted. See
+[device isolation and limitations](../../docs/architecture/ANDROID_DEVICE_ACCEPTANCE.md).
 
 ## Business implementation
 
@@ -49,4 +56,12 @@ A native Swift process hosting two clients and Kotlin use independent keys and a
 
 ## Limits and release gates
 
-Independent protocol review, physical Samsung/dual-device use, minimum API28, real tablet/TalkBack and human visual approval remain separate gates. Upstream authorization archive remains bounded (128KiB/32 active devices), root-loss recovery/archive paging are absent, and offline revocation freshness cannot be guaranteed. OkHttp assembles messages before application bounds; adversarial-server memory behavior remains an upstream transport review item. Projection/recovery is linear in history; no Android100k claim. Unsupported platform codecs report an error and preserve original bytes. No C2, production deployment, Mac installation or real-user Protocol4 activation is implied.
+Physical Samsung SM-S9210/API36 and native Swift/USB-reversed local C1 have executed evidence in the
+Phase C report. Public cross-network/graphical Mac enrollment, independent protocol review,
+minimum API28, real tablet/TalkBack and human visual approval remain separate gates. Upstream
+authorization archive remains bounded (128KiB/32 active devices), root-loss recovery/archive paging
+are absent, and offline revocation freshness cannot be guaranteed. OkHttp assembles messages before
+application bounds; adversarial-server memory behavior remains an upstream transport review item.
+Projection/recovery is linear in history; the opt-in100k benchmark measures storage/paging/restart,
+not full100k business UI or public transfer. Unsupported platform codecs report an error and preserve
+original bytes. No C2, production deployment, Mac installation or real-user Protocol4 activation is implied.

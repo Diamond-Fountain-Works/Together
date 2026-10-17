@@ -90,7 +90,29 @@ class BusinessUiTest {
     }
 
     private fun waitFor(condition: () -> Boolean) {
-        compose.waitUntil(20000, condition)
+        try {
+            compose.waitUntil(20000, condition)
+        } catch (e: Throwable) {
+            val state = space.repo.state.value
+            android.util.Log.e(
+                "TogetherPhysicalQa",
+                "UI wait failed: loaded=${state.loaded}, ready=${state.historyReady}, writable=${state.canWrite}, connection=${state.connection}, error=${state.error}, connectionError=${state.connectionError}, tasks=${state.snapshot.of("task").size}",
+            )
+            android.util.Log.e(
+                "TogetherPhysicalQa",
+                runCatching { compose.onRoot(useUnmergedTree = true).printToString() }
+                    .getOrDefault("No Compose root available"),
+            )
+            throw e
+        }
+    }
+
+    private fun save(tag: String = "sheet.save") {
+        // OEM keyboards animate their own window after scrolling/focus changes. Finish that
+        // interaction before computing touch coordinates; this still exercises the real button.
+        androidx.test.espresso.Espresso.closeSoftKeyboard()
+        compose.waitForIdle()
+        compose.onNodeWithTag(tag).assertIsDisplayed().assertIsEnabled().performClick()
     }
 
     private fun capture(name: String) {
@@ -103,8 +125,12 @@ class BusinessUiTest {
             val p = instrumentation.uiAutomation.executeShellCommand(command)
             android.os.ParcelFileDescriptor.AutoCloseInputStream(p).use { it.readBytes() }
         }
-        shell("mkdir -p /data/local/tmp/together-phase-b-candidates")
-        shell("screencap -p /data/local/tmp/together-phase-b-candidates/$prefix-$name.png")
+        val directory =
+            InstrumentationRegistry.getArguments().getString("captureDirectory")
+                ?: "together-phase-b-candidates"
+        require(Regex("together-[a-z0-9-]+").matches(directory))
+        shell("mkdir -p /data/local/tmp/$directory")
+        shell("screencap -p /data/local/tmp/$directory/$prefix-$name.png")
     }
 
     @Test
@@ -149,14 +175,33 @@ class BusinessUiTest {
 
     @Test
     fun recordPauseResumePreviewAndAudioOnlyGiftUsesOneQuota() {
-        val permission =
-            instrumentation.uiAutomation.executeShellCommand(
-                "pm grant com.together.android.debug android.permission.RECORD_AUDIO"
-            )
-        android.os.ParcelFileDescriptor.AutoCloseInputStream(permission).use { it.readBytes() }
+        if (android.os.Build.HARDWARE in setOf("ranchu", "goldfish")) {
+            val permission =
+                instrumentation.uiAutomation.executeShellCommand(
+                    "pm grant com.together.android.debug android.permission.RECORD_AUDIO"
+                )
+            android.os.ParcelFileDescriptor.AutoCloseInputStream(permission).use { it.readBytes() }
+        }
         compose.onNodeWithTag("app.actions").performClick()
         compose.onNodeWithTag("menu.gift").performClick()
         compose.onNodeWithText(text(R.string.action_record_audio)).performScrollTo().performClick()
+        // A native permission window temporarily owns all semantics. Wait on the actual OS
+        // permission before querying Compose; do not click/grant a physical permission in code.
+        if (android.os.Build.HARDWARE !in setOf("ranchu", "goldfish")) {
+            val deadline = android.os.SystemClock.elapsedRealtime() + 60000
+            while (
+                instrumentation.targetContext.checkSelfPermission(
+                    android.Manifest.permission.RECORD_AUDIO
+                ) != android.content.pm.PackageManager.PERMISSION_GRANTED &&
+                    android.os.SystemClock.elapsedRealtime() < deadline
+            ) Thread.sleep(100)
+            Assume.assumeTrue(
+                "Physical microphone permission was not manually granted; recording NOT RUN",
+                instrumentation.targetContext.checkSelfPermission(
+                    android.Manifest.permission.RECORD_AUDIO
+                ) == android.content.pm.PackageManager.PERMISSION_GRANTED,
+            )
+        }
         compose.waitUntil(10000) {
             compose
                 .onAllNodesWithText(text(R.string.action_stop_recording))
@@ -171,6 +216,17 @@ class BusinessUiTest {
         compose.onNodeWithText(text(R.string.action_stop_recording)).performClick()
         waitFor { space.repo.state.value.draft.audioAssetId != null }
         compose.onNodeWithTag("audio.play").performScrollTo().assertIsEnabled()
+        compose.onNodeWithTag("audio.play").performClick()
+        compose.waitUntil(8000) {
+            compose
+                .onAllNodes(
+                    hasText("0:01 /", substring = true) or hasText("0:02 /", substring = true)
+                )
+                .fetchSemanticsNodes()
+                .isNotEmpty()
+        }
+        compose.onNodeWithText(text(R.string.action_pause)).performClick()
+        compose.onNodeWithText(text(R.string.action_play)).assertIsDisplayed()
         capture("gift-audio-editor")
         compose.onNodeWithTag("sheet.save").performClick()
         waitFor {
@@ -201,10 +257,18 @@ class BusinessUiTest {
         navigate("plans")
         compose.onNodeWithTag("task.new").performClick()
         compose.onNodeWithTag("task.title").performTextInput("Synthetic UI flexible")
+        androidx.test.espresso.Espresso.closeSoftKeyboard()
+        compose.waitForIdle()
         compose.onNodeWithTag("task.recurrence").performScrollTo().performClick()
+        waitFor {
+            compose
+                .onAllNodesWithText(text(R.string.label_flexible))
+                .fetchSemanticsNodes()
+                .isNotEmpty()
+        }
         compose.onNodeWithText(text(R.string.label_flexible)).performClick()
         capture("task-editor")
-        compose.onNodeWithTag("task.save").performClick()
+        save("task.save")
         waitFor { space.repo.state.value.snapshot.of("task").size == 1 }
         val id = space.repo.state.value.snapshot.of("task").single().id
         capture("tasks-pending")
@@ -218,13 +282,14 @@ class BusinessUiTest {
         capture("tasks-completed")
         compose.onNodeWithText("Synthetic UI flexible").performClick()
         compose.onNodeWithTag("task.title").performTextReplacement("Synthetic UI edited")
-        compose.onNodeWithTag("task.save").performClick()
+        save("task.save")
         waitFor {
             space.repo.state.value.snapshot.entities[id]?.fields?.text("title") ==
                 "Synthetic UI edited"
         }
         compose.onNodeWithTag("task.complete.$id").performClick()
         compose.onNodeWithTag("tasks.pending").performClick()
+        waitFor { compose.onAllNodesWithTag("task.delete.$id").fetchSemanticsNodes().isNotEmpty() }
         compose.onNodeWithTag("task.delete.$id").performClick()
         waitFor { space.repo.state.value.snapshot.entities[id]?.deletedAt != null }
         compose.onNodeWithTag("tasks.empty").assertIsDisplayed()
@@ -303,7 +368,11 @@ class BusinessUiTest {
             before,
             FinanceProjection.statistics(space.repo.state.value.snapshot).bookBalance,
         )
-        compose.onNodeWithTag("finance.settings").performClick()
+        compose
+            .onNodeWithTag("finance.settings")
+            .performScrollTo()
+            .assertIsDisplayed()
+            .performClick()
         capture("cycle-settings")
         compose.onNodeWithTag("sheet.close").performClick()
         navigate("plans")

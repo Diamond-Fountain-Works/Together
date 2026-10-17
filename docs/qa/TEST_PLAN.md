@@ -231,3 +231,39 @@ Physical test, NOT RUN: after separately authorized compatible API2 rollout and 
 - Run source/history publication scanning and security diff review separately. CI includes Linux JVM/APK/lint/copy/local C1 and native macOS Swift/JVM C1; hosted jobs do not claim emulator/physical UI or independent cryptographic review.
 
 Actual outcomes, retained failed attempts, artifact hashes and physical NOT RUN matrix: [ANDROID_PHASE_B](reports/ANDROID_PHASE_B.md).
+
+## Android Phase C physical acceptance
+
+Use an already USB-authorized, explicitly identified Samsung and only the separately installed
+`com.together.android.debug`. Verify the checksum-pinned Phase B APK first. Never use
+`connectedDebugAndroidTest` on hardware whose test data must be retained: Gradle may uninstall the
+target/test APKs. `scripts/run_android_physical_qa.py --serial <device> --expect-model SM-S9210
+--relay http://127.0.0.1:<local-port> --authorize-physical-test-app` is the guarded direct-instrumentation
+entry. `--install` checks package/Debug flag and installed/new certificate equality before `install -r`.
+It never uninstalls, clears data, selects a production Relay or auto-grants a physical permission.
+
+- Run RoomRecoveryTest, DeviceEnrollmentRepositoryTest, AndroidRelayRuntimeTest,
+  BusinessPersistenceTest, FoundationUiTest and BusinessUiTest for the complete 16-case physical
+  business/runtime suite. Preserve failed attempts separately, including original Phase B timeout logs.
+- `test_android_physical_bridge.py` uses a fresh guarded native Swift Testing root, public signed
+  enrollment files and actual encrypted local C1. Verify independent phone key, unchanged legacy
+  space/history, live/offline merge, content checkpoint, signed ACK, actual force-stop/restart,
+  original PNG/WAV hashes and fresh-ticket refusal after revoke. This is USB/native-process evidence,
+  not a graphical Mac enrollment or public-network test.
+- `test_android_physical_lifecycle.py` handles cached sealed reveal offline, once-only state,
+  manual audio, native original-file export and selecting only that run's unique synthetic photo.
+  An unrelated foreground app, unavailable hierarchy or lock screen stops the run. Do not interact
+  with the user's gallery, unlock the phone or automate permission/biometric prompts.
+- `test_android_physical_modes.py` records font/night/rotation/animation values, runs dark,
+  large-font/reduced-motion and landscape cases, restores all recorded values in `finally` and
+  compares readback. Reports remain FAIL if a row or restoration fails. Screenshots stay candidates.
+- Explicit `runReliability=true` and `runPerformance=true` opt-ins isolate owned-socket fault tests,
+  100,000 certified Room facts, a large original photo and a 3,000-fact finance projection. Record
+  real device timings/memory and exact workload, not Mac metrics or smaller substitutes. Timings
+  use ordinary diagnostic JSON; signed wire canonicalization still forbids fractional numbers.
+- `test_android_physical_qa.py` runs in normal and optimized Python, without touching ADB, and checks
+  fail-closed origin/namespace/model/signature boundaries. Linux CI does not claim phone coverage.
+
+Results and remaining gates: [ANDROID_PHASE_C](reports/ANDROID_PHASE_C.md). Public staging remains
+[planned, undeployed and separately authorized](ANDROID_STAGING_ACCEPTANCE.md). No production
+database/key/media/Logcat/APK is committed. Original Apple QA dispositions are not changed.

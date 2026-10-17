@@ -21,6 +21,44 @@ import org.junit.runner.RunWith
 @RunWith(AndroidJUnit4::class)
 class GiftLaunchRuntimeTest {
     @Test
+    fun inspectNativePhotoDraftAfterPicker() = runBlocking {
+        val args = InstrumentationRegistry.getArguments()
+        Assume.assumeTrue(
+            "Native picker QA is explicitly orchestrated",
+            args.getString("inspectPhotoDraft") == "true",
+        )
+        val context = InstrumentationRegistry.getInstrumentation().targetContext
+        val plan =
+            Canonical.parse(File(context.filesDir, "phase-b-launch.json").readBytes()).jsonObject
+        val expected =
+            args.getString("expectedPhotoHash") ?: error("Expected synthetic photo hash required")
+        requireProtocol(expected.matches(Regex("[a-f0-9]{64}")), "INVALID_HASH")
+        val scope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
+        val repo =
+            TogetherRepository(
+                context,
+                scope,
+                plan.getValue("namespace").jsonPrimitive.content,
+                DateProvider { Instant.parse(plan.getValue("clock").jsonPrimitive.content) },
+            )
+        try {
+            withTimeout(15000) { repo.state.first { it.loaded } }
+            val asset = repo.state.value.staged.getValue(repo.state.value.draft.photoAssetId!!)
+            assertEquals(expected, asset.sha256)
+            assertTrue(repo.mediaFiles.verified(asset))
+            assertEquals(expected, MediaFiles.digest(repo.mediaFiles.original(asset)))
+            assertEquals(
+                plan.getValue("photoBytes").jsonPrimitive.long,
+                repo.mediaFiles.original(asset).length(),
+            )
+            assertEquals(1, repo.state.value.snapshot.gifts.size)
+        } finally {
+            repo.close()
+            scope.cancel()
+        }
+    }
+
+    @Test
     fun prepareCachedGiftForActualProcessRestart() = runBlocking {
         val args = InstrumentationRegistry.getArguments()
         Assume.assumeTrue(
