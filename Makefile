@@ -30,6 +30,8 @@ security-qa:
 android-qa:
 	cd apps/android && ./gradlew :core:protocol:test :core:domain:test :app:assembleDebug :app:lintDebug --console=plain
 	python3 scripts/test_android_copy.py
+	python3 scripts/test_android_physical_qa.py
+	python3 -O scripts/test_android_physical_qa.py
 	python3 scripts/audit_android_copy.py --json qa/results/android-copy.json
 android-copy-qa:
 	python3 scripts/audit_android_copy.py --json qa/results/android-copy.json

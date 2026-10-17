@@ -28,6 +28,6 @@
     "relayAPIs": [
       2
     ],
-    "status": "development-business-client; physical-device, visual-baseline and independent-security acceptance pending"
+    "status": "development-device-acceptance-client; physical Samsung/local native C1 evidence in ANDROID_PHASE_C; public-network, visual-baseline and independent-security acceptance pending"
   }
 }

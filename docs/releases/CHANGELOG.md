@@ -1,3 +1,11 @@
+# Android 0.2.1-phaseC (versionCode 5, unreleased)
+
+- Add fail-closed physical Debug QA enrollment, namespaced Activity reopening and explicit same-signer install guards. Production Mac identity/data and Android Release UI remain unchanged.
+- Exercise a physical Samsung with native Swift roots, USB-reversed local C1, durable ACK/restart/revocation and exact business/media comparisons. Public network and independent security acceptance are separate gates.
+- Add controlled link/session/ACK reliability, original-media, finance and opt-in 100k signed Room benchmarks; retain failed attempts and scope limits in [Phase C QA](../qa/reports/ANDROID_PHASE_C.md).
+- Correct test focus/scroll handling for Samsung keyboard/layout transitions. No user input-method restriction, protocol weakening or general timeout extension.
+- Configure/read back main branch protection: no force push/delete, administrator enforcement and PR/CI/conversation requirements. No merge or production deployment.
+
 # Android 0.2.1-phaseB (versionCode 2, unreleased)
 
 - Native phone/tablet business workspaces: Tasks/recurrence, Wishes ledger/confirmation, Reserves/Expenses/Bills and finance settings.

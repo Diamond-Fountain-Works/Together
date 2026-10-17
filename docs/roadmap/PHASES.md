@@ -1,4 +1,11 @@
-# Android Phase B — current incremental stage
+# Android Phase C — current device acceptance stage
+
+- Independent `feature/android-physical-phase-c` worktree from verified Phase B `7e9d0c1182ff2741af748e0f976509058039d2c4`, stacked on PR #6. Parent Draft PRs are not modified or merged.
+- The checksum-pinned Phase B Debug APK was installed on the USB-authorized Samsung SM-S9210, Android16/API36. Same-signer replacements preserve the separate Debug app's test workspaces; no uninstall, data clear, Mac installation or production-data use.
+- Guarded physical instrumentation, native Swift bridge, restart/revocation, original media and reliability checks extend QA rather than redesigning Protocol4, Room, SyncEngine or business logic. Actual results, retained failures and unrun gates: [ANDROID_PHASE_C](../qa/reports/ANDROID_PHASE_C.md).
+- USB-reversed local Worker is not public cross-WiFi acceptance. Minimum API28, real tablet, physical Mac GUI, public API2 staging and independent protocol/security review remain separate gates. All new screenshots are local candidates.
+
+# Android Phase B — historical business stage
 
 - Independent `feature/android-business-phase-b` worktree from Phase A `1dfce291ac02726e48717558f48f76f196662032`; PR #5 is its stacked base. Parent PRs, Apple QA state and all production installs/data remain untouched.
 - Tasks/recurrence, wishes/confirmation/audit, one finance ledger/bills/cycles/cards, original photo/audio gifts, sealed reveal/history and cross-domain review are implemented through the existing signed operation framework. No Protocol 4 or Relay API2 semantics are replaced.
