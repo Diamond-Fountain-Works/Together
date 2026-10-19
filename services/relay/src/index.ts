@@ -32,6 +32,7 @@ type Route = {
   revoked: boolean;
   confirmed: string[];
   transcript?: string;
+  pairingProtocol?: 4;
 };
 type Invitation = {
   owner: Member;
@@ -39,6 +40,8 @@ type Invitation = {
   routeId: string;
   expiresAt: number;
   used: boolean;
+  pairingProtocol?: 4;
+  joinRequestId?: string;
 };
 const encoder = new TextEncoder(),
   alphabet = "23456789ABCDEFGHJKLMNPQRSTUVWXYZ";
@@ -86,14 +89,14 @@ class ServiceError extends Error {
     super(code);
   }
 }
-function checkDescriptor(d: Descriptor): void {
+function checkDescriptor(d: Descriptor, nativePartner = false): void {
   if (
     !d ||
     !uuid.test(d.deviceId) ||
     !uuid.test(d.userId) ||
     !uuid.test(d.initialSpaceId) ||
     from64(d.publicKey).length !== 32 ||
-    ![2, 3].includes(d.protocolVersion) ||
+    !(nativePartner ? [3, 4] : [2, 3]).includes(d.protocolVersion) ||
     typeof d.displayName !== "string" ||
     d.displayName.length > 80 ||
     !d.initialTimeZoneIdentifier
@@ -105,8 +108,8 @@ function checkDescriptor(d: Descriptor): void {
     throw new ServiceError(400, "INVALID_TIME_ZONE");
   }
 }
-function member(body: any, auth: { key: string; device: string }): Member {
-  checkDescriptor(body.descriptor);
+function member(body: any, auth: { key: string; device: string }, nativePartner = false): Member {
+  checkDescriptor(body.descriptor, nativePartner);
   if (
     body.descriptor.publicKey !== auth.key ||
     body.descriptor.deviceId !== auth.device ||
@@ -123,7 +126,9 @@ export default {
       return json({
         status: "ok",
         protocol: 1,
-        deviceProtocols: [2, 3],
+        deviceProtocols: [2, 3, 4],
+        partnerPairing: 1,
+        partnerInvitationLifetimeMillis: 28800000,
         replicationProtocols: [3, 4],
         relayAPIVersions: [1, 2],
         delivery: "realtime-only",
@@ -349,7 +354,8 @@ export class ConnectionDirectory extends DurableObject<Env> {
         throw new ServiceError(413, "REQUEST_TOO_LARGE");
       const auth = await this.authenticate(request, bodyText),
         body = bodyText ? JSON.parse(bodyText) : {};
-      if (path.startsWith("/v2/")) {
+      const nativePartner = path === "/v2/partner-invitations" || path === "/v2/partner-invitations/join";
+      if (path.startsWith("/v2/") && !nativePartner) {
         await this.rate(
           request,
           "authenticated4",
@@ -359,9 +365,9 @@ export class ConnectionDirectory extends DurableObject<Env> {
         );
         return await this.handle4(request, path, body, auth);
       }
-      if (path === "/v1/invitations" && request.method === "POST") {
+      if ((path === "/v1/invitations" || path === "/v2/partner-invitations") && request.method === "POST") {
         await this.rate(request, "create", 6, 600000);
-        const owner = member(body, auth);
+        const owner = member(body, auth, nativePartner);
         if (body.expectedPeer) {
           checkDescriptor(body.expectedPeer);
           if (body.expectedPeer.deviceId === auth.device)
@@ -375,8 +381,9 @@ export class ConnectionDirectory extends DurableObject<Env> {
             owner,
             expectedPeer: body.expectedPeer,
             routeId: id(),
-            expiresAt: Date.now() + 600000,
+            expiresAt: Date.now() + (nativePartner ? 28800000 : 600000),
             used: false,
+            ...(nativePartner ? { pairingProtocol: 4 as const } : {}),
           };
         await this.ctx.storage.put("invite:" + (await hash(code)), invitation);
         await this.ctx.storage.put("route:" + invitation.routeId, {
@@ -386,6 +393,7 @@ export class ConnectionDirectory extends DurableObject<Env> {
           paired: false,
           revoked: false,
           confirmed: [],
+          ...(nativePartner ? { pairingProtocol: 4 as const } : {}),
         } satisfies Route);
         await this.ctx.storage.setAlarm(Date.now() + 600000);
         return json({
@@ -394,24 +402,34 @@ export class ConnectionDirectory extends DurableObject<Env> {
           expiresAt: invitation.expiresAt,
         });
       }
-      if (path === "/v1/invitations/join" && request.method === "POST") {
+      if ((path === "/v1/invitations/join" || path === "/v2/partner-invitations/join") && request.method === "POST") {
         await this.rate(request, "join", 10);
-        const joining = member(body, auth),
+        const joining = member(body, auth, nativePartner),
           code = String(body.code ?? "")
             .trim()
             .toUpperCase()
             .replace(/[\s-]/g, "");
         if (!/^[23456789ABCDEFGHJKLMNPQRSTUVWXYZ]{12}$/.test(code))
           throw new ServiceError(400, "INVITATION_UNAVAILABLE");
+        if (body.joinRequestId !== undefined && (!nativePartner || !uuid.test(body.joinRequestId)))
+          throw new ServiceError(400, "INVALID_JOIN_REQUEST");
         const key = "invite:" + (await hash(code)),
           route = await this.ctx.storage.transaction(async (tx) => {
             const invitation = await tx.get<Invitation>(key);
             if (
               !invitation ||
-              invitation.used ||
+              (invitation.pairingProtocol === 4) !== nativePartner ||
               invitation.expiresAt < Date.now()
             )
               throw new ServiceError(400, "INVITATION_UNAVAILABLE");
+            if (invitation.used) {
+              // A retry of the *same signed join intent* returns its original
+              // result. It neither consumes again nor authorizes another device.
+              const prior = await tx.get<Route>("route:" + invitation.routeId);
+              if (nativePartner && body.joinRequestId && invitation.joinRequestId === body.joinRequestId && prior && !prior.revoked &&
+                  prior.members.some(m => canonical(m.descriptor) === canonical(joining.descriptor))) return prior;
+              throw new ServiceError(400, "INVITATION_UNAVAILABLE");
+            }
             if (
               invitation.owner.descriptor.deviceId ===
                 joining.descriptor.deviceId ||
@@ -430,6 +448,7 @@ export class ConnectionDirectory extends DurableObject<Env> {
             )
               throw new ServiceError(403, "MIGRATION_IDENTITY_MISMATCH");
             invitation.used = true;
+            if (nativePartner && body.joinRequestId) invitation.joinRequestId = body.joinRequestId;
             await tx.put(key, invitation);
             const row: Route = {
               routeId: invitation.routeId,
@@ -438,6 +457,7 @@ export class ConnectionDirectory extends DurableObject<Env> {
               paired: false,
               revoked: false,
               confirmed: [],
+              ...(invitation.pairingProtocol === 4 ? { pairingProtocol: 4 as const } : {}),
             };
             await tx.put("route:" + row.routeId, row);
             return row;

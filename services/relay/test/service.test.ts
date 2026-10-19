@@ -76,6 +76,50 @@ const body = (d: Awaited<ReturnType<typeof device>>) => ({
   descriptor: d.descriptor,
   profileName: d.profileName,
 });
+describe("native partner purpose, without changing legacy routes", () => {
+  it("replays only the same authenticated join intent after a lost response", async()=>{
+    const a=await device("Retry Mac",3),b=await device("Retry Android",4),c=await device("Unauthorized retry",4);
+    const invite=await (await request(a,"POST","/v2/partner-invitations",body(a),"retry-create")).json() as any;
+    const joinRequestId=crypto.randomUUID().toUpperCase(), payload={...body(b),code:invite.code,joinRequestId};
+    const first=await request(b,"POST","/v2/partner-invitations/join",payload,"retry-first");expect(first.status).toBe(200);
+    const original=await first.json();const retry=await request(b,"POST","/v2/partner-invitations/join",payload,"retry-same");
+    expect(retry.status).toBe(200);expect(await retry.json()).toEqual(original);
+    expect((await request(b,"POST","/v2/partner-invitations/join",{...payload,joinRequestId:crypto.randomUUID().toUpperCase()},"retry-other-intent")).status).toBe(400);
+    expect((await request(c,"POST","/v2/partner-invitations/join",{...body(c),code:invite.code,joinRequestId},"retry-other-device")).status).toBe(400);
+  });
+  it("uses 8 hours, consumes atomically, and requires both confirmations", async () => {
+    const a=await device("Native Mac",3), b=await device("Native Android",4), c=await device("Other Android",4);
+    const before=Date.now();
+    const created=await request(a,"POST","/v2/partner-invitations",body(a),"native-create");
+    expect(created.status).toBe(200); const invite=await created.json() as any;
+    expect(invite.expiresAt-before).toBeGreaterThanOrEqual(28_799_000);
+    expect(invite.expiresAt-before).toBeLessThanOrEqual(28_801_000);
+    expect((await request(a,"POST","/v1/invitations/join",{...body(a),code:invite.code},"native-purpose")).status).toBe(400);
+    const results=await Promise.all([b,c].map((d,i)=>request(d,"POST","/v2/partner-invitations/join",{...body(d),code:invite.code},"native-join"+i)));
+    expect(results.map(r=>r.status).sort()).toEqual([200,400]);
+    const winner=results[0].status===200 ? b : c;
+    const route=await results.find(r=>r.status===200)!.json() as any;
+    expect(route.pairingProtocol).toBe(4);expect(route.paired).toBe(false);
+    expect((await request(winner,"POST","/v2/partner-invitations/join",{...body(winner),code:invite.code},"native-reuse")).status).toBe(400);
+    const path="/v1/routes/"+invite.routeId+"/confirm",transcript="c".repeat(64);
+    expect((await (await request(a,"POST",path,{transcript},"native-confirm-a")).json() as any).paired).toBe(false);
+    expect((await (await request(winner,"POST",path,{transcript},"native-confirm-b")).json() as any).paired).toBe(true);
+    const ticket=await (await request(winner,"POST","/v1/routes/"+invite.routeId+"/ticket",{},"native-ticket")).json() as any;
+    expect(ticket.expiresAt-Date.now()).toBeLessThanOrEqual(60_000);
+  });
+  it("rejects expiration, forged identity and same-user joins, retaining the legacy TTL",async()=>{
+    const a=await device("Native owner",4), b=await device("Native partner",3);
+    expect((await request(a,"POST","/v2/partner-invitations",body(b),"native-forge")).status).toBe(403);
+    const invite=await (await request(a,"POST","/v2/partner-invitations",body(a),"native-expire-create")).json() as any;
+    const same=await device("Same user",4);same.descriptor.userId=a.descriptor.userId;
+    expect((await request(same,"POST","/v2/partner-invitations/join",{...body(same),code:invite.code},"native-same")).status).toBe(400);
+    const key="invite:"+await sha(invite.code),stub=env.DIRECTORY.get(env.DIRECTORY.idFromName("directory-v1"));
+    await runInDurableObject(stub,async(_:any,state:any)=>{const row=await state.storage.get(key);row.expiresAt=0;await state.storage.put(key,row)});
+    expect((await request(b,"POST","/v2/partner-invitations/join",{...body(b),code:invite.code},"native-expired")).status).toBe(400);
+    const old=await (await request(b,"POST","/v1/invitations",body(b),"legacy-duration")).json() as any;
+    expect(old.expiresAt-Date.now()).toBeGreaterThan(599_000);expect(old.expiresAt-Date.now()).toBeLessThanOrEqual(600_000);
+  });
+});
 describe("real Workers runtime / invitation and authorization", () => {
   it("accepts finance protocol 3 and keeps protocol 2 routes compatible", async () => {
     for (const version of [2, 3]) {
@@ -90,7 +134,9 @@ describe("real Workers runtime / invitation and authorization", () => {
     const r = await exports.default.fetch("https://service.test/health");
     const status = (await r.json()) as any;
     expect(status.delivery).toBe("realtime-only");
-    expect(status.deviceProtocols).toEqual([2, 3]);
+    expect(status.deviceProtocols).toEqual([2, 3, 4]);
+    expect(status.partnerPairing).toBe(1);
+    expect(status.partnerInvitationLifetimeMillis).toBe(28_800_000);
   });
   it("creates unpredictable 12-character invitation, consumes once, requires both confirmations", async () => {
     const a = await device(),

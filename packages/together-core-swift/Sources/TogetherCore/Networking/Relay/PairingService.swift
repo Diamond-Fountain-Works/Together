@@ -1,6 +1,7 @@
 import Foundation
 import Observation
 import CryptoKit
+private struct NativeJoinIntent: Codable { var codeDigest: String; var requestId: UUID }
 @preconcurrency import Network
 
 public enum PairingConnectionState: String, Sendable { case unpaired = "Unpaired", waiting = "Waiting for Partner", connected = "Connected", syncing = "Syncing", offline = "Offline", error = "Error" }
@@ -34,6 +35,7 @@ public enum PairingConnectionState: String, Sendable { case unpaired = "Unpaired
     @ObservationIgnored private var remoteApproved = false
     @ObservationIgnored private var serverPaired = false
     @ObservationIgnored private var logSession: OperationLogSyncSession?
+    @ObservationIgnored private var partnerBootstrap: PartnerBootstrapSession?
     @ObservationIgnored private var poll: Task<Void, Never>?
     @ObservationIgnored private var retry: Task<Void, Never>?
     @ObservationIgnored private var sender: Task<Void, Never>?
@@ -67,7 +69,9 @@ public enum PairingConnectionState: String, Sendable { case unpaired = "Unpaired
         if engine.usesReplication4 {
             Task { @MainActor [weak self] in await self?.restoreReplication4() };return
         }
-        guard let binding else { return }; routeId = binding.routeId
+        if let binding { routeId = binding.routeId }
+        else if let route = try? engine.repository.load(RelayRoute.self, key: "partner4/pending-route") { routeId = route.routeId }
+        else { return }
         Task { @MainActor [weak self] in await self?.resumeRoute() }
     }
     public func createInvitation() async {
@@ -76,7 +80,9 @@ public enum PairingConnectionState: String, Sendable { case unpaired = "Unpaired
             guard !engine.usesReplication4 else {throw ReplicationError.incompatibleProtocol}
             guard let api else { throw TogetherError.invalid(Copy.text("copy.error.ac046ade4c99")) }
             enabled = true
-            let invite = try await api.createInvitation(name: engine.ownProfile?.displayName ?? "我", expectedPeer: engine.peer?.descriptor)
+            let invite: RelayInvitation
+            if engine.peer == nil && [3, 4].contains(engine.identity.descriptor.protocolVersion) { invite = try await api.createPartnerInvitation(name: engine.ownProfile?.displayName ?? "我") }
+            else { invite = try await api.createInvitation(name: engine.ownProfile?.displayName ?? "我", expectedPeer: engine.peer?.descriptor) }
             invitationCode = invite.code; invitationExpiresAt = invite.expiresAt; routeId = invite.routeId; errorMessage = nil; state = .waiting
             poll?.cancel(); poll = Task { @MainActor [weak self] in
                 while !Task.isCancelled {
@@ -94,7 +100,15 @@ public enum PairingConnectionState: String, Sendable { case unpaired = "Unpaired
             guard !engine.usesReplication4 else {throw ReplicationError.incompatibleProtocol}
             guard let api else { throw TogetherError.invalid(Copy.text("copy.error.ac046ade4c99")) }
             enabled = true
-            let route = try await api.join(code: code, name: engine.ownProfile?.displayName ?? "我")
+            let route: RelayRoute
+            if engine.peer == nil && [3, 4].contains(engine.identity.descriptor.protocolVersion) {
+                let digest = ReplicationHash.digest(Data(code.uppercased().filter { !$0.isWhitespace && $0 != "-" }.utf8))
+                let previous = try engine.repository.load(NativeJoinIntent.self, key: "partner4/join-intent")
+                let intent = previous?.codeDigest == digest ? previous! : NativeJoinIntent(codeDigest: digest, requestId: UUID())
+                try engine.repository.save(intent, key: "partner4/join-intent")
+                route = try await api.joinPartner(code: code, name: engine.ownProfile?.displayName ?? "我", requestId: intent.requestId)
+            }
+            else { route = try await api.join(code: code, name: engine.ownProfile?.displayName ?? "我") }
             try validateRoute(route); pendingRoute = route; routeId = route.routeId; invitationCode = nil; errorMessage = nil
             try await openRoute(route)
         } catch { failed(error) }
@@ -151,6 +165,10 @@ public enum PairingConnectionState: String, Sendable { case unpaired = "Unpaired
     }
     private func resumeRoute() async {
         if engine.usesReplication4 {await restoreReplication4();return}
+        if engine.isCompletingPartnership, let genesis = try? engine.repository.load(SignedSpaceGenesis.self, key: "partner4/genesis") {
+            do { try await activateNativePartner(genesis) } catch { failed(error) }
+            return
+        }
         guard enabled, !openingRoute, let api, let id = binding?.routeId ?? routeId else { return }
         openingRoute = true; defer { openingRoute = false }
         do { let route = try await api.route(id); try validateRoute(route); pendingRoute = route; routeId = id; try await openRoute(route) }
@@ -158,6 +176,7 @@ public enum PairingConnectionState: String, Sendable { case unpaired = "Unpaired
     }
     private func openRoute(_ route: RelayRoute) async throws {
         try validateRoute(route); guard let api else { return }
+        if route.pairingProtocol == 4 { try engine.repository.save(route, key: "partner4/pending-route") }
         resetSession(); serverPaired = route.paired; pendingRoute = route; routeId = route.routeId; state = .waiting
         hello = try RelaySecureSession.hello(identity: engine.identity, ephemeral: ephemeral, routeId: route.routeId, profileName: engine.ownProfile?.displayName ?? "我")
         let ticket = try await api.ticket(route.routeId)
@@ -166,6 +185,7 @@ public enum PairingConnectionState: String, Sendable { case unpaired = "Unpaired
         if let hello { enqueue(try CanonicalJSON.encode(RelayPacket(kind: "hello", hello: hello))) }
     }
     private func clearPeerHandshake() {
+        partnerBootstrap?.invalidate(); partnerBootstrap = nil
         sender?.cancel(); sender = nil; queue = []; queuedBytes = 0; logSession?.invalidate(); logSession = nil
         secure = nil; localApproved = false; remoteApproved = false; proposal = nil
     }
@@ -209,7 +229,7 @@ public enum PairingConnectionState: String, Sendable { case unpaired = "Unpaired
                     if let hello { enqueue(try CanonicalJSON.encode(RelayPacket(kind: "hello", hello: hello))) }
                 }
                 guard let hello else { throw TogetherError.invalid(Copy.text("copy.error.92daf69006a1")) }
-                let secure = try RelaySecureSession(identity: engine.identity, ephemeral: ephemeral, local: hello, remote: remote, expectedPeer: engine.peer?.descriptor)
+                let secure = try RelaySecureSession(identity: engine.identity, ephemeral: ephemeral, local: hello, remote: remote, expectedPeer: engine.peer?.descriptor, nativePartner: pendingRoute?.pairingProtocol == 4)
                 try handshakeHistory.accept(remote)
                 self.secure = secure
                 if binding != nil {
@@ -232,18 +252,38 @@ public enum PairingConnectionState: String, Sendable { case unpaired = "Unpaired
                 }
                 remoteApproved = true; try activateIfReady()
             case "encrypted":
-                guard isOnline, localApproved, remoteApproved, serverPaired, let secure, let logSession else { throw TogetherError.invalid(Copy.text("copy.error.23e90630fb77")) }
-                let bytes = try secure.open(packet); try logSession.receive(CanonicalJSON.decode(WirePayload.self, from: bytes))
+                guard isOnline, localApproved, remoteApproved, serverPaired, let secure else { throw TogetherError.invalid(Copy.text("copy.error.23e90630fb77")) }
+                let bytes = try secure.open(packet)
+                if let partnerBootstrap { try partnerBootstrap.receive(CanonicalJSON.decode(PartnerBootstrapFrame.self, from: bytes)) }
+                else if let logSession { try logSession.receive(CanonicalJSON.decode(WirePayload.self, from: bytes)) }
+                else { throw ReplicationError.unauthorized }
             default: throw TogetherError.invalid(Copy.text("copy.error.c26239f9baf2"))
             }
         } catch { failed(error) }
     }
     private func activateIfReady() throws {
-        guard peerPresent, localApproved, remoteApproved, serverPaired, let secure, let routeId, let api, logSession == nil else { return }
+        guard peerPresent, localApproved, remoteApproved, serverPaired, let secure, let routeId, let api, logSession == nil, partnerBootstrap == nil else { return }
         let remote = secure.remoteHello.body.descriptor
         let proposed = PairedPeer(descriptor: remote, host: engine.peer?.host ?? "127.0.0.1", port: engine.peer?.port ?? 0, approvedAt: engine.peer?.approvedAt ?? .now)
         let newBinding = RelayBinding(serviceURL: api.base, routeId: routeId, peerDeviceId: remote.deviceId, peerPublicKey: remote.publicKey, localDeviceId: engine.identity.descriptor.deviceId)
         let first = binding == nil
+        if pendingRoute?.pairingProtocol == 4 {
+            try engine.bindNativePartner(peer: proposed, binding: newBinding)
+            binding = newBinding; invitationCode = nil; invitationExpiresAt = nil; proposal = nil; state = .syncing
+            let session = PartnerBootstrapSession(engine: engine, remote: remote, send: { [weak self, weak secure] frame in
+                guard let self, let secure, self.secure === secure else { throw CancellationError() }
+                while self.queuedBytes > 524_288 { try await Task.sleep(for: .milliseconds(2)); try Task.checkCancellation() }
+                self.enqueue(try CanonicalJSON.encode(secure.seal(CanonicalJSON.encode(frame))))
+                while self.sender != nil { try await Task.sleep(for: .milliseconds(2)); try Task.checkCancellation() }
+                guard self.secure === secure else { throw CancellationError() }
+            }, complete: { [weak self] genesis in
+                guard let self else { throw CancellationError() }
+                try await self.activateNativePartner(genesis)
+            }, failed: { [weak self] error in self?.failed(error) })
+            partnerBootstrap = session
+            if first { pairedFeedback += 1 }
+            session.start(); return
+        }
         try engine.bindRelay(peer: proposed, binding: newBinding); binding = newBinding; invitationCode = nil; invitationExpiresAt = nil; proposal = nil
         let sync = OperationLogSyncSession(engine: engine, remote: remote) { [weak self] payload in
             guard let self, let secure = self.secure else { return }
@@ -253,6 +293,16 @@ public enum PairingConnectionState: String, Sendable { case unpaired = "Unpaired
         sync.onConverged = { [weak self] in self?.state = .connected; self?.lastSynchronizedAt = .now; self?.completedSyncCount += 1; self?.errorMessage = nil; self?.attempt = 0; self?.retryDelay = 0 }
         sync.onError = { [weak self] error in self?.errorMessage = error.localizedDescription }
         logSession = sync; state = .syncing; if first { pairedFeedback += 1 }; sync.synchronize()
+    }
+    private func activateNativePartner(_ genesis: SignedSpaceGenesis) async throws {
+        try genesis.verify(existingPins: engine.context)
+        let service = try await C1ReplicationService.migrate(engine: engine, genesis: genesis)
+        retry?.cancel(); poll?.cancel(); resetSession(); transport.disconnect()
+        multiDeviceService = service; enabled = true
+        try engine.repository.save(false, key: "partner4/pending")
+        service.onStateChanged = { [weak self] value in self?.state = value; self?.errorMessage = self?.multiDeviceService?.errorMessage }
+        service.onConverged = { [weak self] in self?.lastSynchronizedAt = .now; self?.completedSyncCount += 1 }
+        await service.start()
     }
     private func enqueue(_ data: Data) {
         guard data.count <= FrameDecoder.maximum, queuedBytes + data.count <= 8_388_608 else { failed(TogetherError.invalid(Copy.text("copy.error.079c79144a2f"))); return }

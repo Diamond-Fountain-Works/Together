@@ -63,7 +63,7 @@ final class RelaySecureSession {
     private let framingVersion: Int
     private var sent: UInt64 = 0
     private var received: UInt64 = 0
-    init(identity: DeviceIdentity, ephemeral: Curve25519.KeyAgreement.PrivateKey, local: RelaySignedHello, remote: RelaySignedHello, expectedPeer: DeviceDescriptor? = nil, authorization: SpaceAuthorization? = nil) throws {
+    init(identity: DeviceIdentity, ephemeral: Curve25519.KeyAgreement.PrivateKey, local: RelaySignedHello, remote: RelaySignedHello, expectedPeer: DeviceDescriptor? = nil, authorization: SpaceAuthorization? = nil, nativePartner: Bool = false) throws {
         guard local.verified(), remote.verified(), local.body.routeId == remote.body.routeId,
               local.body.descriptor == identity.descriptor, local.body.ephemeralKey == ephemeral.publicKey.rawRepresentation,
               remote.body.descriptor.deviceId != identity.descriptor.deviceId, local.body.protocolVersion == remote.body.protocolVersion else { throw TogetherError.invalid(Copy.text("copy.error.1bb768d4d83d")) }
@@ -74,7 +74,8 @@ final class RelaySecureSession {
             framingVersion = 2
         } else {
             guard local.body.protocolVersion == 1, remote.body.descriptor.userId != identity.descriptor.userId else { throw ReplicationError.unauthorized }
-            guard identity.descriptor.protocolVersion == remote.body.descriptor.protocolVersion else { throw FinanceError.peerUpgrade }
+            guard identity.descriptor.protocolVersion == remote.body.descriptor.protocolVersion ||
+                    (nativePartner && [3, 4].contains(identity.descriptor.protocolVersion) && [3, 4].contains(remote.body.descriptor.protocolVersion)) else { throw FinanceError.peerUpgrade }
             framingVersion = 1
         }
         if let peer = expectedPeer {

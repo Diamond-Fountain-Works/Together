@@ -9,11 +9,11 @@ public struct RelayBinding: Codable, Equatable, Sendable {
     public var localDeviceId: UUID
 }
 struct RelayMember: Codable, Sendable { var descriptor: DeviceDescriptor; var profileName: String }
-struct RelayRoute: Codable, Sendable { var routeId: UUID; var members: [RelayMember]; var expiresAt: Date; var paired: Bool; var revoked: Bool; var confirmed: [UUID] }
+struct RelayRoute: Codable, Sendable { var routeId: UUID; var members: [RelayMember]; var expiresAt: Date; var paired: Bool; var revoked: Bool; var confirmed: [UUID]; var pairingProtocol: Int? }
 struct RelayInvitation: Codable, Sendable { var code: String; var routeId: UUID; var expiresAt: Date }
 struct RelayTicket: Codable, Sendable { var ticket: String; var routeId: UUID; var expiresAt: Date }
 private struct RelayChallenge: Codable { var id: UUID; var nonce: String; var expiresAt: Date }
-private struct RelayIdentityRequest: Codable { var descriptor: DeviceDescriptor; var profileName: String; var expectedPeer: DeviceDescriptor?; var code: String? }
+private struct RelayIdentityRequest: Codable { var descriptor: DeviceDescriptor; var profileName: String; var expectedPeer: DeviceDescriptor?; var code: String?; var joinRequestId: UUID? }
 private struct RelayConfirmation: Codable { var transcript: String }
 struct RelayAPI {
     let base: URL
@@ -24,7 +24,7 @@ struct RelayAPI {
     }
     static func validatedBase(_ base: URL) throws -> URL {
         #if DEBUG
-        if ["com.together.app.qa", "com.together.app.qa.UITests.xctrunner"].contains(Bundle.main.bundleIdentifier ?? "") {
+        if ["com.together.app.qa", "com.together.app.qa.a", "com.together.app.qa.b", "com.together.app.qa.UITests.xctrunner"].contains(Bundle.main.bundleIdentifier ?? "") {
             try requireQAOrigin(base, origin: ProcessInfo.processInfo.environment["TOGETHER_UI_RELAY_URL"])
         }
         #endif
@@ -53,6 +53,30 @@ struct RelayAPI {
     }
     func join(code: String, name: String) async throws -> RelayRoute {
         try await request("POST", path: "/v1/invitations/join", body: CanonicalJSON.encode(RelayIdentityRequest(descriptor: identity.descriptor, profileName: name, code: code)), as: RelayRoute.self)
+    }
+    func createPartnerInvitation(name: String) async throws -> RelayInvitation {
+        try await requirePartnerService()
+        return try await request("POST", path: "/v2/partner-invitations", body: CanonicalJSON.encode(RelayIdentityRequest(descriptor: identity.descriptor, profileName: name)), as: RelayInvitation.self)
+    }
+    func joinPartner(code: String, name: String, requestId: UUID) async throws -> RelayRoute {
+        try await requirePartnerService()
+        let body = try CanonicalJSON.encode(RelayIdentityRequest(descriptor: identity.descriptor, profileName: name, code: code, joinRequestId: requestId))
+        for attempt in 0..<3 {
+            do { return try await request("POST", path: "/v2/partner-invitations/join", body: body, as: RelayRoute.self) }
+            catch let error as URLError where [.timedOut, .networkConnectionLost, .cannotConnectToHost, .cannotFindHost, .notConnectedToInternet].contains(error.code) {
+                if attempt == 2 { throw error }
+                try await Task.sleep(for: .seconds(1 << attempt))
+            }
+        }
+        throw URLError(.cannotConnectToHost)
+    }
+    private func requirePartnerService() async throws {
+        struct Health: Decodable { var partnerPairing: Int? }
+        let (bytes, response) = try await boundedResponse(URLRequest(url: base.appendingPathComponent("health")))
+        try check(response, bytes: bytes)
+        guard (try? JSONDecoder().decode(Health.self, from: bytes).partnerPairing) == 1 else {
+            throw TogetherError.invalid(Copy.text("pairing.error.serviceUpgrade"))
+        }
     }
     func route(_ id: UUID) async throws -> RelayRoute { try await request("GET", path: "/v1/routes/\(id.uuidString)", as: RelayRoute.self) }
     func ticket(_ id: UUID) async throws -> RelayTicket { try await request("POST", path: "/v1/routes/\(id.uuidString)/ticket", body: Data("{}".utf8), as: RelayTicket.self) }

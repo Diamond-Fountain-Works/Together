@@ -509,6 +509,12 @@ fun TogetherApp(repository: TogetherRepository) = TogetherTheme {
                                         )
                                     Page.Connection ->
                                         Column(Modifier.verticalScroll(rememberScrollState())) {
+                                            if (state.authorization == null) PartnerPairingPanel(
+                                                state.partnerPairing,
+                                                { perform { repository.createPartnerInvitation() } },
+                                                { code -> perform { repository.joinPartnerInvitation(code) } },
+                                                { verified -> perform { repository.confirmPartner(verified) } },
+                                            )
                                             DevicePage(
                                                 state,
                                                 { show("enrollment") },
@@ -864,7 +870,7 @@ internal fun DevicePage(
                 stringResource(R.string.guidance_add_device),
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
-            Button(
+            TextButton(
                 onClick = onEnroll,
                 enabled = state.descriptor != null,
                 modifier = Modifier.testTag("device.add"),
@@ -1244,7 +1250,7 @@ private fun changeValue(
     }
 }
 
-private fun errorCopy(code: String) =
+internal fun errorCopy(code: String) =
     when (code) {
         "INVALID_AMOUNT",
         "INVALID_RATE",
@@ -1274,6 +1280,10 @@ private fun errorCopy(code: String) =
         "IDENTITY_MISMATCH" -> R.string.error_identity
         "CONNECTION_FAILED",
         "SERVICE_UNAVAILABLE" -> R.string.error_network
+        "PARTNER_SERVICE_UPGRADE_REQUIRED" -> R.string.partner_service_upgrade
+        "INVALID_INVITATION", "INVITATION_UNAVAILABLE" -> R.string.partner_invalid_invitation
+        "PAIRING_FINISHING" -> R.string.partner_finishing
+        "IDENTITY_CONFIRMATION_REQUIRED" -> R.string.partner_verify
         "INVALID_COMPLETION",
         "INVALID_OFFER",
         "INVALID_ENROLLMENT_REQUEST",

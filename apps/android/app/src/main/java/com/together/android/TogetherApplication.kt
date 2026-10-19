@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ProcessLifecycleOwner
+import androidx.lifecycle.Lifecycle
 import com.together.android.data.TogetherRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -14,7 +15,10 @@ class TogetherApplication : Application(), DefaultLifecycleObserver {
     val repository: TogetherRepository
         get() =
             openedRepository
-                ?: TogetherRepository(this, applicationScope).also { openedRepository = it }
+                ?: TogetherRepository(this, applicationScope).also {
+                    openedRepository = it
+                    it.foreground(ProcessLifecycleOwner.get().lifecycle.currentState.isAtLeast(Lifecycle.State.STARTED))
+                }
 
     private val applicationScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
 

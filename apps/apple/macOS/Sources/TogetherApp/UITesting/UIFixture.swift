@@ -17,7 +17,7 @@ struct UIFixture {
     init() throws {
         let env = ProcessInfo.processInfo.environment
         page = env["TOGETHER_UI_PAGE"] ?? "home"
-        guard ["home","tasks","upcoming","completed","wishes","gifts","reveal","settings","setup","reserves","expenses","bills","finance-settings","changes","devices","devices-join","devices-migration"].contains(page),
+        guard ["home","tasks","upcoming","completed","wishes","gifts","reveal","settings","setup","reserves","expenses","bills","finance-settings","changes","devices","devices-join","devices-migration","partner-pairing"].contains(page),
               let path = env["TOGETHER_UI_ROOT"], URL(fileURLWithPath: path).lastPathComponent.hasPrefix("together-ui-") else { throw TogetherError.invalid("Invalid isolated UI fixture configuration") }
         root = URL(fileURLWithPath: path, isDirectory: true).standardizedFileURL.resolvingSymlinksInPath()
         let temporary = FileManager.default.temporaryDirectory.standardizedFileURL.resolvingSymlinksInPath().path
@@ -27,6 +27,20 @@ struct UIFixture {
     }
     @MainActor func build() async throws -> ApplicationModel {
         try FileManager.default.createDirectory(at: root, withIntermediateDirectories: true, attributes: [.posixPermissions: 0o700])
+        if page == "partner-pairing" {
+            guard let origin = ProcessInfo.processInfo.environment["TOGETHER_UI_RELAY_URL"], let url = URL(string: origin),
+                  url.scheme == "http", url.host == "127.0.0.1", url.port != nil else { throw TogetherError.invalid(Copy.text("qa.error.isolatedLaunch")) }
+            let identity = try DeviceIdentity.persistent(deviceId: StableID.make(root.path + ":device"), userId: StableID.make(root.path + ":user"),
+                spaceId: StableID.make(root.path + ":space"), directory: root.appendingPathComponent("Identity"),
+                needsExistingIdentity: FileManager.default.fileExists(atPath: root.appendingPathComponent("fixture.store").path), protocolVersion: 3)
+            let engine = try ReplicaEngine(repository: TogetherRepository(url: root.appendingPathComponent("fixture.store")), identity: identity, mediaRoot: root.appendingPathComponent("media"))
+            if engine.ownProfile == nil { try engine.setProfile(name: root.lastPathComponent.hasSuffix("-a") ? "QA Mac A" : "QA Mac B", label: .unknown) }
+            let defaults = UserDefaults(suiteName: "com.together.ui-pairing." + root.lastPathComponent)!
+            let preferences = LocalAppPreferences(defaults: defaults); preferences.finishAdvisor(neverAgain: true); preferences.finishInitialSetup()
+            let model = ApplicationModel(engine: engine, defaults: defaults, serviceURL: url, useBundledService: false, filePanelDirectory: root.appendingPathComponent("exports"))
+            model.qaAllowsLocalNetwork = true; model.section = .connection
+            return model
+        }
         if root.lastPathComponent.hasPrefix("together-ui-existing-") {
             // An explicit DEBUG-only upgrade rehearsal. Never resolves the
             // production Application Support path or starts a relay session.
