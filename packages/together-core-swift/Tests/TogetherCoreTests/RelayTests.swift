@@ -138,7 +138,10 @@ import CryptoKit
         #expect(a.peer == nil && b.peer == nil)
         await sa.confirmPairing(); #expect(a.peer == nil)
         await sb.confirmPairing()
-        do { try await eventually({ sa.isOnline && sb.isOnline && a.snapshot == b.snapshot }, seconds: networkTimeout) }
+        // The transport can be online while the native history/genesis barrier
+        // is still read-only. Wait for durable writable state before business
+        // edits; a socket/presentation state alone is not pairing completion.
+        do { try await eventually({ sa.isOnline && sb.isOnline && !a.isCompletingPartnership && !b.isCompletingPartnership && a.snapshot == b.snapshot }, seconds: networkTimeout) }
         catch { Issue.record("Relay consent/sync: \(sa.state) \(sa.errorMessage ?? "none") / \(sb.state) \(sb.errorMessage ?? "none")"); throw error }
         #expect(b.snapshot.tasks[keep] != nil)
         #expect(b.partnerProfile?.role == .boyfriend && a.partnerProfile?.role == .girlfriend)
