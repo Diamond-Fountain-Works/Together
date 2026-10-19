@@ -82,3 +82,13 @@ Protocol 4 engine with recoverable join/genesis state. [Pairing evidence](docs/q
 separates local, physical, VPN-dependent and failed VPN-free tests. Production
 API 1 is unchanged. The current Workers endpoint is not a verified VPN-free path
 on the tested mobile network; P2P is a separate transport change.
+
+## VPN-free P2P workstream (not installed)
+
+[Architecture and actual gates](docs/architecture/P2P_INCREMENTAL_REPLICATION.md)
+record the user's new transport direction. The optional `TogetherP2P` package uses
+native Iroh QUIC around the existing signed Protocol 4 log. `make p2p-test` tests a
+relay-disabled direct link, paged history, durable ACKs, tombstone convergence and
+identity/replay rejection. It does not link into the production app yet. Android,
+public NAT traversal, platform compatibility and independent security review
+remain open; installed applications are not silently described as P2P-capable.
