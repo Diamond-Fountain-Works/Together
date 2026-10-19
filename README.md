@@ -76,6 +76,10 @@ requires PRs and the existing CI checks; it is not permission to merge or deploy
 
 ## Native partner pairing correction (development)
 
+Current Plans correction on both platforms: **Pending / Completed** only;
+Upcoming is included in Pending. [Build 13 / Android code 8 evidence](docs/qa/reports/UNIFIED_PLANS.md)
+records native tests, candidate screenshots and the non-destructive local upgrade.
+
 Partner invitations now have a native create/join text interface, separate from
 own-device signed-file enrollment. Signed bootstrap history activates the existing
 Protocol 4 engine with recoverable join/genesis state. [Pairing evidence](docs/qa/reports/NATIVE_PARTNER_PAIRING.md)

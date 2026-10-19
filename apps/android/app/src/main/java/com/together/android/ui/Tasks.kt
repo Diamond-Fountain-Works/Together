@@ -29,7 +29,8 @@ internal fun TasksPage(
     onComplete: (ProjectedEntity) -> Unit,
     onDelete: (ProjectedEntity) -> Unit,
 ) {
-    val tasks = BusinessQueries.tasks(state.snapshot, filter, state.now)
+    val selectedFilter = if (filter == "completed") "completed" else "pending"
+    val tasks = BusinessQueries.tasks(state.snapshot, selectedFilter, state.now)
     Column(
         Modifier.fillMaxSize().padding(horizontal = 20.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp),
@@ -37,14 +38,13 @@ internal fun TasksPage(
         SingleChoiceSegmentedButtonRow(Modifier.fillMaxWidth()) {
             listOf(
                     "pending" to R.string.filter_pending,
-                    "upcoming" to R.string.filter_upcoming,
                     "completed" to R.string.filter_completed,
                 )
                 .forEachIndexed { i, p ->
                     SegmentedButton(
-                        selected = filter == p.first,
+                        selected = selectedFilter == p.first,
                         onClick = { onFilter(p.first) },
-                        shape = SegmentedButtonDefaults.itemShape(i, 3),
+                        shape = SegmentedButtonDefaults.itemShape(i, 2),
                         modifier = Modifier.testTag("tasks.${p.first}"),
                     ) {
                         Text(stringResource(p.second), maxLines = 1)
@@ -75,7 +75,7 @@ internal fun TasksPage(
                     ) {
                         Checkbox(
                             checked = task.fields.text("status") == "completed",
-                            enabled = state.canWrite,
+                            enabled = state.canWrite && (task.fields.date("availableAt") ?: Long.MIN_VALUE) <= state.now.toEpochMilli(),
                             onCheckedChange = { onComplete(task) },
                             modifier =
                                 Modifier.testTag("task.complete.${task.id}").semantics {

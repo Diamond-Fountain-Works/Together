@@ -20,7 +20,7 @@ The user-specified Love Gift/Gift Reveal titles, relationship-label branches, â€
 
 Send/history entry labels and Save Photo are explicitly requested actions. Ordinary pages use factual headings/status only. No Love Gift card or sidebar page. Do not claim Delivered from local submission or a relay socket; Synced requires the remote durable/media acknowledgement. Realtime relay does not imply offline delivery.
 
-The latest navigation correction uses user-requested Plans / Wishes as vertically stacked left sidebar entries, replacing the Our Plans title and horizontal Tasks / Wishes picker. Pending / Upcoming / Completed / New Task / Add Wishes remain functional labels. New `plans.*` entries cover factual empty/search states and real dated grant quantities. Task Pending keeps a distinct translation context from media Pending. Identity migration adds only `identity.*` functional recovery copy: original keys are preserved, one-time migration is explicit, failures never advertise a successful rebind. No romantic filler is added to either workspace.
+The latest navigation correction uses Plans / Wishes as vertically stacked left sidebar entries. Plans has only Pending / Completed on both platforms; the former Upcoming tab is merged into Pending. Upcoming is retained only as a factual Home summary linking to Pending, not another workspace filter. New Task / Add Wishes remain functional actions. `plans.*` entries cover factual empty/search states and real dated grant quantities. Task Pending keeps a distinct translation context from media Pending. Identity migration uses `identity.*` functional recovery copy: keys are preserved, migration is explicit and failures do not advertise a successful rebind. No romantic filler is added.
 
 ## Review and changes
 

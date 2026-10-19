@@ -5,6 +5,7 @@
 - Do not add decorative prose, fake statistics, mock product content, or unimplemented feature claims. Never rewrite user-authored text automatically.
 - Love Gifts are event-driven sheets and native menus, never a permanent Home/sidebar module.
 - Sidebar is Home / Plans / Wishes / Our Finances, stacked vertically, with Connection / Settings at the bottom. Our Finances has only Reserves / Expenses / Bills tabs. Reuse one task list/editor; Wishes retains its separate ledger. No horizontal Tasks / Wishes mode picker.
+- Mac and Android Plans expose only Pending / Completed. Future, overdue and undated unfinished tasks share Pending; do not restore a separate Upcoming tab. Preserve scheduled-task execution rules.
 - Device identity uses owner-only local files; preserve existing keys/pins and require explicit legacy migration, never silent rotation or automatic Keychain reads.
 - Use isolated deterministic test fixtures. Production must never load them. Our Story/Time Capsule are not implemented; do not invent placeholder pages.
 - After changes run `make qa` where available. Report business, server, UI, copy and visual checks separately; never call an unrun test PASS.

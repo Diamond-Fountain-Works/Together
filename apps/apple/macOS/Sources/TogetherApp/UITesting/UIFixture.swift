@@ -123,7 +123,8 @@ struct UIFixture {
         model.currentDate = now
         switch page {
         case "tasks": model.openPlans(.tasks)
-        case "upcoming": model.openPlans(.tasks, filter: .upcoming)
+        // Old capture identifiers remain readable; there is no Upcoming tab.
+        case "upcoming": model.openPlans(.tasks, filter: .pending)
         case "completed": model.openPlans(.tasks, filter: .completed)
         case "wishes": model.openPlans(.wishes)
         case "settings": model.section = .settings
