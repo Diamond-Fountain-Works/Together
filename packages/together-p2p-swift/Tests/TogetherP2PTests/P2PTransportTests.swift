@@ -24,6 +24,12 @@ private struct Pair {
     }
 }
 
+private actor LinkFailures {
+    private var error: (any Error)?
+    func record(_ value: any Error) { if error == nil { error = value } }
+    func check() throws { if let error { throw error } }
+}
+
 @Suite("Real relay-disabled QUIC operation transport", .timeLimit(.minutes(1)))
 struct P2PTransportTests {
     @Test @MainActor func signedPagedIncrementalSyncAckAndTombstoneOverDirectQuic() async throws {
@@ -64,17 +70,24 @@ struct P2PTransportTests {
             send: { frame in try await left.send(ac.seal(CanonicalJSON.encode(frame), authorization: sa.authorization)) })
         let bb = PagedReplicationSession(store: sb, ledger: bl, remote: f.a.descriptor,
             send: { frame in try await right.send(bc.seal(CanonicalJSON.encode(frame), authorization: sb.authorization)) })
-        let readA = Task { while !Task.isCancelled { try await ab.receive(CanonicalJSON.decode(ReplicationFrame.self, from: ac.open(left.receive(), authorization: sa.authorization))) } }
-        let readB = Task { while !Task.isCancelled { try await bb.receive(CanonicalJSON.decode(ReplicationFrame.self, from: bc.open(right.receive(), authorization: sb.authorization))) } }
+        let failures = LinkFailures()
+        let readA = Task {
+            do { while !Task.isCancelled { try await ab.receive(CanonicalJSON.decode(ReplicationFrame.self, from: ac.open(left.receive(), authorization: sa.authorization))) } }
+            catch { if !Task.isCancelled { await failures.record(error) }; throw error }
+        }
+        let readB = Task {
+            do { while !Task.isCancelled { try await bb.receive(CanonicalJSON.decode(ReplicationFrame.self, from: bc.open(right.receive(), authorization: sb.authorization))) } }
+            catch { if !Task.isCancelled { await failures.record(error) }; throw error }
+        }
         defer { readA.cancel(); readB.cancel() }
         try await ab.synchronize(); try await bb.synchronize()
-        try await waitForConvergence(sa, sb, count: 258)
+        try await waitForConvergence(sa, sb, count: 258, failures: failures)
         let entry = try await sa.index.entry(for: #require(first).id)
         let deadline = ContinuousClock.now.advanced(by: .seconds(10))
-        while !(try await al.partnerHasPersisted(entry, trust: sa.authorization)), ContinuousClock.now < deadline { try await Task.sleep(for: .milliseconds(10)) }
+        while !(try await al.partnerHasPersisted(entry, trust: sa.authorization)), ContinuousClock.now < deadline { try await failures.check(); try await Task.sleep(for: .milliseconds(10)) }
         #expect(try await al.partnerHasPersisted(entry, trust: sa.authorization))
         _ = try await sb.append(f.operation(f.b, clock: 1000, entity: target, deleted: true))
-        try await bb.synchronize(); try await waitForConvergence(sa, sb, count: 259)
+        try await bb.synchronize(); try await waitForConvergence(sa, sb, count: 259, failures: failures)
         let ap = try OperationProjector.replay(sa.repository.allOperations(), context: await sa.projectionContext())
         let bp = try OperationProjector.replay(sb.repository.allOperations(), context: await sb.projectionContext())
         #expect(ap == bp); #expect(ap.tasks[target]?.deletedAt != nil)
@@ -96,9 +109,10 @@ struct P2PTransportTests {
         await incoming.close(); try await receiver.close(); try await peer.close()
     }
 
-    @MainActor private func waitForConvergence(_ a: AuthorizedReplicationStore, _ b: AuthorizedReplicationStore, count: Int) async throws {
+    @MainActor private func waitForConvergence(_ a: AuthorizedReplicationStore, _ b: AuthorizedReplicationStore, count: Int, failures: LinkFailures) async throws {
         let deadline = ContinuousClock.now.advanced(by: .seconds(15))
         while ContinuousClock.now < deadline {
+            try await failures.check()
             // The observer can race durable imports. A changed snapshot is
             // retried here; errors inside the actual replication loops still
             // prevent convergence and fail the unchanged bounded deadline.

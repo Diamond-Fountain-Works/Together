@@ -135,6 +135,20 @@ public actor OperationInventoryIndex {
     try await snapshot().checkpoint
   }
   public func snapshot() async throws -> InventorySnapshot {
+    // A legitimate concurrent import/local write can invalidate an optimistic
+    // scan. Rebuild a bounded number of times; never acknowledge a mixed view
+    // or turn this expected race into a dead transport session.
+    for attempt in 0..<8 {
+      do { return try await snapshotAttempt() }
+      catch ReplicationError.inventoryChanged {
+        try Task.checkCancellation()
+        guard attempt < 7 else { throw ReplicationError.inventoryChanged }
+        try await Task.sleep(for: .milliseconds(1 << attempt))
+      }
+    }
+    throw ReplicationError.inventoryChanged
+  }
+  private func snapshotAttempt() async throws -> InventorySnapshot {
     let revision = await repository.operationRevision
     if let prepared, prepared.revision == revision, prepared.visibility == visibility {
       return prepared.snapshot

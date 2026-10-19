@@ -89,3 +89,7 @@ C1; they must not be advertised as P2P builds.
 Local command: `make p2p-test`. Tests use synthetic identities and independent
 in-memory stores, no production database or Cloudflare deployment. Candidate
 screenshots, runtime artifacts and real network metadata remain local.
+
+[QA and retained failures](../qa/reports/P2P_TRANSPORT_FOUNDATION.md) records the
+initial CI timeout, reproduced optimistic-snapshot race, bounded index-read
+recovery, identical-workload reruns and remaining release gates.
