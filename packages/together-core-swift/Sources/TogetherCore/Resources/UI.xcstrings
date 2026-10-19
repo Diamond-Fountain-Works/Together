@@ -9715,6 +9715,28 @@
           }
         }
       }
+    },
+    "pairing.status.finishing": {
+      "comment": "Status; native partner pairing",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "正在完成配对，请稍候。"
+          }
+        }
+      }
+    },
+    "pairing.error.serviceUpgrade": {
+      "comment": "Error; native partner pairing",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "连接服务需升级，请联系发布者更新。"
+          }
+        }
+      }
     }
   }
 }

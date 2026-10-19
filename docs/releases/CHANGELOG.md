@@ -1,3 +1,13 @@
+# Native partner pairing correction (development Build 12 / Android code 7)
+
+- Separate partner create/join text UI from signed-file own-device enrollment.
+- Add mixed-root signed bootstrap, bounded history/checkpoint exchange and durable
+  join/genesis recovery before activating the existing Protocol 4 engine.
+- Add strict independent staging QA and two isolated native Mac app fault tests.
+- Keep production API 1 unchanged. VPN-free public reachability failed on the
+  measured Samsung network; P2P, independent security and full public acceptance
+  are not claimed. See [QA evidence](../qa/reports/NATIVE_PARTNER_PAIRING.md).
+
 # Android 0.2.1-phaseC (versionCode 5, unreleased)
 
 - Add fail-closed physical Debug QA enrollment, namespaced Activity reopening and explicit same-signer install guards. Production Mac identity/data and Android Release UI remain unchanged.

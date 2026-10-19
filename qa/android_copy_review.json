@@ -225,10 +225,10 @@
   },
   "values-zh-rCN/action_add_my_device": {
     "category": "Action",
-    "context": "Android Phase A / action_add_my_device",
+    "context": "Native partner invitation; separate from own-device enrollment",
     "state": "reviewed",
-    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
-    "sha256": "ccb3f41a5469c8474dbe9a68a0956f58ba6a33e10bd0c2694070a72e3095ba00"
+    "reason": "Requested functional pairing action, identity verification or actual connection status; no invented partner data.",
+    "sha256": "001a209ae60955c524990608ef4c264c81fdb1f69f4bed24a0363b26e07f8254"
   },
   "values-zh-rCN/action_import_offer": {
     "category": "Action",
@@ -267,10 +267,10 @@
   },
   "values-zh-rCN/guidance_add_device": {
     "category": "Guidance",
-    "context": "Android Phase A / guidance_add_device",
+    "context": "Native partner invitation; separate from own-device enrollment",
     "state": "reviewed",
-    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
-    "sha256": "bf21bdf0d5d67a0b5badb3186c701d8c70e0bc20c2b75709ea6cdb42c0209b2f"
+    "reason": "Requested functional pairing action, identity verification or actual connection status; no invented partner data.",
+    "sha256": "1a20dd8711e008b00dfcac675cf238672e73d4356b858f5a84070bd202f5ca2e"
   },
   "values-zh-rCN/guidance_request": {
     "category": "Guidance",
@@ -736,10 +736,10 @@
   },
   "values/action_add_my_device": {
     "category": "Action",
-    "context": "Android Phase A / action_add_my_device",
+    "context": "Native partner invitation; separate from own-device enrollment",
     "state": "reviewed",
-    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
-    "sha256": "17d5f9f4e2a3328206dc956fd6949c60ec0fcc464e6025e551a2f80b8ef7ffd1"
+    "reason": "Requested functional pairing action, identity verification or actual connection status; no invented partner data.",
+    "sha256": "e38fe12b01fcbf9b1044e01b121baf2bc2626fa14f4eb453e8ad57f1d53bc7b7"
   },
   "values/action_import_offer": {
     "category": "Action",
@@ -778,10 +778,10 @@
   },
   "values/guidance_add_device": {
     "category": "Guidance",
-    "context": "Android Phase A / guidance_add_device",
+    "context": "Native partner invitation; separate from own-device enrollment",
     "state": "reviewed",
-    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
-    "sha256": "91b93c23818441cae924d1ac8c842d96faf8349fcb7288fcee826ef20195d6b7"
+    "reason": "Requested functional pairing action, identity verification or actual connection status; no invented partner data.",
+    "sha256": "70f30bf5377028c4e10f86ac15f1848ef9a934f3586d55550fbe82d1911e787d"
   },
   "values/guidance_request": {
     "category": "Guidance",
@@ -3862,5 +3862,187 @@
     "state": "reviewed",
     "reason": "Specific storage failure with a recovery action; no fixed file-size limit or decorative text.",
     "sha256": "2badde4e77186300af7f1cadaae5fb7f6237703c8c1b2b0f757cf11197a3e3b7"
+  },
+  "values-zh-rCN/partner_title": {
+    "category": "Status",
+    "context": "Native partner invitation; separate from own-device enrollment",
+    "state": "reviewed",
+    "reason": "Requested functional pairing action, identity verification or actual connection status; no invented partner data.",
+    "sha256": "775faa8b6f78890e6f504c2eda10ec77374a0a25736419bb9706aaf6233a7794"
+  },
+  "values-zh-rCN/partner_create": {
+    "category": "Action",
+    "context": "Native partner invitation; separate from own-device enrollment",
+    "state": "reviewed",
+    "reason": "Requested functional pairing action, identity verification or actual connection status; no invented partner data.",
+    "sha256": "5f6a55e484ccd1fb36a97999ad50f7a576da398bbdc2c25c1a6ca3d699e5e056"
+  },
+  "values-zh-rCN/partner_code": {
+    "category": "Guidance",
+    "context": "Native partner invitation; separate from own-device enrollment",
+    "state": "reviewed",
+    "reason": "Requested functional pairing action, identity verification or actual connection status; no invented partner data.",
+    "sha256": "a66ae2a52d668b3620c869be5cbcd5f48326ed455a1860b045d04ee7f376b069"
+  },
+  "values-zh-rCN/partner_join": {
+    "category": "Action",
+    "context": "Native partner invitation; separate from own-device enrollment",
+    "state": "reviewed",
+    "reason": "Requested functional pairing action, identity verification or actual connection status; no invented partner data.",
+    "sha256": "871f198daeacef14117a2fdf7880764c8f7d4ab3d91483eb7b4472cefdb71c5a"
+  },
+  "values-zh-rCN/partner_copy": {
+    "category": "Action",
+    "context": "Native partner invitation; separate from own-device enrollment",
+    "state": "reviewed",
+    "reason": "Requested functional pairing action, identity verification or actual connection status; no invented partner data.",
+    "sha256": "c5f6052046080499ca5c4325b38554da91c904a4f3e8ba33492e8ddc421a2f46"
+  },
+  "values-zh-rCN/partner_expiry": {
+    "category": "Status",
+    "context": "Native partner invitation; separate from own-device enrollment",
+    "state": "reviewed",
+    "reason": "Requested functional pairing action, identity verification or actual connection status; no invented partner data.",
+    "sha256": "09cfd30cb78f8854e5cd336dacd3897db06752bfe89186479f1e4db6398113d2"
+  },
+  "values-zh-rCN/partner_wait_join": {
+    "category": "Status",
+    "context": "Native partner invitation; separate from own-device enrollment",
+    "state": "reviewed",
+    "reason": "Requested functional pairing action, identity verification or actual connection status; no invented partner data.",
+    "sha256": "caa16cb6b69971c5d36ea0f387b5a39988d626430953781abf00ed12d5c6b3b8"
+  },
+  "values-zh-rCN/partner_verify": {
+    "category": "Guidance",
+    "context": "Native partner invitation; separate from own-device enrollment",
+    "state": "reviewed",
+    "reason": "Requested functional pairing action, identity verification or actual connection status; no invented partner data.",
+    "sha256": "6a1ce9f0e48cb2855f47d8a0d19c7d7f2cf95e883dfb0ab45f30b35fb37a2304"
+  },
+  "values-zh-rCN/partner_confirm": {
+    "category": "Action",
+    "context": "Native partner invitation; separate from own-device enrollment",
+    "state": "reviewed",
+    "reason": "Requested functional pairing action, identity verification or actual connection status; no invented partner data.",
+    "sha256": "940381bb858283e1f1fc13ccb00ebbe43e736bd2919be2dbb577a91a4814e7fe"
+  },
+  "values-zh-rCN/partner_wait_confirmation": {
+    "category": "Status",
+    "context": "Native partner invitation; separate from own-device enrollment",
+    "state": "reviewed",
+    "reason": "Requested functional pairing action, identity verification or actual connection status; no invented partner data.",
+    "sha256": "5ed4eb6c4b16e084e53a8cf016be19453b521f128e8659cd32148b06b2a217f1"
+  },
+  "values-zh-rCN/partner_finishing": {
+    "category": "Status",
+    "context": "Native partner invitation; separate from own-device enrollment",
+    "state": "reviewed",
+    "reason": "Requested functional pairing action, identity verification or actual connection status; no invented partner data.",
+    "sha256": "933023cb51d2a721ec67eccbabb6404bc4e5caf3132b498ee61bcb979f712499"
+  },
+  "values-zh-rCN/partner_service_upgrade": {
+    "category": "Error",
+    "context": "Native partner invitation; separate from own-device enrollment",
+    "state": "reviewed",
+    "reason": "Requested functional pairing action, identity verification or actual connection status; no invented partner data.",
+    "sha256": "937cb08615804ee714e59d7099ce84a05f82085c64fd3390f733fb47a9176ac4"
+  },
+  "values-zh-rCN/partner_invalid_invitation": {
+    "category": "Error",
+    "context": "Native partner invitation; separate from own-device enrollment",
+    "state": "reviewed",
+    "reason": "Requested functional pairing action, identity verification or actual connection status; no invented partner data.",
+    "sha256": "6e325f1a2bf4feb8e07adbaa23d0fc0c2586a6594e2b5110b80471a92b1e5fd3"
+  },
+  "values/partner_title": {
+    "category": "Status",
+    "context": "Native partner invitation; separate from own-device enrollment",
+    "state": "reviewed",
+    "reason": "Requested functional pairing action, identity verification or actual connection status; no invented partner data.",
+    "sha256": "514d6835e3ab53fe5bd64ad536a622e372c50892b620b4428dc79ef146900ba0"
+  },
+  "values/partner_create": {
+    "category": "Action",
+    "context": "Native partner invitation; separate from own-device enrollment",
+    "state": "reviewed",
+    "reason": "Requested functional pairing action, identity verification or actual connection status; no invented partner data.",
+    "sha256": "a6612262af018ade1796bafcfd4044e4e67e9dfb1757c76eec6033353f0cac11"
+  },
+  "values/partner_code": {
+    "category": "Guidance",
+    "context": "Native partner invitation; separate from own-device enrollment",
+    "state": "reviewed",
+    "reason": "Requested functional pairing action, identity verification or actual connection status; no invented partner data.",
+    "sha256": "754f3ed778fb668b4e63f8fe979141cff25ff186c2c3bdc9a98e3b4cb335c9c8"
+  },
+  "values/partner_join": {
+    "category": "Action",
+    "context": "Native partner invitation; separate from own-device enrollment",
+    "state": "reviewed",
+    "reason": "Requested functional pairing action, identity verification or actual connection status; no invented partner data.",
+    "sha256": "e2960f95577102b8a6baafadcc63b294a7fdc903127ad165326fd3b7547a25f3"
+  },
+  "values/partner_copy": {
+    "category": "Action",
+    "context": "Native partner invitation; separate from own-device enrollment",
+    "state": "reviewed",
+    "reason": "Requested functional pairing action, identity verification or actual connection status; no invented partner data.",
+    "sha256": "74554e40cdde13713e1b24d095212344c84e6ab5f9be63850c4dfb22a3f6594f"
+  },
+  "values/partner_expiry": {
+    "category": "Status",
+    "context": "Native partner invitation; separate from own-device enrollment",
+    "state": "reviewed",
+    "reason": "Requested functional pairing action, identity verification or actual connection status; no invented partner data.",
+    "sha256": "24d2fa6472e43b3ee9abfedf806361e0470f38af0afdc1c1121ebcfca33642d5"
+  },
+  "values/partner_wait_join": {
+    "category": "Status",
+    "context": "Native partner invitation; separate from own-device enrollment",
+    "state": "reviewed",
+    "reason": "Requested functional pairing action, identity verification or actual connection status; no invented partner data.",
+    "sha256": "743d05592e9fd129ad36ec1bc11624090776aa4df72a3baf580e3d4ac0fe5efc"
+  },
+  "values/partner_verify": {
+    "category": "Guidance",
+    "context": "Native partner invitation; separate from own-device enrollment",
+    "state": "reviewed",
+    "reason": "Requested functional pairing action, identity verification or actual connection status; no invented partner data.",
+    "sha256": "edbd34c06560b22e9ba6a5687ead1f9c781a5ded8ef1129ad57f45d6b266c348"
+  },
+  "values/partner_confirm": {
+    "category": "Action",
+    "context": "Native partner invitation; separate from own-device enrollment",
+    "state": "reviewed",
+    "reason": "Requested functional pairing action, identity verification or actual connection status; no invented partner data.",
+    "sha256": "390667df08eb83b4f504a00a0efca44c6e0c3449a85bc70be83379e3f9437a1c"
+  },
+  "values/partner_wait_confirmation": {
+    "category": "Status",
+    "context": "Native partner invitation; separate from own-device enrollment",
+    "state": "reviewed",
+    "reason": "Requested functional pairing action, identity verification or actual connection status; no invented partner data.",
+    "sha256": "019d6e7e7e2e572b7c2138a6d69f3879dc985b31202ae5876695f80d6766493d"
+  },
+  "values/partner_finishing": {
+    "category": "Status",
+    "context": "Native partner invitation; separate from own-device enrollment",
+    "state": "reviewed",
+    "reason": "Requested functional pairing action, identity verification or actual connection status; no invented partner data.",
+    "sha256": "15ae73d32dea59a839f9a0f4717099985f4daef3aa9fae07aa4d745e27874ec1"
+  },
+  "values/partner_service_upgrade": {
+    "category": "Error",
+    "context": "Native partner invitation; separate from own-device enrollment",
+    "state": "reviewed",
+    "reason": "Requested functional pairing action, identity verification or actual connection status; no invented partner data.",
+    "sha256": "6816691d5f9e9ccafb63dc7eb0749982158ab43c658d3ea250169867f9cfdf87"
+  },
+  "values/partner_invalid_invitation": {
+    "category": "Error",
+    "context": "Native partner invitation; separate from own-device enrollment",
+    "state": "reviewed",
+    "reason": "Requested functional pairing action, identity verification or actual connection status; no invented partner data.",
+    "sha256": "d751238ba77759d4e873605e5b6cc6fd67962952f6246d506e879024e39e0de7"
   }
 }

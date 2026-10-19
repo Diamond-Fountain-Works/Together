@@ -44,6 +44,7 @@ public enum TogetherError: LocalizedError {
     @ObservationIgnored private var activatingReplication = false
     public var context: ReplicaContext { replicationContext ?? ReplicaContext(local: identity.descriptor, peer: peer?.descriptor) }
     public var usesReplication4: Bool { replicationContext != nil }
+    public var isCompletingPartnership: Bool { (try? repository.load(Bool.self, key: "partner4/pending")) == true && !usesReplication4 }
     public var ownProfile: UserProfile? { snapshot.profiles[identity.descriptor.userId] }
     public var partnerProfile: UserProfile? { context.peer.flatMap { snapshot.profiles[$0.userId] } }
     public var sharedSpace: SharedSpace { snapshot.space ?? SharedSpace(id: context.spaceId, memberIds: context.members.sorted { $0.uuidString < $1.uuidString }, timeZoneIdentifier: context.sharedTimeZone) }
@@ -63,6 +64,7 @@ public enum TogetherError: LocalizedError {
         giftSourceDevices = Dictionary(uniqueKeysWithValues: operations.map { ($0.id, $0.operation.deviceId) })
         if try usesReplication4 && repository.load(String.self,key:"replication4/legacy-seal") == nil { return }
         if let trust=context.authorization,!trust.containsActive(identity.descriptor){return}
+        if isCompletingPartnership { return }
         if ownProfile == nil {
             try append(entity: identity.descriptor.userId, type: .profile, action: .create,
                        fields: ["deviceId": .id(identity.descriptor.deviceId), "displayName": .string("我"), "relationshipLabel": .string("unknown"), "avatarData": .null])
@@ -112,9 +114,9 @@ public enum TogetherError: LocalizedError {
         try refresh()
         try ensureSharedSpace()
     }
-    private func validatePeer(_ proposed: PairedPeer) throws {
+    private func validatePeer(_ proposed: PairedPeer, nativePartner: Bool = false) throws {
         let d = proposed.descriptor
-        guard d.deviceId != identity.descriptor.deviceId, d.userId != identity.descriptor.userId, d.publicKey.count == 32, [2, 3].contains(d.protocolVersion), d.initialTimeZoneIdentifier.flatMap(TimeZone.init(identifier:)) != nil else { throw TogetherError.invalid(Copy.text("copy.error.b3dc19939872")) }
+        guard d.deviceId != identity.descriptor.deviceId, d.userId != identity.descriptor.userId, d.publicKey.count == 32, (nativePartner ? [3, 4] : [2, 3]).contains(d.protocolVersion), d.initialTimeZoneIdentifier.flatMap(TimeZone.init(identifier:)) != nil else { throw TogetherError.invalid(Copy.text("copy.error.b3dc19939872")) }
         if let peer, peer.descriptor.deviceId != d.deviceId || peer.descriptor.userId != d.userId || peer.descriptor.publicKey != d.publicKey || peer.descriptor.initialSpaceId != d.initialSpaceId { throw TogetherError.invalid(Copy.text("copy.error.9dfbef876584")) }
     }
     public func bindRelay(peer proposed: PairedPeer, binding: RelayBinding) throws {
@@ -122,6 +124,30 @@ public enum TogetherError: LocalizedError {
         guard binding.localDeviceId == identity.descriptor.deviceId, binding.peerDeviceId == proposed.descriptor.deviceId, binding.peerPublicKey == proposed.descriptor.publicKey else { throw TogetherError.invalid(Copy.text("copy.error.f39021f401d6")) }
         try repository.saveAtomically(["paired-peer": CanonicalJSON.encode(proposed), "relay-binding": CanonicalJSON.encode(binding)])
         peer = proposed; try refresh(); try ensureSharedSpace()
+    }
+    /// Called only after both signed consents and the route confirmation. Existing
+    /// IDs, keys and signed facts remain in place while first partnership completes.
+    public func bindNativePartner(peer proposed: PairedPeer, binding: RelayBinding) throws {
+        guard !usesReplication4 else { throw ReplicationError.incompatibleProtocol }
+        try validatePeer(proposed, nativePartner: true)
+        guard binding.localDeviceId == identity.descriptor.deviceId,
+              binding.peerDeviceId == proposed.descriptor.deviceId,
+              binding.peerPublicKey == proposed.descriptor.publicKey else { throw ReplicationError.unauthorized }
+        try repository.saveAtomically(["paired-peer": CanonicalJSON.encode(proposed), "relay-binding": CanonicalJSON.encode(binding)])
+        peer = proposed; try refresh()
+        if !isCompletingPartnership { try ensureSharedSpace() }
+        try repository.save(true, key: "partner4/pending")
+    }
+    public func importPartnerHistory(_ incoming: [SignedOperation]) throws {
+        guard isCompletingPartnership, incoming.count <= 32 else { throw ReplicationError.unauthorized }
+        for operation in incoming {
+            guard let device = context.devices[operation.operation.deviceId], operation.verified(by: device) else { throw ReplicationError.invalidSignature }
+        }
+        try repository.insert(incoming)
+    }
+    public func finishPartnerHistory() throws {
+        guard isCompletingPartnership else { throw ReplicationError.unauthorized }
+        try refresh()
     }
     public func merge(_ incoming: [SignedOperation]) throws {
         guard !activatingReplication else { throw ReplicationError.inventoryChanged }
@@ -315,6 +341,7 @@ public enum TogetherError: LocalizedError {
         try appendGroup([(entity,type,action,fields)],createdAt:createdAt)
     }
     private func appendGroup(_ group:[(UUID,EntityType,OperationType,[String:LogValue])],createdAt:Date?=nil)throws {
+        guard !isCompletingPartnership else { throw TogetherError.invalid(Copy.text("pairing.status.finishing")) }
         guard !group.isEmpty,group.count<=32 else{throw ReplicationError.bounds}
         var clock=validLamportMaximum+1
         let signed=try group.map{entry in

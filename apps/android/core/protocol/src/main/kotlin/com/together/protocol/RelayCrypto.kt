@@ -4,7 +4,7 @@ import kotlinx.serialization.Serializable
 import java.nio.ByteBuffer
 
 @Serializable data class HelloBody(val protocolVersion: Int = 2, val routeId: String, val descriptor: DeviceDescriptor,
-    val profileName: String, val ephemeralKey: String, val nonce: String, val replicationVersion: Int = 4, val authorizationDigest: String)
+    val profileName: String, val ephemeralKey: String, val nonce: String, val replicationVersion: Int? = null, val authorizationDigest: String? = null)
 @Serializable data class SignedHello(val body: HelloBody, val signature: String) {
     fun verify(trust: SpaceAuthorization) {
         val b = body; uuid(b.nonce); b.descriptor.validate()
@@ -47,6 +47,6 @@ class SecureChannel(private val identity: DeviceIdentity, private val ephemeral:
         received = h.sequence; return clear
     }
     companion object {
-        fun hello(identity: DeviceIdentity, ephemeral: ByteArray, trust: SpaceAuthorization) = HelloBody(routeId = trust.spaceId, descriptor = identity.descriptor, profileName = identity.descriptor.displayName, ephemeralKey = Crypto.xPublic(ephemeral).b64(), nonce = uid(), authorizationDigest = trust.digest).let { SignedHello(it, identity.sign(Canonical.encode(it))) }
+        fun hello(identity: DeviceIdentity, ephemeral: ByteArray, trust: SpaceAuthorization) = HelloBody(routeId = trust.spaceId, descriptor = identity.descriptor, profileName = identity.descriptor.displayName, ephemeralKey = Crypto.xPublic(ephemeral).b64(), nonce = uid(), replicationVersion = 4, authorizationDigest = trust.digest).let { SignedHello(it, identity.sign(Canonical.encode(it))) }
     }
 }

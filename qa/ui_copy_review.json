@@ -6014,6 +6014,20 @@
       "review": "approved",
       "reason": "Functional prerequisite for user-requested explicit P3 to P4 migration; no automatic re-pairing.",
       "textSHA256": "b10be68c89b40dd415e4feca5e2f99015a401fb5cdfea3808f7c571e3bd392d9"
+    },
+    "pairing.status.finishing": {
+      "category": "Status",
+      "context": "Native partner pairing",
+      "review": "approved",
+      "reason": "Necessary pairing progress or actionable service capability error.",
+      "textSHA256": "933023cb51d2a721ec67eccbabb6404bc4e5caf3132b498ee61bcb979f712499"
+    },
+    "pairing.error.serviceUpgrade": {
+      "category": "Error",
+      "context": "Native partner pairing",
+      "review": "approved",
+      "reason": "Necessary pairing progress or actionable service capability error.",
+      "textSHA256": "937cb08615804ee714e59d7099ce84a05f82085c64fd3390f733fb47a9176ac4"
     }
   }
 }

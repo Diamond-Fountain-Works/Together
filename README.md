@@ -73,3 +73,12 @@ defines the opt-in, same-signer, non-destructive instrumentation path; do not us
 tests on a phone whose test data must be retained. The [staging plan](docs/qa/ANDROID_STAGING_ACCEPTANCE.md)
 is unexecuted and requires separate deployment authorization. Main [branch protection](docs/security/REPOSITORY_PROTECTION.md)
 requires PRs and the existing CI checks; it is not permission to merge or deploy.
+
+## Native partner pairing correction (development)
+
+Partner invitations now have a native create/join text interface, separate from
+own-device signed-file enrollment. Signed bootstrap history activates the existing
+Protocol 4 engine with recoverable join/genesis state. [Pairing evidence](docs/qa/reports/NATIVE_PARTNER_PAIRING.md)
+separates local, physical, VPN-dependent and failed VPN-free tests. Production
+API 1 is unchanged. The current Workers endpoint is not a verified VPN-free path
+on the tested mobile network; P2P is a separate transport change.

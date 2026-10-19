@@ -14,12 +14,13 @@ import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.serialization.json.*
 
-/** App-private Room/Keystore only. No production Mac path, bundled real store or Relay origin. */
+/** App-private Room/Keystore only. No production Mac path or bundled user store. */
 class TogetherRepository(
     private val context: Context,
     private val scope: CoroutineScope,
     private val namespace: String? = null,
     private val clock: DateProvider = systemDateProvider,
+    private val serviceURL: String = com.together.android.BuildConfig.RELAY_URL,
 ) {
     init {
         requireProtocol(
@@ -60,6 +61,7 @@ class TogetherRepository(
         val giftSynced: Set<String> = emptySet(),
         val offer: EnrollmentOffer? = null,
         val request: EnrollmentRequest? = null,
+        val partnerPairing: PartnerPairingState = PartnerPairingState(),
     ) {
         val canWrite: Boolean
             get() =
@@ -78,6 +80,9 @@ class TogetherRepository(
     private lateinit var identity: DeviceIdentity
     private var replica: Replica? = null
     private var client: C1Client? = null
+    private var partnerClient: PartnerPairingClient? = null
+    private var partnerStateJob: Job? = null
+    private var partnerPeer: DeviceDescriptor? = null
     private var connectionJob: Job? = null
     private var refreshJob: Job? = null
     private val connectionLock = Mutex()
@@ -150,6 +155,7 @@ class TogetherRepository(
             MediaFiles(File(workspaceRoot, "media-$slot"), validateFormat = AndroidMedia::validate)
         db = TogetherDatabase.open(context, databaseName)
         store = RoomReplicaStore(db)
+        partnerPeer = store.local("partner-peer")?.let { Canonical.parse(it).model<DeviceDescriptor>() }
         db.dao().clearSnapshots()
         val archive =
             store.local("authorization")?.let { Canonical.parse(it).model<AuthorizationArchive>() }
@@ -168,7 +174,13 @@ class TogetherRepository(
         } else {
             requireProtocol(pointer == null, "MISSING_AUTHORIZATION")
             // Unpaired private local workspace; not exposed as certified Protocol 4 history.
-            store.records().forEach { it.record.operation.verify(identity.descriptor) }
+            val pendingPeer = partnerPeer.takeIf { store.local("partner-pending") != null }
+            store.records().forEach {
+                val op = it.record.operation
+                val signer = if (op.operation.deviceId == identity.descriptor.deviceId) identity.descriptor
+                    else pendingPeer ?: throw ProtocolException("UNAUTHORIZED_PENDING_HISTORY")
+                op.verify(signer)
+            }
         }
         val pending = store.local("pending-enrollment")?.let { Canonical.parse(it).jsonObject }
         _state.update {
@@ -177,6 +189,12 @@ class TogetherRepository(
                 offer = pending?.get("offer")?.model(),
                 request = pending?.get("request")?.model(),
             )
+        }
+        if (replica == null) {
+            store.local("partner-route")?.let { bytes ->
+                val route = Canonical.parse(bytes).model<PartnerRoute>()
+                partnerClient = makePartnerClient().also { it.resume(route.routeId) }
+            }
         }
     }
 
@@ -213,6 +231,13 @@ class TogetherRepository(
 
     private fun domainContext(): DomainContext =
         replica?.trust?.let(DomainContext::from)
+            ?: partnerPeer?.let { peer ->
+                val roots = listOf(identity.descriptor, peer).sortedBy { it.deviceId }
+                val space = stableId("space:" + roots.joinToString(":") { it.deviceId })
+                DomainContext(space, roots.map { it.userId }.toSet(),
+                    (roots.map { it.initialSpaceId } + space).toSet(),
+                    roots.first().initialTimeZoneIdentifier ?: "Etc/UTC", roots.first().userId)
+            }
             ?: DomainContext(
                 identity.descriptor.initialSpaceId,
                 setOf(identity.descriptor.userId),
@@ -226,6 +251,7 @@ class TogetherRepository(
         else Projector.replay(store.records().map { it.record.operation }, domainContext())
 
     private fun reconcile() {
+        if (replica == null && store.local("partner-pending") != null) return
         val r = replica
         if (r != null && !r.legacyComplete()) return
         fun apply() {
@@ -293,7 +319,7 @@ class TogetherRepository(
             store.local("reviewed")?.let { Canonical.parse(it).model<Set<String>>() } ?: emptySet()
         val projected = snapshot()
         val currentTrust = replica?.trust
-        val historyReady = replica?.legacyComplete() ?: true
+        val historyReady = (replica?.legacyComplete() ?: true) && (replica != null || store.local("partner-pending") == null)
         val inbox =
             projected.gifts.values.filter {
                 it.effective &&
@@ -431,6 +457,7 @@ class TogetherRepository(
         }
 
     suspend fun close() {
+        partnerClient?.stop(); partnerStateJob?.cancelAndJoin()
         connectionLock.withLock {
             connectionJob?.cancelAndJoin()
             connectionJob = null
@@ -453,6 +480,7 @@ class TogetherRepository(
         fields: Map<String, JsonObject>,
         now: Instant = clock.now(),
     ): String = command {
+        requireProtocol(replica != null || store.local("partner-pending") == null, "PAIRING_FINISHING")
         val r = replica
         // SQLite transaction serializes quota validation, candidate projection, facts and Lamport.
         fun write(): String {
@@ -893,6 +921,124 @@ class TogetherRepository(
         store.local("reviewed", Canonical.encode(_state.value.reviewed + ids))
     }
 
+    private fun makePartnerClient(): PartnerPairingClient {
+        val origin = store.local("partner-origin")?.toString(Charsets.UTF_8) ?: serviceURL
+        val uri = validOrigin(origin, com.together.android.BuildConfig.DEBUG)
+        if (namespace != null) requireProtocol(
+            uri.host in listOf("127.0.0.1", "localhost", "[::1]") ||
+                (uri.scheme == "https" && uri.host == "together-pairing-staging.together-connection-service.workers.dev"),
+            "ISOLATED_RELAY_REQUIRED")
+        lateinit var created: PartnerPairingClient
+        fun current() = requireProtocol(partnerClient === created, "PAIRING_CANCELLED")
+        val history = object : PartnerHistory {
+            override suspend fun joinRequest(code: String): String = withContext(Dispatchers.IO) {
+                lock.withLock {
+                    current()
+                    val digest = sha256(code.toByteArray())
+                    val old = store.local("partner-join-intent")?.let { Canonical.parse(it).jsonObject }
+                    if (old?.get("codeDigest")?.jsonPrimitive?.content == digest) old.getValue("requestId").jsonPrimitive.content
+                    else uid().also { id -> store.local("partner-join-intent", Canonical.bytes(buildJsonObject { put("codeDigest", digest); put("requestId", id) })) }
+                }
+            }
+            override suspend fun prepare(genesis: SignedGenesis) = withContext(Dispatchers.IO) {
+                lock.withLock {
+                    current(); genesis.verify()
+                    requireProtocol(genesis.body.roots.any { it == identity.descriptor } &&
+                        genesis.body.roots.any { it == partnerPeer } &&
+                        genesis.body.legacyCheckpoint == checkpoint(store.records().map { it.record.entry }), "INVENTORY_CHANGED")
+                    store.local("partner-genesis", Canonical.encode(genesis))
+                }
+            }
+            override suspend fun pendingGenesis(): SignedGenesis? = withContext(Dispatchers.IO) {
+                lock.withLock { current(); store.local("partner-genesis")?.let { Canonical.parse(it).model<SignedGenesis>() } }
+            }
+            override suspend fun rememberRoute(route: PartnerRoute) = withContext(Dispatchers.IO) {
+                lock.withLock {
+                    current()
+                    store.transaction {
+                        store.local("partner-route", Canonical.encode(route))
+                        store.local("partner-origin", origin.toByteArray())
+                    }
+                }
+            }
+            override suspend fun pin(peer: DeviceDescriptor, route: PartnerRoute) = withContext(Dispatchers.IO) {
+                lock.withLock {
+                    current(); requireProtocol(replica == null, "ALREADY_PAIRED")
+                    requireProtocol(peer.userId != identity.descriptor.userId &&
+                        (partnerPeer == null || partnerPeer == peer), "IDENTITY_MISMATCH")
+                    store.transaction {
+                        store.local("partner-peer", Canonical.encode(peer))
+                        store.local("partner-route", Canonical.encode(route))
+                        store.local("partner-origin", origin.toByteArray())
+                        store.local("partner-pending", byteArrayOf(1))
+                    }
+                    partnerPeer = peer; reload()
+                }
+            }
+            override suspend fun ownHistory(): List<SignedOperation> = withContext(Dispatchers.IO) {
+                lock.withLock { current(); store.records().map { it.record.operation }.filter { it.operation.deviceId == identity.descriptor.deviceId } }
+            }
+            override suspend fun importBatch(operations: List<SignedOperation>) = withContext(Dispatchers.IO) {
+                lock.withLock {
+                    current(); requireProtocol(replica == null && store.local("partner-pending") != null, "PAIRING_NOT_READY")
+                    val peer = partnerPeer ?: throw ProtocolException("PAIRING_NOT_READY")
+                    requireProtocol(operations.size <= 32, "BATCH_BOUNDS")
+                    store.transaction { operations.forEach { it.verify(peer); store.put(StoredRecord(ReplicationRecord("legacy", legacy = it), true)) } }
+                }
+            }
+            override suspend fun checkpoint(): Checkpoint = withContext(Dispatchers.IO) {
+                lock.withLock { current(); checkpoint(store.records().map { it.record.entry }) }
+            }
+            override suspend fun complete(authorization: AuthorizationArchive, binding: C1Binding) = withContext(Dispatchers.IO) {
+                lock.withLock {
+                    current(); requireProtocol(replica == null, "ALREADY_PAIRED")
+                    val trust = SpaceAuthorization.restore(authorization)
+                    requireProtocol(trust.active(identity.descriptor) && partnerPeer?.let(trust::active) == true &&
+                        authorization.genesis.body.legacyCheckpoint == checkpoint(store.records().map { it.record.entry }), "INVENTORY_CHANGED")
+                    val next = Replica(store, identity, trust)
+                    store.transaction {
+                        store.local("authorization", Canonical.encode(trust.archive))
+                        store.local("binding", Canonical.encode(binding))
+                        next.restore(); store.removeLocal("partner-pending")
+                    }
+                    replica = next; this@TogetherRepository.binding = binding
+                    configureClient(); reload()
+                }
+            }
+        }
+        val displayName = snapshot().entities[identity.descriptor.userId]?.fields?.text("displayName")
+            ?.takeIf { it.isNotBlank() } ?: identity.descriptor.displayName
+        created = PartnerPairingClient(origin, identity, displayName.take(80), scope, history,
+            com.together.android.BuildConfig.DEBUG, partnerPeer)
+        created.foreground(foreground)
+        partnerStateJob?.cancel()
+        partnerStateJob = scope.launch {
+            created.state.collect { value ->
+                if (partnerClient === created) _state.update { it.copy(partnerPairing = value) }
+            }
+        }
+        return created
+    }
+
+    suspend fun createPartnerInvitation() = withContext(Dispatchers.IO) {
+        val pairing = lock.withLock {
+            requireProtocol(replica == null && partnerPeer == null, "ALREADY_PAIRED")
+            partnerClient?.stop(); makePartnerClient().also { partnerClient = it }
+        }
+        pairing.create()
+    }
+    suspend fun joinPartnerInvitation(code: String) = withContext(Dispatchers.IO) {
+        val pairing = lock.withLock {
+            requireProtocol(replica == null && partnerPeer == null, "ALREADY_PAIRED")
+            partnerClient?.stop(); makePartnerClient().also { partnerClient = it }
+        }
+        pairing.join(code)
+    }
+    suspend fun confirmPartner(verified: Boolean) = withContext(Dispatchers.IO) {
+        requireProtocol(verified, "IDENTITY_CONFIRMATION_REQUIRED")
+        (partnerClient ?: throw ProtocolException("PAIRING_NOT_READY")).confirm()
+    }
+
     suspend fun stageOffer(bytes: ByteArray, displayName: String, confirmed: Boolean): ByteArray =
         command {
             requireProtocol(confirmed, "IDENTITY_CONFIRMATION_REQUIRED")
@@ -1026,6 +1172,7 @@ class TogetherRepository(
     }
 
     fun foreground(value: Boolean) {
+        partnerClient?.foreground(value)
         foreground = value
         startConnection()
     }

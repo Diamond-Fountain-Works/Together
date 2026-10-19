@@ -5,7 +5,7 @@ import android.os.Bundle
 import androidx.test.runner.AndroidJUnitRunner
 
 /**
- * Physical runs require an explicit, model-bound opt-in and a loopback test service. Run with `adb
+ * Physical runs require an explicit, model-bound opt-in and an isolated test service. Run with `adb
  * am instrument`, never Gradle connected tests (which may uninstall the host).
  */
 class IsolatedAndroidTestRunner : AndroidJUnitRunner() {
@@ -24,15 +24,17 @@ class IsolatedAndroidTestRunner : AndroidJUnitRunner() {
                 "Physical QA run ID required"
             }
             val relay = java.net.URI(arguments.getString("relayURL") ?: "")
-            check(
-                relay.scheme == "http" &&
+            val loopback = relay.scheme == "http" &&
                     relay.host == "127.0.0.1" &&
-                    relay.port in 1024..65535 &&
-                    relay.rawPath.orEmpty().isEmpty() &&
+                    relay.port in 1024..65535
+            val staging = arguments.getString("publicStagingQa") == "explicit-staging-only" &&
+                relay.scheme == "https" && relay.host == "together-pairing-staging.together-connection-service.workers.dev" && relay.port == -1
+            check(
+                (loopback || staging) && relay.rawPath.orEmpty().isEmpty() &&
                     relay.rawQuery == null &&
-                    relay.rawUserInfo == null
+                    relay.rawUserInfo == null && relay.rawFragment == null
             ) {
-                "Physical QA requires an explicit loopback Relay"
+                "Physical QA requires an explicitly authorized isolated Relay"
             }
             arguments.putString("listener", "com.together.android.RunnerTeardownDiagnostics")
         }

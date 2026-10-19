@@ -27,7 +27,17 @@ import kotlin.coroutines.resumeWithException
 @Serializable data class RelayTicket(val ticket: String, val routeId: String, val expiresAt: Long)
 class RelayApi(val binding: C1Binding, private val identity: DeviceIdentity, allowLocal: Boolean = false,
     val client: OkHttpClient = OkHttpClient.Builder().followRedirects(false).followSslRedirects(false).callTimeout(20, TimeUnit.SECONDS).build()) {
+    // Request-only unpaired client. The initial IDs are never saved as a paired binding.
+    companion object {
+        fun unpaired(origin: String, identity: DeviceIdentity, allowLocal: Boolean = false) = RelayApi(
+            C1Binding(origin, identity.descriptor.initialSpaceId, identity.descriptor.initialSpaceId, identity.descriptor.deviceId), identity, allowLocal)
+    }
     private val base = validOrigin(binding.serviceURL, allowLocal).toString().trimEnd('/')
+    fun requirePartnerService() {
+        val health = Canonical.parse(response(Request.Builder().url("$base/health").build(), 16384)).jsonObject
+        requireProtocol(health["partnerPairing"]?.jsonPrimitive?.intOrNull == 1, "PARTNER_SERVICE_UPGRADE_REQUIRED")
+    }
+    fun partnerSocket(route: String) = base.replaceFirst("https://", "wss://").replaceFirst("http://", "ws://") + "/v1/socket/${uuid(route)}"
     private fun response(request: Request, maximum: Int): ByteArray = client.newCall(request).execute().use { response ->
         val body = response.body ?: throw ProtocolException("SERVICE_UNAVAILABLE")
         requireProtocol(body.contentLength() <= maximum, "RESPONSE_BOUNDS")
@@ -39,8 +49,12 @@ class RelayApi(val binding: C1Binding, private val identity: DeviceIdentity, all
         bytes
     }
     fun request(method: String, path: String, body: ByteArray = byteArrayOf(), maximum: Int = 131_072): JsonElement {
-        requireProtocol(path.startsWith("/v2/") && !path.contains("?"), "INVALID_API_PATH")
-        val challenge = Canonical.parse(response(Request.Builder().url("$base/v2/challenge").build(), 16_384)).model<Challenge>()
+        // Native first-partner bootstrap uses the existing, scoped route API.
+        // Keep all other legacy paths inaccessible to the Protocol 4 client.
+        val partnerRoute = Regex("/v1/routes/[0-9A-F-]{36}(/(ticket|confirm))?").matches(path)
+        requireProtocol((path.startsWith("/v2/") || partnerRoute) && !path.contains("?"), "INVALID_API_PATH")
+        val challengePath = if (partnerRoute) "/v1/challenge" else "/v2/challenge"
+        val challenge = Canonical.parse(response(Request.Builder().url(base + challengePath).build(), 16_384)).model<Challenge>()
         uuid(challenge.id); requireProtocol(challenge.nonce.length in 1..256, "INVALID_CHALLENGE")
         val text = listOf("Together-Auth-1", challenge.nonce, method, path, sha256(body), identity.descriptor.deviceId).joinToString("\n")
         val r = Request.Builder().url(base + path).header("Content-Type", "application/json")
