@@ -6,8 +6,11 @@ are separately tracked. A newly authorized [P2P workstream](../architecture/P2P_
 has a compiled optional QUIC adapter, three trust tests and two real local direct
 transport tests. Build 14 is a development metadata increment, not an installed
 or released P2P app. Current local UI installation remains Mac Build 13 / Android
-code 8. Android P2P, public NAT traversal, key persistence and independent review
-remain open; old scope statements below are historical phase evidence.
+code 8. The Android test-only native adapter and public acceptance harness now
+compile; [public acceptance](../qa/reports/P2P_PUBLIC_ACCEPTANCE.md) is blocked by
+USB disconnection before payload exchange. Android production P2P, public NAT
+traversal, key persistence and independent review remain open; old scope
+statements below are historical phase evidence.
 
 - Independent `feature/android-physical-phase-c` worktree from verified Phase B `7e9d0c1182ff2741af748e0f976509058039d2c4`, stacked on PR #6. Parent Draft PRs are not modified or merged.
 - The checksum-pinned Phase B Debug APK was installed on the USB-authorized Samsung SM-S9210, Android16/API36. Same-signer replacements preserve the separate Debug app's test workspaces; no uninstall, data clear, Mac installation or production-data use.

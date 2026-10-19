@@ -44,9 +44,14 @@ scheduled wait bound is not a claim about total scan cost under a 100k workload.
 
 ## Unverified/release gates
 
-Android P2P and shared wire vectors; actual Mac–Samsung/public NAT traversal;
+Android production P2P and shared wire vectors; actual Mac–Samsung/public NAT traversal;
 user-facing invitation/reconnect/media integration; transport-key persistence,
 rotation and recovery; 100k transport performance; independent protocol review.
 Upstream's prebuilt Apple binary is arm64/macOS 14.5+; the existing Universal /
 macOS 14 app must not silently lose support. No visual baseline is approved by
 these tests. Private stores, keys, network logs and screenshots remain excluded.
+
+Follow-up: a compiled Android instrumentation-only adapter, native QA CLI and
+bounded physical driver are implemented. The first physical attempt stopped
+before payload exchange and the phone disconnected; [public acceptance](P2P_PUBLIC_ACCEPTANCE.md)
+is still blocked, not a public-network PASS.

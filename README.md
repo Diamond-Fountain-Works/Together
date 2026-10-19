@@ -93,6 +93,9 @@ on the tested mobile network; P2P is a separate transport change.
 record the user's new transport direction. The optional `TogetherP2P` package uses
 native Iroh QUIC around the existing signed Protocol 4 log. `make p2p-test` tests a
 relay-disabled direct link, paged history, durable ACKs, tombstone convergence and
-identity/replay rejection. It does not link into the production app yet. Android,
-public NAT traversal, platform compatibility and independent security review
-remain open; installed applications are not silently described as P2P-capable.
+identity/replay rejection. It does not link into the production app yet. A
+test-only Android adapter and bounded physical driver are now available; see
+[public acceptance status](docs/qa/reports/P2P_PUBLIC_ACCEPTANCE.md). Compiling
+the instrumentation is not physical/public-network acceptance. Public NAT
+traversal, platform compatibility and independent security review remain open;
+installed applications are not silently described as P2P-capable.

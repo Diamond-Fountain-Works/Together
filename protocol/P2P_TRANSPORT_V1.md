@@ -37,6 +37,11 @@ protect the application stream across reconnects; QUIC identity alone does not
 grant business permissions. Encrypted replication payloads use existing
 ReplicationFrame canonical encoding and signed per-device persistence receipts.
 
-Portable Kotlin vectors, stream media dispatch, public discovery and invitation
-exchange are NOT IMPLEMENTED by this document. Do not claim cross-platform wire
-acceptance merely because this contract is written down.
+The Android instrumentation-only adapter implements this envelope and reuses
+the existing Kotlin Protocol 4 cipher and anti-entropy engine. A native QA CLI
+and physical driver exchange only public synthetic trust/contact files over ADB;
+all business facts and ACKs must travel over QUIC. Real acceptance status is
+recorded in [the physical report](../docs/qa/reports/P2P_PUBLIC_ACCEPTANCE.md).
+Portable standalone Kotlin vectors, stream media dispatch, public discovery and
+invitation exchange are not implemented by this document. Do not infer wire or
+product acceptance from compilation or a written contract.

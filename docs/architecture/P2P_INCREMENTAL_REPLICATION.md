@@ -66,8 +66,10 @@ mode is the default. Automatic public discovery/relays require explicit selectio
 Upstream's prebuilt macOS framework is arm64 / macOS 14.5+. Do not drop Together's
 Universal / macOS 14.0 support by linking it unconditionally. The app target does
 not yet link this optional package. A source-built compatible slice or a clearly
-bounded supported-platform strategy is required before release. Kotlin native
-integration and real physical network tests remain separate gates.
+bounded supported-platform strategy is required before release. Kotlin
+application integration and real physical network tests remain separate gates.
+The Android test target contains a native adapter; the production client does
+not link it.
 
 ## Current evidence
 
@@ -81,8 +83,11 @@ payload is allocated. Three additional core trust/replay/revocation tests pass.
 
 NOT RUN: Mac-to-Samsung P2P, public NAT traversal, no-VPN public direct/relay
 fallback, 100k QUIC workload, P2P gift-media ACK and production key persistence.
+IMPLEMENTED / BUILD TESTED: a test-only Android native adapter, bounded public
+physical driver and native isolated QA CLI, including fresh-process recovery
+assertions. See [actual attempt status](../qa/reports/P2P_PUBLIC_ACCEPTANCE.md).
 NOT IMPLEMENTED: user-facing P2P invitation/reconnect integration and Android
-transport adapter. BLOCKED for release: independent protocol/security review and
+production transport adapter. BLOCKED for release: independent protocol/security review and
 the platform support gate above. The installed Mac/Android applications still use
 C1; they must not be advertised as P2P builds.
 
