@@ -6,6 +6,7 @@ from pathlib import Path
 import shutil
 import tempfile
 import unittest
+import xml.etree.ElementTree as ET
 from audit_android_copy import ROOT, audit
 
 class AndroidCopyGateTests(unittest.TestCase):
@@ -33,9 +34,12 @@ class AndroidCopyGateTests(unittest.TestCase):
     def test_long_copy_warns_without_disabling_rule(self):
         index_path=self.root/'qa/android_copy_review.json';index=json.loads(index_path.read_text())
         p=self.root/'apps/android/app/src/main/res/values-zh-rCN/strings.xml'
-        original='在受信任的 Mac 创建“添加我的设备”邀请，导入后核对双方校验码。'
         replacement='甲'*40
-        self.assertIn(original,p.read_text());p.write_text(p.read_text().replace(original,replacement))
+        # Locate the contract key, not an obsolete product sentence. The test
+        # still injects over-budget text and requires the warning to fire.
+        tree=ET.parse(p);node=tree.getroot().find("string[@name='guidance_add_device']")
+        self.assertIsNotNone(node);node.text=replacement
+        tree.write(p,encoding='utf-8',xml_declaration=True)
         index['values-zh-rCN/guidance_add_device']['sha256']=hashlib.sha256(replacement.encode()).hexdigest()
         index_path.write_text(json.dumps(index))
         report=audit(self.root);self.assertEqual('WARN',report['status']);self.assertTrue(any(x['type']=='copy_budget' for x in report['issues']))

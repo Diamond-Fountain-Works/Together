@@ -82,6 +82,10 @@ fun TogetherApp(repository: TogetherRepository) = TogetherTheme {
     val state by repository.state.collectAsStateWithLifecycle()
     var page by rememberSaveable { mutableStateOf(Page.Home) }
     var filter by rememberSaveable { mutableStateOf("pending") }
+    LaunchedEffect(filter) {
+        // Restore old Activity state into the unified task workspace.
+        if (filter != "pending" && filter != "completed") filter = "pending"
+    }
     var financeTab by rememberSaveable { mutableIntStateOf(0) }
     var modal by rememberSaveable { mutableStateOf<String?>(null) }
     var selected by remember { mutableStateOf<ProjectedEntity?>(null) }
@@ -413,7 +417,7 @@ fun TogetherApp(repository: TogetherRepository) = TogetherTheme {
                                             )
                                                 OutlinedCard(
                                                     onClick = {
-                                                        filter = "upcoming"
+                                                        filter = "pending"
                                                         navigate(Page.Plans)
                                                     },
                                                     modifier = Modifier.fillMaxWidth(),

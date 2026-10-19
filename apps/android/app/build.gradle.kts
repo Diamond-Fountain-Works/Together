@@ -6,8 +6,8 @@ android {
         applicationId = "com.together.android"
         minSdk = 28
         targetSdk = 36
-        versionCode = 7
-        versionName = "0.2.1-phaseC-fix2"
+        versionCode = 8
+        versionName = "0.2.1-phaseC-plans"
         buildConfigField("String", "RELAY_URL", "\"https://together-connection.together-connection-service.workers.dev\"")
         testInstrumentationRunner = "com.together.android.IsolatedAndroidTestRunner"
         providers.gradleProperty("together.testRelay").orNull?.let { testInstrumentationRunnerArguments["relayURL"] = it }

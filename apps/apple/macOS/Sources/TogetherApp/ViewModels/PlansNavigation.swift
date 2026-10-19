@@ -8,19 +8,17 @@ enum PlansMode: String, CaseIterable, Identifiable {
 }
 
 enum TaskListFilter: String, CaseIterable, Identifiable {
-    case pending, upcoming, completed
+    case pending, completed
     var id: String { rawValue }
     var title: String {
         switch self {
         case .pending: Copy.text("plans.filter.pending")
-        case .upcoming: Copy.text("nav.upcoming")
         case .completed: Copy.text("nav.completed")
         }
     }
     var emptyTitle: String {
         switch self {
         case .pending: Copy.text("plans.empty.pending")
-        case .upcoming: Copy.text("plans.empty.upcoming")
         case .completed: Copy.text("plans.empty.completed")
         }
     }
