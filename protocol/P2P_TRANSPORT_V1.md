@@ -18,12 +18,16 @@ base64 Ed25519 signatures. Body fields:
 
 Reject bad signatures, stale membership digest, wrong space, revoked/unknown
 devices, a mismatched TLS remote endpoint and unsupported format/transport.
+The endpoint public key must differ from every device signing public key in the
+archive; copying a device signing seed into the transport is rejected.
 Unsigned network addresses are untrusted routing hints, not authorization. Do
 not connect to arbitrary hints from an unverified invitation in a product UI.
 
 QUIC ALPN: `together/p4/1`. One bidirectional ordered stream carries frames:
 four-byte unsigned big-endian length followed by exactly that many bytes.
-Lengths 0 or above 524288 close the connection before body allocation. Existing
+Lengths 0 or above 524288 close the connection before body allocation.
+Outgoing frames are serialized with a bound of 64 waiting/active frames and
+8 MiB of queued payload; cancellation/close releases waiting writers. Existing
 64 KiB media chunks remain separate frames; there is no original-file size cap.
 
 The application handshake/cipher is the existing Protocol 4 RelayPacket format

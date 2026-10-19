@@ -14,6 +14,8 @@ import Testing
         let stranger = try DeviceIdentity(userId: f.a.descriptor.userId, protocolVersion: 4)
         #expect(throws: ReplicationError.self) { try PeerTransportBinding.issue(identity: stranger, endpointId: endpoint, authorization: trust) }
         #expect(throws: ReplicationError.self) { try PeerTransportBinding.issue(identity: f.a, endpointId: "bad", authorization: trust) }
+        let reusedSigningKey = f.a.descriptor.publicKey.map { String(format: "%02x", $0) }.joined()
+        #expect(throws: ReplicationError.self) { try PeerTransportBinding.issue(identity: f.a, endpointId: reusedSigningKey, authorization: trust) }
     }
 
     @Test func currentAuthorizationRejectsRevokedAndStaleBindingsWithoutErasingHistory() throws {

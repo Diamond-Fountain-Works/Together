@@ -18,7 +18,8 @@ public struct PeerTransportBinding: Codable, Equatable, Sendable {
 
     public static func issue(identity: DeviceIdentity, endpointId: String,
                              authorization: SpaceAuthorization) throws -> Self {
-        guard authorization.containsActive(identity.descriptor), validEndpoint(endpointId) else {
+        guard authorization.containsActive(identity.descriptor), validEndpoint(endpointId),
+              independentEndpoint(endpointId, authorization: authorization) else {
             throw ReplicationError.unauthorized
         }
         let body = PeerTransportBindingBody(spaceId: authorization.spaceId,
@@ -33,6 +34,7 @@ public struct PeerTransportBinding: Codable, Equatable, Sendable {
               body.authorizationDigest == (try authorization.digest),
               authorization.containsActive(body.device),
               Self.validEndpoint(endpointId), body.endpointId == endpointId,
+              Self.independentEndpoint(endpointId, authorization: authorization),
               signature.count == 64,
               let key = try? Curve25519.Signing.PublicKey(rawRepresentation: body.device.publicKey),
               key.isValidSignature(signature, for: try CanonicalJSON.encode(body)) else {
@@ -42,6 +44,11 @@ public struct PeerTransportBinding: Codable, Equatable, Sendable {
 
     private static func validEndpoint(_ id: String) -> Bool {
         id.count == 64 && id.utf8.allSatisfy { (48...57).contains($0) || (97...102).contains($0) }
+    }
+    private static func independentEndpoint(_ id: String, authorization: SpaceAuthorization) -> Bool {
+        !authorization.devices.values.contains {
+            $0.descriptor.publicKey.map { String(format: "%02x", $0) }.joined() == id
+        }
     }
 }
 
@@ -75,11 +82,15 @@ public actor AuthorizedPeerCipher {
     }
 
     private func validate(_ authorization: SpaceAuthorization) throws {
-        try remote.verify(endpointId: remote.body.endpointId, authorization: authorization)
+        let digest = try authorization.digest
         guard authorization.containsActive(identity.descriptor),
-              localHello.body.authorizationDigest == (try authorization.digest) else {
+              authorization.containsActive(remote.body.device),
+              remote.body.authorizationDigest == digest,
+              localHello.body.authorizationDigest == digest else {
             throw ReplicationError.staleAuthorization
         }
+        // The immutable endpoint credential was signature-verified at init.
+        // Matching current trust here avoids re-verifying it for every frame.
     }
 
     /// Send a returned consent on the same ordered stream. No implicit pairing:

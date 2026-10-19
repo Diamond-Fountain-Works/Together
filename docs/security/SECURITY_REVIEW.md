@@ -1,5 +1,16 @@
 # Relay security status and review boundary
 
+## Additive P2P transport workstream (2026-10-19)
+
+The optional [P2P transport](../architecture/P2P_INCREMENTAL_REPLICATION.md)
+uses an independent Iroh endpoint key signed by an already authorized device,
+current archive validation and the unchanged Protocol 4 application cipher.
+Reusing any archived device signing key as the endpoint is rejected. Frame and
+queue limits are explicit. Trust/replay/revocation and relay-disabled local log
+tests are developer evidence only. Product key persistence, invitation exchange,
+Android/public NAT testing, transport-key rotation policy and independent security
+review remain release gates. No production transport was switched or deployed.
+
 Status: implemented CryptoKit/WebCrypto mechanisms and local tests; independent application-protocol review still required. No claim of a reviewed Noise/Signal protocol, Double Ratchet, static-file encryption or encrypted offline mailbox.
 
 ## Identities and transport

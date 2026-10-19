@@ -19,6 +19,11 @@
     2
   ],
   "replication4Activation": "Explicit co-signed legacy checkpoint migration plus authenticated Relay API 2; no silent Protocol 3 semantic change",
+  "experimentalP2P": {
+    "transportEnvelopeVersion": 1,
+    "replicationVersion": 4,
+    "status": "native-arm64-local-direct-tested; not linked into installed apps; Android/public-network and independent review pending"
+  },
   "android": {
     "appVersionSource": "apps/android/app/build.gradle.kts",
     "databaseSchemaVersion": 1,

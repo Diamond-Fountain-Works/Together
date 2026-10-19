@@ -93,6 +93,10 @@ public actor IrohFrameConnection {
     private let stream: BiStream
     private var receiving = false
     private var closed = false
+    private var sending = false
+    private var queuedBytes = 0
+    private var queuedFrames = 0
+    private var writers: [CheckedContinuation<Void, Never>] = []
     fileprivate init(connection: Connection, stream: BiStream) { self.connection = connection; self.stream = stream }
     public func remoteEndpointId() -> String { connection.remoteId().description }
     public func paths() -> [P2PPath] {
@@ -101,6 +105,15 @@ public actor IrohFrameConnection {
     public func send(_ bytes: Data) async throws {
         guard !closed else { throw P2PTransportError.closed }
         guard !bytes.isEmpty, bytes.count <= P2PTransportLimits.maximumFrameBytes else { throw P2PTransportError.frameBounds }
+        guard queuedFrames < 64, queuedBytes + bytes.count <= 8_388_608 else { throw P2PTransportError.frameBounds }
+        queuedFrames += 1; queuedBytes += bytes.count
+        if sending { await withCheckedContinuation { writers.append($0) } } else { sending = true }
+        defer {
+            queuedFrames -= 1; queuedBytes -= bytes.count
+            if writers.isEmpty { sending = false } else { writers.removeFirst().resume() }
+        }
+        try Task.checkCancellation()
+        guard !closed else { throw P2PTransportError.closed }
         var length = UInt32(bytes.count).bigEndian
         var frame = withUnsafeBytes(of: &length) { Data($0) }; frame.append(bytes)
         try await stream.send().writeAll(buf: frame)
@@ -119,5 +132,6 @@ public actor IrohFrameConnection {
     public func close() {
         closed = true
         try? connection.close(errorCode: 0, reason: Data())
+        let waiting = writers; writers = []; waiting.forEach { $0.resume() }
     }
 }

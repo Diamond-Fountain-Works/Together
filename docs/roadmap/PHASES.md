@@ -1,5 +1,14 @@
 # Android Phase C — current device acceptance stage
 
+2026-10-19 follow-up: [native pairing corrections](../qa/reports/NATIVE_PARTNER_PAIRING.md)
+and [merged Plans filters on both platforms](../qa/reports/UNIFIED_PLANS.md)
+are separately tracked. A newly authorized [P2P workstream](../architecture/P2P_INCREMENTAL_REPLICATION.md)
+has a compiled optional QUIC adapter, three trust tests and two real local direct
+transport tests. Build 14 is a development metadata increment, not an installed
+or released P2P app. Current local UI installation remains Mac Build 13 / Android
+code 8. Android P2P, public NAT traversal, key persistence and independent review
+remain open; old scope statements below are historical phase evidence.
+
 - Independent `feature/android-physical-phase-c` worktree from verified Phase B `7e9d0c1182ff2741af748e0f976509058039d2c4`, stacked on PR #6. Parent Draft PRs are not modified or merged.
 - The checksum-pinned Phase B Debug APK was installed on the USB-authorized Samsung SM-S9210, Android16/API36. Same-signer replacements preserve the separate Debug app's test workspaces; no uninstall, data clear, Mac installation or production-data use.
 - Guarded physical instrumentation, native Swift bridge, restart/revocation, original media and reliability checks extend QA rather than redesigning Protocol4, Room, SyncEngine or business logic. Actual results, retained failures and unrun gates: [ANDROID_PHASE_C](../qa/reports/ANDROID_PHASE_C.md).
