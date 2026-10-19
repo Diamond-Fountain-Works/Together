@@ -1,0 +1,307 @@
+{
+  "samples" : {
+    "DailyLoveGift" : {
+      "creationOperationId" : "00000000-0000-0000-0000-000000000101",
+      "giftId" : "00000000-0000-0000-0000-000000000101",
+      "isEffective" : true,
+      "recipientId" : "00000000-0000-0000-0000-000000000102",
+      "senderId" : "00000000-0000-0000-0000-000000000101",
+      "sentAt" : 1791518400000,
+      "sentDayKey" : "2026-10-09",
+      "sharedTimeZoneIdentifier" : "Asia/Shanghai",
+      "spaceId" : "00000000-0000-0000-0000-000000000200",
+      "textContent" : "SYNTHETIC"
+    },
+    "DateEvent" : {
+      "createdAt" : 1791518400000,
+      "createdBy" : "00000000-0000-0000-0000-000000000101",
+      "date" : {
+        "day" : 9,
+        "month" : 10,
+        "year" : 2026
+      },
+      "id" : "00000000-0000-0000-0000-000000000101",
+      "notes" : "",
+      "spaceId" : "00000000-0000-0000-0000-000000000200",
+      "title" : "SYNTHETIC"
+    },
+    "DeviceIdentity" : {
+      "deviceId" : "00000000-0000-0000-0000-000000000101",
+      "displayName" : "SYNTHETIC",
+      "initialSpaceId" : "00000000-0000-0000-0000-000000000200",
+      "initialTimeZoneIdentifier" : "Asia/Shanghai",
+      "protocolVersion" : 3,
+      "publicKey" : "eBqkYyA1TERqXUGrAGbZccUWV3ANAau5nG31YUGhl84=",
+      "userId" : "00000000-0000-0000-0000-000000000101"
+    },
+    "ExpenseEntry" : {
+      "amount" : {
+        "currencyCode" : "USD",
+        "finalCNYMinor" : "70007",
+        "originalMinor" : "10001",
+        "settlementBasis" : "actualCNY"
+      },
+      "amountOverridden" : false,
+      "category" : "SYNTHETIC",
+      "createdAt" : 1791518400000,
+      "createdBy" : "00000000-0000-0000-0000-000000000101",
+      "id" : "00000000-0000-0000-0000-000000000101",
+      "notes" : "",
+      "occurredOn" : {
+        "day" : 9,
+        "month" : 10,
+        "year" : 2026
+      },
+      "payment" : {
+        "kind" : "equalSplit",
+        "userIds" : [
+          "00000000-0000-0000-0000-000000000101",
+          "00000000-0000-0000-0000-000000000102"
+        ]
+      },
+      "paymentOverridden" : false,
+      "spaceId" : "00000000-0000-0000-0000-000000000200",
+      "status" : "provisional",
+      "timeZoneIdentifier" : "Asia/Shanghai",
+      "title" : "SYNTHETIC"
+    },
+    "FinanceAmount" : {
+      "currencyCode" : "USD",
+      "finalCNYMinor" : "70007",
+      "originalMinor" : "10001",
+      "settlementBasis" : "actualCNY"
+    },
+    "FinancePayment" : {
+      "kind" : "equalSplit",
+      "userIds" : [
+        "00000000-0000-0000-0000-000000000101",
+        "00000000-0000-0000-0000-000000000102"
+      ]
+    },
+    "FinanceSettings" : {
+      "cycleStartDay" : 31,
+      "id" : "00000000-0000-0000-0000-000000000101",
+      "timeZoneIdentifier" : "Asia/Shanghai",
+      "updatedAt" : 1791518400000
+    },
+    "MediaAsset" : {
+      "assetId" : "00000000-0000-0000-0000-000000000101",
+      "byteCount" : 33,
+      "createdAt" : 1791518400000,
+      "fileExtension" : "bin",
+      "mediaType" : "audio",
+      "originalFilename" : "SYNTHETIC.bin",
+      "ownerId" : "00000000-0000-0000-0000-000000000101",
+      "sha256" : "d28033a077d405e318b42cab094d3393c05ec9d2e62f9946409b9588e3bc2252",
+      "spaceId" : "00000000-0000-0000-0000-000000000200",
+      "transferStatus" : "pending"
+    },
+    "RecurrenceRule" : {
+      "anchorAt" : 1791518400000,
+      "createdBy" : "00000000-0000-0000-0000-000000000101",
+      "id" : "00000000-0000-0000-0000-000000000102",
+      "interval" : 1,
+      "mode" : "regular",
+      "spaceId" : "00000000-0000-0000-0000-000000000200",
+      "timeZoneIdentifier" : "Asia/Shanghai",
+      "unit" : "month",
+      "updatedAt" : 1791518400000
+    },
+    "RecurringBill" : {
+      "category" : "SYNTHETIC",
+      "createdAt" : 1791518400000,
+      "createdBy" : "00000000-0000-0000-0000-000000000101",
+      "defaultAmount" : {
+        "currencyCode" : "USD",
+        "finalCNYMinor" : "70007",
+        "originalMinor" : "10001",
+        "settlementBasis" : "actualCNY"
+      },
+      "defaultPayment" : {
+        "kind" : "equalSplit",
+        "userIds" : [
+          "00000000-0000-0000-0000-000000000101",
+          "00000000-0000-0000-0000-000000000102"
+        ]
+      },
+      "id" : "00000000-0000-0000-0000-000000000101",
+      "recurrenceDay" : 31,
+      "spaceId" : "00000000-0000-0000-0000-000000000200",
+      "startMonth" : {
+        "month" : 10,
+        "year" : 2026
+      },
+      "timeZoneIdentifier" : "Asia/Shanghai",
+      "title" : "SYNTHETIC"
+    },
+    "RecurringBillRuleRevision" : {
+      "amount" : {
+        "currencyCode" : "USD",
+        "finalCNYMinor" : "70007",
+        "originalMinor" : "10001",
+        "settlementBasis" : "actualCNY"
+      },
+      "billId" : "00000000-0000-0000-0000-000000000102",
+      "createdAt" : 1791518400000,
+      "createdBy" : "00000000-0000-0000-0000-000000000101",
+      "effectiveMonth" : {
+        "month" : 11,
+        "year" : 2026
+      },
+      "id" : "00000000-0000-0000-0000-000000000101",
+      "order" : {
+        "clock" : 7,
+        "device" : "00000000-0000-0000-0000-000000000101",
+        "operation" : "00000000-0000-0000-0000-000000000101"
+      },
+      "payment" : {
+        "kind" : "equalSplit",
+        "userIds" : [
+          "00000000-0000-0000-0000-000000000101",
+          "00000000-0000-0000-0000-000000000102"
+        ]
+      }
+    },
+    "SharedSpace" : {
+      "id" : "00000000-0000-0000-0000-000000000200",
+      "memberIds" : [
+        "00000000-0000-0000-0000-000000000101",
+        "00000000-0000-0000-0000-000000000102"
+      ],
+      "timeZoneIdentifier" : "Asia/Shanghai"
+    },
+    "SignedOperation" : {
+      "operation" : {
+        "actorId" : "00000000-0000-0000-0000-000000000101",
+        "createdAt" : 1791518400000,
+        "deviceId" : "00000000-0000-0000-0000-000000000101",
+        "entityId" : "00000000-0000-0000-0000-000000000102",
+        "entityType" : "task",
+        "lamportClock" : 7,
+        "operationId" : "00000000-0000-0000-0000-000000000101",
+        "operationType" : "create",
+        "payload" : {
+          "amount" : {
+            "data" : {
+              "_0" : "eyJjdXJyZW5jeUNvZGUiOiJVU0QiLCJmaW5hbENOWU1pbm9yIjoiNzAwMDciLCJvcmlnaW5hbE1pbm9yIjoiMTAwMDEiLCJzZXR0bGVtZW50QmFzaXMiOiJhY3R1YWxDTlkifQ=="
+            }
+          },
+          "dueAt" : {
+            "date" : {
+              "_0" : 1791518400000
+            }
+          },
+          "missing" : {
+            "null" : {
+
+            }
+          },
+          "title" : {
+            "string" : {
+              "_0" : "SYNTHETIC"
+            }
+          }
+        }
+      },
+      "signature" : "ibNK6z74i10x1+mJr5Chr+aLFa1EKYmNIZHe2lGE074hryA33JNhYzJWLYZ9tD01vf3EHbCykA9f8LM8toWKDw=="
+    },
+    "SyncOperation" : {
+      "actorId" : "00000000-0000-0000-0000-000000000101",
+      "createdAt" : 1791518400000,
+      "deviceId" : "00000000-0000-0000-0000-000000000101",
+      "entityId" : "00000000-0000-0000-0000-000000000102",
+      "entityType" : "task",
+      "lamportClock" : 7,
+      "operationId" : "00000000-0000-0000-0000-000000000101",
+      "operationType" : "create",
+      "payload" : {
+        "amount" : {
+          "data" : {
+            "_0" : "eyJjdXJyZW5jeUNvZGUiOiJVU0QiLCJmaW5hbENOWU1pbm9yIjoiNzAwMDciLCJvcmlnaW5hbE1pbm9yIjoiMTAwMDEiLCJzZXR0bGVtZW50QmFzaXMiOiJhY3R1YWxDTlkifQ=="
+          }
+        },
+        "dueAt" : {
+          "date" : {
+            "_0" : 1791518400000
+          }
+        },
+        "missing" : {
+          "null" : {
+
+          }
+        },
+        "title" : {
+          "string" : {
+            "_0" : "SYNTHETIC"
+          }
+        }
+      }
+    },
+    "TodoTask" : {
+      "assignedTo" : "00000000-0000-0000-0000-000000000102",
+      "createdAt" : 1791518400000,
+      "createdBy" : "00000000-0000-0000-0000-000000000101",
+      "dueAt" : 1791518400000,
+      "notes" : "",
+      "occurrenceIndex" : 0,
+      "spaceId" : "00000000-0000-0000-0000-000000000200",
+      "status" : "pending",
+      "taskId" : "00000000-0000-0000-0000-000000000102",
+      "title" : "SYNTHETIC",
+      "updatedAt" : 1791518400000
+    },
+    "UnitedReservesLedgerEntry" : {
+      "amount" : {
+        "currencyCode" : "USD",
+        "finalCNYMinor" : "70007",
+        "originalMinor" : "10001",
+        "settlementBasis" : "actualCNY"
+      },
+      "createdAt" : 1791518400000,
+      "depositDate" : {
+        "day" : 9,
+        "month" : 10,
+        "year" : 2026
+      },
+      "depositedBy" : "00000000-0000-0000-0000-000000000101",
+      "id" : "00000000-0000-0000-0000-000000000101",
+      "kind" : "deposit",
+      "notes" : "",
+      "spaceId" : "00000000-0000-0000-0000-000000000200"
+    },
+    "UserProfile" : {
+      "deviceId" : "00000000-0000-0000-0000-000000000101",
+      "displayName" : "SYNTHETIC",
+      "relationshipLabel" : "unknown",
+      "updatedAt" : 1791518400000,
+      "userId" : "00000000-0000-0000-0000-000000000101"
+    },
+    "WishGrant" : {
+      "beneficiaryId" : "00000000-0000-0000-0000-000000000102",
+      "createdAt" : 1791518400000,
+      "createdBy" : "00000000-0000-0000-0000-000000000101",
+      "fulfillerId" : "00000000-0000-0000-0000-000000000101",
+      "grantedOn" : {
+        "day" : 9,
+        "month" : 10,
+        "year" : 2026
+      },
+      "grantId" : "00000000-0000-0000-0000-000000000102",
+      "notes" : "",
+      "quantity" : 3,
+      "spaceId" : "00000000-0000-0000-0000-000000000200"
+    },
+    "WishItem" : {
+      "beneficiaryId" : "00000000-0000-0000-0000-000000000102",
+      "createdAt" : 1791518400000,
+      "createdBy" : "00000000-0000-0000-0000-000000000102",
+      "description" : "",
+      "fulfillerId" : "00000000-0000-0000-0000-000000000101",
+      "grantId" : "00000000-0000-0000-0000-000000000102",
+      "status" : "open",
+      "title" : "SYNTHETIC",
+      "wishId" : "00000000-0000-0000-0000-000000000101"
+    }
+  },
+  "synthetic" : true
+}

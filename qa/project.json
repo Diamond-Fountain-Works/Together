@@ -1,5 +1,5 @@
 {
-  "projectDirectory": "0.2.1",
+  "projectDirectory": "apps/apple/macOS",
   "scheme": "Together",
   "uiTestTarget": "TogetherUITests",
   "windowPoints": [
@@ -62,5 +62,9 @@
       "home-populated-light-compact-reduced.png",
       "home-populated-dark-compact-reduced.png"
     ]
-  }
+  },
+  "coreDirectory": "packages/together-core-swift",
+  "relayDirectory": "services/relay",
+  "legacyFixtureDirectory": "tests/integration/legacy_fixture",
+  "schemaVersion": 1
 }

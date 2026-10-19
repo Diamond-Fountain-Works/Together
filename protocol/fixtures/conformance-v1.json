@@ -1,0 +1,101 @@
+{
+  "synthetic": true,
+  "uuid": {
+    "input": "abcdef12-3456-789a-bcde-f0123456789a",
+    "canonical": "ABCDEF12-3456-789A-BCDE-F0123456789A"
+  },
+  "time": {
+    "instant": "2026-10-09T17:00:00Z",
+    "epochMilliseconds": 1791565200000,
+    "sharedZone": "Asia/Shanghai",
+    "dayKey": "2026-10-10"
+  },
+  "money": [
+    {
+      "currency": "USD",
+      "original": "100.01",
+      "actualCNY": "700.07",
+      "originalMinor": "10001",
+      "cnyMinor": "70007"
+    },
+    {
+      "currency": "JPY",
+      "original": "101",
+      "actualCNY": "5.51",
+      "originalMinor": "101",
+      "cnyMinor": "551"
+    },
+    {
+      "currency": "CNY",
+      "original": "0.01",
+      "originalMinor": "1",
+      "cnyMinor": "1"
+    }
+  ],
+  "aa": {
+    "totalCNY": "1.01",
+    "sharesMinor": [
+      "51",
+      "50"
+    ],
+    "rule": "ascending canonical user UUID receives positive remainder"
+  },
+  "monthly31": [
+    {
+      "month": "2024-02",
+      "zone": "Asia/Shanghai",
+      "date": "2024-02-29"
+    },
+    {
+      "month": "2023-02",
+      "zone": "Asia/Shanghai",
+      "date": "2023-02-28"
+    },
+    {
+      "month": "2024-04",
+      "zone": "America/New_York",
+      "date": "2024-04-30"
+    },
+    {
+      "month": "2024-05",
+      "zone": "America/New_York",
+      "date": "2024-05-31"
+    }
+  ],
+  "cycle": {
+    "instant": "2024-03-30T04:00:00Z",
+    "zone": "Asia/Shanghai",
+    "startDay": 31,
+    "start": "2024-02-28T16:00:00Z",
+    "end": "2024-03-30T16:00:00Z"
+  },
+  "revision": {
+    "changedAt": "2026-10-09T04:00:00Z",
+    "before": "68",
+    "after": "88",
+    "currentMonth": "2026-10",
+    "effectiveMonth": "2026-11"
+  },
+  "log": {
+    "duplicateCountEffect": 0,
+    "conflictWinner": "higher device UUID at equal Lamport",
+    "tombstonePermanent": true
+  },
+  "stableID": {
+    "seed": "finance-bill:00000000-0000-0000-0000-000000000101:2024-02",
+    "uuid": "4535B6E0-A188-5DC2-B946-E3CA413A2510"
+  },
+  "media": {
+    "base64": "VG9nZXRoZXIgc3ludGhldGljIG1lZGlhIGZpeHR1cmUK",
+    "byteCount": 33,
+    "sha256": "d28033a077d405e318b42cab094d3393c05ec9d2e62f9946409b9588e3bc2252",
+    "purpose": "Synthetic hash-only bytes; not a valid recorded audio attachment"
+  },
+  "invitation": {
+    "implementedTTLms": 600000,
+    "requiredTTLms": 28800000,
+    "targetStatus": "PENDING_NETWORK_CHANGE",
+    "oneUse": true,
+    "issue": "https://github.com/Diamond-Fountain-Works/Together/issues/1"
+  }
+}

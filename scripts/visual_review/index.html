@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="data:,">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src file: data: blob:; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'none'">
+  <title>Together · Build 5 Visual Review</title>
+  <style>/* REVIEW_CSS */</style>
+</head>
+<body>
+  <header class="app-header">
+    <div><h1>Build 5 · Visual Review</h1><p>Build 4 批准基线 ↔ Build 5 当前截图 · 仅本机</p></div>
+    <div class="header-actions"><span id="human-count"></span><button id="export-feedback">导出反馈 JSON</button><button id="import-feedback">导入反馈</button><input type="file" id="feedback-file" accept=".json,application/json" hidden></div>
+  </header>
+  <p id="notice" role="status">反馈保存在当前浏览器；本页不会更新批准基线、上传截图或合并 PR。可直接在聊天中使用 Screenshot ID 提意见。</p>
+  <div class="layout">
+    <aside class="sidebar" aria-label="截图导航">
+      <label>搜索 ID / 截图<input id="search" type="search" placeholder="S001 / currency / dark"></label>
+      <label>自动结果<select id="status-filter"><option value="all">全部结果</option><option value="REVIEW REQUIRED" selected>REVIEW REQUIRED</option><option value="PASS">PASS</option><option value="FAIL">FAIL</option></select></label>
+      <label>差异分类<select id="category-filter"><option value="all">全部分类</option></select></label>
+      <div id="raw-counts" class="counts"></div><nav id="screenshot-list"></nav>
+    </aside>
+    <main>
+      <section class="heading"><div><span id="screenshot-id" class="eyebrow"></span><h2 id="page-title"></h2><code id="screenshot-name"></code></div><div class="pager"><button id="previous" aria-label="上一张">←</button><span id="position"></span><button id="next" aria-label="下一张">→</button></div></section>
+      <div class="toolbar">
+        <div role="group" aria-label="对照模式" id="modes"><button data-mode="side" aria-pressed="true">并排</button><button data-mode="wipe" aria-pressed="false">拖动对比</button><button data-mode="overlay" aria-pressed="false">叠加</button></div>
+        <label>缩放 <input id="zoom" type="range" min="10" max="400" step="5" value="100"><output id="zoom-label">100%</output></label><button id="fit">适应窗口</button><button id="actual-size">原始像素</button>
+        <label><input type="checkbox" id="show-regions" checked>差异区域</label><label><input type="checkbox" id="show-mask">像素高亮</label>
+      </div>
+      <div id="mix-control" hidden><label><span id="mix-title">Build 5 覆盖比例</span><input id="mix" type="range" min="0" max="100" value="50"><output id="mix-label">50%</output></label></div>
+      <section id="comparison" class="comparison" aria-label="截图对照"></section>
+      <div class="details-grid">
+        <section class="panel"><h3>差异证据</h3><div id="result-badges"></div><p id="classification"></p><p id="assessment"></p><ul id="evidence"></ul><details><summary>Frame、原图路径与哈希</summary><div id="provenance"></div></details></section>
+        <section class="panel feedback"><h3>人工反馈</h3><label>是否需要修复<select id="needs-fix"><option value="unconfirmed">待确认</option><option value="yes">需要修复</option><option value="no">无需修复</option></select></label><label>用户反馈（保留原文）<textarea id="feedback" rows="4" placeholder="例如：右下角按钮看不到。也可在聊天中说「S032 …」"></textarea></label><label>本图最终人工状态<select id="final-status"><option value="pending">待复核</option><option value="changes_requested">提出修改</option><option value="approved">我已审阅并认可此图</option></select></label><p id="saved-status" class="muted"></p><p class="muted">选择认可只记录本地人工意见，不自动改写 Approved Baseline。最终合并仍需另行明确授权。</p></section>
+      </div>
+      <details class="panel"><summary>本次审查边界</summary><p>自动 PASS 不等于人工批准。保留原 max RGB &gt;16 / 2% 规则；区域统计不豁免任何差异。文字截断、按钮遮挡、对比度和拥挤程度仍需人工查看。Our Story / Time Capsule 未实现，不生成虚假截图。</p><p id="manifest-hash" class="break"></p></details>
+    </main>
+  </div>
+  <script>/* REVIEW_DATA */
+/* REVIEW_JS */</script>
+</body>
+</html>

@@ -1,0 +1,1188 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/Diamond-Fountain-Works/Together/protocol/domain-v3",
+  "title": "Together portable DTO reference contract \u2014 sync 3",
+  "description": "Current Codable domain reference shapes; signed operations remain actual wire facts. Semantic permissions/calendar validity are enforced by conformance/core tests. No SwiftData classes.",
+  "$comment": "Synthetic samples exported by Swift; optional stored fields reviewed against existing Codable models.",
+  "$defs": {
+    "DailyLoveGift": {
+      "type": "object",
+      "properties": {
+        "creationOperationId": {
+          "type": "string",
+          "pattern": "^[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}$"
+        },
+        "giftId": {
+          "type": "string",
+          "pattern": "^[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}$"
+        },
+        "isEffective": {
+          "type": "boolean"
+        },
+        "recipientId": {
+          "type": "string",
+          "pattern": "^[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}$"
+        },
+        "senderId": {
+          "type": "string",
+          "pattern": "^[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}$"
+        },
+        "sentAt": {
+          "type": "integer",
+          "minimum": -2208988800000,
+          "maximum": 32503680000000
+        },
+        "sentDayKey": {
+          "type": "string"
+        },
+        "sharedTimeZoneIdentifier": {
+          "type": "string"
+        },
+        "spaceId": {
+          "type": "string",
+          "pattern": "^[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}$"
+        },
+        "textContent": {
+          "type": "string"
+        },
+        "audioAssetId": {
+          "type": "string",
+          "pattern": "^[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}$"
+        },
+        "photoAssetId": {
+          "type": "string",
+          "pattern": "^[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}$"
+        },
+        "replyToGiftId": {
+          "type": "string",
+          "pattern": "^[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}$"
+        },
+        "deletedAt": {
+          "type": "integer",
+          "minimum": -2208988800000,
+          "maximum": 32503680000000
+        }
+      },
+      "required": [
+        "creationOperationId",
+        "giftId",
+        "isEffective",
+        "recipientId",
+        "senderId",
+        "sentAt",
+        "sentDayKey",
+        "sharedTimeZoneIdentifier",
+        "spaceId"
+      ],
+      "additionalProperties": false
+    },
+    "DateEvent": {
+      "type": "object",
+      "properties": {
+        "createdAt": {
+          "type": "integer",
+          "minimum": -2208988800000,
+          "maximum": 32503680000000
+        },
+        "createdBy": {
+          "type": "string",
+          "pattern": "^[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}$"
+        },
+        "date": {
+          "$ref": "#/$defs/CivilDate"
+        },
+        "id": {
+          "type": "string",
+          "pattern": "^[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}$"
+        },
+        "notes": {
+          "type": "string"
+        },
+        "spaceId": {
+          "type": "string",
+          "pattern": "^[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}$"
+        },
+        "title": {
+          "type": "string"
+        },
+        "deletedAt": {
+          "type": "integer",
+          "minimum": -2208988800000,
+          "maximum": 32503680000000
+        }
+      },
+      "required": [
+        "createdAt",
+        "createdBy",
+        "date",
+        "id",
+        "notes",
+        "spaceId",
+        "title"
+      ],
+      "additionalProperties": false
+    },
+    "DeviceIdentity": {
+      "type": "object",
+      "properties": {
+        "deviceId": {
+          "type": "string",
+          "pattern": "^[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}$"
+        },
+        "displayName": {
+          "type": "string"
+        },
+        "initialSpaceId": {
+          "type": "string",
+          "pattern": "^[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}$"
+        },
+        "initialTimeZoneIdentifier": {
+          "type": "string"
+        },
+        "protocolVersion": {
+          "type": "integer"
+        },
+        "publicKey": {
+          "type": "string",
+          "contentEncoding": "base64"
+        },
+        "userId": {
+          "type": "string",
+          "pattern": "^[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}$"
+        }
+      },
+      "required": [
+        "deviceId",
+        "displayName",
+        "initialSpaceId",
+        "initialTimeZoneIdentifier",
+        "protocolVersion",
+        "publicKey",
+        "userId"
+      ],
+      "additionalProperties": false,
+      "description": "Public DeviceDescriptor only. No private signing material or local key paths."
+    },
+    "ExpenseEntry": {
+      "type": "object",
+      "properties": {
+        "amount": {
+          "$ref": "#/$defs/FinanceAmount"
+        },
+        "amountOverridden": {
+          "type": "boolean"
+        },
+        "category": {
+          "type": "string"
+        },
+        "createdAt": {
+          "type": "integer",
+          "minimum": -2208988800000,
+          "maximum": 32503680000000
+        },
+        "createdBy": {
+          "type": "string",
+          "pattern": "^[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}$"
+        },
+        "id": {
+          "type": "string",
+          "pattern": "^[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}$"
+        },
+        "notes": {
+          "type": "string"
+        },
+        "occurredOn": {
+          "$ref": "#/$defs/CivilDate"
+        },
+        "payment": {
+          "$ref": "#/$defs/FinancePayment"
+        },
+        "paymentOverridden": {
+          "type": "boolean"
+        },
+        "spaceId": {
+          "type": "string",
+          "pattern": "^[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}$"
+        },
+        "status": {
+          "type": "string"
+        },
+        "timeZoneIdentifier": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "deletedAt": {
+          "type": "integer",
+          "minimum": -2208988800000,
+          "maximum": 32503680000000
+        },
+        "dateEventId": {
+          "type": "string",
+          "pattern": "^[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}$"
+        },
+        "recurringBillId": {
+          "type": "string",
+          "pattern": "^[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}$"
+        },
+        "occurrenceMonth": {
+          "$ref": "#/$defs/FinanceMonth"
+        }
+      },
+      "required": [
+        "amount",
+        "amountOverridden",
+        "category",
+        "createdAt",
+        "createdBy",
+        "id",
+        "notes",
+        "occurredOn",
+        "payment",
+        "paymentOverridden",
+        "spaceId",
+        "status",
+        "timeZoneIdentifier",
+        "title"
+      ],
+      "additionalProperties": false
+    },
+    "FinanceAmount": {
+      "type": "object",
+      "properties": {
+        "currencyCode": {
+          "type": "string"
+        },
+        "finalCNYMinor": {
+          "type": "string",
+          "pattern": "^-?(0|[1-9][0-9]*)$"
+        },
+        "originalMinor": {
+          "type": "string",
+          "pattern": "^-?(0|[1-9][0-9]*)$"
+        },
+        "settlementBasis": {
+          "type": "string"
+        },
+        "exchangeRate": {
+          "$ref": "#/$defs/ExchangeRateSnapshot"
+        }
+      },
+      "required": [
+        "currencyCode",
+        "finalCNYMinor",
+        "originalMinor",
+        "settlementBasis"
+      ],
+      "additionalProperties": false
+    },
+    "FinancePayment": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "type": "string"
+        },
+        "userIds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}$"
+          }
+        },
+        "paymentMethodId": {
+          "type": "string",
+          "pattern": "^[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}$"
+        }
+      },
+      "required": [
+        "kind",
+        "userIds"
+      ],
+      "additionalProperties": false
+    },
+    "FinanceSettings": {
+      "type": "object",
+      "properties": {
+        "cycleStartDay": {
+          "type": "integer"
+        },
+        "id": {
+          "type": "string",
+          "pattern": "^[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}$"
+        },
+        "timeZoneIdentifier": {
+          "type": "string"
+        },
+        "updatedAt": {
+          "type": "integer",
+          "minimum": -2208988800000,
+          "maximum": 32503680000000
+        },
+        "ownerId": {
+          "type": "string",
+          "pattern": "^[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}$"
+        },
+        "salaryDay": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 31
+        },
+        "plannedDepositDay": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 31
+        }
+      },
+      "required": [
+        "cycleStartDay",
+        "id",
+        "timeZoneIdentifier",
+        "updatedAt"
+      ],
+      "additionalProperties": false
+    },
+    "MediaAsset": {
+      "type": "object",
+      "properties": {
+        "assetId": {
+          "type": "string",
+          "pattern": "^[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}$"
+        },
+        "byteCount": {
+          "type": "integer"
+        },
+        "createdAt": {
+          "type": "integer",
+          "minimum": -2208988800000,
+          "maximum": 32503680000000
+        },
+        "fileExtension": {
+          "type": "string"
+        },
+        "mediaType": {
+          "type": "string"
+        },
+        "originalFilename": {
+          "type": "string"
+        },
+        "ownerId": {
+          "type": "string",
+          "pattern": "^[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}$"
+        },
+        "sha256": {
+          "type": "string"
+        },
+        "spaceId": {
+          "type": "string",
+          "pattern": "^[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}$"
+        },
+        "transferStatus": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "assetId",
+        "byteCount",
+        "createdAt",
+        "fileExtension",
+        "mediaType",
+        "originalFilename",
+        "ownerId",
+        "sha256",
+        "spaceId",
+        "transferStatus"
+      ],
+      "additionalProperties": false
+    },
+    "RecurrenceRule": {
+      "type": "object",
+      "properties": {
+        "anchorAt": {
+          "type": "integer",
+          "minimum": -2208988800000,
+          "maximum": 32503680000000
+        },
+        "createdBy": {
+          "type": "string",
+          "pattern": "^[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}$"
+        },
+        "id": {
+          "type": "string",
+          "pattern": "^[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}$"
+        },
+        "interval": {
+          "type": "integer"
+        },
+        "mode": {
+          "type": "string"
+        },
+        "spaceId": {
+          "type": "string",
+          "pattern": "^[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}$"
+        },
+        "timeZoneIdentifier": {
+          "type": "string"
+        },
+        "unit": {
+          "type": "string"
+        },
+        "updatedAt": {
+          "type": "integer",
+          "minimum": -2208988800000,
+          "maximum": 32503680000000
+        }
+      },
+      "required": [
+        "anchorAt",
+        "createdBy",
+        "id",
+        "interval",
+        "mode",
+        "spaceId",
+        "timeZoneIdentifier",
+        "unit",
+        "updatedAt"
+      ],
+      "additionalProperties": false
+    },
+    "RecurringBill": {
+      "type": "object",
+      "properties": {
+        "category": {
+          "type": "string"
+        },
+        "createdAt": {
+          "type": "integer",
+          "minimum": -2208988800000,
+          "maximum": 32503680000000
+        },
+        "createdBy": {
+          "type": "string",
+          "pattern": "^[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}$"
+        },
+        "defaultAmount": {
+          "$ref": "#/$defs/FinanceAmount"
+        },
+        "defaultPayment": {
+          "$ref": "#/$defs/FinancePayment"
+        },
+        "id": {
+          "type": "string",
+          "pattern": "^[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}$"
+        },
+        "recurrenceDay": {
+          "type": "integer"
+        },
+        "spaceId": {
+          "type": "string",
+          "pattern": "^[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}$"
+        },
+        "startMonth": {
+          "$ref": "#/$defs/FinanceMonth"
+        },
+        "timeZoneIdentifier": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "deletedAt": {
+          "type": "integer",
+          "minimum": -2208988800000,
+          "maximum": 32503680000000
+        },
+        "minuteOfDay": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1439
+        }
+      },
+      "required": [
+        "category",
+        "createdAt",
+        "createdBy",
+        "defaultAmount",
+        "defaultPayment",
+        "id",
+        "recurrenceDay",
+        "spaceId",
+        "startMonth",
+        "timeZoneIdentifier",
+        "title"
+      ],
+      "additionalProperties": false
+    },
+    "RecurringBillRuleRevision": {
+      "type": "object",
+      "properties": {
+        "amount": {
+          "$ref": "#/$defs/FinanceAmount"
+        },
+        "billId": {
+          "type": "string",
+          "pattern": "^[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}$"
+        },
+        "createdAt": {
+          "type": "integer",
+          "minimum": -2208988800000,
+          "maximum": 32503680000000
+        },
+        "createdBy": {
+          "type": "string",
+          "pattern": "^[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}$"
+        },
+        "effectiveMonth": {
+          "$ref": "#/$defs/FinanceMonth"
+        },
+        "id": {
+          "type": "string",
+          "pattern": "^[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}$"
+        },
+        "order": {
+          "type": "object",
+          "properties": {
+            "clock": {
+              "type": "integer"
+            },
+            "device": {
+              "type": "string",
+              "pattern": "^[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}$"
+            },
+            "operation": {
+              "type": "string",
+              "pattern": "^[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}$"
+            }
+          },
+          "required": [
+            "clock",
+            "device",
+            "operation"
+          ],
+          "additionalProperties": false
+        },
+        "payment": {
+          "$ref": "#/$defs/FinancePayment"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "activeFromDay": {
+          "$ref": "#/$defs/CivilDate"
+        }
+      },
+      "required": [
+        "billId",
+        "createdAt",
+        "createdBy",
+        "effectiveMonth",
+        "id",
+        "order"
+      ],
+      "additionalProperties": false
+    },
+    "SharedSpace": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}$"
+        },
+        "memberIds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}$"
+          }
+        },
+        "timeZoneIdentifier": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "memberIds",
+        "timeZoneIdentifier"
+      ],
+      "additionalProperties": false
+    },
+    "SignedOperation": {
+      "type": "object",
+      "properties": {
+        "operation": {
+          "$ref": "#/$defs/SyncOperation"
+        },
+        "signature": {
+          "type": "string",
+          "contentEncoding": "base64"
+        }
+      },
+      "required": [
+        "operation",
+        "signature"
+      ],
+      "additionalProperties": false
+    },
+    "SyncOperation": {
+      "type": "object",
+      "properties": {
+        "actorId": {
+          "type": "string",
+          "pattern": "^[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}$"
+        },
+        "createdAt": {
+          "type": "integer",
+          "minimum": -2208988800000,
+          "maximum": 32503680000000
+        },
+        "deviceId": {
+          "type": "string",
+          "pattern": "^[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}$"
+        },
+        "entityId": {
+          "type": "string",
+          "pattern": "^[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}$"
+        },
+        "entityType": {
+          "type": "string"
+        },
+        "lamportClock": {
+          "type": "integer"
+        },
+        "operationId": {
+          "type": "string",
+          "pattern": "^[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}$"
+        },
+        "operationType": {
+          "type": "string"
+        },
+        "payload": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/LogValue"
+          }
+        }
+      },
+      "required": [
+        "actorId",
+        "createdAt",
+        "deviceId",
+        "entityId",
+        "entityType",
+        "lamportClock",
+        "operationId",
+        "operationType",
+        "payload"
+      ],
+      "additionalProperties": false
+    },
+    "TodoTask": {
+      "type": "object",
+      "properties": {
+        "assignedTo": {
+          "type": "string",
+          "pattern": "^[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}$"
+        },
+        "createdAt": {
+          "type": "integer",
+          "minimum": -2208988800000,
+          "maximum": 32503680000000
+        },
+        "createdBy": {
+          "type": "string",
+          "pattern": "^[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}$"
+        },
+        "dueAt": {
+          "type": "integer",
+          "minimum": -2208988800000,
+          "maximum": 32503680000000
+        },
+        "notes": {
+          "type": "string"
+        },
+        "occurrenceIndex": {
+          "type": "integer"
+        },
+        "spaceId": {
+          "type": "string",
+          "pattern": "^[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}$"
+        },
+        "status": {
+          "type": "string"
+        },
+        "taskId": {
+          "type": "string",
+          "pattern": "^[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}$"
+        },
+        "title": {
+          "type": "string"
+        },
+        "updatedAt": {
+          "type": "integer",
+          "minimum": -2208988800000,
+          "maximum": 32503680000000
+        },
+        "recurrenceRuleId": {
+          "type": "string",
+          "pattern": "^[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}$"
+        },
+        "spawnedFromId": {
+          "type": "string",
+          "pattern": "^[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}$"
+        },
+        "completedAt": {
+          "type": "integer",
+          "minimum": -2208988800000,
+          "maximum": 32503680000000
+        },
+        "deletedAt": {
+          "type": "integer",
+          "minimum": -2208988800000,
+          "maximum": 32503680000000
+        },
+        "availableAt": {
+          "type": "integer",
+          "minimum": -2208988800000,
+          "maximum": 32503680000000
+        },
+        "nextAt": {
+          "type": "integer",
+          "minimum": -2208988800000,
+          "maximum": 32503680000000
+        }
+      },
+      "required": [
+        "createdAt",
+        "createdBy",
+        "notes",
+        "occurrenceIndex",
+        "spaceId",
+        "status",
+        "taskId",
+        "title",
+        "updatedAt"
+      ],
+      "additionalProperties": false
+    },
+    "UnitedReservesLedgerEntry": {
+      "type": "object",
+      "properties": {
+        "amount": {
+          "$ref": "#/$defs/FinanceAmount"
+        },
+        "createdAt": {
+          "type": "integer",
+          "minimum": -2208988800000,
+          "maximum": 32503680000000
+        },
+        "depositDate": {
+          "$ref": "#/$defs/CivilDate"
+        },
+        "depositedBy": {
+          "type": "string",
+          "pattern": "^[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}$"
+        },
+        "id": {
+          "type": "string",
+          "pattern": "^[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}$"
+        },
+        "kind": {
+          "type": "string"
+        },
+        "notes": {
+          "type": "string"
+        },
+        "spaceId": {
+          "type": "string",
+          "pattern": "^[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}$"
+        },
+        "deletedAt": {
+          "type": "integer",
+          "minimum": -2208988800000,
+          "maximum": 32503680000000
+        }
+      },
+      "required": [
+        "amount",
+        "createdAt",
+        "depositDate",
+        "depositedBy",
+        "id",
+        "kind",
+        "notes",
+        "spaceId"
+      ],
+      "additionalProperties": false
+    },
+    "UserProfile": {
+      "type": "object",
+      "properties": {
+        "deviceId": {
+          "type": "string",
+          "pattern": "^[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}$"
+        },
+        "displayName": {
+          "type": "string"
+        },
+        "relationshipLabel": {
+          "type": "string"
+        },
+        "updatedAt": {
+          "type": "integer",
+          "minimum": -2208988800000,
+          "maximum": 32503680000000
+        },
+        "userId": {
+          "type": "string",
+          "pattern": "^[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}$"
+        },
+        "avatarData": {
+          "type": "string",
+          "contentEncoding": "base64"
+        },
+        "avatarAssetId": {
+          "type": "string",
+          "pattern": "^[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}$"
+        },
+        "avatarCrop": {
+          "$ref": "#/$defs/AvatarCrop"
+        }
+      },
+      "required": [
+        "deviceId",
+        "displayName",
+        "relationshipLabel",
+        "updatedAt",
+        "userId"
+      ],
+      "additionalProperties": false
+    },
+    "WishGrant": {
+      "type": "object",
+      "properties": {
+        "beneficiaryId": {
+          "type": "string",
+          "pattern": "^[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}$"
+        },
+        "createdAt": {
+          "type": "integer",
+          "minimum": -2208988800000,
+          "maximum": 32503680000000
+        },
+        "createdBy": {
+          "type": "string",
+          "pattern": "^[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}$"
+        },
+        "fulfillerId": {
+          "type": "string",
+          "pattern": "^[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}$"
+        },
+        "grantedOn": {
+          "$ref": "#/$defs/CivilDate"
+        },
+        "grantId": {
+          "type": "string",
+          "pattern": "^[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}$"
+        },
+        "notes": {
+          "type": "string"
+        },
+        "quantity": {
+          "type": "integer"
+        },
+        "spaceId": {
+          "type": "string",
+          "pattern": "^[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}$"
+        }
+      },
+      "required": [
+        "beneficiaryId",
+        "createdAt",
+        "createdBy",
+        "fulfillerId",
+        "grantedOn",
+        "grantId",
+        "notes",
+        "quantity",
+        "spaceId"
+      ],
+      "additionalProperties": false
+    },
+    "WishItem": {
+      "type": "object",
+      "properties": {
+        "beneficiaryId": {
+          "type": "string",
+          "pattern": "^[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}$"
+        },
+        "createdAt": {
+          "type": "integer",
+          "minimum": -2208988800000,
+          "maximum": 32503680000000
+        },
+        "createdBy": {
+          "type": "string",
+          "pattern": "^[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}$"
+        },
+        "description": {
+          "type": "string"
+        },
+        "fulfillerId": {
+          "type": "string",
+          "pattern": "^[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}$"
+        },
+        "grantId": {
+          "type": "string",
+          "pattern": "^[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}$"
+        },
+        "status": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "wishId": {
+          "type": "string",
+          "pattern": "^[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}$"
+        },
+        "fulfilledAt": {
+          "type": "integer",
+          "minimum": -2208988800000,
+          "maximum": 32503680000000
+        },
+        "conflictReason": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "beneficiaryId",
+        "createdAt",
+        "createdBy",
+        "description",
+        "fulfillerId",
+        "grantId",
+        "status",
+        "title",
+        "wishId"
+      ],
+      "additionalProperties": false
+    },
+    "CivilDate": {
+      "type": "object",
+      "properties": {
+        "year": {
+          "type": "integer",
+          "minimum": 1900,
+          "maximum": 3000
+        },
+        "month": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 12
+        },
+        "day": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 31
+        }
+      },
+      "required": [
+        "year",
+        "month",
+        "day"
+      ],
+      "additionalProperties": false
+    },
+    "FinanceMonth": {
+      "type": "object",
+      "properties": {
+        "year": {
+          "type": "integer",
+          "minimum": 1900,
+          "maximum": 3000
+        },
+        "month": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 12
+        }
+      },
+      "required": [
+        "year",
+        "month"
+      ],
+      "additionalProperties": false
+    },
+    "AvatarCrop": {
+      "type": "object",
+      "properties": {
+        "zoom": {
+          "type": "number",
+          "minimum": 1,
+          "maximum": 4
+        },
+        "horizontal": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "vertical": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        }
+      },
+      "required": [
+        "zoom",
+        "horizontal",
+        "vertical"
+      ],
+      "additionalProperties": false
+    },
+    "ExchangeRateSnapshot": {
+      "type": "object",
+      "properties": {
+        "cnyPerOriginalUnit": {
+          "type": "string"
+        },
+        "source": {
+          "type": "string"
+        },
+        "quotedOn": {
+          "$ref": "#/$defs/CivilDate"
+        }
+      },
+      "required": [
+        "cnyPerOriginalUnit",
+        "source",
+        "quotedOn"
+      ],
+      "additionalProperties": false
+    },
+    "LogValue": {
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {
+            "string": {
+              "type": "object",
+              "properties": {
+                "_0": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "_0"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "string"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "integer": {
+              "type": "object",
+              "properties": {
+                "_0": {
+                  "type": "integer"
+                }
+              },
+              "required": [
+                "_0"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "integer"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "date": {
+              "type": "object",
+              "properties": {
+                "_0": {
+                  "type": "integer",
+                  "minimum": -2208988800000,
+                  "maximum": 32503680000000
+                }
+              },
+              "required": [
+                "_0"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "date"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "boolean": {
+              "type": "object",
+              "properties": {
+                "_0": {
+                  "type": "boolean"
+                }
+              },
+              "required": [
+                "_0"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "boolean"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "data": {
+              "type": "object",
+              "properties": {
+                "_0": {
+                  "type": "string",
+                  "contentEncoding": "base64"
+                }
+              },
+              "required": [
+                "_0"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "data"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "null": {
+              "type": "object",
+              "maxProperties": 0
+            }
+          },
+          "required": [
+            "null"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    }
+  }
+}

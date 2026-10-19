@@ -6,6 +6,7 @@ from pathlib import Path
 import hashlib,json,re,sys
 sys.path.insert(0,str(Path(__file__).parent))
 from audit_ui_copy import ROOT,literals,visible,CATALOG,REVIEW
+from project_paths import APP, CORE
 if CATALOG.exists() or REVIEW.exists():
  raise SystemExit("Initial inventory already exists. Review individual catalog changes; never re-import/auto-approve it.")
 entries={};review={};values={}
@@ -47,7 +48,7 @@ def interpolate(raw):
    parts.append('%%' if raw[i]=='%' else raw[i]);i+=1
  return ''.join(parts).replace('\\n','\n').replace('\\"','"'),args
 
-for path in (ROOT/'0.0.1/Sources').rglob('*.swift'):
+for path in [*APP.joinpath('Sources').rglob('*.swift'), *CORE.joinpath('Sources').rglob('*.swift')]:
  if path.name in ['Copy.swift','LoveGift.swift']:continue
  source=path.read_text();chosen=[]
  for start,end,raw in literals(source):
@@ -61,7 +62,7 @@ for path in (ROOT/'0.0.1/Sources').rglob('*.swift'):
   source=source[:start]+replacement+source[end:]
  path.write_text(source)
 # Role copy is parameterized explicitly to avoid modifying canonical parser values.
-path=ROOT/'0.0.1/Sources/TogetherCore/Gifts/LoveGift.swift';source=path.read_text()
+path=CORE/'Sources/TogetherCore/Gifts/LoveGift.swift';source=path.read_text()
 a=source.index('    public var displayName:');b=source.index('public protocol DateProvider')
 role_values={'role.boyfriend':'Boyfriend / 男朋友','role.girlfriend':'Girlfriend / 女朋友','role.unknown':'未设置','role.affection.boyfriend':'小男友','role.affection.girlfriend':'小女友','role.affection.unknown':'TA','role.pronoun.boyfriend':'他','role.pronoun.girlfriend':'她',
  'gift.prompt.unknown':'今天有什么想对 TA 说的话吗？❤️','gift.prompt.known':'今天有什么想和%@说的情话吗？❤️','gift.title.unknown.text':'这是 TA 专门送给你的一份爱意 ♡','gift.title.unknown.attachment':'这是 TA 专门送给你的一份小礼物 ♡','gift.title.known.text':'这是%@专门送给你的情话 ♡','gift.title.known.attachment':'这是%@专门送给你的小礼物 ♡','gift.intro.unknown':'TA 悄悄为你准备了一份爱意 ❤️','gift.intro.known':'%@充满爱地给你送来了一份小礼物 ❤️','gift.avatar.unknown':'让 TA 一眼心动的照片 ♡','gift.avatar.known':'让%@一眼心动的照片 ♡','gift.ending.unknown':'收到这份爱意了吗？快去找 TA 聊聊天吧 ❤️','gift.ending.known':'收到这份爱意了吗？快去找%@聊聊天吧 ❤️'}
@@ -86,7 +87,7 @@ public enum LoveCopy {
 # Non-UI persistence keys and relationship parser values remain unchanged.
 path.write_text(source)
 # Release notes use catalog references.
-notes=ROOT/'0.0.1/Sources/TogetherApp/Resources/ReleaseNotes.json';releases=json.loads(notes.read_text())
+notes=APP/'Sources/TogetherApp/Resources/ReleaseNotes.json';releases=json.loads(notes.read_text())
 for release in releases:
  for item in release['highlights']:
   if item['title']=='Two Macs, One Space':item['details']='邀请码配对、双方身份确认及原生中继连接。正式服务部署和跨 Wi-Fi 验收状态见项目测试报告。'
