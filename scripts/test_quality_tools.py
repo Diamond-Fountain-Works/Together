@@ -44,9 +44,12 @@ class QualityToolTests(unittest.TestCase):
     def test_visual_matrix_requires_all_current_cases(self):
         config=json.loads((Path(__file__).resolve().parents[1]/'qa/project.json').read_text())
         cases=expected_cases(config)
-        self.assertEqual(len(cases),68);self.assertEqual(len(set(cases)),68)
+        # Upcoming was merged into Pending on both clients. Its four obsolete
+        # page/state captures are historical baselines, not current destinations.
+        self.assertEqual(len(cases),64);self.assertEqual(len(set(cases)),64)
+        self.assertFalse(any(name.startswith('upcoming-') for name in cases))
         self.assertIn('reveal-dark-reduced-sealed.png',cases)
-        self.assertIn('upcoming-empty-light-disconnected.png',cases)
+        self.assertNotIn('upcoming-empty-light-disconnected.png',cases)
         self.assertIn('completed-populated-dark-disconnected.png',cases)
         self.assertIn('wishes-populated-dark-compact-reduced.png',cases)
         self.assertIn('reserves-empty-light-disconnected.png',cases)

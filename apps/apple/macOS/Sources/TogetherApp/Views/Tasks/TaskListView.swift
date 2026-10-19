@@ -10,7 +10,6 @@ struct TaskListView: View {
         let base: [TodoTask]
         switch model.taskFilter {
         case .pending: base = model.pendingTasks
-        case .upcoming: base = model.upcomingTasks
         case .completed: base = model.completedTasks
         }
         return base.filter { task in
@@ -26,7 +25,7 @@ struct TaskListView: View {
                     ForEach(TaskListFilter.allCases) { filter in
                         Text(filter.title).tag(filter).accessibilityIdentifier("plans.filter." + filter.rawValue)
                     }
-                }.pickerStyle(.segmented).labelsHidden().frame(maxWidth: 310).accessibilityIdentifier("plans.taskFilter")
+                }.pickerStyle(.segmented).labelsHidden().frame(maxWidth: 240).accessibilityIdentifier("plans.taskFilter")
                 Spacer(minLength: 12)
                 TextField(Copy.text("copy.guidance.5d02c355dcc5"), text: $model.taskSearch)
                     .textFieldStyle(.roundedBorder).frame(maxWidth: 220).accessibilityIdentifier("plans.taskSearch")

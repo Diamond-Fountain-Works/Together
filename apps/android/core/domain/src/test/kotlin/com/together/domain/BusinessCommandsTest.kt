@@ -59,6 +59,23 @@ class BusinessCommandsTest {
     }
 
     @Test
+    fun unifiedPendingContainsOverdueFutureUndatedAndScheduledWithoutCompletedOrDeleted() {
+        command { task(null, "Overdue", "", null, at.minusSeconds(86400).toEpochMilli(), null) }
+        command { task(null, "Future", "", null, at.plusSeconds(86400).toEpochMilli(), null) }
+        command { task(null, "Undated", "", null, null, null) }
+        command { task(null, "Completed", "", null, null, null) }
+        command { completion(snapshot.of("task").single { it.fields.text("title") == "Completed" }) }
+        command { task(null, "Deleted", "", null, null, null) }
+        command { listOf(delete(snapshot.of("task").single { it.fields.text("title") == "Deleted" }.id)) }
+        command { task(null, "Flexible", "", null, null, BusinessCommands.Repeat("flexible", zone = "Asia/Shanghai")) }
+        command { completion(snapshot.of("task").single { it.fields.text("title") == "Flexible" }, at.plusSeconds(172800).toEpochMilli()) }
+        command { RecurrencePlanner.pending(snapshot, context, actor) }
+        val pending = BusinessQueries.tasks(snapshot(), "pending", at)
+        assertEquals(listOf("Overdue", "Future", "Flexible", "Undated"), pending.map { it.fields.text("title") })
+        assertEquals(2, BusinessQueries.tasks(snapshot(), "completed", at).size)
+    }
+
+    @Test
     fun groupedTaskRecurringAndFlexibleNextAreCompatibleAndIdempotent() {
         command {
             task(

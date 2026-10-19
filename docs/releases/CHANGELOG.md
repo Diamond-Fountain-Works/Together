@@ -1,3 +1,12 @@
+# Unified Plans — 0.2.1 Build 13 / Android code 8
+
+- Merge Upcoming into Pending on both Mac and Android; retain only Pending /
+  Completed and the existing task editor. Date order keeps undated tasks last.
+- Preserve scheduled recurrence execution boundaries. Home's upcoming summary
+  routes to Pending; old Android saved filter state is normalized.
+- Add native Mac and physical Android UI checks and candidate screenshots. No
+  storage/signed protocol/identity change. See [QA evidence](../qa/reports/UNIFIED_PLANS.md).
+
 # Native partner pairing correction (development Build 12 / Android code 7)
 
 - Separate partner create/join text UI from signed-file own-device enrollment.

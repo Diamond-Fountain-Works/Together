@@ -199,7 +199,7 @@ enum AppSheet: Identifiable {
         let left = $0.dueAt ?? .distantFuture, right = $1.dueAt ?? .distantFuture
         return left == right ? $0.id.uuidString < $1.id.uuidString : left < right
     } }
-    var pendingTasks: [TodoTask] { tasks.filter { $0.visibleStatus(at: currentDate) == .pending } }
+    var pendingTasks: [TodoTask] { tasks.filter { $0.status != .completed } }
     var upcomingTasks: [TodoTask] { tasks.filter { $0.status != .completed && ($0.dueAt.map { $0 > currentDate } ?? false) } }
     var completedTasks: [TodoTask] { tasks.filter { $0.status == .completed }.sorted {
         let left = $0.completedAt ?? .distantPast, right = $1.completedAt ?? .distantPast

@@ -336,7 +336,7 @@ import TogetherCore
             XCTAssertTrue(app.radioGroups["plans.taskFilter"].waitForExistence(timeout: 5))
         }
     }
-    func testPlansFiltersSharedEditorAndHomeRouting() {
+    func testPlansFiltersSharedEditorAndHomeRouting() throws {
         launch(populated: true)
         app.buttons["home.pending"].click()
         XCTAssertTrue(app.buttons["task.new"].waitForExistence(timeout: 5))
@@ -344,17 +344,18 @@ import TogetherCore
         XCTAssertTrue(taskButton("OVERDUE_FIXTURE").exists)
         XCTAssertTrue(taskButton("UNDATED_FIXTURE").exists)
         XCTAssertFalse(taskButton("整理书架").exists)
-        filter("Upcoming")
-        XCTAssertFalse(app.buttons["task.new"].exists)
+        XCTAssertEqual(app.radioGroups["plans.taskFilter"].radioButtons.count, 2)
+        XCTAssertFalse(app.radioGroups["plans.taskFilter"].radioButtons["Upcoming"].exists)
         XCTAssertTrue(taskButton("一起买菜").exists)
         XCTAssertTrue(taskButton("FUTURE_FIXTURE").exists)
-        XCTAssertFalse(taskButton("OVERDUE_FIXTURE").exists)
-        XCTAssertFalse(taskButton("UNDATED_FIXTURE").exists)
+        XCTAssertTrue(taskButton("OVERDUE_FIXTURE").exists)
+        XCTAssertTrue(taskButton("UNDATED_FIXTURE").exists)
         app.typeKey("n", modifierFlags: .command)
         XCTAssertTrue(app.textFields["task.title"].waitForExistence(timeout: 5))
         app.buttons["sheet.cancel"].click()
         filter("Completed")
         XCTAssertFalse(app.buttons["task.new"].exists)
+        try screenshot("plans-completed-light")
         let completed = taskButton("整理书架")
         let hittable = XCTNSPredicateExpectation(predicate: NSPredicate(format: "hittable == true"), object: completed)
         XCTAssertEqual(XCTWaiter.wait(for: [hittable], timeout: 5), .completed)
@@ -375,12 +376,30 @@ import TogetherCore
         XCTAssertEqual(app.textFields["plans.taskSearch"].value as? String, "UNDATED")
         app.descendants(matching: .any)["nav.home"].firstMatch.click()
         app.buttons["home.upcoming"].click()
-        let upcoming = app.radioGroups["plans.taskFilter"].radioButtons["Upcoming"]
-        let selected = XCTNSPredicateExpectation(predicate: NSPredicate(format: "value == '1' OR value == 1"), object: upcoming)
+        let pending = app.radioGroups["plans.taskFilter"].radioButtons["Pending"]
+        let selected = XCTNSPredicateExpectation(predicate: NSPredicate(format: "value == '1' OR value == 1"), object: pending)
         XCTAssertEqual(XCTWaiter.wait(for: [selected], timeout: 5), .completed)
+        XCTAssertFalse(app.radioGroups["plans.taskFilter"].radioButtons["Upcoming"].exists)
+        XCTAssertEqual(app.textFields["plans.taskSearch"].value as? String, "")
+        try screenshot("plans-unified-populated-light")
         app.descendants(matching: .any)["nav.home"].firstMatch.click()
         app.buttons["home.wishes"].click()
         XCTAssertTrue(app.buttons["wish.grant.new"].waitForExistence(timeout: 5))
+    }
+    func testUnifiedPlansDarkCompact() throws {
+        launch(page: "tasks", populated: true, dark: true, reduce: true, compact: true)
+        let filters = app.radioGroups["plans.taskFilter"]
+        XCTAssertEqual(filters.radioButtons.count, 2)
+        XCTAssertFalse(filters.radioButtons["Upcoming"].exists)
+        XCTAssertTrue(app.buttons["task.new"].isHittable)
+        XCTAssertTrue(taskButton("OVERDUE_FIXTURE").exists)
+        XCTAssertTrue(taskButton("FUTURE_FIXTURE").exists)
+        XCTAssertTrue(taskButton("UNDATED_FIXTURE").exists)
+        try screenshot("plans-unified-populated-dark-compact-reduced")
+        filter("Completed")
+        XCTAssertFalse(app.buttons["task.new"].exists)
+        XCTAssertTrue(taskButton("整理书架").exists)
+        try screenshot("plans-completed-dark-compact-reduced")
     }
     func testWishLedgerDetailUsesExistingActions() {
         launch(page: "wishes", populated: true)
@@ -505,7 +524,7 @@ import TogetherCore
         app.buttons["gift.close"].click()
     }
     func testSnapshotMatrix() throws {
-        for page in ["home", "tasks", "upcoming", "completed", "wishes", "gifts", "settings"] {
+        for page in ["home", "tasks", "completed", "wishes", "gifts", "settings"] {
             for populated in [false, true] {
                 for dark in [false, true] {
                     let name = "\(page)-\(populated ? "populated" : "empty")-\(dark ? "dark" : "light")-disconnected"

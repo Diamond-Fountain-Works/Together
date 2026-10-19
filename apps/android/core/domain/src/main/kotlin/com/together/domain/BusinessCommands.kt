@@ -505,7 +505,6 @@ object BusinessQueries {
             .of("task")
             .filter {
                 it.deletedAt == null &&
-                    (it.fields.date("availableAt") ?: Long.MIN_VALUE) <= now.toEpochMilli() &&
                     when (filter) {
                         "completed" -> it.fields.text("status") == "completed"
                         "upcoming" ->
@@ -517,8 +516,7 @@ object BusinessQueries {
             .let {
                 if (filter == "completed")
                     it.sortedByDescending { e -> e.fields.date("completedAt") ?: 0 }
-                else if (filter == "upcoming") it.sortedBy { e -> e.fields.date("dueAt") }
-                else it.sortedBy { e -> e.base }
+                else it.sortedWith(compareBy<ProjectedEntity> { e -> e.fields.date("dueAt") ?: Long.MAX_VALUE }.thenBy { e -> e.id })
             }
 
     data class Reminder(val id: String, val entityId: String, val kind: String)

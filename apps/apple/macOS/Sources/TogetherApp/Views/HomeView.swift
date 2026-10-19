@@ -18,15 +18,15 @@ struct HomeView: View {
                     }
                 }
                 HStack(spacing: 14) {
-                    metric(Copy.text("plans.filter.pending"), value: model.pendingTasks.count, icon: "checklist", id: "home.pending") { model.openPlans(.tasks) }
+                    metric(Copy.text("plans.filter.pending"), value: model.pendingTasks.count, icon: "checklist", id: "home.pending") { openTasks() }
                     if !model.upcomingTasks.isEmpty {
-                        metric(Copy.text("nav.upcoming"), value: model.upcomingTasks.count, icon: "calendar", id: "home.upcoming") { model.openPlans(.tasks, filter: .upcoming) }
+                        metric(Copy.text("nav.upcoming"), value: model.upcomingTasks.count, icon: "calendar", id: "home.upcoming") { openTasks() }
                     }
                     metric(Copy.text("copy.status.cad05cf5be73"), value: unfulfilled, icon: "sparkles", id: "home.wishes") { model.openPlans(.wishes) }
                 }
                 if !model.upcomingTasks.isEmpty { TogetherCard {
                     VStack(alignment: .leading, spacing: 14) {
-                        Button { model.openPlans(.tasks, filter: .upcoming) } label: {
+                        Button { openTasks() } label: {
                             HStack { Text(Copy.text("nav.upcoming")).font(.headline); Spacer(); Image(systemName: "chevron.right").font(.caption).foregroundStyle(.secondary) }
                         }.buttonStyle(.plain).accessibilityIdentifier("home.upcoming.open")
                         ForEach(model.upcomingTasks.prefix(3)) { task in
@@ -58,6 +58,7 @@ struct HomeView: View {
             }.padding(30).frame(maxWidth: 1040, alignment: .leading).frame(maxWidth: .infinity, alignment: .leading)
         }
     }
+    private func openTasks() { model.taskSearch = ""; model.openPlans(.tasks) }
     private func person(_ profile: UserProfile?, fallback: String, online: Bool) -> some View {
         HStack(spacing: 12) {
             AvatarView(profile: profile, size: 54, engine: model.engine)

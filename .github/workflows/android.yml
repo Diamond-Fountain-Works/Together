@@ -1,7 +1,7 @@
 name: Android clients
 on:
   push:
-    branches: ['feature/android-foundation', 'feature/android-business-phase-b', 'feature/android-physical-phase-c']
+    branches: ['feature/**', 'fix/**']
   pull_request:
     branches: [main, 'feature/gitlike-c1-multidevice', 'feature/android-foundation', 'feature/android-business-phase-b']
   workflow_dispatch:
