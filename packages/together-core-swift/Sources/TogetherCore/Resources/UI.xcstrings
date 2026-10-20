@@ -9737,6 +9737,125 @@
           }
         }
       }
+    },
+    "native.pairing.contactReady": {
+      "comment": "Optional isolated native-app acceptance; factual transport/persistence state only.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Invitation ready"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "邀请已生成"
+          }
+        }
+      }
+    },
+    "native.connection.disconnect": {
+      "comment": "Optional isolated native-app acceptance; factual transport/persistence state only.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Disconnect"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "断开连接"
+          }
+        }
+      }
+    },
+    "native.sync.remotePersisted": {
+      "comment": "Optional isolated native-app acceptance; factual transport/persistence state only.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Saved on your partner’s device"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "已保存到伴侣设备"
+          }
+        }
+      }
+    },
+    "native.sync.pending": {
+      "comment": "Optional isolated native-app acceptance; factual transport/persistence state only.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pending sync"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "待同步"
+          }
+        }
+      }
+    },
+    "native.path.direct": {
+      "comment": "Optional isolated native-app acceptance; factual transport/persistence state only.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Direct connection"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "直连"
+          }
+        }
+      }
+    },
+    "native.path.relay": {
+      "comment": "Optional isolated native-app acceptance; factual transport/persistence state only.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Encrypted relay connection"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "加密中继连接"
+          }
+        }
+      }
+    },
+    "native.error.pairingRecovery": {
+      "comment": "Fail-closed optional QA pairing recovery; never generates a replacement identity.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pairing recovery is incomplete. Keep this test data and contact the developer."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "配对恢复未完成，请保留测试数据并联系开发者。"
+          }
+        }
+      }
     }
   }
 }

@@ -138,6 +138,20 @@ public enum TogetherError: LocalizedError {
         if !isCompletingPartnership { try ensureSharedSpace() }
         try repository.save(true, key: "partner4/pending")
     }
+    /// First-partnership pin after both signed human consents on a verified
+    /// transport. This does not invent or activate a server route/binding.
+    public func bindNativePartnerForTransport(peer proposed: PairedPeer) throws {
+        guard !usesReplication4, peer == nil, !isCompletingPartnership,
+              try repository.load(RelayBinding.self, key: "relay-binding") == nil,
+              try repository.load(C1ReplicationBinding.self, key: "replication4/relay-binding") == nil else {
+            throw ReplicationError.unauthorized
+        }
+        try validatePeer(proposed, nativePartner: true)
+        try repository.save(proposed, key: "paired-peer")
+        peer = proposed; try refresh()
+        try ensureSharedSpace()
+        try repository.save(true, key: "partner4/pending")
+    }
     public func importPartnerHistory(_ incoming: [SignedOperation]) throws {
         guard isCompletingPartnership, incoming.count <= 32 else { throw ReplicationError.unauthorized }
         for operation in incoming {

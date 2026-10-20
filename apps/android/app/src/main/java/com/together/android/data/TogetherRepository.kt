@@ -23,6 +23,9 @@ class TogetherRepository(
     private val serviceURL: String = com.together.android.BuildConfig.RELAY_URL,
 ) {
     init {
+        requireProtocol(!com.together.android.BuildConfig.NATIVE_QA ||
+            (context.packageName == "com.together.android.qa.native" && namespace == "NATIVE-APP" && serviceURL.isEmpty()),
+            "ISOLATED_NATIVE_QA_REQUIRED")
         requireProtocol(
             namespace == null ||
                 (com.together.android.BuildConfig.DEBUG &&
@@ -62,6 +65,7 @@ class TogetherRepository(
         val offer: EnrollmentOffer? = null,
         val request: EnrollmentRequest? = null,
         val partnerPairing: PartnerPairingState = PartnerPairingState(),
+        val native: NativeAppStatus? = null,
     ) {
         val canWrite: Boolean
             get() =
@@ -83,6 +87,9 @@ class TogetherRepository(
     private var partnerClient: PartnerPairingClient? = null
     private var partnerStateJob: Job? = null
     private var partnerPeer: DeviceDescriptor? = null
+    private var nativeSession: NativeAppSession? = null
+    private var nativeStateJob: Job? = null
+    private var nativeGateDiagnostic: String? = null
     private var connectionJob: Job? = null
     private var refreshJob: Job? = null
     private val connectionLock = Mutex()
@@ -162,15 +169,19 @@ class TogetherRepository(
         if (archive != null) {
             val trust = SpaceAuthorization.restore(archive)
             replica = Replica(store, identity, trust).also { it.restore() }
-            binding =
-                store.local("binding")?.let { Canonical.parse(it).model<C1Binding>() }
-                    ?: throw ProtocolException("MISSING_RELAY_BINDING")
-            requireProtocol(
-                binding!!.spaceId == trust.spaceId &&
-                    binding!!.localDeviceId == identity.descriptor.deviceId,
-                "BINDING_IDENTITY_MISMATCH",
-            )
-            configureClient()
+            if (com.together.android.BuildConfig.NATIVE_QA) {
+                requireProtocol(store.local("native-binding") != null, "MISSING_NATIVE_BINDING")
+            } else {
+                binding =
+                    store.local("binding")?.let { Canonical.parse(it).model<C1Binding>() }
+                        ?: throw ProtocolException("MISSING_RELAY_BINDING")
+                requireProtocol(
+                    binding!!.spaceId == trust.spaceId &&
+                        binding!!.localDeviceId == identity.descriptor.deviceId,
+                    "BINDING_IDENTITY_MISMATCH",
+                )
+                configureClient()
+            }
         } else {
             requireProtocol(pointer == null, "MISSING_AUTHORIZATION")
             // Unpaired private local workspace; not exposed as certified Protocol 4 history.
@@ -190,7 +201,8 @@ class TogetherRepository(
                 request = pending?.get("request")?.model(),
             )
         }
-        if (replica == null) {
+        if (com.together.android.BuildConfig.NATIVE_QA) configureNative()
+        else if (replica == null) {
             store.local("partner-route")?.let { bytes ->
                 val route = Canonical.parse(bytes).model<PartnerRoute>()
                 partnerClient = makePartnerClient().also { it.resume(route.routeId) }
@@ -198,10 +210,78 @@ class TogetherRepository(
         }
     }
 
+    private fun configureNative() {
+        requireProtocol(com.together.android.BuildConfig.NATIVE_QA && namespace == "NATIVE-APP" && binding == null,
+            "ISOLATED_NATIVE_QA_REQUIRED")
+        replica?.let(::configureMedia)
+        val host = object : NativeAppRepository {
+            override suspend fun <T> access(block: (NativeRepositoryContext) -> T): T = withContext(Dispatchers.IO) {
+                lock.withLock { block(NativeRepositoryContext(identity, store, replica, mediaExchange)) }
+            }
+            override suspend fun pin(peer: DeviceDescriptor) = withContext(Dispatchers.IO) {
+                lock.withLock {
+                    requireProtocol(replica == null && peer.userId != identity.descriptor.userId &&
+                        (partnerPeer == null || partnerPeer == peer), "IDENTITY_MISMATCH")
+                    store.transaction {
+                        store.local("partner-peer", Canonical.encode(peer))
+                        store.local("partner-pending", byteArrayOf(1))
+                    }
+                    partnerPeer = peer; reload()
+                }
+            }
+            override suspend fun activate(archive: AuthorizationArchive, peer: DeviceDescriptor, binding: ByteArray) = withContext(Dispatchers.IO) {
+                lock.withLock {
+                    val trust = SpaceAuthorization.restore(archive)
+                    requireProtocol(trust.active(identity.descriptor) && trust.active(peer) &&
+                        peer == partnerPeer && archive.genesis.body.legacyCheckpoint == checkpoint(store.records().map { it.record.entry }),
+                        "INVENTORY_CHANGED")
+                    requireProtocol(replica == null || replica!!.trust.archive == trust.archive, "ALREADY_PAIRED")
+                    val next = Replica(store, identity, trust)
+                    store.transaction {
+                        store.local("authorization", Canonical.encode(trust.archive))
+                        store.local("native-binding", binding)
+                        next.restore(); store.removeLocal("partner-pending")
+                        store.removeLocal("native-pending-contact")
+                        store.removeLocal("native-prepared-genesis")
+                    }
+                    replica = next; configureMedia(next); reload()
+                }
+            }
+            override suspend fun refreshed() = withContext(Dispatchers.IO) {
+                lock.withLock { reload() }
+            }
+        }
+        val factory = Class.forName("com.together.android.p2p.NativeQaSessionFactory")
+            .getDeclaredConstructor().newInstance() as NativeAppSessionFactory
+        val created = factory.create(context, scope, host)
+        nativeSession = created
+        nativeStateJob = scope.launch {
+            created.state.collect { value ->
+                android.util.Log.i("TogetherNativeQa", "phase=${value.stage} offline=${value.offline} path=${value.path ?: "unknown"}")
+                if (nativeSession === created) _state.update { old ->
+                    old.copy(native = value, connection = when (value.stage) {
+                        "connected" -> "connected"
+                        "syncing" -> "syncing"
+                        "connecting", "authenticating", "waiting" -> "connecting"
+                        "verifying", "confirming" -> "pairing"
+                        else -> "offline"
+                    }, connectionError = value.error)
+                }
+            }
+        }
+        created.foreground(foreground)
+    }
+
     private fun configureClient() {
         val r = replica ?: return
         val b = binding ?: return
         val api = RelayApi(b, identity, allowLocal = com.together.android.BuildConfig.DEBUG)
+        configureMedia(r)
+        client = C1Client(r, b, api, onPersisted = { refresh.trySend(Unit) }, media = mediaExchange)
+        if (foreground) startConnection()
+    }
+
+    private fun configureMedia(r: Replica) {
         mediaExchange =
             MediaExchange(
                 mediaFiles,
@@ -225,8 +305,6 @@ class TogetherRepository(
                     refresh.trySend(Unit)
                 },
             )
-        client = C1Client(r, b, api, onPersisted = { refresh.trySend(Unit) }, media = mediaExchange)
-        if (foreground) startConnection()
     }
 
     private fun domainContext(): DomainContext =
@@ -320,6 +398,13 @@ class TogetherRepository(
         val projected = snapshot()
         val currentTrust = replica?.trust
         val historyReady = (replica?.legacyComplete() ?: true) && (replica != null || store.local("partner-pending") == null)
+        if (com.together.android.BuildConfig.NATIVE_QA) {
+            val diagnostic = "paired=${currentTrust != null} historyReady=$historyReady nativeSession=${nativeSession != null}"
+            if (diagnostic != nativeGateDiagnostic) {
+                nativeGateDiagnostic = diagnostic
+                android.util.Log.i("TogetherNativeQa", diagnostic)
+            }
+        }
         val inbox =
             projected.gifts.values.filter {
                 it.effective &&
@@ -414,6 +499,7 @@ class TogetherRepository(
                 historyReady = historyReady,
                 descriptor = identity.descriptor,
                 authorization = currentTrust,
+                native = nativeSession?.state?.value ?: it.native,
                 snapshot = projected,
                 reviewed = reviewed,
                 notified = localModel("notified") ?: emptySet(),
@@ -431,7 +517,7 @@ class TogetherRepository(
                 giftSynced = synced,
             )
         }
-        if (db.dao().count() != factsBefore) client?.changed()
+        if (db.dao().count() != factsBefore) { client?.changed(); nativeSession?.changed() }
     }
 
     private fun failed(e: Exception) {
@@ -451,12 +537,13 @@ class TogetherRepository(
                 val before = db.dao().count()
                 block().also {
                     reload()
-                    if (db.dao().count() != before) client?.changed()
+                    if (db.dao().count() != before) { client?.changed(); nativeSession?.changed() }
                 }
             }
         }
 
     suspend fun close() {
+        nativeSession?.close(); nativeStateJob?.cancelAndJoin()
         partnerClient?.stop(); partnerStateJob?.cancelAndJoin()
         connectionLock.withLock {
             connectionJob?.cancelAndJoin()
@@ -829,6 +916,7 @@ class TogetherRepository(
     suspend fun retryMedia() = command {
         mediaExchange?.retry()
         client?.changed()
+        nativeSession?.changed()
     }
 
     suspend fun dismissReminder(id: String) = command {
@@ -1021,6 +1109,7 @@ class TogetherRepository(
     }
 
     suspend fun createPartnerInvitation() = withContext(Dispatchers.IO) {
+        nativeSession?.let { it.createInvitation(); return@withContext }
         val pairing = lock.withLock {
             requireProtocol(replica == null && partnerPeer == null, "ALREADY_PAIRED")
             partnerClient?.stop(); makePartnerClient().also { partnerClient = it }
@@ -1028,6 +1117,7 @@ class TogetherRepository(
         pairing.create()
     }
     suspend fun joinPartnerInvitation(code: String) = withContext(Dispatchers.IO) {
+        nativeSession?.let { it.joinInvitation(code); return@withContext }
         val pairing = lock.withLock {
             requireProtocol(replica == null && partnerPeer == null, "ALREADY_PAIRED")
             partnerClient?.stop(); makePartnerClient().also { partnerClient = it }
@@ -1036,6 +1126,7 @@ class TogetherRepository(
     }
     suspend fun confirmPartner(verified: Boolean) = withContext(Dispatchers.IO) {
         requireProtocol(verified, "IDENTITY_CONFIRMATION_REQUIRED")
+        nativeSession?.let { it.confirm(verified); return@withContext }
         (partnerClient ?: throw ProtocolException("PAIRING_NOT_READY")).confirm()
     }
 
@@ -1172,12 +1263,14 @@ class TogetherRepository(
     }
 
     fun foreground(value: Boolean) {
+        nativeSession?.foreground(value)
         partnerClient?.foreground(value)
         foreground = value
         startConnection()
     }
 
     fun reconnect() {
+        nativeSession?.let { it.reconnect(); return }
         scope.launch(Dispatchers.IO) {
             connectionLock.withLock {
                 connectionJob?.cancelAndJoin()
@@ -1185,6 +1278,15 @@ class TogetherRepository(
             }
             startConnection()
         }
+    }
+
+    suspend fun nativeOffline(value: Boolean) {
+        val session = nativeSession ?: throw ProtocolException("ISOLATED_NATIVE_QA_REQUIRED")
+        session.setOffline(value)
+    }
+
+    suspend fun cancelNativeInvitation() {
+        (nativeSession ?: throw ProtocolException("ISOLATED_NATIVE_QA_REQUIRED")).cancelInvitation()
     }
 
     private fun startConnection() {

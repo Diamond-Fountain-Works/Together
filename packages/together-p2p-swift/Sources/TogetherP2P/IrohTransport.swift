@@ -2,6 +2,14 @@ import Foundation
 import IrohLib
 
 public enum P2PTransportError: Error { case invalidAddress, frameBounds, busy, closed, unexpectedPeer, relayReadiness }
+/// Only failures before any application device identity/pin is available.
+/// A caller may reject this unauthenticated candidate and keep listening.
+/// Contact signatures, pinned identities and authenticated frames never use
+/// this classification and must continue to fail closed.
+public enum P2PUnverifiedIncomingError: Error, Sendable {
+    case handshake(String)
+    case unsupportedALPN
+}
 
 public struct P2PAddress: Codable, Equatable, Sendable {
     public var endpointId: String
@@ -62,11 +70,14 @@ private final class LoopbackQuicPresetForQA: Preset, @unchecked Sendable {
 /// use. This raw transport never grants membership or interprets business data.
 public actor IrohEndpoint {
     private let endpoint: Endpoint
-    private init(_ endpoint: Endpoint) { self.endpoint = endpoint }
+    private let applicationProtocol: Data
+    private init(_ endpoint: Endpoint, applicationProtocol: Data) { self.endpoint = endpoint; self.applicationProtocol = applicationProtocol }
     public static func generateTransportKey() -> Data { SecretKey.generate().toBytes() }
     public static func bind(secretKey: Data, connectivity: P2PConnectivity = .directOnly,
-                            bindAddress: String? = nil, loopbackQuicForQA: Bool = false) async throws -> IrohEndpoint {
-        guard secretKey.count == 32, !loopbackQuicForQA || bindAddress == nil else {
+                            bindAddress: String? = nil, loopbackQuicForQA: Bool = false,
+                            applicationProtocol: Data = P2PTransportLimits.alpn) async throws -> IrohEndpoint {
+        guard secretKey.count == 32, !loopbackQuicForQA || bindAddress == nil,
+              [P2PTransportLimits.alpn, P2PTransportLimits.nativeAppALPN].contains(applicationProtocol) else {
             throw P2PTransportError.invalidAddress
         }
         let preset: any Preset
@@ -84,7 +95,7 @@ public actor IrohEndpoint {
         if let constrained { selectedPreset = constrained } else { selectedPreset = preset }
         let value = try await IrohEndpoint(Endpoint.bind(options: EndpointOptions(preset: selectedPreset,
             bindAddr: loopbackQuicForQA ? nil : bindAddress, secretKey: secretKey,
-            alpns: [P2PTransportLimits.alpn], relayMode: relay)))
+            alpns: [applicationProtocol], relayMode: relay)), applicationProtocol: applicationProtocol)
         if loopbackQuicForQA {
             do {
                 guard constrained?.configurationFailed == false else { throw P2PTransportError.invalidAddress }
@@ -135,20 +146,41 @@ public actor IrohEndpoint {
         }
     }
     public func connect(to address: P2PAddress) async throws -> IrohFrameConnection {
-        let connection = try await endpoint.connect(addr: address.native(), alpn: P2PTransportLimits.alpn)
+        let connection = try await endpoint.connect(addr: address.native(), alpn: applicationProtocol)
         guard connection.remoteId().description == address.endpointId else {
             try? connection.close(errorCode: 1, reason: Data()); throw P2PTransportError.unexpectedPeer
         }
         return try await IrohFrameConnection(connection: connection, stream: connection.openBi())
     }
     public func accept(expectedEndpointId: String) async throws -> IrohFrameConnection {
-        guard let incoming = await endpoint.acceptNext() else { throw P2PTransportError.closed }
-        let connection = try await incoming.accept().connect()
-        guard connection.remoteId().description == expectedEndpointId,
-              connection.alpn() == P2PTransportLimits.alpn else {
-            try? connection.close(errorCode: 1, reason: Data()); throw P2PTransportError.unexpectedPeer
+        let connection = try await acceptForPartnerBootstrap()
+        guard await connection.remoteEndpointId() == expectedEndpointId else {
+            await connection.close(); throw P2PTransportError.unexpectedPeer
         }
-        return try await IrohFrameConnection(connection: connection, stream: connection.acceptBi())
+        return connection
+    }
+    /// Only a transport connection. The caller must verify the first signed
+    /// contact against this connection's TLS identity, then require mutual
+    /// identity confirmation before granting access to any signed facts.
+    public func acceptForPartnerBootstrap() async throws -> IrohFrameConnection {
+        guard let incoming = await endpoint.acceptNext() else { throw P2PTransportError.closed }
+        try Task.checkCancellation()
+        let connection: Connection
+        do { connection = try await incoming.accept().connect() }
+        catch {
+            try Task.checkCancellation()
+            guard !endpoint.isClosed() else { throw P2PTransportError.closed }
+            throw P2PUnverifiedIncomingError.handshake(String(describing: error))
+        }
+        guard connection.alpn() == applicationProtocol else {
+            try? connection.close(errorCode: 1, reason: Data()); throw P2PUnverifiedIncomingError.unsupportedALPN
+        }
+        do {
+            try Task.checkCancellation()
+            return try await IrohFrameConnection(connection: connection, stream: connection.acceptBi())
+        } catch {
+            try? connection.close(errorCode: 1, reason: Data()); throw error
+        }
     }
     public func close() async throws { try await endpoint.close() }
 }

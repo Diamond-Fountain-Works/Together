@@ -10,6 +10,14 @@ struct ConnectionView: View {
     @TogetherMotionPreference private var reduceMotion
     @Namespace private var pairGeometry
     var body: some View {
+        #if TOGETHER_NATIVE_P2P_QA
+        if let nativeNetwork = model.nativeNetwork { NativeConnectionView(model: model, network: nativeNetwork) }
+        else { relayContent }
+        #else
+        relayContent
+        #endif
+    }
+    private var relayContent: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 24) {
                 PageHeading(title: Copy.text("nav.connection"), subtitle: "")
@@ -66,24 +74,32 @@ struct ConnectionView: View {
                     }
                 }
                 if model.network.busy { ProgressView().controlSize(.small) }
-                if !model.engine.mediaProgress.isEmpty {
-                    TogetherCard {
-                        VStack(alignment: .leading, spacing: 12) {
-                            Text(Copy.text("copy.status.1c39d7d54b8f")).font(.headline)
-                            ForEach(model.engine.mediaProgress.values.sorted { $0.assetId.uuidString < $1.assetId.uuidString }, id: \.assetId) { progress in
-                                Text(model.engine.mediaAsset(progress.assetId)?.originalFilename ?? Copy.text("copy.status.c7225dbf105e")).font(.callout).lineLimit(1)
-                                ProgressView(value: progress.fraction)
-                                Text(progress.status.displayName).font(.caption).foregroundStyle(.secondary)
-                                if let error = progress.error { Text(error).font(.caption).foregroundStyle(.orange) }
-                            }
-                        }
-                    }
-                }
+                MediaTransferProgressView(engine: model.engine)
                 if !model.engine.snapshot.conflicts.isEmpty { ForEach(model.engine.snapshot.conflicts) { Text($0.reason).font(.caption).foregroundStyle(.orange) } }
             }.padding(30)
         }.onChange(of: model.network.pairedFeedback) { _, _ in
             withAnimation(TogetherTheme.motion(reduceMotion)) { showSuccess = true }
             Task { @MainActor in try? await Task.sleep(for: .seconds(2)); withAnimation(TogetherTheme.motion(reduceMotion)) { showSuccess = false } }
+        }
+    }
+}
+
+/// Shared existing progress presentation for authenticated relay/native sessions.
+struct MediaTransferProgressView: View {
+    let engine: ReplicaEngine
+    var body: some View {
+        if !engine.mediaProgress.isEmpty {
+            TogetherCard {
+                VStack(alignment: .leading, spacing: 12) {
+                    Text(Copy.text("copy.status.1c39d7d54b8f")).font(.headline)
+                    ForEach(engine.mediaProgress.values.sorted { $0.assetId.uuidString < $1.assetId.uuidString }, id: \.assetId) { progress in
+                        Text(engine.mediaAsset(progress.assetId)?.originalFilename ?? Copy.text("copy.status.c7225dbf105e")).font(.callout).lineLimit(1)
+                        ProgressView(value: progress.fraction)
+                        Text(progress.status.displayName).font(.caption).foregroundStyle(.secondary)
+                        if let error = progress.error { Text(error).font(.caption).foregroundStyle(.orange) }
+                    }
+                }
+            }
         }
     }
 }

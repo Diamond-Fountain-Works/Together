@@ -2,7 +2,14 @@
 
 ## Status
 
-**BLOCKED: the authorized Samsung is connected again, but currently locked;
+This report preserves the earlier CLI/instrumentation-only attempts. The later
+[normal-App checkpoint](NATIVE_APP_NETWORK_ACCEPTANCE.md) records physical
+SwiftUI/Compose pairing, task ACKs, offline catch-up and Samsung process restart.
+That later run used a Mac VPN and an encrypted relay, so it does not approve the
+VPN-free public goal either. The historical topology and lock-screen findings
+below are not a claim about the latest device state.
+
+**Historical transport-only checkpoint — BLOCKED: the authorized Samsung was connected again, but locked;
 the Mac uses that same Samsung's hotspot. Independent-network public acceptance
 has not passed.** The current installed Mac
 Build 13 and Android code 8 still use C1; the test transport does not replace

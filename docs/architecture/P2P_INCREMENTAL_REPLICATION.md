@@ -4,6 +4,26 @@ Decision updated by the user on 2026-10-19: P2P transport is now authorized. The
 earlier C1-only / future-C2 phase boundary remains historical, not a prohibition
 on this new workstream. The working production transport is not silently changed.
 
+## Current isolated App integration — 2026-10-20
+
+The optional native adapter is now connected to normal SwiftUI/Compose QA Apps,
+with fail-closed QA bundle/package/storage boundaries. Production/default builds
+remain on their existing C1 path. The signed contact/bootstrap contract is
+[Native Partner Invitation V1](../../protocol/NATIVE_PARTNER_INVITATION_V1.md).
+It reuses the existing mutual confirmation, mixed-root history/genesis and exact
+Protocol 4 signed facts, cipher, paged replication and durable ACK.
+
+QA Apps negotiate `together/p4/c1-content/1` for the unchanged C1
+replication/media content envelope. Legacy CLI `together/p4/1` keeps its original
+framing; mismatched ALPN fails instead of silently changing Protocol 4 semantics.
+Replication and existing media share one bounded ordered ciphertext sender.
+Original-file transfer and gift-content receipts remain distinct from log ACKs.
+
+See the [physical normal-App report](../qa/reports/NATIVE_APP_NETWORK_ACCEPTANCE.md).
+The successful route currently includes the Mac VPN and an encrypted relay;
+it is not fully VPN-free acceptance. The historical foundation-only status below
+is superseded only for explicitly verified isolated QA App work.
+
 ## Preserve the facts, replace connectivity
 
 Each device keeps its local database and durable signed operation history.

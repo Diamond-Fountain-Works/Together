@@ -24,8 +24,8 @@ struct GiftHistoryView: View {
                                 }; Spacer()
                                 VStack(spacing: 12) {
                                     Button(model.engine.giftReady(gift) ? Copy.text("copy.action.db8db0530432") : Copy.text("copy.action.3f4d60ed6945")) {
-                                        if model.engine.giftReady(gift) { model.replaceSheet(.giftReveal([gift.id], false)) } else { model.network.synchronize() }
-                                    }.disabled(!model.engine.giftReady(gift) && !model.network.isOnline).accessibilityIdentifier("gift.history.open." + gift.id.uuidString)
+                                        if model.engine.giftReady(gift) { model.replaceSheet(.giftReveal([gift.id], false)) } else { model.synchronize() }
+                                    }.disabled(!model.engine.giftReady(gift) && !model.isOnline).accessibilityIdentifier("gift.history.open." + gift.id.uuidString)
                                     if gift.senderId == model.engine.identity.descriptor.userId { Button(Copy.text("copy.action.926a50b98ece"), role: .destructive) { deleting = gift }.buttonStyle(.borderless) }
                                 }
                             }

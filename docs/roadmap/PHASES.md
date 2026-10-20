@@ -1,3 +1,20 @@
+# Native normal-App network acceptance — 2026-10-20
+
+Isolated Mac QA Build 18 and Android nativeQa code 12 now connect the existing
+normal business UI to the optional native transport. Samsung-initiated pairing,
+mutual identity confirmation, task live sync, genuine durable ACK, concurrent
+offline field edits/catch-up, process restart, reserve/expense/AA results and wish
+confirmation have physical App evidence. Both QA identities survive the update.
+The current route is encrypted relay with **Mac VPN active / Samsung VPN off**;
+this does not pass the requested fully VPN-free or public direct-P2P gate.
+The original photo transfer and normal Save Photo export match the original
+SHA-256; Samsung audio import/send, Mac manual playback and one-time startup
+reveal also pass. Fully VPN-free acceptance remains unverified. No production App, identity,
+Worker, parent PR or approved screenshot baseline changed. Exact results and
+remaining gates: [normal-App acceptance](../qa/reports/NATIVE_APP_NETWORK_ACCEPTANCE.md).
+
+## Historical stage checkpoints
+
 # Android Phase C — current device acceptance stage
 
 2026-10-20 P2P follow-up: USB Samsung is online; first shared-hotspot native

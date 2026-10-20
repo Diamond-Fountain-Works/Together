@@ -2,6 +2,9 @@ import SwiftUI
 import TogetherCore
 import AppKit
 import UniformTypeIdentifiers
+#if TOGETHER_NATIVE_P2P_QA
+import TogetherP2P
+#endif
 
 enum AppSection: String, CaseIterable, Identifiable {
     case home = "Home", plans = "Plans", wishes = "Wishes", finances = "Finances", connection = "Connection", settings = "Settings"
@@ -61,6 +64,39 @@ enum AppSheet: Identifiable {
     var changeBannerEvents:[ChangeEvent]=[]
     @ObservationIgnored var changeReviewTask:Task<Void,Never>?
     let network: PairingService
+    #if TOGETHER_NATIVE_P2P_QA
+    var nativeNetwork: NativeAppPeerService?
+    #endif
+    var connectionState: PairingConnectionState {
+        #if TOGETHER_NATIVE_P2P_QA
+        if let nativeNetwork { return nativeNetwork.state }
+        #endif
+        return network.state
+    }
+    var isOnline: Bool {
+        #if TOGETHER_NATIVE_P2P_QA
+        if let nativeNetwork { return nativeNetwork.isOnline }
+        #endif
+        return network.isOnline
+    }
+    var partnerIsOnline: Bool {
+        #if TOGETHER_NATIVE_P2P_QA
+        if let nativeNetwork { return nativeNetwork.isOnline }
+        #endif
+        return network.partnerIsOnline
+    }
+    var completedSyncCount: Int {
+        #if TOGETHER_NATIVE_P2P_QA
+        if let nativeNetwork { return nativeNetwork.completedSyncCount }
+        #endif
+        return network.completedSyncCount
+    }
+    func synchronize() {
+        #if TOGETHER_NATIVE_P2P_QA
+        if let nativeNetwork { nativeNetwork.synchronize(); return }
+        #endif
+        network.synchronize()
+    }
     let preferences: LocalAppPreferences
     let localDefaults: UserDefaults
     let version: String
@@ -118,12 +154,16 @@ enum AppSheet: Identifiable {
     }
     func start() {
         guard !started else { return }; started = true
+        #if TOGETHER_NATIVE_P2P_QA
+        nativeNetwork?.restore()
+        #else
         #if DEBUG
         // A copied store can contain a real RelayBinding; nil serviceURL alone
         // does not suppress that persisted address. Fixtures must stay offline.
         if !UIFixture.enabled || qaAllowsLocalNetwork { network.restore() }
         #else
         network.restore()
+        #endif
         #endif
         checkStartupGifts(); refreshFinancialState(); refreshSharedChanges(); presentNext()
         clockTask = Task { @MainActor [weak self] in
@@ -176,7 +216,7 @@ enum AppSheet: Identifiable {
     func finishSetup() { preferences.finishInitialSetup(); dismissSheet() }
     func checkStartupGifts() {
         guard giftLaunchPolicy.canPresentAutomatically else { return }
-        if network.completedSyncCount > 0 { giftLaunchPolicy.noteFirstSync(inboxIds: engine.receivedGifts.map(\.id)) }
+        if completedSyncCount > 0 { giftLaunchPolicy.noteFirstSync(inboxIds: engine.receivedGifts.map(\.id)) }
         let inbox = engine.receivedGifts
         let states = Dictionary(uniqueKeysWithValues: inbox.map { ($0.id, engine.presentation($0.id)) })
         let pending = giftLaunchPolicy.pendingIds(inbox: inbox, presentations: states)
@@ -190,7 +230,7 @@ enum AppSheet: Identifiable {
     }
     var unreadGifts: [DailyLoveGift] { engine.receivedGifts.filter { engine.presentation($0.id).openedAt == nil } }
     func openGift(_ gift: DailyLoveGift) {
-        guard engine.giftReady(gift) else { errorMessage = Copy.text("copy.status.77965761b32c"); network.synchronize(); return }
+        guard engine.giftReady(gift) else { errorMessage = Copy.text("copy.status.77965761b32c"); synchronize(); return }
         if gift.recipientId == engine.identity.descriptor.userId && !engine.validReceivedGift(gift) { errorMessage = Copy.text("copy.status.bf8ae92630fb"); return }
         show(.giftReveal([gift.id], false))
     }

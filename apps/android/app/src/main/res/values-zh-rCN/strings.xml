@@ -289,4 +289,9 @@
     <string name="action_older">查看更早</string>
     <string name="status_avatar_changed">头像已更新</string>
     <string name="error_media_storage">存储空间不足。请腾出空间后重试。</string>
+    <string name="app_name_native_qa">Together QA</string>
+    <string name="native_paste_invitation">粘贴邀请</string>
+    <string name="native_work_offline">离线使用</string>
+    <string name="native_path_direct">直连</string>
+    <string name="native_path_relay">加密中继连接</string>
 </resources>

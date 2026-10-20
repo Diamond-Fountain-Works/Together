@@ -1,3 +1,16 @@
+# Native normal-App QA — Mac Build 18 / Android code 12 (unreleased)
+
+- Connect isolated normal App pairing, task/wish/finance editors and lifecycle to
+  the existing native transport, signed bootstrap, Protocol 4 replication/ACK.
+- Reuse the existing original-media engine and exact C1 content envelope under a
+  distinct App-only ALPN; preserve legacy CLI and default production builds.
+- Harden missing-bootstrap-ACK errors, pinned identity recovery, cancellation and
+  ordered mixed media/operation ciphertext sending.
+- Record physical normal-App and domain results with the explicit **Mac VPN
+  active / Samsung VPN off** qualification; no fully VPN-free release claim.
+- Compile both isolated normal Apps in CI without uploading APKs or runtime data.
+- No production installation, Worker deployment, PR merge or baseline approval.
+
 # P2P transport foundation — development Build 14 (not packaged/installed)
 
 - Harden the physical QA driver against hotspot/Wi-Fi misclassification, locked

@@ -6028,6 +6028,55 @@
       "review": "approved",
       "reason": "Necessary pairing progress or actionable service capability error.",
       "textSHA256": "937cb08615804ee714e59d7099ce84a05f82085c64fd3390f733fb47a9176ac4"
+    },
+    "native.pairing.contactReady": {
+      "category": "Status",
+      "context": "apps/apple/macOS/Sources/TogetherApp/Networking/NativeAcceptance.swift",
+      "review": "approved",
+      "reason": "User-requested native test App pairing, disconnect and truthful durable-sync/path state; no new business feature or delivery/read claim.",
+      "textSHA256": "335626494eae8ca32678a49f81b63a3c1e71bd0753828889bc8ed8ab5876d6fd"
+    },
+    "native.connection.disconnect": {
+      "category": "Action",
+      "context": "apps/apple/macOS/Sources/TogetherApp/Networking/NativeAcceptance.swift",
+      "review": "approved",
+      "reason": "User-requested native test App pairing, disconnect and truthful durable-sync/path state; no new business feature or delivery/read claim.",
+      "textSHA256": "a33f3804768e68eeb00fb5e9d5a17b810fce12463cdbb49c6448091695e49171"
+    },
+    "native.sync.remotePersisted": {
+      "category": "Status",
+      "context": "apps/apple/macOS/Sources/TogetherApp/Networking/NativeAcceptance.swift",
+      "review": "approved",
+      "reason": "User-requested native test App pairing, disconnect and truthful durable-sync/path state; no new business feature or delivery/read claim.",
+      "textSHA256": "e025c5a0b5e60dc2209946f8705b33aadcae84abec856d5ec9811b0e03f4ac87"
+    },
+    "native.sync.pending": {
+      "category": "Status",
+      "context": "apps/apple/macOS/Sources/TogetherApp/Networking/NativeAcceptance.swift",
+      "review": "approved",
+      "reason": "User-requested native test App pairing, disconnect and truthful durable-sync/path state; no new business feature or delivery/read claim.",
+      "textSHA256": "e09cbaccf1dd8bf8480f4171be701f7f17222775825a68bed12da14feabd7ec0"
+    },
+    "native.path.direct": {
+      "category": "Status",
+      "context": "apps/apple/macOS/Sources/TogetherApp/Networking/NativeAcceptance.swift",
+      "review": "approved",
+      "reason": "User-requested native test App pairing, disconnect and truthful durable-sync/path state; no new business feature or delivery/read claim.",
+      "textSHA256": "b06325c5660f0c295b1fcdbf9e2dbe645d7fa65ab4ac0128c1f5e8afd106feed"
+    },
+    "native.path.relay": {
+      "category": "Status",
+      "context": "apps/apple/macOS/Sources/TogetherApp/Networking/NativeAcceptance.swift",
+      "review": "approved",
+      "reason": "User-requested native test App pairing, disconnect and truthful durable-sync/path state; no new business feature or delivery/read claim.",
+      "textSHA256": "e920d0820af166e8d4e6f940baa8e31503910ac3347dae98f5338f255259013f"
+    },
+    "native.error.pairingRecovery": {
+      "category": "Error",
+      "context": "packages/together-p2p-swift/Sources/TogetherP2P/NativeAppPeerService.swift",
+      "review": "approved",
+      "reason": "Necessary fail-closed recovery state requested in physical native-App acceptance; preserves original QA identity and logs instead of silently rebinding.",
+      "textSHA256": "3e992bc7ae8c3234d3427c2b479b30121ecc80cc688311c1ad4704585967e47e"
     }
   }
 }

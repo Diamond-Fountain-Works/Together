@@ -65,8 +65,8 @@ class P2PBinding private constructor(val value: JsonObject) {
 class P2PCipher(private val identity: DeviceIdentity, private val remote: P2PBinding,
     connectedId: String, private val trust: SpaceAuthorization) {
     private val ephemeral = Crypto.seed()
-    private val localHello = SecureChannel.hello(identity, ephemeral, trust)
-    val hello = Canonical.encode(RelayPacket("hello", hello = localHello))
+    private val localHello: SignedHello = SecureChannel.hello(identity, ephemeral, trust)
+    val hello: ByteArray = Canonical.encode(RelayPacket("hello", hello = localHello))
     private var channel: SecureChannel? = null
     var authenticated = false; private set
     init {

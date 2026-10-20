@@ -324,7 +324,7 @@ fun TogetherApp(repository: TogetherRepository) = TogetherTheme {
                         Box(Modifier.weight(1f).fillMaxHeight().widthIn(max = 1040.dp)) {
                             if (!state.loaded)
                                 CircularProgressIndicator(Modifier.align(Alignment.Center))
-                            else if (!state.historyReady) {
+                            else if (!state.historyReady && !(page == Page.Connection && state.native != null)) {
                                 Column(Modifier.padding(24.dp)) {
                                     ConnectionStatus(state)
                                     LinearProgressIndicator(Modifier.fillMaxWidth())
@@ -513,7 +513,16 @@ fun TogetherApp(repository: TogetherRepository) = TogetherTheme {
                                         )
                                     Page.Connection ->
                                         Column(Modifier.verticalScroll(rememberScrollState())) {
-                                            if (state.authorization == null) PartnerPairingPanel(
+                                            if (state.native != null) NativePartnerPanel(
+                                                state.native!!,
+                                                state.authorization != null,
+                                                { perform { repository.createPartnerInvitation() } },
+                                                { code -> perform { repository.joinPartnerInvitation(code) } },
+                                                { verified -> perform { repository.confirmPartner(verified) } },
+                                                { value -> perform { repository.nativeOffline(value) } },
+                                                { perform { repository.cancelNativeInvitation() } },
+                                            )
+                                            else if (state.authorization == null) PartnerPairingPanel(
                                                 state.partnerPairing,
                                                 { perform { repository.createPartnerInvitation() } },
                                                 { code -> perform { repository.joinPartnerInvitation(code) } },
@@ -823,7 +832,13 @@ private fun ConnectionStatus(s: TogetherRepository.State) {
         if (s.descriptor == null) R.string.error_identity
         else if (s.authorization?.devices?.get(s.descriptor.deviceId)?.active == false)
             R.string.status_revoked
-        else if (s.authorization == null) R.string.status_local
+        else if (!s.historyReady && s.native != null) R.string.status_restoring_history
+        else if (s.authorization == null) when (s.native?.stage) {
+            "creating", "connecting", "authenticating" -> R.string.status_connecting
+            "waiting", "verifying" -> R.string.status_waiting
+            "confirming", "syncing" -> R.string.status_syncing
+            else -> R.string.status_local
+        }
         else if (!s.historyReady) R.string.status_restoring_history
         else
             when (s.connection) {
@@ -869,7 +884,7 @@ internal fun DevicePage(
     var revoke by remember { mutableStateOf<String?>(null) }
     Column(Modifier.padding(24.dp), verticalArrangement = Arrangement.spacedBy(20.dp)) {
         ConnectionStatus(state)
-        if (state.authorization == null) {
+        if (state.authorization == null && state.native == null) {
             Text(
                 stringResource(R.string.guidance_add_device),
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
@@ -882,7 +897,7 @@ internal fun DevicePage(
                 Text(stringResource(R.string.action_add_my_device))
             }
             state.descriptor?.let { IdentityDetails(it) }
-        } else {
+        } else if (state.authorization != null) {
             Text(
                 stringResource(R.string.label_devices),
                 style = MaterialTheme.typography.titleLarge,
@@ -1283,6 +1298,7 @@ internal fun errorCopy(code: String) =
         "IDENTITY_KEY_UNAVAILABLE",
         "IDENTITY_MISMATCH" -> R.string.error_identity
         "CONNECTION_FAILED",
+        "P2P_CONNECT_TIMEOUT",
         "SERVICE_UNAVAILABLE" -> R.string.error_network
         "PARTNER_SERVICE_UPGRADE_REQUIRED" -> R.string.partner_service_upgrade
         "INVALID_INVITATION", "INVITATION_UNAVAILABLE" -> R.string.partner_invalid_invitation
