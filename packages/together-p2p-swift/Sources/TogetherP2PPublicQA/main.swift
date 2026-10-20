@@ -8,8 +8,10 @@ private struct Launch: Codable {
     var mode: String
     var bindAddress: String?
     var deadlineSeconds: Int
+    var loopbackQuicForQA: Bool?
 }
 private struct Contact: Codable { var address: P2PAddress; var binding: PeerTransportBinding }
+private struct RelayReadiness: Codable { var relayAddressAvailable: Bool; var elapsedMilliseconds: Int64 }
 private struct Result: Codable {
     var status: String
     var checkpoint: InventoryCheckpoint
@@ -23,6 +25,8 @@ private struct Result: Codable {
     var processPid: Int32
     var priorProcessPid: Int32? = nil
     var networkUsed: Bool? = nil
+    var loopbackQuicVerified: Bool? = nil
+    var relayPathEveryFrameVerified: Bool? = nil
 }
 private actor Failures {
     private var error: (any Error)?
@@ -94,11 +98,30 @@ private actor Failures {
         print("P2P QA stage: \(name)")
         fflush(stdout)
     }
+    private static func requireRelayedPath(_ link: IrohFrameConnection) async throws {
+        let selected = await link.paths().filter(\.selected)
+        guard !selected.isEmpty, selected.allSatisfy({ $0.relayed && !$0.direct }) else {
+            throw QAError.invalidState("shared-uplink QA requires a selected encrypted relay path")
+        }
+    }
+    private static func send(_ bytes: Data, over link: IrohFrameConnection, relayOnly: Bool) async throws {
+        if relayOnly { try await requireRelayedPath(link) }
+        try await link.send(bytes)
+        if relayOnly { try await requireRelayedPath(link) }
+    }
+    private static func receive(over link: IrohFrameConnection, relayOnly: Bool) async throws -> Data {
+        if relayOnly { try await requireRelayedPath(link) }
+        let bytes = try await link.receive()
+        if relayOnly { try await requireRelayedPath(link) }
+        return bytes
+    }
     private static func run(_ root: URL) async throws {
         let launch = try read(Launch.self, "launch.json", root)
+        let loopback = launch.loopbackQuicForQA == true
         guard ["initiator", "acceptor"].contains(launch.role),
               ["directOnly", "automatic"].contains(launch.mode),
-              (30...300).contains(launch.deadlineSeconds) else { throw QAError.arguments }
+              (30...300).contains(launch.deadlineSeconds),
+              !loopback || (launch.mode == "automatic" && launch.bindAddress == nil) else { throw QAError.arguments }
         let deadline = ContinuousClock.now.advanced(by: .seconds(launch.deadlineSeconds))
         try stage("independent identity", root)
         let metadataURL = root.appendingPathComponent("metadata.json")
@@ -138,8 +161,30 @@ private actor Failures {
         try stage("bind \(launch.mode)", root)
         let endpoint = try await IrohEndpoint.bind(secretKey: key,
             connectivity: launch.mode == "directOnly" ? .directOnly : .automatic,
-            bindAddress: launch.bindAddress)
+            bindAddress: launch.bindAddress, loopbackQuicForQA: loopback)
         do {
+            if launch.mode == "automatic" {
+                try stage("automatic relay address", root)
+                let started = ContinuousClock.now
+                let available: Bool
+                do { available = try await endpoint.waitForRelayAddress(timeout: .seconds(15)) }
+                catch {
+                    let elapsed = started.duration(to: .now).components
+                    try write(RelayReadiness(relayAddressAvailable: false,
+                        elapsedMilliseconds: elapsed.seconds * 1_000 + elapsed.attoseconds / 1_000_000_000_000_000),
+                        "relay-readiness.json", root)
+                    throw error
+                }
+                let elapsed = started.duration(to: .now).components
+                try write(RelayReadiness(relayAddressAvailable: available,
+                    elapsedMilliseconds: elapsed.seconds * 1_000 + elapsed.attoseconds / 1_000_000_000_000_000),
+                    "relay-readiness.json", root)
+                guard available else { throw QAError.invalidState("helper-address-timeout after 15 seconds") }
+                guard await endpoint.address().relayURL != nil else {
+                    throw QAError.invalidState("automatic relay address no longer available")
+                }
+            }
+            if loopback { try await endpoint.requireLoopbackQuicForQA() }
             let address = await endpoint.address()
             let binding = try PeerTransportBinding.issue(identity: identity, endpointId: address.endpointId, authorization: trust)
             try write(Contact(address: address, binding: binding), "contact.json", root)
@@ -151,7 +196,8 @@ private actor Failures {
             let link: IrohFrameConnection
             if launch.role == "initiator" { link = try await endpoint.connect(to: contact.address) }
             else { link = try await endpoint.accept(expectedEndpointId: contact.address.endpointId) }
-            do { try await synchronize(root, identity: identity, peer: peer, trust: trust, link: link, deadline: deadline) }
+            do { try await synchronize(root, identity: identity, peer: peer, trust: trust,
+                endpoint: endpoint, link: link, relayOnly: loopback, deadline: deadline) }
             catch { await link.close(); throw error }
             await link.close()
             try await endpoint.close()
@@ -159,18 +205,23 @@ private actor Failures {
     }
 
     private static func synchronize(_ root: URL, identity: DeviceIdentity, peer: DeviceDescriptor,
-                                    trust: SpaceAuthorization, link: IrohFrameConnection,
+                                    trust: SpaceAuthorization, endpoint: IrohEndpoint,
+                                    link: IrohFrameConnection, relayOnly: Bool,
                                     deadline: ContinuousClock.Instant) async throws {
         try stage("signed endpoint and Protocol 4 handshake", root)
+        if relayOnly {
+            try await endpoint.requireLoopbackQuicForQA()
+            try await requireRelayedPath(link)
+        }
         let remote = try read(Contact.self, "peer-contact.json", root)
         let cipher = try AuthorizedPeerCipher(identity: identity, remote: remote.binding,
             connectedEndpointId: await link.remoteEndpointId(), authorization: trust)
-        try await link.send(cipher.hello)
-        guard let consent = try await cipher.handshake(link.receive(), authorization: trust) else {
+        try await send(cipher.hello, over: link, relayOnly: relayOnly)
+        guard let consent = try await cipher.handshake(receive(over: link, relayOnly: relayOnly), authorization: trust) else {
             throw QAError.invalidState("missing peer hello")
         }
-        try await link.send(consent)
-        _ = try await cipher.handshake(link.receive(), authorization: trust)
+        try await send(consent, over: link, relayOnly: relayOnly)
+        _ = try await cipher.handshake(receive(over: link, relayOnly: relayOnly), authorization: trust)
         guard await cipher.isAuthenticated else { throw QAError.invalidState("unauthenticated") }
         let repository = try TogetherRepository(url: root.appendingPathComponent("qa.store"))
         let store = try AuthorizedReplicationStore(repository: repository, identity: identity, authorization: trust)
@@ -188,12 +239,13 @@ private actor Failures {
             _ = try await store.append(op)
         }
         let session = PagedReplicationSession(store: store, ledger: ledger, remote: peer,
-            send: { frame in try await link.send(cipher.seal(CanonicalJSON.encode(frame), authorization: trust)) })
+            send: { frame in try await send(cipher.seal(CanonicalJSON.encode(frame), authorization: trust),
+                over: link, relayOnly: relayOnly) })
         let failures = Failures()
         let reader = Task {
             do {
                 while !Task.isCancelled {
-                    let clear = try await cipher.open(link.receive(), authorization: trust)
+                    let clear = try await cipher.open(receive(over: link, relayOnly: relayOnly), authorization: trust)
                     try await session.receive(CanonicalJSON.decode(ReplicationFrame.self, from: clear))
                 }
             } catch { if !Task.isCancelled { await failures.record(error) } }
@@ -234,12 +286,25 @@ private actor Failures {
         guard retained, retainedAck, reopenedIdentity.descriptor == identity.descriptor else { throw QAError.invalidState("reopen") }
         let paths = await link.paths()
         guard paths.contains(where: { $0.selected }) else { throw QAError.invalidState("no selected path") }
+        if relayOnly {
+            try await endpoint.requireLoopbackQuicForQA()
+            try await requireRelayedPath(link)
+        }
         try write(Result(status: "PASS", checkpoint: checkpoint, partnerPersisted: true, paths: paths,
             identityRetained: true, reopenCheckpointRetained: retained,
             reopenedAcknowledgementRetained: retainedAck, tombstoneRetained: true,
-            operationCount: 259, processPid: ProcessInfo.processInfo.processIdentifier), "result.json", root)
+            operationCount: 259, processPid: ProcessInfo.processInfo.processIdentifier,
+            loopbackQuicVerified: relayOnly ? true : nil,
+            relayPathEveryFrameVerified: relayOnly ? true : nil), "result.json", root)
         try stage("verified; waiting for reciprocal result", root)
-        try await wait("finish", root: root, deadline: deadline)
+        try await wait("finish", root: root, deadline: deadline, condition: {
+            // The driver writes finish only after reciprocal verification.
+            // Afterwards a peer may close normally; until then any late frame
+            // or path-check failure must prevent a successful process exit.
+            if FileManager.default.fileExists(atPath: root.appendingPathComponent("finish").path) { return true }
+            try await failures.check()
+            return false
+        })
         await session.invalidate()
         reader.cancel()
         print("Together P2P physical QA passed (259 durable facts).")

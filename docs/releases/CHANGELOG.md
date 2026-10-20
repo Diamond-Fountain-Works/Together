@@ -1,5 +1,10 @@
 # P2P transport foundation — development Build 14 (not packaged/installed)
 
+- Harden the physical QA driver against hotspot/Wi-Fi misclassification, locked
+  device starts and premature participant exit; preserve exact ACK/restart gates.
+- Add explicit LAN versus shared-uplink encrypted-relay diagnostics and
+  test-process network restoration. Physical retry is blocked on phone unlock;
+  the current shared hotspot is not independent-network acceptance.
 - Add isolated native Android instrumentation, Mac QA CLI and a bounded physical
   public-network driver. Require no VPN/proxy/USB network path, exact signed
   checkpoints, durable ACKs and distinct-process recovery. Public acceptance

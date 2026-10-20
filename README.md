@@ -99,3 +99,10 @@ test-only Android adapter and bounded physical driver are now available; see
 the instrumentation is not physical/public-network acceptance. Public NAT
 traversal, platform compatibility and independent security review remain open;
 installed applications are not silently described as P2P-capable.
+
+The physical driver distinguishes independent public networks, a shared-hotspot
+LAN, and an explicitly constrained public encrypted-relay test over a shared
+uplink. The latter two cannot approve independent-network NAT traversal. It
+requires an awake/unlocked phone, exact persisted checkpoints and ACKs, actual
+test-process exit, network-binding restoration and fresh-process recovery; no
+device unlock or system network setting is automated.

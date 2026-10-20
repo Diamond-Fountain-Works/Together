@@ -109,18 +109,35 @@ class P2PStream(val connection: Connection, private val bi: BiStream) {
     private val reader = Mutex()
     private val queuedFrames = AtomicInteger()
     private val queuedBytes = AtomicInteger()
+    var requireRelayPathForQa = false
+    private var relayFrameChecks = 0
+    private var sentFrames = 0
+    private var receivedFrames = 0
+    val relayPathEveryFrameVerified get() = requireRelayPathForQa && relayFrameChecks > 0 && sentFrames > 0 && receivedFrames > 0
+    private fun verifyRelayPath() {
+        if (!requireRelayPathForQa) return
+        val selected = connection.paths().filter { it.isSelected }
+        requireProtocol(selected.isNotEmpty() && selected.all { it.isRelay && !it.isIp }, "QA_SELECTED_PATH_IS_NOT_RELAY")
+        relayFrameChecks++
+    }
     suspend fun send(bytes: ByteArray) {
         requireProtocol(bytes.isNotEmpty() && bytes.size <= 524_288, "P2P_FRAME_BOUNDS")
         val frames = queuedFrames.incrementAndGet(); val total = queuedBytes.addAndGet(bytes.size)
         try {
             requireProtocol(frames <= 64 && total <= 8_388_608, "P2P_QUEUE_BOUNDS")
-            writer.withLock { bi.send().writeAll(ByteBuffer.allocate(4 + bytes.size).putInt(bytes.size).put(bytes).array()) }
+            writer.withLock {
+                verifyRelayPath()
+                bi.send().writeAll(ByteBuffer.allocate(4 + bytes.size).putInt(bytes.size).put(bytes).array())
+                verifyRelayPath(); sentFrames++
+            }
         } finally { queuedFrames.decrementAndGet(); queuedBytes.addAndGet(-bytes.size) }
     }
     suspend fun receive(): ByteArray = reader.withLock {
+        verifyRelayPath()
         val n = ByteBuffer.wrap(bi.recv().readExact(4u)).int
         requireProtocol(n in 1..524_288, "P2P_FRAME_BOUNDS")
-        bi.recv().readExact(n.toUInt())
+        val bytes = bi.recv().readExact(n.toUInt())
+        verifyRelayPath(); receivedFrames++; bytes
     }
     fun paths(): JsonArray = JsonArray(connection.paths().map { p -> buildJsonObject {
         put("selected", p.isSelected); put("direct", p.isIp); put("relayed", p.isRelay); put("rttMilliseconds", p.rttMs.toLong())

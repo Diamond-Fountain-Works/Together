@@ -1,8 +1,5 @@
 package com.together.android
 
-import android.content.Context
-import android.net.ConnectivityManager
-import android.net.NetworkCapabilities
 import android.os.SystemClock
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
@@ -24,7 +21,7 @@ import java.io.File
 
 /**
  * Physical, test-only protocol acceptance. ADB exchanges public bootstrap credentials only.
- * Business facts and ACKs must cross the QUIC stream. No Relay, VPN, ADB reverse or app UI launch.
+ * Business facts and ACKs must cross the QUIC stream. No C1 relay, VPN, ADB reverse or app UI launch.
  */
 @RunWith(AndroidJUnit4::class)
 class P2PPublicNetworkTest {
@@ -38,7 +35,10 @@ class P2PPublicNetworkTest {
         requireProtocol(Regex("QA-P2P-[A-Z0-9-]{1,32}").matches(namespace), "P2P_NAMESPACE_INVALID")
         val role = args.getString("p2pRole") ?: "acceptor"
         val mode = args.getString("p2pMode") ?: "directOnly"
+        val networkScope = args.getString("p2pNetworkScope") ?: "independent-public"
         requireProtocol(role in setOf("initiator", "acceptor") && mode in setOf("directOnly", "automatic"), "INVALID_P2P_MODE")
+        requireProtocol((networkScope != "shared-hotspot" || mode == "directOnly") &&
+            (networkScope != "shared-uplink-public-relay" || mode == "automatic"), "QA_SCOPE_MODE_MISMATCH")
         val timeout = (args.getString("p2pDeadlineSeconds")?.toLongOrNull() ?: 240).also {
             requireProtocol(it in 30..300, "INVALID_QA_DEADLINE")
         }
@@ -65,16 +65,14 @@ class P2PPublicNetworkTest {
             requireProtocol(f.length() in 1..131_072, "QA_CONTROL_BOUNDS")
             return Canonical.parse(f.readBytes(), 131_072)
         }
-        fun networkCheck(): JsonObject {
-            val cm = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-            val caps = cm.getNetworkCapabilities(cm.activeNetwork) ?: error("NO_ACTIVE_NETWORK")
-            requireProtocol(!caps.hasTransport(NetworkCapabilities.TRANSPORT_VPN) &&
-                caps.hasCapability(NetworkCapabilities.NET_CAPABILITY_NOT_VPN) &&
-                caps.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) &&
-                !caps.hasTransport(NetworkCapabilities.TRANSPORT_WIFI), "PUBLIC_CELLULAR_WITHOUT_VPN_REQUIRED")
-            return buildJsonObject {
-                put("cellular", true); put("wifi", false); put("vpn", false)
-                put("validated", caps.hasCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED))
+        val routing = QaNetworkScope(context, networkScope, args.getString("p2pBindAddress"))
+        val testJob = currentCoroutineContext().job
+        val abortWatcher = launch {
+            while (isActive) {
+                if (File(root, "abort").exists()) {
+                    testJob.cancel(CancellationException("QA_DRIVER_ABORT")); break
+                }
+                delay(100)
             }
         }
         var endpoint: Endpoint? = null
@@ -82,7 +80,7 @@ class P2PPublicNetworkTest {
         var db: TogetherDatabase? = null
         try {
             withTimeout(timeout * 1000) {
-                write("network.json", networkCheck())
+                write("network.json", routing.proof())
                 val identities = AndroidIdentityStore(context, namespace)
                 requireProtocol(!identities.exists("ROOT"), "QA_IDENTITY_ALREADY_EXISTS")
                 val identity = identities.create("ROOT", uid(), uid(), "Synthetic public Samsung", "Asia/Shanghai")
@@ -99,6 +97,7 @@ class P2PPublicNetworkTest {
                 val peer = body.roots.single { it.deviceId != identity.descriptor.deviceId }
                 mark("authorization-verified")
 
+                write("network-bound.json", routing.bindForIroh())
                 IrohAndroid.installAndroidContext(context)
                 // A fresh transport seed, never the device-signing private key. Test-local only.
                 val transportSeed = SecretKey.generate().let { key -> try { key.toBytes() } finally { key.close() } }
@@ -119,19 +118,27 @@ class P2PPublicNetworkTest {
                 val binding = P2PBinding.issue(identity, address.endpointId, trust)
                 write("contact.json", buildJsonObject { put("address", address.json()); put("binding", binding.value) })
                 mark("contact-published")
+                mark("awaiting-peer-contact")
                 val remote = read("peer-contact.json").jsonObject
+                mark("peer-contact-read")
                 val remoteAddress = P2PAddress.parse(remote.getValue("address"))
+                mark("peer-address-parsed")
                 val remoteBinding = P2PBinding.parse(remote.getValue("binding"))
+                mark("peer-binding-parsed")
                 requireProtocol(remoteBinding.device == peer, "QA_PEER_DESCRIPTOR_MISMATCH")
                 remoteBinding.verify(remoteAddress.endpointId, trust)
+                mark("peer-binding-verified")
+                routing.validatePeer(remoteAddress)
+                mark("peer-routing-verified")
                 mark("connecting-$role")
                 stream = if (role == "initiator") P2PStream.connect(ep, remoteAddress) else P2PStream.accept(ep, remoteAddress)
                 val link = stream!!
+                link.requireRelayPathForQa = networkScope == "shared-uplink-public-relay"
                 val cipher = P2PCipher(identity, remoteBinding, link.connection.remoteId().toString(), trust)
                 link.send(cipher.hello)
                 while (!cipher.authenticated) cipher.handshake(link.receive())?.let { link.send(it) }
                 mark("authenticated")
-                write("network-connected.json", networkCheck())
+                write("network-connected.json", routing.proof())
 
                 val dbName = "p2p-$namespace.db"
                 db = TogetherDatabase.open(context, dbName)
@@ -190,7 +197,7 @@ class P2PPublicNetworkTest {
                                 r.inventoryCheckpoint() == checkpoint && reopenedAcknowledgements && tombstoneRetained
                             } finally { reopened.close() }
                             requireProtocol(identityRetained && reopenedOkay, "P2P_PERSISTENCE_LOST")
-                            write("network-completed.json", networkCheck())
+                            write("network-completed.json", routing.proof())
                             val paths = link.paths()
                             requireProtocol(paths.any { it.jsonObject.getValue("selected").jsonPrimitive.boolean }, "P2P_NO_SELECTED_PATH")
                             if (mode == "directOnly") requireProtocol(paths.all { !it.jsonObject.getValue("relayed").jsonPrimitive.boolean }, "P2P_UNEXPECTED_RELAY")
@@ -201,6 +208,8 @@ class P2PPublicNetworkTest {
                                 put("reopenedAcknowledgementRetained", reopenedAcknowledgements)
                                 put("tombstoneRetained", tombstoneRetained); put("operationCount", checkpoint.count)
                                 put("processPid", android.os.Process.myPid())
+                                put("networkScope", networkScope)
+                                put("relayPathEveryFrameVerified", link.relayPathEveryFrameVerified)
                                 put("elapsedMilliseconds", SystemClock.elapsedRealtime() - start)
                             }); completed = true; mark("complete-awaiting-finish")
                         }
@@ -217,10 +226,30 @@ class P2PPublicNetworkTest {
             })
             throw e
         } finally {
-            stream?.let { runCatching { it.close() } }
-            db?.close()
-            withContext(NonCancellable) { withTimeoutOrNull(10_000) { endpoint?.shutdown() } }
-            endpoint?.close()
+            abortWatcher.cancel()
+            try {
+                try {
+                    stream?.let { runCatching { it.close() } }
+                    db?.close()
+                } finally {
+                    try {
+                        withContext(NonCancellable) {
+                            abortWatcher.cancelAndJoin()
+                            val stopped = withTimeoutOrNull(10_000) { endpoint?.shutdown(); true } ?: false
+                            requireProtocol(stopped, "QA_NATIVE_ENDPOINT_SHUTDOWN_TIMEOUT")
+                        }
+                    } finally { endpoint?.close() }
+                }
+            } finally {
+                val restoration = runCatching { routing.restore() }.getOrElse { error ->
+                    buildJsonObject {
+                        put("restored", false); put("currentBindingMatchesPrevious", false)
+                        put("error", "${error.javaClass.simpleName}: ${error.message.orEmpty().take(200)}")
+                    }
+                }
+                write("network-restoration.json", restoration)
+                requireProtocol(restoration.getValue("restored").jsonPrimitive.boolean, "QA_PROCESS_BINDING_RESTORE_FAILED")
+            }
         }
     }
 

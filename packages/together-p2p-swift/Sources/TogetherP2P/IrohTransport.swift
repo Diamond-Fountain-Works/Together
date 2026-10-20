@@ -1,7 +1,7 @@
 import Foundation
 import IrohLib
 
-public enum P2PTransportError: Error { case invalidAddress, frameBounds, busy, closed, unexpectedPeer }
+public enum P2PTransportError: Error { case invalidAddress, frameBounds, busy, closed, unexpectedPeer, relayReadiness }
 
 public struct P2PAddress: Codable, Equatable, Sendable {
     public var endpointId: String
@@ -40,6 +40,24 @@ public struct P2PPath: Codable, Equatable, Sendable {
     public var rttMilliseconds: UInt64
 }
 
+/// Test constraint implemented through the pinned public foreign-preset API.
+/// Both address families must be replaced: setting just IPv4 leaves the
+/// builder's default IPv6 socket available for direct application QUIC.
+private final class LoopbackQuicPresetForQA: Preset, @unchecked Sendable {
+    private let base: any Preset
+    private let lock = NSLock()
+    private var failed = false
+    init(base: any Preset) { self.base = base }
+    func apply(builder: EndpointBuilder) {
+        base.apply(builder: builder)
+        do {
+            try builder.bindAddr(addr: "127.0.0.1:0")
+            try builder.bindAddr(addr: "[::1]:0")
+        } catch { lock.withLock { failed = true } }
+    }
+    var configurationFailed: Bool { lock.withLock { failed } }
+}
+
 /// An independent transport key must be persisted by the app before production
 /// use. This raw transport never grants membership or interprets business data.
 public actor IrohEndpoint {
@@ -47,8 +65,10 @@ public actor IrohEndpoint {
     private init(_ endpoint: Endpoint) { self.endpoint = endpoint }
     public static func generateTransportKey() -> Data { SecretKey.generate().toBytes() }
     public static func bind(secretKey: Data, connectivity: P2PConnectivity = .directOnly,
-                            bindAddress: String? = nil) async throws -> IrohEndpoint {
-        guard secretKey.count == 32 else { throw P2PTransportError.invalidAddress }
+                            bindAddress: String? = nil, loopbackQuicForQA: Bool = false) async throws -> IrohEndpoint {
+        guard secretKey.count == 32, !loopbackQuicForQA || bindAddress == nil else {
+            throw P2PTransportError.invalidAddress
+        }
         let preset: any Preset
         let relay: RelayMode
         switch connectivity {
@@ -59,14 +79,61 @@ public actor IrohEndpoint {
             for url in urls { _ = try P2PAddress(endpointId: String(repeating: "a", count: 64), relayURL: url).native() }
             preset = presetMinimal(); relay = try .customFromUrls(urls: urls)
         }
-        return try await IrohEndpoint(Endpoint.bind(options: EndpointOptions(preset: preset,
-            bindAddr: bindAddress, secretKey: secretKey, alpns: [P2PTransportLimits.alpn], relayMode: relay)))
+        let constrained = loopbackQuicForQA ? LoopbackQuicPresetForQA(base: preset) : nil
+        let selectedPreset: any Preset
+        if let constrained { selectedPreset = constrained } else { selectedPreset = preset }
+        let value = try await IrohEndpoint(Endpoint.bind(options: EndpointOptions(preset: selectedPreset,
+            bindAddr: loopbackQuicForQA ? nil : bindAddress, secretKey: secretKey,
+            alpns: [P2PTransportLimits.alpn], relayMode: relay)))
+        if loopbackQuicForQA {
+            do {
+                guard constrained?.configurationFailed == false else { throw P2PTransportError.invalidAddress }
+                try await value.requireLoopbackQuicForQA()
+            } catch { try? await value.close(); throw error }
+        }
+        return value
     }
     public func address() -> P2PAddress {
         let addr = endpoint.addr()
         return P2PAddress(endpointId: addr.id().description, relayURL: addr.relayUrl(), directAddresses: addr.directAddresses())
     }
     public func boundSockets() -> [String] { endpoint.boundSockets() }
+    /// Verifies only application QUIC binds. DNS/discovery/relay helper traffic
+    /// has independent sockets and is intentionally outside this QA assertion.
+    public func requireLoopbackQuicForQA() throws {
+        let sockets = endpoint.boundSockets()
+        var families = Set<Int>()
+        for socket in sockets {
+            let portText: Substring
+            if socket.hasPrefix("127.0.0.1:") { portText = socket.dropFirst(10); families.insert(4) }
+            else if socket.hasPrefix("[::1]:") { portText = socket.dropFirst(6); families.insert(6) }
+            else { throw P2PTransportError.invalidAddress }
+            guard !portText.isEmpty, portText.utf8.allSatisfy({ (48...57).contains($0) }),
+                  let port = UInt16(portText), port > 0 else { throw P2PTransportError.invalidAddress }
+        }
+        guard sockets.count == 2, families == [4, 6] else { throw P2PTransportError.invalidAddress }
+    }
+    /// Waits only for a selected relay address, NOT a connected relay handshake.
+    /// The pinned Swift online() bridge ignores cancellation, so this bounded
+    /// public-API poll never starts that native future. Actual QUIC + signed
+    /// Protocol 4 authentication must separately establish reachability.
+    public func waitForRelayAddress(timeout: Duration = .seconds(15)) async throws -> Bool {
+        guard timeout > .zero, timeout <= .seconds(60) else { throw P2PTransportError.relayReadiness }
+        let clock = ContinuousClock()
+        let deadline = clock.now.advanced(by: timeout)
+        while true {
+            try Task.checkCancellation()
+            guard !endpoint.isClosed() else { throw P2PTransportError.closed }
+            let address = address()
+            if address.relayURL != nil {
+                _ = try address.native() // Require a validated HTTPS routing hint.
+                return true
+            }
+            let now = clock.now
+            guard now < deadline else { return false }
+            try await clock.sleep(until: min(deadline, now.advanced(by: .milliseconds(100))))
+        }
+    }
     public func connect(to address: P2PAddress) async throws -> IrohFrameConnection {
         let connection = try await endpoint.connect(addr: address.native(), alpn: P2PTransportLimits.alpn)
         guard connection.remoteId().description == address.endpointId else {

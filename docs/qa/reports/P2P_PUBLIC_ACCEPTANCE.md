@@ -1,12 +1,91 @@
-# Public Mac–Samsung P2P acceptance — 2026-10-19
+# Public Mac–Samsung P2P acceptance — 2026-10-20
 
 ## Status
 
-**BLOCKED: ADB stopped listing the authorized Samsung before public payload
-exchange. The connection-loss cause is UNKNOWN. No public no-VPN direction has
-passed.** The current installed Mac
+**BLOCKED: the authorized Samsung is connected again, but currently locked;
+the Mac uses that same Samsung's hotspot. Independent-network public acceptance
+has not passed.** The current installed Mac
 Build 13 and Android code 8 still use C1; the test transport does not replace
 either installed application. No production Worker, pairing or user store changed.
+
+## October 20 debugging and retained results
+
+- Fresh owner-only backup outside the repository: Android private test archive,
+  previous test APK and a four-file Mac production identity/database manifest.
+  All four Mac hashes still match after the attempts. Only the instrumentation
+  APK was updated, after checking its existing signer; the host App was retained.
+- Two early preflight failures exposed an overly broad Wi-Fi detector. An enabled
+  radio is not an Internet route, and Samsung's `LOCAL_NETWORK` hotspot is not
+  Internet Wi-Fi. The guard now examines network capabilities and source routes.
+  It still rejects active VPNs, Internet Wi-Fi on the phone and unknown routes.
+- Mac global IPv6 belongs to the phone hotspot's prefix, and its default gateway
+  matches the phone AP. This is **shared-hotspot LAN**, not two independent public
+  networks. ICMPv6 to the phone AP passed 2/2; that does not prove QUIC delivery.
+- First explicit shared-hotspot native attempt: **FAIL**, 45.169 seconds,
+  Mac native connect timed out. Phone last stage was contact publication; logs
+  do not prove it entered `accept`. Cause **UNKNOWN**. The old instrumentation
+  outlived its deadline; its scoped log was retained and only its verified owned
+  PID was terminated. No data clear/uninstall was used.
+- New test-only handling selects the exact local AP network for the LAN case,
+  restores the previous process binding in `finally`, adds granular contact
+  stages and an owned-namespace abort control. Successful instrumentation exit
+  and a post-cleanup restoration witness are mandatory. These runtime paths are
+  **NOT RUN** until an unlocked-phone retry; coroutine timeouts alone are not
+  claimed to bound a blocking native destructor.
+- Latest retry correctly stopped in preflight in 9.662 seconds: phone was
+  `Dozing`, keyguard showing. No endpoint was launched. User unlock is required;
+  the driver never wakes/unlocks the phone or edits lock-screen settings. Whether
+  Doze contributed to the earlier native failure remains **UNKNOWN**.
+- Completion barrier corrected: request phone finish, verify its actual JUnit
+  exit and network restoration, then finish Mac. A premature socket close or
+  already-written result can no longer substitute for successful process exit.
+- Swift's pinned native `online()` future does not provide a reliable cancellable
+  wait. QA now polls only for a relay address with a bounded cancellable wait;
+  this is a routing hint, never a claim that relay connection succeeded.
+
+Local regression: **42 PASS / 0 FAIL / 0 SKIP** (32 driver, 3 core binding,
+4 optional native QUIC, 3 actual CLI root guards). Portable protocol checks:
+**25 PASS / 0 FAIL** (17 Python, 8 Swift). Android JVM:
+**53 PASS / 0 FAIL / 3 SKIP**; app JVM target has no tests. Strict Android test-APK
+build and Swift QA build pass. `make protocol-test` initially lacked this
+worktree's optional Python environment; its exact Python/Swift suites subsequently
+passed using the existing pinned QA runtime. Android JVM startup initially lacked
+`ANDROID_HOME`; rerun with the existing SDK passed. These setup errors are retained.
+
+Publication gate: tracked source plus reachable history **PASS**, 538 files /
+941 historical blobs, zero findings. Android Copy QA **PASS** (578 entries,
+zero warnings); Apple Copy QA **WARN**, zero errors / 14 existing warnings.
+Visual QA **NOT RUN**; no product UI or approved baseline changed. PR #10 stays
+Draft. Before this update, three prior-head CI jobs passed and two arm64 jobs
+were cancelled because a hosted runner was not acquired; cancellation is not a
+test PASS. Latest-head CI must be reported separately after publication.
+
+Physical public direct, public encrypted relay, reverse direction, complete
+259-operation/ACK/restart acceptance and media are **NOT RUN / BLOCKED**; no
+partial network observation is reported as a replication PASS. Current test-only
+APK SHA-256: `a57d16ef5ec54970ffa4e899a05e0d0424bc8a68fc7280a78e1cf52a263304a1`.
+All actual topology, addresses, serial, logs and synthetic private stores remain
+in ignored local `qa/results/p2p-public-20261020/` and private backups.
+
+## Explicit network scopes
+
+- Default `independent-public`: must prove independent Mac Wi-Fi and phone mobile
+  routes; rejects the currently shared hotspot topology.
+- `shared-hotspot` + `directOnly`: local interoperability only. Public acceptance
+  remains **NOT RUN**, even if every operation assertion passes.
+- `shared-uplink-public-relay` + `automatic`: a separate proposed runtime check.
+  Mac application QUIC sockets are constrained to both loopback families using
+  the pinned public preset API, verified before/after connection. Both endpoints
+  must report selected relay paths and check every completed application frame.
+  Contacts carry relay hints only; phone retains its mobile default. This can
+  verify actual encrypted public relay access without VPN, but still cannot
+  prove independent-network NAT traversal. Other UDP helper traffic is outside
+  the loopback application-socket assertion. Runtime result **NOT RUN**.
+
+## October 19 historical failure
+
+ADB stopped listing the authorized Samsung before public payload exchange. The
+connection-loss cause remains **UNKNOWN**; reconnection does not resolve it.
 
 The first Mac-to-Android attempt stopped during test initialization. A bounded
 temporary-root check rejected macOS Foundation's `/tmp` canonicalization of the
@@ -49,7 +128,7 @@ automatic relay fallback, both invitation directions and physical media remain
   the same isolated stores, require different PIDs and verify existing identity,
   checkpoint, tombstone and signed receipt membership without networking.
 
-## Verified so far
+## October 19 verification (historical counts)
 
 - Swift QA executable: **BUILD PASS**. It is not the production Mac App.
 - Android instrumentation: **BUILD PASS**, with strict Gradle verification.
@@ -68,7 +147,7 @@ automatic relay fallback, both invitation directions and physical media remain
   outside the repository. No app uninstall, data clear, key migration, production
   install, network setting change, Cloudflare deployment or PR merge occurred.
 
-## Reproduce after USB reconnection
+## Reproduce after manual unlock and topology confirmation
 
 Build the optional Swift CLI and Android instrumentation, verify the installed
 Debug signer, and install **only** the test APK with `adb install -r`. Keep the

@@ -32,6 +32,43 @@ private actor LinkFailures {
 
 @Suite("Real relay-disabled QUIC operation transport", .timeLimit(.minutes(1)))
 struct P2PTransportTests {
+    @Test func qaPresetReplacesBothApplicationQuicBindFamiliesWithoutInternet() async throws {
+        let endpoint = try await IrohEndpoint.bind(secretKey: IrohEndpoint.generateTransportKey(),
+            connectivity: .directOnly, loopbackQuicForQA: true)
+        do {
+            try await endpoint.requireLoopbackQuicForQA()
+            let sockets = await endpoint.boundSockets()
+            #expect(sockets.count == 2)
+            #expect(sockets.contains { $0.hasPrefix("127.0.0.1:") })
+            #expect(sockets.contains { $0.hasPrefix("[::1]:") })
+            #expect(await endpoint.address().relayURL == nil)
+            #expect(try await endpoint.waitForRelayAddress(timeout: .milliseconds(20)) == false)
+        } catch { try? await endpoint.close(); throw error }
+        try await endpoint.close()
+        await #expect(throws: P2PTransportError.invalidAddress) {
+            try await IrohEndpoint.bind(secretKey: IrohEndpoint.generateTransportKey(),
+                bindAddress: "127.0.0.1:0", loopbackQuicForQA: true)
+        }
+    }
+
+    @Test func relayAddressWaitIsBoundedCancellableAndRequiresOpenEndpoint() async throws {
+        let endpoint = try await IrohEndpoint.bind(secretKey: IrohEndpoint.generateTransportKey(), bindAddress: "127.0.0.1:0")
+        let start = ContinuousClock.now
+        #expect(try await endpoint.waitForRelayAddress(timeout: .milliseconds(50)) == false)
+        #expect(start.duration(to: .now) < .seconds(2))
+        let pending = Task { try await endpoint.waitForRelayAddress(timeout: .seconds(15)) }
+        try await Task.sleep(for: .milliseconds(20))
+        pending.cancel()
+        do { _ = try await pending.value; Issue.record("Cancelled helper-address wait unexpectedly succeeded") }
+        catch is CancellationError { }
+        catch { Issue.record("Unexpected cancellation error: \(error)") }
+        try await endpoint.close()
+        do { _ = try await endpoint.waitForRelayAddress(); Issue.record("Closed endpoint unexpectedly became ready") }
+        catch P2PTransportError.closed { }
+        catch { Issue.record("Unexpected closed-endpoint error: \(error)") }
+        await #expect(throws: P2PTransportError.self) { try await endpoint.waitForRelayAddress(timeout: .zero) }
+    }
+
     @Test @MainActor func signedPagedIncrementalSyncAckAndTombstoneOverDirectQuic() async throws {
         let f = try Pair()
         let ea = try await IrohEndpoint.bind(secretKey: IrohEndpoint.generateTransportKey(), bindAddress: "127.0.0.1:0")

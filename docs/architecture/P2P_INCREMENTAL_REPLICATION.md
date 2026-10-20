@@ -81,8 +81,10 @@ ACKs, then converges a tombstone as operation 259. Both selected paths must repo
 direct IP and not relay. A malicious 4 GiB length prefix is rejected before its
 payload is allocated. Three additional core trust/replay/revocation tests pass.
 
-NOT RUN: Mac-to-Samsung P2P, public NAT traversal, no-VPN public direct/relay
-fallback, 100k QUIC workload, P2P gift-media ACK and production key persistence.
+NOT PASSED: Mac-to-Samsung P2P (first shared-hotspot native connect timed out,
+cause UNKNOWN). NOT RUN: independent public NAT traversal, no-VPN public
+direct/relay acceptance, 100k QUIC workload, P2P gift-media ACK and production
+key persistence.
 IMPLEMENTED / BUILD TESTED: a test-only Android native adapter, bounded public
 physical driver and native isolated QA CLI, including fresh-process recovery
 assertions. See [actual attempt status](../qa/reports/P2P_PUBLIC_ACCEPTANCE.md).
@@ -94,6 +96,16 @@ C1; they must not be advertised as P2P builds.
 Local command: `make p2p-test`. Tests use synthetic identities and independent
 in-memory stores, no production database or Cloudflare deployment. Candidate
 screenshots, runtime artifacts and real network metadata remain local.
+
+The physical driver fails closed on shared uplinks in its default public scope.
+Explicit LAN and shared-uplink encrypted-relay scopes are separate diagnostics.
+The latter uses the pinned public preset API to bind both Mac application QUIC
+address families to loopback and checks selected relay paths on every application
+frame. This does not claim all helper UDP traffic is disabled. On Android, only
+LAN QA selects the exact local-only AP network for the test process; public relay
+QA retains the mobile default. A post-cleanup restoration witness and actual
+JUnit exit are required before the Mac is allowed to exit. Native teardown
+timing and these physical runtime paths still require an unlocked-phone retry.
 
 [QA and retained failures](../qa/reports/P2P_TRANSPORT_FOUNDATION.md) records the
 initial CI timeout, reproduced optimistic-snapshot race, bounded index-read

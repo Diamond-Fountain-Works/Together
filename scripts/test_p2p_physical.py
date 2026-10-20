@@ -1,10 +1,14 @@
 #!/usr/bin/env python3
-"""Public Samsung <-> isolated native Mac P2P acceptance; never installs an APK.
+"""Samsung <-> isolated native Mac P2P acceptance; never installs an APK.
 
 USB transfers only allowlisted public bootstrap/contact files and diagnostic
 summaries. Operation records, media, databases and private keys stay on their
 originating device. No adb reverse, VPN changes, production App or Relay is used.
 Artifacts are private and confined to ignored qa/results/p2p-public-* paths.
+Independent public networks are required by default. Explicit shared-hotspot
+scope is direct LAN interoperability only and never produces public acceptance.
+Shared-uplink-public-relay requires a loopback-only Mac QUIC socket and verified
+encrypted public-relay I/O; it still cannot prove independent Internet uplinks.
 """
 from pathlib import Path
 import argparse
@@ -150,6 +154,14 @@ def parse_android_network(raw):
         return set(match.group(1).split("|"))
     transport_sets = [transports(item) for item in agents]
     require(not any("VPN" in tokens for tokens in transport_sets), "An active Android VPN network is present")
+    local_wifi = 0
+    for agent, tokens in zip(agents, transport_sets):
+        if "WIFI" in tokens:
+            caps = re.search(r"Capabilities:\s*([^\s\]]+)", agent)
+            values = set(caps.group(1).split("&")) if caps else set()
+            require("LOCAL_NETWORK" in values and "INTERNET" not in values,
+                    "Android Wi-Fi Internet or unclassified Wi-Fi network is present")
+            local_wifi += 1
     capabilities = re.search(r"Capabilities:\s*([^\s\]]+)", line)
     capability_tokens = set(capabilities.group(1).split("&")) if capabilities else set()
     require(transports(line) == {"CELLULAR"} and {"NOT_VPN", "VALIDATED"} <= capability_tokens,
@@ -159,8 +171,141 @@ def parse_android_network(raw):
     interface = re.search(r"InterfaceName:\s*([^\s]+)", line)
     require(interface and re.fullmatch(r"(?:rmnet|ccmni|pdp)[A-Za-z0-9_.-]*", interface.group(1)),
             "Android mobile interface is unknown or uses an unexpected transport")
-    return {"defaultTransport": "CELLULAR", "validated": True, "vpn": False,
+    return {"defaultTransport": "CELLULAR", "validated": True, "vpn": False, "wifiInternetConnected": False,
+            "localOnlyWifiAgents": local_wifi,
             "mobileInterface": interface.group(1)}
+
+
+def android_link_networks(raw):
+    """Parse current ConnectivityManager LinkProperties, not shell route tables."""
+    # First establish active default, capabilities, absence of VPN/Internet Wi-Fi.
+    parse_android_network(raw)
+    default_id = re.search(r"Active default network:\s*(\d+)", raw).group(1)
+    result = []
+    for line in raw.splitlines():
+        if not line.lstrip().startswith("NetworkAgentInfo{network{"):
+            continue
+        ident = re.search(r"NetworkAgentInfo\{network\{(\d+)\}", line)
+        interface = re.search(r"InterfaceName:\s*([^\s]+)", line)
+        transports = re.search(r"Transports:\s*([^\s]+)", line)
+        caps = re.search(r"Capabilities:\s*([^\s\]]+)", line)
+        links = re.search(r"LinkAddresses:\s*\[([^\]]*)\]", line)
+        route_text = re.search(r"Routes:\s*\[([^\]]*)\]", line)
+        require(ident and interface and transports and caps and links and route_text,
+                "Android current LinkProperties is incomplete; route proof unavailable")
+        addresses = []
+        for item in links.group(1).split(","):
+            item = item.strip()
+            if item:
+                try:
+                    addresses.append(ipaddress.ip_interface(item))
+                except ValueError:
+                    raise GateError("Unrecognized LinkProperties address; route proof unavailable")
+        routes = []
+        for item in route_text.group(1).split(","):
+            item = item.strip()
+            if not item:
+                continue
+            route = re.fullmatch(r"(\S+/\d+)\s*->\s*\S+\s+(\S+)\s+mtu\s+\d+", item)
+            require(route, "Unrecognized LinkProperties route; route proof unavailable")
+            try:
+                routes.append({"prefix": ipaddress.ip_network(route.group(1), strict=False), "interface": route.group(2)})
+            except ValueError:
+                raise GateError("Invalid LinkProperties route prefix")
+        result.append({"id": ident.group(1), "default": ident.group(1) == default_id,
+                       "interface": interface.group(1), "transports": set(transports.group(1).split("|")),
+                       "capabilities": set(caps.group(1).split("&")), "addresses": addresses, "routes": routes})
+    require(sum(item["default"] for item in result) == 1, "Default LinkProperties record must be unique")
+    return result
+
+
+def global_ipv6(value):
+    try:
+        address = ipaddress.ip_address(value)
+    except ValueError:
+        raise GateError("A numeric global IPv6 address is required")
+    require(address.version == 6 and address.is_global, "A numeric global IPv6 address is required")
+    return address
+
+
+def verify_independent_uplink(networks, mac_address, mac_gateway):
+    peer = global_ipv6(mac_address)
+    for network in networks:
+        if "LOCAL_NETWORK" not in network["capabilities"]:
+            continue
+        require(not any(link.version == 6 and peer in link.network for link in network["addresses"]),
+                "Independent uplink NOT VERIFIED: Mac IPv6 is inside the phone's local network")
+        require(not any(str(link.ip) == mac_gateway for link in network["addresses"]),
+                "Independent uplink NOT VERIFIED: Mac gateway overlaps a phone local-network address")
+
+
+def verify_android_source_route(networks, source, target, *, scope, mac_gateway=None):
+    """CM/default-network + explicit source binding + LP longest-match proof.
+
+    This is deliberately not represented as a privileged kernel route lookup.
+    Separate networks can contain service-specific ::/0 routes (for example
+    IMS); only the selected source/default network's LP is used for lookup.
+    """
+    source, target = global_ipv6(source), global_ipv6(target)
+    if scope == "independent-public":
+        verify_independent_uplink(networks, str(target), mac_gateway)
+        candidates = [item for item in networks if item["default"] and item["transports"] == {"CELLULAR"}]
+        require(len(candidates) == 1, "A unique default mobile LinkProperties record is required")
+        chosen = candidates[0]
+        require(any(link.ip == source for link in chosen["addresses"]),
+                "Explicit P2P source is not owned by the default mobile interface")
+        for item in networks:
+            if item is chosen:
+                continue
+            require(not any(link.version == 6 and target in link.network for link in item["addresses"]),
+                    "Public peer is reachable through another local/service link prefix")
+        require(any(route["prefix"] == ipaddress.ip_network("::/0") and route["interface"] == chosen["interface"] for route in chosen["routes"]),
+                "Default mobile IPv6 route is missing from LinkProperties")
+    elif scope == "shared-hotspot":
+        candidates = [item for item in networks if "WIFI" in item["transports"] and
+                      "LOCAL_NETWORK" in item["capabilities"] and "INTERNET" not in item["capabilities"] and
+                      any(link.ip == source for link in item["addresses"])]
+        require(len(candidates) == 1, "Explicit hotspot source must belong to one known local-only Wi-Fi interface")
+        chosen = candidates[0]
+        require(any(link.version == 6 and target in link.network for link in chosen["addresses"]),
+                "Shared-hotspot test needs Mac and phone on the same known IPv6 local prefix")
+        require(mac_gateway and any(str(link.ip) == mac_gateway for link in chosen["addresses"]),
+                "Shared-hotspot test needs the Mac default gateway to be the phone's AP address")
+    elif scope == "shared-uplink-public-relay":
+        candidates = [item for item in networks if item["default"] and item["transports"] == {"CELLULAR"}]
+        require(len(candidates) == 1, "Public relay needs a unique mobile-default network")
+        chosen = candidates[0]
+        require(any(link.ip == source for link in chosen["addresses"]), "Public-relay source must belong to the mobile default, not the AP")
+        require(any(route["prefix"] == ipaddress.ip_network("::/0") and route["interface"] == chosen["interface"] for route in chosen["routes"]),
+                "Public-relay mobile IPv6 default route is missing")
+        local = [item for item in networks if "WIFI" in item["transports"] and "LOCAL_NETWORK" in item["capabilities"] and
+                 any(link.version == 6 and target in link.network for link in item["addresses"]) and
+                 any(str(link.ip) == mac_gateway for link in item["addresses"])]
+        require(len(local) == 1, "Explicit shared-uplink relay scope needs proven phone-hotspot topology")
+        return {"mechanism": "ConnectivityManager LinkProperties + explicit mobile source bind; relay-only QA transport",
+                "interface": chosen["interface"], "networkId": chosen["id"], "scope": scope,
+                "kernelRouteCommandUsed": False, "sourceOwnedByInterface": True,
+                "sharedUplinkVerified": True, "directPeerRouteNotUsed": True, "relayRequiredByQA": True}
+    else:
+        raise GateError("Unknown network acceptance scope")
+    matches = [route for route in chosen["routes"] if route["prefix"].version == 6 and target in route["prefix"]]
+    require(matches, "No advertised route to the selected peer")
+    length = max(route["prefix"].prefixlen for route in matches)
+    winners = [route for route in matches if route["prefix"].prefixlen == length]
+    require(all(route["interface"] == chosen["interface"] for route in winners), "Peer route leaves the explicit source's interface")
+    if scope == "shared-hotspot":
+        require(length > 0, "A shared-hotspot peer needs a connected local prefix route")
+    return {"mechanism": "ConnectivityManager LinkProperties + explicit native IPv6 source bind",
+            "interface": chosen["interface"], "networkId": chosen["id"], "scope": scope,
+            "longestMatchPrefixLength": length, "kernelRouteCommandUsed": False,
+            "sourceOwnedByInterface": True, "peerLocalShortcutExcluded": scope == "independent-public"}
+
+
+def wifi_radio_state(raw):
+    """Informational only: an enabled but disconnected radio is not a path."""
+    first = raw.splitlines()[0] if raw.splitlines() else ""
+    match = re.search(r"\b(enabled|disabled)\b", first, re.I)
+    return match.group(1).lower() if match else "unknown"
 
 
 def check_environment_proxy(environment):
@@ -194,6 +339,70 @@ def verify_fresh_process_reopen(original, reopened, checkpoint):
             first != second and reopened.get("priorProcessPid") == first,
             "Fresh-process restart NOT VERIFIED: original and reopened process IDs must differ")
     return {"firstProcessPid": first, "reopenedProcessPid": second, "networkUsed": False, "status": "PASS"}
+
+
+def verified_selected_paths(endpoints, *, direct_only):
+    require(len(endpoints) == 2, "Exactly two endpoint results are required")
+    selected = []
+    for endpoint in endpoints:
+        current = [path for path in endpoint.get("paths", []) if path.get("selected") is True]
+        require(current, "Each endpoint must report at least one selected transport path")
+        require(all(type(path.get("direct")) is bool and type(path.get("relayed")) is bool and
+                    path["direct"] != path["relayed"] for path in current), "A selected transport path has invalid or ambiguous type")
+        if direct_only:
+            require(all(path["direct"] and not path["relayed"] for path in current), "Direct-only test selected a relay or unknown path")
+        selected.extend(current)
+    return selected
+
+
+def verify_shared_uplink_relay_paths(mac_result, phone_result):
+    selected = verified_selected_paths((mac_result, phone_result), direct_only=False)
+    require(all(path["relayed"] and not path["direct"] for path in selected),
+            "Shared-uplink public-relay test cannot use a direct path")
+    require(mac_result.get("loopbackQuicVerified") is True and mac_result.get("relayPathEveryFrameVerified") is True,
+            "Mac must prove loopback-only QUIC sockets and relay selection for every application I/O")
+    require(phone_result.get("relayPathEveryFrameVerified") is True,
+            "Android must prove relay selection for every application I/O")
+    return selected
+
+
+def verify_network_restoration(value):
+    require(isinstance(value, dict) and value.get("restored") is True and
+            value.get("currentBindingMatchesPrevious") is True and type(value.get("previouslyBound")) is bool,
+            "Android process Network binding restoration is NOT VERIFIED")
+    return {"status": "PASS", "previouslyBound": value["previouslyBound"], "restored": True,
+            "currentBindingMatchesPrevious": True}
+
+
+def verify_android_ready_state(power, policy):
+    message = ("Samsung must be awake and unlocked before QA. Please unlock it manually and keep the screen awake; "
+               "the driver never wakes or unlocks the phone.")
+    # Some Samsung power dumps repeat mWakefulness as a numeric per-display
+    # enum. Only the explicit named global state is an affirmative witness.
+    names = re.findall(r"\bmWakefulness\s*=\s*([A-Za-z]+)\b", power)
+    require(names and set(names) == {"Awake"}, message)
+    interactive = re.findall(r"\b(?:mIsInteractive|mInteractive)\s*=\s*(true|false)\b", power, re.I)
+    require(not interactive or all(item.lower() == "true" for item in interactive), message)
+    showing = re.findall(r"(?<![A-Za-z])(?:mKeyguardState\.)?(?:showing|mShowing)\s*=\s*(true|false)\b", policy)
+    restricted = re.findall(r"\b(?:mKeyguardState\.)?(?:mInputRestricted|inputRestricted)\s*=\s*(true|false)\b", policy)
+    require(showing and restricted and set(showing) == {"false"} and set(restricted) == {"false"}, message)
+    return {"status": "PASS", "wakefulness": "Awake", "interactive": True,
+            "interactiveEvidence": "explicit Wakefulness.Awake, with optional interactive flag cross-check",
+            "keyguardShowing": False, "inputRestricted": False}
+
+
+def finish_participant_barrier(*, finish_phone, await_verified_phone, finish_mac, await_mac):
+    """Keep the Mac link alive through the phone's verified terminal teardown.
+
+    Both participants already proved reciprocal persistence. Closing Mac first
+    can race the phone's still-active receiver and turn a valid final session
+    into EOF. Finish phone, check its *actual Runner outcome*, then close Mac.
+    Any teardown/test error propagates; no invalid frame or EOF is suppressed.
+    """
+    finish_phone()
+    await_verified_phone()
+    finish_mac()
+    await_mac()
 
 
 def stop_owned(child):
@@ -243,13 +452,29 @@ class PhysicalP2P:
         require(not check or result.returncode == 0, "Network inspection failed; see private evidence")
         return result
 
+    def power_state(self, label, *, require_ready):
+        power = self.capture(label + "-android-power.txt", self.adb + ["shell", "dumpsys", "power"]).stdout.decode(errors="replace")
+        policy = self.capture(label + "-android-window-policy.txt", self.adb + ["shell", "dumpsys", "window", "policy"]).stdout.decode(errors="replace")
+        try:
+            state = verify_android_ready_state(power, policy)
+        except GateError as error:
+            state = {"status": "NOT READY", "message": str(error), "networkFailureCause": "UNKNOWN"}
+            write_private(self.output / (label + "-android-ready-state.json"), encoded(state))
+            if require_ready:
+                raise
+            return state
+        write_private(self.output / (label + "-android-ready-state.json"), encoded(state))
+        return state
+
     def network_gate(self, label):
         reverse = self.capture(label + "-android-reverse.txt", self.adb + ["reverse", "--list"]).stdout
         require(not reverse.strip(), "ADB reverse must be absent during public-network acceptance")
         connectivity = self.capture(label + "-android-connectivity.txt", self.adb + ["shell", "dumpsys", "connectivity"]).stdout.decode(errors="replace")
         phone = parse_android_network(connectivity)
         wifi = self.capture(label + "-android-wifi.txt", self.adb + ["shell", "cmd", "wifi", "status"]).stdout.decode(errors="replace")
-        require(wifi.splitlines() and re.search(r"\bdisabled\b", wifi.splitlines()[0], re.I), "Samsung Wi-Fi must remain disabled")
+        # Active-agent/default-capability and per-peer mobile-route checks prove
+        # the actual path. Do not ask the user to disable a disconnected radio.
+        phone["wifiRadioState"] = wifi_radio_state(wifi)
         for setting in ("http_proxy", "global_http_proxy_host", "global_http_proxy_port", "global_proxy_pac_url"):
             proxy = self.capture(label + "-android-" + setting + ".txt", self.adb + ["shell", "settings", "get", "global", setting]).stdout.decode().strip()
             require(proxy in {"", "null", ":0", "0"}, "Android has a configured HTTP/PAC proxy")
@@ -259,41 +484,68 @@ class PhysicalP2P:
         require(not re.search(r"(?:HTTP|HTTPS|SOCKS|FTP|ProxyAutoConfig|ProxyAutoDiscovery)Enable\s*:\s*[1-9]", proxies), "A Mac system proxy is enabled")
         check_environment_proxy(os.environ)
         interfaces = []
+        gateway = None
         for family, flag in (("4", "-inet"), ("6", "-inet6")):
             route = self.capture(label + "-mac-route" + family + ".txt", ["/sbin/route", "-n", "get", flag, "default"], check=False)
             if route.returncode == 0:
                 match = re.search(r"\binterface:\s*(\S+)", route.stdout.decode(errors="replace"))
                 require(match and match.group(1) == "en0", "Mac default traffic must use Wi-Fi en0, not a VPN or USB interface")
                 interfaces.append(match.group(1))
+                if family == "4":
+                    address = re.search(r"\bgateway:\s*(\S+)", route.stdout.decode(errors="replace"))
+                    gateway = address.group(1) if address else None
         require(interfaces, "No verified Mac Wi-Fi default route")
         self.capture(label + "-mac-network-state.txt", ["/usr/sbin/scutil", "--nwi"])
-        result = {"android": phone, "macDefaultInterface": "en0", "vpn": False, "systemProxy": False, "adbReverse": False}
+        result = {"android": phone, "macDefaultInterface": "en0", "vpn": False, "systemProxy": False, "adbReverse": False,
+                  "networkScope": self.args.network_scope}
+        if getattr(self, "bound_sources_ready", False):
+            result["scopeRouteProof"] = verify_android_source_route(android_link_networks(connectivity),
+                public_socket(self.args.android_bind, allow_zero=True)[0],
+                self.mac_source_address,
+                scope=self.args.network_scope, mac_gateway=gateway)
         write_private(self.output / (label + "-network-summary.json"), encoded(result))
         return result
 
     def choose_bind_addresses(self):
         """Bind only current global Wi-Fi/mobile IPv6, never a USB/VPN route."""
-        if self.args.mac_bind is None:
-            interfaces = self.capture("mac-wifi-addresses.txt", ["/sbin/ifconfig", "en0"]).stdout.decode(errors="replace")
-            candidates = []
-            for line in interfaces.splitlines():
-                match = re.search(r"\binet6\s+([0-9a-fA-F:]+)(?:%\S+)?\s", line)
-                if match and "deprecated" not in line and ipaddress.ip_address(match.group(1)).is_global:
-                    candidates.append(match.group(1))
-            require(candidates, "Mac en0 has no verified global IPv6 address; provide a valid explicit public bind")
-            self.args.mac_bind = "[" + candidates[0] + "]:0"
+        interfaces = self.capture("mac-wifi-addresses.txt", ["/sbin/ifconfig", "en0"]).stdout.decode(errors="replace")
+        mac_candidates = []
+        for line in interfaces.splitlines():
+            match = re.search(r"\binet6\s+([0-9a-fA-F:]+)(?:%\S+)?\s", line)
+            if match and "deprecated" not in line and ipaddress.ip_address(match.group(1)).is_global:
+                mac_candidates.append(str(ipaddress.ip_address(match.group(1))))
+        require(mac_candidates, "Mac en0 has no verified global IPv6 address")
+        if self.args.mac_bind is None and self.args.network_scope != "shared-uplink-public-relay":
+            self.args.mac_bind = "[" + mac_candidates[0] + "]:0"
+        mac_source = (mac_candidates[0] if self.args.network_scope == "shared-uplink-public-relay" else
+                      public_socket(self.args.mac_bind, allow_zero=True)[0])
+        require(mac_source in mac_candidates, "Explicit Mac IPv6 bind is not owned by en0")
+        self.mac_source_address = mac_source
+        raw = (self.output / "before-android-connectivity.txt").read_text()
+        networks = android_link_networks(raw)
+        route4 = (self.output / "before-mac-route4.txt").read_text()
+        gateway = re.search(r"\bgateway:\s*(\S+)", route4)
+        self.mac_gateway = gateway.group(1) if gateway else None
+        if self.args.network_scope in {"independent-public", "shared-uplink-public-relay"}:
+            if self.args.network_scope == "independent-public":
+                verify_independent_uplink(networks, mac_source, self.mac_gateway)
+            sources = [link.ip for item in networks if item["default"] for link in item["addresses"] if link.version == 6 and link.ip.is_global]
+        else:
+            sources = [link.ip for item in networks if "WIFI" in item["transports"] and "LOCAL_NETWORK" in item["capabilities"]
+                       and any(local.version == 6 and ipaddress.ip_address(mac_source) in local.network for local in item["addresses"])
+                       and any(str(local.ip) == self.mac_gateway for local in item["addresses"])
+                       for link in item["addresses"] if link.version == 6 and link.ip.is_global]
+        require(sources, "No verified IPv6 source is available for the explicitly selected scope")
         if self.args.android_bind is None:
-            raw = (self.output / "before-android-connectivity.txt").read_text()
-            selected = re.search(r"Active default network:\s*(\d+)", raw).group(1)
-            line = next(item for item in raw.splitlines() if "NetworkAgentInfo{network{" + selected + "}" in item)
-            links = re.search(r"LinkAddresses:\s*\[(.*?)\]\s*DnsAddresses:", line)
-            require(links, "Cannot establish default-mobile IP addresses")
-            candidates = [item for item in re.findall(r"([0-9a-fA-F:]+)/\d+", links.group(1))
-                          if ":" in item and ipaddress.ip_address(item).is_global]
-            require(candidates, "Samsung default mobile network has no verified global IPv6; provide an explicit public bind")
-            self.args.android_bind = "[" + candidates[0] + "]:0"
+            self.args.android_bind = "[" + str(sources[0]) + "]:0"
+        proof = verify_android_source_route(networks, public_socket(self.args.android_bind, allow_zero=True)[0],
+            mac_source, scope=self.args.network_scope, mac_gateway=self.mac_gateway)
+        self.bound_sources_ready = True
+        write_private(self.output / "initial-source-route-proof.json", encoded(proof))
         # Retain local routing hints privately. Never print them or commit them.
-        write_private(self.output / "bind-addresses.json", encoded({"mac": self.args.mac_bind, "android": self.args.android_bind}))
+        write_private(self.output / "bind-addresses.json", encoded({"mac": self.args.mac_bind, "macTopologyAddress": mac_source,
+                                                                   "loopbackQuicForQA": self.args.network_scope == "shared-uplink-public-relay", "android": self.args.android_bind,
+                                                                   "networkScope": self.args.network_scope}))
 
     def preflight(self):
         require(self.phone("get-state").stdout.strip() == b"device", "Samsung is not online and USB-authorized")
@@ -345,7 +597,7 @@ class PhysicalP2P:
         return self.network_gate("before")
 
     def pull(self, name):
-        require(name in {"descriptor.json", "signature.json", "contact.json", "result.json", "reopen-result.json", "stage.json", "error.json"}, "Nonpublic phone file rejected")
+        require(name in {"descriptor.json", "signature.json", "contact.json", "result.json", "reopen-result.json", "stage.json", "error.json", "network-restoration.json"}, "Nonpublic phone file rejected")
         result = self.phone("exec-out", "run-as", PACKAGE, "cat", self.phone_dir + "/" + name, check=False, timeout=8)
         if result.returncode:
             return None
@@ -354,15 +606,16 @@ class PhysicalP2P:
         except (json.JSONDecodeError, UnicodeDecodeError):
             return None
 
-    def push(self, name, raw):
-        require(name in {"genesis-body.json", "authorization.json", "peer-contact.json", "finish"}, "Nonpublic phone input rejected")
+    def push(self, name, raw, *, command_timeout=20):
+        require(name in {"genesis-body.json", "authorization.json", "peer-contact.json", "finish", "abort"}, "Nonpublic phone input rejected")
+        require(name not in {"finish", "abort"} or raw == b"", "QA lifecycle controls must be empty")
         require(len(raw) <= MAX_CONTROL and re.fullmatch(r"/sdcard/Android/data/com\.together\.android\.debug/files/p2p/QA-P2P-[A-F0-9]{32}", self.phone_dir), "Unsafe phone QA path")
         # adb shell joins arguments into a remote command. Quote only a wholly
         # validated constant/path, never JSON, user text, serial or a host path.
-        self.phone("shell", "run-as", PACKAGE, "mkdir", "-p", self.phone_dir)
+        self.phone("shell", "run-as", PACKAGE, "mkdir", "-p", self.phone_dir, timeout=command_timeout)
         script = "cat > " + self.phone_dir + "/" + name + ".driver-tmp"
-        self.phone("shell", "-T", "run-as", PACKAGE, "sh", "-c", "'" + script + "'", input=raw)
-        self.phone("shell", "run-as", PACKAGE, "mv", self.phone_dir + "/" + name + ".driver-tmp", self.phone_dir + "/" + name)
+        self.phone("shell", "-T", "run-as", PACKAGE, "sh", "-c", "'" + script + "'", input=raw, timeout=command_timeout)
+        self.phone("shell", "run-as", PACKAGE, "mv", self.phone_dir + "/" + name + ".driver-tmp", self.phone_dir + "/" + name, timeout=command_timeout)
 
     def stage(self, side, value):
         if value is not None and value != self.last_stage.get(side):
@@ -371,16 +624,28 @@ class PhysicalP2P:
             write_private(self.output / "stages.json", encoded(self.stages))
 
     def route_hints(self, contact, side):
+        networks = None
+        if side == "android-to-mac":
+            raw = self.capture("android-peer-route-linkproperties.txt", self.adb + ["shell", "dumpsys", "connectivity"]).stdout.decode(errors="replace")
+            networks = android_link_networks(raw)
+            if self.args.network_scope == "shared-uplink-public-relay":
+                proof = verify_android_source_route(networks, public_socket(self.args.android_bind, allow_zero=True)[0],
+                    self.mac_source_address, scope=self.args.network_scope, mac_gateway=self.mac_gateway)
+                write_private(self.output / "android-public-relay-source-proof.json", encoded(proof))
+                require(not contact["address"]["directAddresses"] and contact["address"].get("relayURL"),
+                        "Shared-uplink public-relay contact must have relay hints only")
+                return
         for index, hint in enumerate(contact["address"]["directAddresses"]):
             address, _ = public_socket(hint)
-            family = "-6" if ":" in address else "-4"
             if side == "mac-to-android":
                 command = ["/sbin/route", "-n", "get", "-inet6" if ":" in address else "-inet", address]
                 raw = self.capture("route-mac-peer-" + str(index) + ".txt", command).stdout.decode(errors="replace")
                 require(re.search(r"\binterface:\s*en0\b", raw), "Peer socket would leave Mac through a non-Wi-Fi interface")
             else:
-                raw = self.capture("route-android-peer-" + str(index) + ".txt", self.adb + ["shell", "ip", family, "route", "get", address]).stdout.decode(errors="replace")
-                require(re.search(r"\bdev\s+(?:rmnet|ccmni|pdp)[A-Za-z0-9_.-]*\b", raw), "Peer socket would leave Android through a non-mobile interface")
+                proof = verify_android_source_route(networks,
+                    public_socket(self.args.android_bind, allow_zero=True)[0], address,
+                    scope=self.args.network_scope, mac_gateway=self.mac_gateway)
+                write_private(self.output / ("route-android-peer-" + str(index) + ".json"), encoded(proof))
 
     def local_json(self, name):
         path = self.mac_root / name
@@ -392,18 +657,26 @@ class PhysicalP2P:
         self.started = time.monotonic()
         native = instrument = logger = reopen_native = reopen_instrument = None
         result = {"status": "FAIL", "direction": self.args.direction, "mode": self.args.mode,
-                  "scope": "physical public QUIC replication with synthetic pre-authorized trust; not invitation UI",
+                  "networkScope": self.args.network_scope, "publicNetworkStatus": "NOT RUN", "independentNetworkStatus": "NOT RUN", "publicRelayStatus": "NOT RUN",
+                  "scope": {"independent-public": "physical independent-public QUIC replication",
+                            "shared-hotspot": "physical shared-hotspot LAN-only QUIC interoperability",
+                            "shared-uplink-public-relay": "physical encrypted public-relay replication over a shared hotspot Internet uplink"}[self.args.network_scope] +
+                           " with synthetic pre-authorized trust; not invitation UI",
                   "namespace": self.namespace, "macPrivateRoot": str(self.mac_root), "apkInstalledByDriver": False}
         handles = []
         try:
             result["networkBefore"] = self.preflight()
             self.choose_bind_addresses()
+            result["androidPowerBefore"] = self.power_state("before-endpoints", require_ready=True)
             role = "initiator" if self.args.direction == "mac-to-android" else "acceptor"
             launch = {"role": role, "mode": self.args.mode, "deadlineSeconds": self.args.deadline_seconds}
-            if self.args.mac_bind:
+            if self.args.network_scope == "shared-uplink-public-relay":
+                launch["loopbackQuicForQA"] = True
+            elif self.args.mac_bind:
                 launch["bindAddress"] = self.args.mac_bind
             write_private(self.mac_root / "launch.json", encoded(launch))
             native_log = (self.output / "mac.log").open("wb"); handles.append(native_log)
+            endpoints_started = time.monotonic()
             native = subprocess.Popen([str(Path(self.args.mac_executable).expanduser().resolve()), "--root", str(self.mac_root)],
                                       cwd=ROOT, stdout=native_log, stderr=subprocess.STDOUT, start_new_session=True)
             phone_log = (self.output / "android-instrumentation.log").open("wb"); handles.append(phone_log)
@@ -411,7 +684,8 @@ class PhysicalP2P:
                     "-e", "physicalQa", "explicit-test-app-only", "-e", "expectedModel", self.model,
                     "-e", "qaRunId", self.run_id, "-e", "nativeP2pQa", "explicit-public-p2p-only",
                     "-e", "p2pNamespace", self.namespace, "-e", "p2pRole", "acceptor" if role == "initiator" else "initiator",
-                    "-e", "p2pMode", self.args.mode, "-e", "p2pDeadlineSeconds", str(self.args.deadline_seconds)]
+                    "-e", "p2pMode", self.args.mode, "-e", "p2pNetworkScope", self.args.network_scope,
+                    "-e", "p2pDeadlineSeconds", str(self.args.deadline_seconds)]
             if self.args.android_bind:
                 args += ["-e", "p2pBindAddress", self.args.android_bind]
             args += [RUNNER]
@@ -421,7 +695,9 @@ class PhysicalP2P:
             instrument = subprocess.Popen(self.adb + args, stdout=phone_log, stderr=subprocess.STDOUT, start_new_session=True)
             copied = set()
             peer_descriptor = own_descriptor = phone_result = mac_result = None
-            deadline = self.started + self.args.deadline_seconds + 30
+            # APK/signature/network preflight is not part of either endpoint's
+            # unchanged per-phase deadline. Total elapsed still includes it.
+            deadline = endpoints_started + self.args.deadline_seconds + 30
             while time.monotonic() < deadline:
                 self.stage("mac", self.local_json("stage.json"))
                 self.stage("android", self.pull("stage.json"))
@@ -457,6 +733,10 @@ class PhysicalP2P:
                     if phone_contact is not None and mac_contact is not None:
                         phone_contact = public_contact(phone_contact, peer_descriptor, self.args.mode)
                         mac_contact = public_contact(mac_contact, own_descriptor, self.args.mode)
+                        if self.args.network_scope == "shared-uplink-public-relay":
+                            for contact in (phone_contact, mac_contact):
+                                require(contact["address"].get("relayURL"), "Shared-uplink public-relay scope needs both relay hints ready")
+                                contact["address"]["directAddresses"] = []
                         require(phone_contact["binding"]["body"]["spaceId"] == mac_contact["binding"]["body"]["spaceId"] and phone_contact["binding"]["body"]["authorizationDigest"] == mac_contact["binding"]["body"]["authorizationDigest"], "Endpoint authorization archives differ")
                         self.route_hints(phone_contact, "mac-to-android")
                         self.route_hints(mac_contact, "android-to-mac")
@@ -483,18 +763,32 @@ class PhysicalP2P:
             for endpoint in (phone_result, mac_result):
                 require(all(endpoint.get(flag) is True for flag in flags) and endpoint.get("operationCount") == 259,
                         "Persistence, identity, tombstone or signed partner-ACK check failed")
-            selected = [path for endpoint in (phone_result, mac_result) for path in endpoint.get("paths", []) if path.get("selected")]
-            require(len(selected) >= 2 and all(path.get("direct") is True or path.get("relayed") is True for path in selected), "No verified selected transport path on both endpoints")
-            if self.args.mode == "directOnly":
-                require(all(path.get("direct") is True and path.get("relayed") is False for path in selected), "Direct-only test selected a relay or unknown path")
-            result["connectivityPath"] = "encrypted-relay-fallback" if any(path.get("relayed") for path in selected) else "direct-public-IP"
+            selected = verified_selected_paths((phone_result, mac_result), direct_only=self.args.mode == "directOnly")
+            if self.args.network_scope == "shared-uplink-public-relay":
+                selected = verify_shared_uplink_relay_paths(mac_result, phone_result)
+                result["connectivityPath"] = "encrypted-public-relay-shared-uplink"
+            else:
+                result["connectivityPath"] = ("direct-hotspot-LAN" if self.args.network_scope == "shared-hotspot" else
+                    ("encrypted-relay-fallback" if any(path.get("relayed") for path in selected) else "direct-public-IP"))
             result["networkAfter"] = self.network_gate("after")
-            write_private(self.mac_root / "finish", b"")
-            self.push("finish", b"")
-            require(native.wait(timeout=20) == 0 and instrument.wait(timeout=20) == 0, "Endpoint did not close cleanly")
-            phone_log.flush()
-            text = (self.output / "android-instrumentation.log").read_text(errors="replace")
-            verify_instrumentation(text)
+            def await_phone_completion():
+                require(instrument.wait(timeout=20) == 0, "Android endpoint did not close cleanly")
+                phone_log.flush()
+                text = (self.output / "android-instrumentation.log").read_text(errors="replace")
+                verify_instrumentation(text)
+                restoration = self.pull("network-restoration.json")
+                if restoration is not None:
+                    write_private(self.output / "android-network-restoration.json", encoded(restoration))
+                result["androidNetworkRestoration"] = verify_network_restoration(restoration)
+
+            def await_mac_completion():
+                require(native.wait(timeout=20) == 0, "Mac endpoint did not close cleanly")
+
+            finish_participant_barrier(
+                finish_phone=lambda: self.push("finish", b""),
+                await_verified_phone=await_phone_completion,
+                finish_mac=lambda: write_private(self.mac_root / "finish", b""),
+                await_mac=await_mac_completion)
             require(mac_result.get("processPid") == native.pid, "Initial Mac process ID does not match the owned QA CLI")
 
             # The first networking processes have exited. This launches wholly
@@ -527,12 +821,56 @@ class PhysicalP2P:
             result["networkAfterReopen"] = self.network_gate("after-reopen")
             result.update(status="PASS", checkpoint=checkpoints[0], durablePartnerAck=True,
                           reopenedIdentityAndAck=True, tombstoneRetained=True,
+                          publicNetworkStatus="PASS" if self.args.network_scope == "independent-public" else "NOT RUN",
+                          independentNetworkStatus="PASS" if self.args.network_scope == "independent-public" else "NOT RUN",
+                          publicRelayStatus="PASS" if self.args.network_scope == "shared-uplink-public-relay" else "NOT RUN",
                           passed=2, failed=0, skipped=0)
         except Exception as error:
             # Exception strings may contain paths/IPs from libraries; private only.
             write_private(self.output / "driver-error.json", encoded({"type": type(error).__name__, "message": str(error)}))
             result["error"] = "Acceptance failed; inspect private driver-error.json and stage logs"
         finally:
+            # A host adb subprocess disappearing does not necessarily stop its
+            # phone-side instrumentation. Request cancellation only in this
+            # driver's freshly generated namespace, leaving Android's finally
+            # block a bounded chance to close native endpoints and restore its
+            # optional process-only Network binding. Never force-stop any app.
+            cleanup = {"abortRequested": False, "instrumentStillRunning": False}
+            active_instrument = next((child for child in (reopen_instrument, instrument)
+                                      if child is not None and child.poll() is None), None)
+            if result["status"] != "PASS" and active_instrument is not None:
+                cleanup_started = time.monotonic()
+                try:
+                    self.push("abort", b"", command_timeout=3)
+                    cleanup["abortRequested"] = True
+                    try:
+                        cleanup["instrumentReturnCode"] = active_instrument.wait(timeout=15)
+                    except subprocess.TimeoutExpired:
+                        cleanup["instrumentStillRunning"] = True
+                except Exception as error:
+                    cleanup["abortErrorType"] = type(error).__name__
+                    cleanup["instrumentStillRunning"] = active_instrument.poll() is None
+                cleanup["elapsedSeconds"] = round(time.monotonic() - cleanup_started, 3)
+            if instrument is not None:
+                try:
+                    restoration = self.pull("network-restoration.json")
+                    if restoration is not None:
+                        write_private(self.output / "android-network-restoration.json", encoded(restoration))
+                    cleanup["networkRestoration"] = verify_network_restoration(restoration)
+                except Exception as error:
+                    cleanup["networkRestoration"] = {"status": "NOT VERIFIED", "errorType": type(error).__name__}
+                    if result["status"] == "PASS":
+                        result["status"] = "FAIL"
+                        result["error"] = "Android process Network restoration could not be verified; inspect cleanup.json"
+                        for status in ("publicNetworkStatus", "independentNetworkStatus", "publicRelayStatus"):
+                            if result.get(status) == "PASS":
+                                result[status] = "FAIL"
+            write_private(self.output / "cleanup.json", encoded(cleanup))
+            if getattr(self, "model", None):
+                try:
+                    result["androidPowerAfter"] = self.power_state("after-endpoints", require_ready=False)
+                except Exception as error:
+                    result["androidPowerAfter"] = {"status": "UNKNOWN", "errorType": type(error).__name__, "networkFailureCause": "UNKNOWN"}
             for child in (native, instrument, reopen_native, reopen_instrument, logger):
                 stop_owned(child)
             for stream in handles:
@@ -547,7 +885,7 @@ class PhysicalP2P:
             result["elapsedSeconds"] = round(time.monotonic() - self.started, 3)
             result["copiedPublicStages"] = sorted(locals().get("copied", set()))
             write_private(self.output / "summary.json", encoded(result))
-            print(json.dumps({key: result[key] for key in ("status", "direction", "mode", "elapsedSeconds")}), flush=True)
+            print(json.dumps({key: result[key] for key in ("status", "direction", "mode", "networkScope", "publicNetworkStatus", "elapsedSeconds")}), flush=True)
         return 0 if result["status"] == "PASS" else 1
 
 
@@ -557,12 +895,17 @@ def main():
     parser.add_argument("--mac-executable", default=str(ROOT / "packages/together-p2p-swift/.build/debug/TogetherP2PPublicQA"))
     parser.add_argument("--output", default=str(ROOT / "qa/results" / ("p2p-public-" + time.strftime("%Y%m%d-%H%M%S"))))
     parser.add_argument("--mode", choices=("directOnly", "automatic"), default="directOnly")
+    parser.add_argument("--network-scope", choices=("independent-public", "shared-hotspot", "shared-uplink-public-relay"), default="independent-public",
+                        help="Explicit hotspot LAN or public-relay/shared-uplink tests never count as independent-network acceptance")
     parser.add_argument("--direction", choices=("mac-to-android", "android-to-mac"), required=True)
     parser.add_argument("--mac-bind")
     parser.add_argument("--android-bind")
     parser.add_argument("--deadline-seconds", type=int, default=180)
     args = parser.parse_args()
     require(30 <= args.deadline_seconds <= 300, "Endpoint deadline must be 30–300 seconds")
+    require(args.network_scope != "shared-hotspot" or args.mode == "directOnly", "Shared-hotspot scope is direct-only LAN interoperability")
+    require(args.network_scope != "shared-uplink-public-relay" or (args.mode == "automatic" and args.mac_bind is None),
+            "Shared-uplink public relay needs automatic mode and the QA loopback-only Mac QUIC preset")
     executable = Path(args.mac_executable).expanduser().resolve()
     expected = ROOT / "packages/together-p2p-swift/.build"
     require(executable.is_relative_to(expected.resolve()) and executable.name == "TogetherP2PPublicQA" and executable.is_file() and os.access(executable, os.X_OK),
