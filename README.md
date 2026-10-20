@@ -87,15 +87,26 @@ separates local, physical, VPN-dependent and failed VPN-free tests. Production
 API 1 is unchanged. The current Workers endpoint is not a verified VPN-free path
 on the tested mobile network; P2P is a separate transport change.
 
-## VPN-free P2P workstream (not installed)
+## Native App transport acceptance (isolated QA builds)
+
+[The normal-App checkpoint](docs/qa/reports/NATIVE_APP_NETWORK_ACCEPTANCE.md)
+records an actual Samsung-initiated pairing, explicit identity confirmation,
+task persistence with a signed remote ACK, offline edits/catch-up and Samsung
+process restart through the SwiftUI/Compose Apps. The Samsung used mobile data
+without VPN; the Mac still used a VPN. The successful path was an encrypted relay,
+so this is **not VPN-free or public direct-P2P acceptance**. Subsequent normal-App
+reserve, shared/AA expense and beneficiary-confirmed wish results also agree.
+Reverse invitation, broader recurring-bill cases and original-media acceptance
+remain separate checks.
+Only dedicated QA bundles are used; the production Mac App is not replaced.
 
 [Architecture and actual gates](docs/architecture/P2P_INCREMENTAL_REPLICATION.md)
 record the user's new transport direction. The optional `TogetherP2P` package uses
 native Iroh QUIC around the existing signed Protocol 4 log. `make p2p-test` tests a
 relay-disabled direct link, paged history, durable ACKs, tombstone convergence and
 identity/replay rejection. It does not link into the production app yet. A
-test-only Android adapter and bounded physical driver are now available; see
-[public acceptance status](docs/qa/reports/P2P_PUBLIC_ACCEPTANCE.md). Compiling
+test-only Android adapter and bounded physical driver are also retained; see
+[earlier transport-only evidence](docs/qa/reports/P2P_PUBLIC_ACCEPTANCE.md). Compiling
 the instrumentation is not physical/public-network acceptance. Public NAT
 traversal, platform compatibility and independent security review remain open;
 installed applications are not silently described as P2P-capable.
