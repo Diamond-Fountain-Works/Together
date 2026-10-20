@@ -11,7 +11,8 @@ struct DeviceManagementView: View {
             ScrollView {
                 VStack(alignment: .leading, spacing: 20) {
                     deviceList
-                    if model.engine.usesReplication4 { controller }
+                    if model.usesNativeTransport { EmptyView() }
+                    else if model.engine.usesReplication4 { controller }
                     else if model.engine.peer != nil {
                         if manager.hasLegacyRelay { migration }
                         else { Text(Copy.text("device.guidance.relayMigration")).foregroundStyle(.secondary) }
@@ -48,7 +49,7 @@ struct DeviceManagementView: View {
                         HStack(alignment: .top) {
                             row(device.descriptor, revoked: !device.isActive)
                             Spacer()
-                            if manager.isController, device.isActive, device.descriptor.userId == model.engine.identity.descriptor.userId,
+                            if !model.usesNativeTransport, manager.isController, device.isActive, device.descriptor.userId == model.engine.identity.descriptor.userId,
                                model.engine.context.authorization?.root(for: device.descriptor.userId)?.deviceId != device.id {
                                 Button(Copy.text("device.action.revoke")) { manager.revoking = device }.disabled(manager.busy).accessibilityIdentifier("devices.revoke." + device.id.uuidString)
                             }
@@ -56,7 +57,7 @@ struct DeviceManagementView: View {
                     }
                 }
                 if model.engine.usesReplication4 {
-                    Text(Copy.text(model.network.completedSyncCount > 0 ? "device.status.historyReady" : "device.status.historyPending"))
+                    Text(Copy.text(model.completedSyncCount > 0 ? "device.status.historyReady" : "device.status.historyPending"))
                         .font(.caption).foregroundStyle(.secondary).accessibilityIdentifier("devices.historyState")
                 }
             }
@@ -64,7 +65,7 @@ struct DeviceManagementView: View {
     }
     private func row(_ descriptor: DeviceDescriptor, revoked: Bool) -> some View {
         let own = descriptor.deviceId == model.engine.identity.descriptor.deviceId
-        let online = model.network.multiDeviceService?.connectedDevices.contains(descriptor.deviceId) ?? (model.engine.peer?.descriptor.deviceId == descriptor.deviceId && model.network.isOnline)
+        let online = model.network.multiDeviceService?.connectedDevices.contains(descriptor.deviceId) ?? (model.engine.peer?.descriptor.deviceId == descriptor.deviceId && model.partnerIsOnline)
         return VStack(alignment: .leading, spacing: 5) {
             HStack {
                 Image(systemName: "desktopcomputer")

@@ -60,3 +60,6 @@ local.properties
 *.aab
 .cxx/
 .externalNativeBuild/
+
+# Rebuilt upstream native artifacts, checkouts and receipts are local-only.
+.native-build/

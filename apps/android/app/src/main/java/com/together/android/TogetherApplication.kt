@@ -6,7 +6,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ProcessLifecycleOwner
 import androidx.lifecycle.Lifecycle
 import com.together.android.data.TogetherRepository
-import com.together.protocol.requireProtocol
+import com.together.android.data.NativeRuntimePolicy
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -26,9 +26,8 @@ class TogetherApplication : Application(), DefaultLifecycleObserver {
 
     override fun onCreate() {
         super<Application>.onCreate()
-        requireProtocol(!BuildConfig.NATIVE_QA ||
-            (BuildConfig.DEBUG && packageName == "com.together.android.qa.native" && BuildConfig.RELAY_URL.isEmpty()),
-            "ISOLATED_NATIVE_QA_REQUIRED")
+        NativeRuntimePolicy.validate(BuildConfig.NATIVE_P2P, BuildConfig.NATIVE_QA, BuildConfig.DEBUG,
+            packageName, if (BuildConfig.NATIVE_QA) "NATIVE-APP" else null, BuildConfig.RELAY_URL)
         ProcessLifecycleOwner.get().lifecycle.addObserver(this)
     }
 

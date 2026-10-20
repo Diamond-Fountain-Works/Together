@@ -12,8 +12,16 @@ cd "$ROOT_DIR"
 python3 script/generate_project.py
 mkdir -p .build/logs dist
 BUILD_ARCH="$(uname -m)"
-xcodebuild -project Together.xcodeproj -scheme Together -configuration "$CONFIGURATION" -destination "platform=macOS,arch=$BUILD_ARCH" -derivedDataPath .derivedData build >.build/logs/xcode-build.log 2>&1 || { tail -80 .build/logs/xcode-build.log; exit 1; }
-APP_SOURCE="$ROOT_DIR/.derivedData/Build/Products/$CONFIGURATION/Together.app"
+BUILD_ARCHS="$BUILD_ARCH"
+DERIVED_DATA=".derivedData"
+if [[ "${TOGETHER_LEGACY_C1:-0}" != "1" ]]; then
+  DERIVED_DATA=".derivedData/native-secure"
+  [[ "$BUILD_ARCH" == arm64 ]] || { echo 'Native distribution requires the pinned Apple Silicon transport; use TOGETHER_LEGACY_C1=1 for legacy regression.' >&2; exit 1; }
+elif [[ "$CONFIGURATION" == Release ]]; then
+  BUILD_ARCHS="arm64 x86_64"
+fi
+xcodebuild -project Together.xcodeproj -scheme Together -configuration "$CONFIGURATION" -destination "platform=macOS,arch=$BUILD_ARCH" -derivedDataPath "$DERIVED_DATA" "ARCHS=$BUILD_ARCHS" build >.build/logs/xcode-build.log 2>&1 || { tail -80 .build/logs/xcode-build.log; exit 1; }
+APP_SOURCE="$ROOT_DIR/$DERIVED_DATA/Build/Products/$CONFIGURATION/Together.app"
 python3 script/verify_bundle.py "$APP_SOURCE"
 APP_BUNDLE="$ROOT_DIR/dist/Together.app"
 rm -rf "$APP_BUNDLE"

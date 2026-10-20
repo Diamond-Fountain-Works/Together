@@ -1,3 +1,27 @@
+# 0.2.2 — delivery preparation (unreleased)
+
+- Add normal persistent-storage native App startup and empty first-run setup;
+  retain independently isolated QA targets and existing signed-log/domain rules.
+- Prepare Mac Build 20 (Apple Silicon/macOS 14.5+, ad-hoc/unnotarized) and Android
+  code 15 (arm64, optimized Release, externally managed release signing).
+- Keep existing paired C1 Mac transport and recovery errors for missing identity;
+  never import QA data or silently replace keys.
+- Keep unsupported native own-device enrollment controls unavailable; do not
+  present them as a completed multi-device workflow.
+- Rebuild the unchanged native FFI wrappers with a fixed Rust Iroh/base/dns/relay
+  1.1.0 dependency lock and NoQ 1.2.0, addressing the disclosed upstream relay
+  denial-of-service and associated transport fixes. Android arm64 uses actual
+  16KiB-aligned ELF segments; unsafe prebuilt-library fallback is rejected.
+- Earlier Build 19/code13 candidates were withdrawn before publication. The code
+  14 runtime test then found JNA JNI fields renamed by R8; code 15 preserves that
+  native ABI while keeping application optimization. Historical QA downloads
+  carry a security warning.
+
+Artifact, fresh-start and network acceptance are reported separately in
+[0.2.2 QA](../qa/reports/RELEASE_0_2_2.md). This entry is not a stable-release claim.
+
+---
+
 # Native normal-App QA — Mac Build 18 / Android code 12 (unreleased)
 
 - Connect isolated normal App pairing, task/wish/finance editors and lifecycle to

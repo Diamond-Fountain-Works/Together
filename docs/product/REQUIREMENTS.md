@@ -1,13 +1,63 @@
-# Repository migration scope and invitation requirement correction
+# Together 0.2.2 — normal native App delivery
+
+This section records the current release boundary; the earlier product and
+migration requirements below remain available as history. Version/build are
+authoritative in `apps/apple/macOS/Configuration/ReleaseVersion.json` (0.2.2,
+Build 20). Acceptance results belong in
+[RELEASE_0_2_2](../qa/reports/RELEASE_0_2_2.md), not in requirement claims.
+
+- The normal macOS bundle remains `com.together.app`, starts by double-click
+  without QA flags/launcher, and uses the existing Initial Setup. A clean install
+  must contain no preselected identity, synthetic nickname, database, media or
+  business fixture. Native distribution currently supports Apple Silicon and
+  macOS 14.5+; this is not an Intel/universal release claim.
+- Normal launch uses the existing Application Support workspace and identity
+  rules. Preserve old IDs, keys, signed history and active workspace; reject a
+  missing required key or invalid/symlink storage instead of silently replacing
+  an identity. Any user-authorized reset is a separate, recoverable operation,
+  never part of startup or upgrade. The QA bundle and temporary storage remain
+  fail-closed and separate from normal launch.
+- A fresh native workspace supports one partner-device pairing through the
+  existing signed-contact/bootstrap adapter and Protocol 4 engine. Both users
+  verify identity before authorization. Reuse the current operation log,
+  deterministic domain projections, durable ACK and original-media receipt
+  logic; do not add a second ledger or server mailbox. A relay route must not be
+  reported as direct P2P, and delivery claims require actual peer persistence
+  and any required media validation.
+- Existing C1 bindings stay on their existing transport. Do not silently migrate
+  their SharedSpace, key or route to native pairing. Arbitrary old-user native
+  migration remains unverified and must not be reported PASS. Native own-device
+  enrollment/revocation beyond the single pinned partner is not part of this
+  delivery; retain the core/C1 model without exposing unsupported native actions.
+- Normal installation must not require Tailscale or user VPN configuration.
+  Iroh can use a direct or encrypted relay path; actual independent-network
+  reachability, with VPN state recorded, must be tested rather than inferred
+  from compilation, local tests or an earlier QA binary.
+- Preserve Tasks, Wishes, Finances and event-driven Love Gifts. Plans has only
+  Pending/Completed; future, overdue and undated unfinished tasks share Pending.
+  Do not restore a separate Upcoming navigation/filter or permanent gift card.
+- Release native libraries must use the reviewed source/lock with Rust
+  Iroh/base/relay 1.1.0. Reject the old upstream prebuilt fallback. The available
+  macOS package is ad-hoc signed, not Developer ID signed or notarized; disclose
+  Gatekeeper rejection/manual approval and the outstanding independent protocol
+  security review. Packaging success does not satisfy these outstanding gates.
+
+# Repository migration history and invitation requirement correction
 
 Current user direction (2026-10-19): require VPN-free local databases with signed
 P2P incremental operation-log replication. Preserve domain data and identities;
 connectivity helpers must not become a central business database or mailbox.
-The [P2P workstream](../architecture/P2P_INCREMENTAL_REPLICATION.md) is incremental
-and not yet installed. This supersedes the earlier C1-only scope for new transport
+The [P2P workstream](../architecture/P2P_INCREMENTAL_REPLICATION.md) is incremental;
+the current normal-package boundary is recorded above. This supersedes the earlier C1-only scope for new transport
 development, while retaining C1 until compatibility/public acceptance gates pass.
 
-This repository migration preserves all current runtime behavior. The formally required invitation lifetime is **8 hours**, one successful use. The current 10-minute implementation is an acknowledged legacy gap, not the final requirement. Correct it in a separate coordinated network-protocol PR (server calculation, client wording, specification and tests); deploy only after separate authorization. Do not change C1, identities or production Worker during the directory refactor.
+At the monorepo migration checkpoint, the legacy implementation used 10 minutes;
+the formal requirement remained **8 hours**, one successful use. That gap was
+assigned to the separate invitation PR, not resolved by moving directories.
+Current native contacts use an eight-hour signed validity interval; do not infer
+the deployed legacy Worker's lifetime from the local source or this requirement.
+Production C1 deployment remains separately authorized and verified. Do not
+change identities or the production Worker during a directory refactor.
 
 # Together 0.2.1 — Our Finances
 

@@ -728,6 +728,7 @@ internal fun ProfileForm(
     repository: TogetherRepository,
     onClose: () -> Unit,
     onError: (String) -> Unit,
+    initialSetup: Boolean = false,
 ) {
     val profile = remember { state.snapshot.entities[state.descriptor!!.userId] }
     var name by rememberSaveable { mutableStateOf(profile?.fields?.text("displayName").orEmpty()) }
@@ -754,7 +755,8 @@ internal fun ProfileForm(
         "profile.editor",
         onSave = { repository.saveProfile(name, role, avatar, profile, clearLegacy) },
         onError = onError,
-        enabled = name.isNotBlank() && name.graphemeCount() <= 80,
+        enabled = com.together.android.data.ProfileSetupPolicy.canSave(name, role, initialSetup),
+        dismissible = !initialSetup,
     ) {
         Input(name, { name = it }, R.string.label_nickname, "profile.name")
         Choice(
@@ -763,8 +765,7 @@ internal fun ProfileForm(
             listOf(
                 "boyfriend" to stringResource(R.string.role_boyfriend),
                 "girlfriend" to stringResource(R.string.role_girlfriend),
-                "unknown" to stringResource(R.string.role_unknown),
-            ),
+            ) + if (initialSetup) emptyList() else listOf("unknown" to stringResource(R.string.role_unknown)),
             { role = it },
         )
         avatar?.let { id ->

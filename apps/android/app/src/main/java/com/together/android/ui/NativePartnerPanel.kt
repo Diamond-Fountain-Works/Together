@@ -15,7 +15,7 @@ import androidx.compose.ui.unit.dp
 import com.together.android.R
 import com.together.android.data.NativeAppStatus
 
-/** Same normal App workspace; only the separately named QA build has this native pairing surface. */
+/** Native pairing in the existing App workspace, with no second business store. */
 @Composable
 internal fun NativePartnerPanel(state: NativeAppStatus, paired: Boolean, onCreate: () -> Unit,
     onJoin: (String) -> Unit, onConfirm: (Boolean) -> Unit, onOffline: (Boolean) -> Unit,
@@ -30,7 +30,7 @@ internal fun NativePartnerPanel(state: NativeAppStatus, paired: Boolean, onCreat
         if (!paired) {
             val code = state.verificationCode
             if (code != null && state.peer != null) {
-                Text(state.peer.displayName, style = MaterialTheme.typography.titleMedium)
+                Text(state.peerDisplayName ?: state.peer.displayName, style = MaterialTheme.typography.titleMedium)
                 Text(code, style = MaterialTheme.typography.headlineLarge, fontFamily = FontFamily.Monospace,
                     modifier = Modifier.testTag("partner.verificationCode"))
                 SelectionContainer { Text(state.peer.fingerprint, style = MaterialTheme.typography.bodySmall,

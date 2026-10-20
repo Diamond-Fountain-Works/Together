@@ -97,7 +97,15 @@ def main():
     if identity(source) != APP_ID:
         raise RuntimeError('Source is not Together')
     source_info = plistlib.loads((source / 'Contents/Info.plist').read_bytes())
-    report_path = dist / ('Together-' + source_info['CFBundleShortVersionString'] + '-Build' + source_info['CFBundleVersion'] + '-Universal.json')
+    executable = source / 'Contents/MacOS' / source_info['CFBundleExecutable']
+    architectures = sorted(subprocess.check_output(['lipo', '-archs', str(executable)], text=True).split())
+    if architectures == ['arm64']:
+        architecture_label = 'AppleSilicon'
+    elif architectures == ['arm64', 'x86_64']:
+        architecture_label = 'Universal'
+    else:
+        raise RuntimeError('Unsupported release architecture; nothing installed or removed')
+    report_path = dist / ('Together-' + source_info['CFBundleShortVersionString'] + '-Build' + source_info['CFBundleVersion'] + '-' + architecture_label + '.json')
     package = json.loads(report_path.read_text())
     if package['status'] != 'PASS' or Path(package['artifact']).name != package['artifact']:
         raise RuntimeError('Package report is invalid')

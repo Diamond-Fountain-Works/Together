@@ -23,9 +23,9 @@ class TogetherRepository(
     private val serviceURL: String = com.together.android.BuildConfig.RELAY_URL,
 ) {
     init {
-        requireProtocol(!com.together.android.BuildConfig.NATIVE_QA ||
-            (context.packageName == "com.together.android.qa.native" && namespace == "NATIVE-APP" && serviceURL.isEmpty()),
-            "ISOLATED_NATIVE_QA_REQUIRED")
+        NativeRuntimePolicy.validate(com.together.android.BuildConfig.NATIVE_P2P,
+            com.together.android.BuildConfig.NATIVE_QA, com.together.android.BuildConfig.DEBUG,
+            context.packageName, namespace, serviceURL)
         requireProtocol(
             namespace == null ||
                 (com.together.android.BuildConfig.DEBUG &&
@@ -43,6 +43,7 @@ class TogetherRepository(
 
     data class State(
         val loaded: Boolean = false,
+        val requiresInitialSetup: Boolean = false,
         val historyReady: Boolean = true,
         val snapshot: Snapshot = Snapshot(),
         val descriptor: DeviceDescriptor? = null,
@@ -145,11 +146,13 @@ class TogetherRepository(
         val slot = pointer?.let { uuid(publicJson(it, "offerId")) } ?: "LOCAL"
         val databaseName =
             databaseName(if (slot == "LOCAL") "together-local.db" else "replica-$slot.db")
-        val needsExisting = pointer != null || context.getDatabasePath(databaseName).exists()
+        val nativeKey = File(context.noBackupFilesDir,
+            if (com.together.android.BuildConfig.NATIVE_QA) "native-qa-transport.key" else "native-transport.key")
         identity =
             if (identities.exists(slot)) identities.load(slot)
             else {
-                requireProtocol(!needsExisting, "IDENTITY_FILE_UNAVAILABLE")
+                NativeRuntimePolicy.requireFirstIdentity(context.getDatabasePath(databaseName).exists(),
+                    pointer != null, com.together.android.BuildConfig.NATIVE_P2P && nativeKey.exists())
                 identities.create(
                     slot,
                     uid(),
@@ -169,7 +172,7 @@ class TogetherRepository(
         if (archive != null) {
             val trust = SpaceAuthorization.restore(archive)
             replica = Replica(store, identity, trust).also { it.restore() }
-            if (com.together.android.BuildConfig.NATIVE_QA) {
+            if (com.together.android.BuildConfig.NATIVE_P2P) {
                 requireProtocol(store.local("native-binding") != null, "MISSING_NATIVE_BINDING")
             } else {
                 binding =
@@ -201,7 +204,7 @@ class TogetherRepository(
                 request = pending?.get("request")?.model(),
             )
         }
-        if (com.together.android.BuildConfig.NATIVE_QA) configureNative()
+        if (com.together.android.BuildConfig.NATIVE_P2P) configureNative()
         else if (replica == null) {
             store.local("partner-route")?.let { bytes ->
                 val route = Canonical.parse(bytes).model<PartnerRoute>()
@@ -211,12 +214,15 @@ class TogetherRepository(
     }
 
     private fun configureNative() {
-        requireProtocol(com.together.android.BuildConfig.NATIVE_QA && namespace == "NATIVE-APP" && binding == null,
-            "ISOLATED_NATIVE_QA_REQUIRED")
+        requireProtocol(com.together.android.BuildConfig.NATIVE_P2P && serviceURL.isEmpty() && binding == null &&
+            (if (com.together.android.BuildConfig.NATIVE_QA) namespace == "NATIVE-APP" else namespace == null),
+            "NATIVE_TRANSPORT_REQUIRED")
         replica?.let(::configureMedia)
         val host = object : NativeAppRepository {
             override suspend fun <T> access(block: (NativeRepositoryContext) -> T): T = withContext(Dispatchers.IO) {
-                lock.withLock { block(NativeRepositoryContext(identity, store, replica, mediaExchange)) }
+                lock.withLock { block(NativeRepositoryContext(identity, store, replica, mediaExchange,
+                    _state.value.snapshot.entities[identity.descriptor.userId]?.fields?.text("displayName")
+                        ?: identity.descriptor.displayName)) }
             }
             override suspend fun pin(peer: DeviceDescriptor) = withContext(Dispatchers.IO) {
                 lock.withLock {
@@ -251,7 +257,7 @@ class TogetherRepository(
                 lock.withLock { reload() }
             }
         }
-        val factory = Class.forName("com.together.android.p2p.NativeQaSessionFactory")
+        val factory = Class.forName("com.together.android.p2p.NativeSessionFactory")
             .getDeclaredConstructor().newInstance() as NativeAppSessionFactory
         val created = factory.create(context, scope, host)
         nativeSession = created
@@ -496,6 +502,8 @@ class TogetherRepository(
         _state.update {
             it.copy(
                 loaded = true,
+                requiresInitialSetup = ProfileSetupPolicy.required(com.together.android.BuildConfig.NATIVE_P2P,
+                    com.together.android.BuildConfig.DEBUG, projected.entities[identity.descriptor.userId] != null),
                 historyReady = historyReady,
                 descriptor = identity.descriptor,
                 authorization = currentTrust,
@@ -1230,6 +1238,7 @@ class TogetherRepository(
     }
 
     suspend fun revoke(deviceId: String) = command {
+        requireProtocol(nativeSession == null, "NATIVE_DEVICE_MANAGEMENT_UNAVAILABLE")
         val r = replica ?: throw ProtocolException("NOT_PAIRED")
         val trust = r.trust
         val root = trust.root(identity.descriptor.userId) ?: throw ProtocolException("NOT_AN_OWNER")
@@ -1281,12 +1290,12 @@ class TogetherRepository(
     }
 
     suspend fun nativeOffline(value: Boolean) {
-        val session = nativeSession ?: throw ProtocolException("ISOLATED_NATIVE_QA_REQUIRED")
+        val session = nativeSession ?: throw ProtocolException("NATIVE_TRANSPORT_REQUIRED")
         session.setOffline(value)
     }
 
     suspend fun cancelNativeInvitation() {
-        (nativeSession ?: throw ProtocolException("ISOLATED_NATIVE_QA_REQUIRED")).cancelInvitation()
+        (nativeSession ?: throw ProtocolException("NATIVE_TRANSPORT_REQUIRED")).cancelInvitation()
     }
 
     private fun startConnection() {

@@ -2,7 +2,7 @@ import SwiftUI
 import TogetherCore
 import AppKit
 import UniformTypeIdentifiers
-#if TOGETHER_NATIVE_P2P_QA
+#if TOGETHER_NATIVE_TRANSPORT || TOGETHER_NATIVE_P2P_QA
 import TogetherP2P
 #endif
 
@@ -64,35 +64,42 @@ enum AppSheet: Identifiable {
     var changeBannerEvents:[ChangeEvent]=[]
     @ObservationIgnored var changeReviewTask:Task<Void,Never>?
     let network: PairingService
-    #if TOGETHER_NATIVE_P2P_QA
+    #if TOGETHER_NATIVE_TRANSPORT || TOGETHER_NATIVE_P2P_QA
     var nativeNetwork: NativeAppPeerService?
     #endif
+    var usesNativeTransport: Bool {
+        #if TOGETHER_NATIVE_TRANSPORT || TOGETHER_NATIVE_P2P_QA
+        nativeNetwork != nil
+        #else
+        false
+        #endif
+    }
     var connectionState: PairingConnectionState {
-        #if TOGETHER_NATIVE_P2P_QA
+        #if TOGETHER_NATIVE_TRANSPORT || TOGETHER_NATIVE_P2P_QA
         if let nativeNetwork { return nativeNetwork.state }
         #endif
         return network.state
     }
     var isOnline: Bool {
-        #if TOGETHER_NATIVE_P2P_QA
+        #if TOGETHER_NATIVE_TRANSPORT || TOGETHER_NATIVE_P2P_QA
         if let nativeNetwork { return nativeNetwork.isOnline }
         #endif
         return network.isOnline
     }
     var partnerIsOnline: Bool {
-        #if TOGETHER_NATIVE_P2P_QA
+        #if TOGETHER_NATIVE_TRANSPORT || TOGETHER_NATIVE_P2P_QA
         if let nativeNetwork { return nativeNetwork.isOnline }
         #endif
         return network.partnerIsOnline
     }
     var completedSyncCount: Int {
-        #if TOGETHER_NATIVE_P2P_QA
+        #if TOGETHER_NATIVE_TRANSPORT || TOGETHER_NATIVE_P2P_QA
         if let nativeNetwork { return nativeNetwork.completedSyncCount }
         #endif
         return network.completedSyncCount
     }
     func synchronize() {
-        #if TOGETHER_NATIVE_P2P_QA
+        #if TOGETHER_NATIVE_TRANSPORT || TOGETHER_NATIVE_P2P_QA
         if let nativeNetwork { nativeNetwork.synchronize(); return }
         #endif
         network.synchronize()
@@ -154,16 +161,11 @@ enum AppSheet: Identifiable {
     }
     func start() {
         guard !started else { return }; started = true
-        #if TOGETHER_NATIVE_P2P_QA
-        nativeNetwork?.restore()
+        #if TOGETHER_NATIVE_TRANSPORT || TOGETHER_NATIVE_P2P_QA
+        if let nativeNetwork { nativeNetwork.restore() }
+        else { restoreLegacyNetwork() }
         #else
-        #if DEBUG
-        // A copied store can contain a real RelayBinding; nil serviceURL alone
-        // does not suppress that persisted address. Fixtures must stay offline.
-        if !UIFixture.enabled || qaAllowsLocalNetwork { network.restore() }
-        #else
-        network.restore()
-        #endif
+        restoreLegacyNetwork()
         #endif
         checkStartupGifts(); refreshFinancialState(); refreshSharedChanges(); presentNext()
         clockTask = Task { @MainActor [weak self] in
@@ -179,6 +181,14 @@ enum AppSheet: Identifiable {
             }
         }
     }
+    private func restoreLegacyNetwork() {
+        #if DEBUG
+        // Persisted C1 addresses must not activate from isolated UI fixtures.
+        if !UIFixture.enabled || qaAllowsLocalNetwork { network.restore() }
+        #else
+        network.restore()
+        #endif
+    }
     func perform(_ action: () throws -> Void) { do { try action() } catch { errorMessage = error.localizedDescription } }
     func show(_ value: AppSheet) {
         switch value { case .task, .nextTime, .grant, .grantDetail, .wish, .adjustment, .giftEditor, .finance: noteUserInteraction(); default: break }
@@ -188,6 +198,9 @@ enum AppSheet: Identifiable {
     func dismissSheet() { sheet = nil }
     func switchToEnrolledReplica(_ engine: ReplicaEngine) {
         clockTask?.cancel(); changeReviewTask?.cancel(); network.disconnect()
+        #if TOGETHER_NATIVE_TRANSPORT || TOGETHER_NATIVE_P2P_QA
+        nativeNetwork?.disconnect()
+        #endif
         requestedReplica = engine
     }
     func replacement(with engine: ReplicaEngine) -> ApplicationModel {

@@ -145,7 +145,7 @@ fun TogetherApp(repository: TogetherRepository) = TogetherTheme {
         modal = "reveal"
     }
     LaunchedEffect(state.autoGifts, modal) {
-        if (modal == null && state.autoGifts.isNotEmpty() && repository.canPresentAutomatically()) {
+        if (!state.requiresInitialSetup && modal == null && state.autoGifts.isNotEmpty() && repository.canPresentAutomatically()) {
             revealQueue = state.autoGifts
             openGift(revealQueue.first(), true)
         }
@@ -298,7 +298,9 @@ fun TogetherApp(repository: TogetherRepository) = TogetherTheme {
                                                         reply = null
                                                         show(name)
                                                     },
-                                                    enabled = state.loaded,
+                                                    enabled = state.loaded && state.historyReady &&
+                                                        state.descriptor != null && !state.requiresInitialSetup &&
+                                                        (name != "gift" || state.canWrite),
                                                     modifier = Modifier.testTag("menu.$name"),
                                                 )
                                             }
@@ -326,8 +328,14 @@ fun TogetherApp(repository: TogetherRepository) = TogetherTheme {
                                 CircularProgressIndicator(Modifier.align(Alignment.Center))
                             else if (!state.historyReady && !(page == Page.Connection && state.native != null)) {
                                 Column(Modifier.padding(24.dp)) {
-                                    ConnectionStatus(state)
-                                    LinearProgressIndicator(Modifier.fillMaxWidth())
+                                    if (state.descriptor == null) {
+                                        Text(stringResource(R.string.error_identity))
+                                        Text(stringResource(R.string.guidance_identity_recovery),
+                                            style = MaterialTheme.typography.bodySmall)
+                                    } else {
+                                        ConnectionStatus(state)
+                                        LinearProgressIndicator(Modifier.fillMaxWidth())
+                                    }
                                 }
                             } else
                                 when (page) {
@@ -631,7 +639,8 @@ fun TogetherApp(repository: TogetherRepository) = TogetherTheme {
                 }
         }
     }
-    when (modal) {
+    when (if (state.requiresInitialSetup && state.error == null) "initialSetup" else modal) {
+        "initialSetup" -> ProfileForm(state, repository, {}, { localError = it }, initialSetup = true)
         "task" ->
             TaskForm(
                 selected,
@@ -928,7 +937,7 @@ internal fun DevicePage(
                             )
                             val local = state.descriptor
                             if (
-                                d.active &&
+                                state.native == null && d.active &&
                                     local != null &&
                                     state.authorization.root(local.userId)?.deviceId ==
                                         local.deviceId &&
@@ -941,7 +950,7 @@ internal fun DevicePage(
                         }
                     }
                 }
-            Text(
+            if (state.native == null) Text(
                 stringResource(R.string.guidance_root_required),
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,

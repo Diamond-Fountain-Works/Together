@@ -47,13 +47,16 @@ def main():
     version, build = info["CFBundleShortVersionString"], info["CFBundleVersion"]
     executable = app / "Contents/MacOS" / info["CFBundleExecutable"]
     architectures = sorted(run("lipo", "-archs", str(executable)).stdout.split())
-    if architectures != ["arm64", "x86_64"]:
-        raise RuntimeError("Release must include both arm64 and x86_64 for this Universal package")
-    arch_label = "Universal"
+    native = info.get("TogetherTransport") == "native"
+    expected_architectures = ["arm64"] if native else ["arm64", "x86_64"]
+    if architectures != expected_architectures:
+        raise RuntimeError(f"Release architectures must be {expected_architectures}; got {architectures}")
+    arch_label = "AppleSilicon" if native else "Universal"
+    platform_label = "Apple 芯片（不支持 Intel）" if native else "Intel 和 Apple 芯片"
     name = f"Together-{version}-Build{build}-{arch_label}.dmg"
     destination = DIST / name
     source_manifest = manifest(app)
-    release = ROOT / ".derivedData/Build/Products/Release/Together.app"
+    release = ROOT / (".derivedData/native-secure" if native else ".derivedData") / "Build/Products/Release/Together.app"
     if manifest(release) != source_manifest:
         raise RuntimeError("dist is not identical to the Release product")
     signature = subprocess.run(["codesign", "-dvv", str(app)], capture_output=True, text=True)
@@ -64,16 +67,19 @@ def main():
     instruction = f"""Together {version} · Build {build}
 
 安装：将 Together.app 拖入 Applications。打开 Applications 中的 Together。
-支持 macOS {info['LSMinimumSystemVersion']} 及以上，Intel 和 Apple 芯片。
+支持 macOS {info['LSMinimumSystemVersion']} 及以上，{platform_label}。
 
 当前为开发分发包，使用 ad-hoc 签名，尚未完成 Developer ID 签名和 Apple 公证。
 若 macOS 阻止打开，在确认来源可信后，可先尝试打开 App，再进入
 系统设置 → 隐私与安全性 → 仍要打开。不要关闭系统 Gatekeeper。
 Apple 说明：https://support.apple.com/zh-cn/102445
 
-首次启动设置个人资料，通过邀请码配对；无需安装 Tailscale。
+首次双击直接进入个人资料设置；此包不需要 QA 启动器或临时目录。
+通过设备邀请和双方身份确认配对；无需安装 Tailscale。
+根据网络状况使用直连或加密中继，不保证所有网络环境均可达。
 尚未同步的内容需要双方 App 在线才能交换。没有离线服务器邮箱。
-升级保留原有本地数据；此安装包不包含个人资料、任务、愿望或媒体。
+升级不会主动清除原有数据；此安装包不包含个人资料、任务、愿望、媒体或测试身份。
+独立协议安全审查仍未完成。本包不能视为所有跨网络及免 VPN 情况已验收。
 """
     with tempfile.TemporaryDirectory(prefix="together-package-", dir=DIST) as temporary:
         work = Path(temporary)
@@ -122,6 +128,7 @@ Apple 说明：https://support.apple.com/zh-cn/102445
         "status": "PASS", "version": version, "build": build,
         "artifact": name, "byteCount": destination.stat().st_size, "sha256": sha,
         "architectures": architectures, "minimumMacOS": info["LSMinimumSystemVersion"],
+        "transport": info.get("TogetherTransport", "legacy-c1"),
         "relayOrigin": info.get("TogetherRelayURL"), "bundleFilesVerified": len(source_manifest),
         "checks": {"releaseIdentity": "PASS", "diskImageChecksum": "PASS",
                    "mountedBundleHashes": "PASS", "mountedBundleSignatureAndMetadata": "PASS",

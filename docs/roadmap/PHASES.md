@@ -1,3 +1,20 @@
+# 0.2.2 clean-install delivery — in progress
+
+User authorized ordinary Mac/Android delivery and an explicit fresh start on both
+local devices. Reset is separate from packaging: keep private recoverable copies,
+wait for verified binaries, then reset only identified Together state. The Samsung
+was unplugged before the new APK was built; its reset/install/physical acceptance
+remain NOT RUN until it reconnects. Signing keys and Git/source history are never
+part of the reset or public packages.
+
+Normal release IDs, first-run profile setup, persistent native transport, external
+Android signing, macOS ad-hoc/manual-open distribution and original-byte artifact
+checks are being completed in `release/0.2.2-delivery`. No production Worker deploy
+or PR merge is authorized. [Evidence and blockers](../qa/reports/RELEASE_0_2_2.md)
+are authoritative; prior QA App checks do not approve these new binaries.
+
+---
+
 # Native normal-App network acceptance — 2026-10-20
 
 Isolated Mac QA Build 18 and Android nativeQa code 12 now connect the existing

@@ -6077,6 +6077,20 @@
       "review": "approved",
       "reason": "Necessary fail-closed recovery state requested in physical native-App acceptance; preserves original QA identity and logs instead of silently rebinding.",
       "textSHA256": "3e992bc7ae8c3234d3427c2b479b30121ecc80cc688311c1ad4704585967e47e"
+    },
+    "native.release.title": {
+      "category": "Navigation",
+      "context": "0.2.2 native normal-launch release notes",
+      "review": "approved",
+      "reason": "Functional release description of the existing signed partner invitation and local-first catch-up; no VPN-free or delivery claim.",
+      "textSHA256": "f229b9166780a64ad1f9e4b84936e365ead6c19dfb66cdfbe71ec017546f4763"
+    },
+    "native.release.detail": {
+      "category": "Guidance",
+      "context": "0.2.2 native normal-launch release notes",
+      "review": "approved",
+      "reason": "Functional release description of the existing signed partner invitation and local-first catch-up; no VPN-free or delivery claim.",
+      "textSHA256": "a21d2679b97b8f192954a68ef6f1200f48157388f2a3cf8ea170acfe0216fd9d"
     }
   }
 }

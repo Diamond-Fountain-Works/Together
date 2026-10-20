@@ -18,22 +18,22 @@ import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.serialization.json.*
 
-/** Public factory exists only in nativeQa. C1 binaries contain neither this class nor Iroh. */
-class NativeQaSessionFactory : NativeAppSessionFactory {
+/** Release and isolated QA share this adapter; legacy Debug remains on C1. */
+class NativeSessionFactory : NativeAppSessionFactory {
     override fun create(context: Context, scope: CoroutineScope, repository: NativeAppRepository): NativeAppSession =
-        NativeQaSession(context, scope, repository)
+        NativeSession(context, scope, repository)
 }
 
 /** Adapter around existing bootstrap, Replica, AntiEntropy and signed durable ACKs; no second ledger. */
-private class NativeQaSession(
+private class NativeSession(
     private val context: Context,
     parent: CoroutineScope,
     private val host: NativeAppRepository,
 ) : NativeAppSession {
     init {
-        requireProtocol(BuildConfig.NATIVE_QA && BuildConfig.DEBUG &&
-            context.packageName == "com.together.android.qa.native" && BuildConfig.RELAY_URL.isEmpty(),
-            "ISOLATED_NATIVE_QA_REQUIRED")
+        requireProtocol(BuildConfig.NATIVE_P2P && BuildConfig.RELAY_URL.isEmpty(), "NATIVE_TRANSPORT_REQUIRED")
+        requireProtocol(!BuildConfig.NATIVE_QA || (BuildConfig.DEBUG &&
+            context.packageName == "com.together.android.qa.native"), "ISOLATED_NATIVE_QA_REQUIRED")
     }
     private val scope = CoroutineScope(parent.coroutineContext + SupervisorJob(parent.coroutineContext[Job]))
     private val _state = MutableStateFlow(NativeAppStatus())
@@ -50,7 +50,7 @@ private class NativeQaSession(
     private var own: NativePartnerContact? = null
     private var remote: NativePartnerContact? = null
     private var joined = false
-    private val seedFile = AtomicFile(File(context.noBackupFilesDir, "native-qa-transport.key"))
+    private val seedFile = AtomicFile(File(context.noBackupFilesDir, if (BuildConfig.NATIVE_QA) "native-qa-transport.key" else "native-transport.key"))
 
     override fun foreground(value: Boolean) {
         foreground = value
@@ -114,7 +114,8 @@ private class NativeQaSession(
         val cm = context.getSystemService(ConnectivityManager::class.java)
         val capabilities = cm.getNetworkCapabilities(cm.activeNetwork)
             ?: throw ProtocolException("CONNECTION_FAILED")
-        requireProtocol(capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET) &&
+        requireProtocol(capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET), "CONNECTION_FAILED")
+        if (BuildConfig.NATIVE_QA) requireProtocol(
             capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_NOT_VPN) &&
             !capabilities.hasTransport(NetworkCapabilities.TRANSPORT_VPN), "VPN_OR_NETWORK_UNAVAILABLE")
     }
@@ -304,13 +305,14 @@ private class NativeQaSession(
             }
         }
         val identity = host.access { it.identity }
-        val name = identity.descriptor.displayName
+        val name = host.access { it.profileDisplayName }
         val channel = NativePartnerBootstrapChannel(identity, name, own.body.invitationId, peer.body.descriptor,
             this, history, { bytes -> stream.send(bytes) }, { genesis ->
                 val binding = buildJsonObject { put("peerContact", peer.json()) }
                 host.activate(AuthorizationArchive(genesis, emptyList()), peer.body.descriptor, Canonical.bytes(binding))
                 completed.complete(Unit)
-            }, { code -> _state.value = _state.value.copy(stage = "verifying", verificationCode = code) },
+            }, { code -> _state.value = _state.value.copy(stage = "verifying", verificationCode = code,
+                peerDisplayName = bootstrap?.remoteDisplayName) },
             { e -> completed.completeExceptionally(e) })
         bootstrap = channel
         try {

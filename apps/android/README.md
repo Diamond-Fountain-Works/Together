@@ -1,8 +1,59 @@
-# Together Android — Phase C device acceptance
+# Together Android — 0.2.2 Release and isolated QA
 
-Native Kotlin / Jetpack Compose / Room client. Phone drawer and ≥600dp tablet rail share one domain/state/persistence implementation. Minimum Android 9/API28, compile/target36, JDK21, Gradle8.13, Java/Kotlin bytecode17. No production Relay origin, user records or credentials are bundled. [Phase A](../../docs/qa/reports/ANDROID_PHASE_A.md) and [Phase B QA](../../docs/qa/reports/ANDROID_PHASE_B.md) remain historical evidence; [Phase C QA](../../docs/qa/reports/ANDROID_PHASE_C.md) records physical Samsung/native Swift results and remaining gates.
+Native Kotlin / Jetpack Compose / Room client. Phone drawer and ≥600dp tablet rail share one domain/state/persistence implementation. Minimum Android 9/API28, compile/target36, JDK21, Gradle8.13, Java/Kotlin bytecode17. The normal 0.2.2 Release supports **arm64 Android phones**; it does not claim all-ABI or physical-device release acceptance. No user records, test identities, private media or credentials are bundled.
 
-## Build and tests
+## Current variants
+
+| Variant | Application ID | Transport and storage | Signing |
+| --- | --- | --- | --- |
+| `release` | `com.together.android` | Native Iroh adapter, ordinary private workspace; no Relay URL or QA namespace | External long-lived Release key required |
+| `nativeQa` | `com.together.android.qa.native` | Same native adapter, guarded `NATIVE-APP` isolated workspace | Debug test key; visibly Together QA |
+| `debug` | `com.together.android.debug` | Retained C1 WebSocket implementation and independent app storage | Debug test key |
+
+The authoritative version is in `app/build.gradle.kts` (0.2.2, code15 for this candidate). A normal Release launches without test arguments, requires an explicit first-run nickname/relationship choice and starts with empty business data. It does not load QA fixtures. Existing identities, signed operations and Room schema1 are preserved; missing keys with existing storage fail closed rather than silently rotating identity.
+
+Native pairing uses the existing signed partner contact, human verification, co-signed genesis, Protocol4 anti-entropy and durable ACK. It can use a direct QUIC path or an encrypted Iroh relay path; an invitation or successful socket send does not prove the partner persisted data. It needs network infrastructure for discovery/relay fallback, but does not require Tailscale or a VPN. No Cloudflare Worker deployment or persistent offline mailbox is part of this Release. Native mode currently supports one paired partner device; C1-only additional-device/revoke actions are hidden instead of pretending they work without a Relay binding.
+
+## Signed Release build
+
+Use an existing Android SDK, NDK28.2.13676358 and Rust1.96.0 with `aarch64-linux-android`. Build the native library from the pinned FFI source and reviewed secure lock first; do not package the original Maven native library or merely ZIP-align it. The Maven FFI version1.1.0 originally contains Rust Iroh1.0.2. The tracked [source manifest](../../packages/together-native-source/source-manifest.json) and `Cargo.lock` pin the corrected Iroh1.1.0 dependencies. The wrapper/JVM API remains unchanged.
+
+From the repository root, with generated outputs below ignored `qa/results`:
+
+```sh
+mkdir -p qa/results/native-release
+git clone --filter=blob:none --no-checkout https://github.com/n0-computer/iroh-ffi.git qa/results/native-release/iroh-ffi
+git -C qa/results/native-release/iroh-ffi checkout --detach 5e451092dba0c1a09ee83ff6e5be37b1152a5c58
+curl -fL https://repo.maven.apache.org/maven2/computer/iroh/iroh-android/1.1.0/iroh-android-1.1.0.aar \
+  -o qa/results/native-release/original.aar
+python3 scripts/rebuild_android_native.py \
+  --source qa/results/native-release/iroh-ffi \
+  --ndk "$ANDROID_HOME/ndk/28.2.13676358" \
+  --original-aar qa/results/native-release/original.aar \
+  --output qa/results/native-release/iroh-secure-16k.aar --jobs 4
+```
+
+The script verifies the exact source tree and original AAR, installs only the tracked secure lock in that isolated checkout, compiles with `--locked` and 16KiB linker flags, compares FFI exports and retains original JVM classes. The generated adjacent JSON receipt is required. Only ARM64 is replaced, so the Release APK deliberately filters other ABIs. Keep the generated AAR, compiler logs and APKs out of Git.
+
+Provide an owner-only signing properties file **outside the repository**, containing `storeFile`, `storePassword`, `keyAlias`, `keyPassword`; keep a recoverable secure backup of that long-lived key. Equivalent environment names are `TOGETHER_ANDROID_KEYSTORE`, `TOGETHER_ANDROID_KEYSTORE_PASSWORD`, `TOGETHER_ANDROID_KEY_ALIAS`, `TOGETHER_ANDROID_KEY_PASSWORD`. Never use the Debug key for Release and never commit passwords.
+
+```sh
+# Replace the signing path and use absolute native artifact paths.
+cd apps/android
+./gradlew :app:assembleRelease :app:lintRelease :app:testReleaseUnitTest \
+  -Ptogether.signingProperties=/secure/location/android-signing.properties \
+  -Ptogether.nativeReleaseAar=/absolute/path/iroh-secure-16k.aar \
+  -Ptogether.nativeReleaseAarSha256=<sha256-of-that-aar> \
+  --dependency-verification=strict --console=plain
+cd ../..
+python3 scripts/test_release_delivery.py \
+  --android-apk apps/android/app/build/outputs/apk/release/app-release.apk \
+  --json qa/results/native-release/artifact.json
+```
+
+Release packaging rejects missing signing, missing native provenance, an obsolete unsafe lock, changed wrapper classes or non-16KiB ARM64 ELF segments. R8 remains enabled; the JNA native ABI is explicitly retained. **Static artifact checks are not a runtime test.** Validate a fresh install, initial setup, process restart and Connection → Create Invitation → Cancel using the exact optimized signed APK. Earlier code14 failed this native-init flow because R8 renamed JNA fields; its crash is retained as evidence and it is not a deliverable. Also separately test real-device pairing/ACK/offline catch-up and original media with the final artifact. Samsung release testing is NOT RUN while the phone is disconnected.
+
+## Build and tests for development
 
 ```sh
 # Repository root, existing SDK or ignored apps/android/local.properties:
@@ -11,7 +62,7 @@ make android-qa
 apps/android/gradlew -p apps/android -Ptogether.testRelay=http://127.0.0.1:8797 :app:connectedDebugAndroidTest
 ```
 
-Debug APK: `apps/android/app/build/outputs/apk/debug/app-debug.apk`, application ID `com.together.android.debug`, version `0.2.1-phaseC`, code5. The reserved normal ID is `com.together.android`; no signed production Android release is delivered. Do not uninstall real user data to solve a signing mismatch. The Debug QA activity can reopen an existing synthetic namespace, never create a replacement identity; it is absent from Release. Physical reopening requires a short-lived namespace-bound local QA permit. Normal test rules use their own explicitly isolated repository, never the default workspace.
+Debug APK: `apps/android/app/build/outputs/apk/debug/app-debug.apk`. Native QA build and its helper APK: `:app:assembleNativeQa :app:assembleNativeQaAndroidTest -Ptogether.testBuildType=nativeQa`. Debug/QA builds and JVM unit tests do not require Release credentials or the rebuilt Release AAR. Never uninstall real user data to solve a signing mismatch. The Debug QA activity can reopen an existing synthetic namespace, never create a replacement identity; it is absent from Release. Physical reopening requires a short-lived namespace-bound local QA permit. Normal test rules use their own explicitly isolated repository, never the default workspace.
 
 Physical runs require live ADB authorization/model verification and
 `scripts/run_android_physical_qa.py --serial <device> --expect-model SM-S9210 --relay http://127.0.0.1:<port> --authorize-physical-test-app`.
@@ -23,19 +74,21 @@ Native permissions are handled by the user, not auto-granted. See
 ## Business implementation
 
 - Home / Our Plans / Wishes / Our Finances / Connection / Settings. No false Our Story page or permanent Love Gift destination/card.
-- One Tasks editor, assignee/due dates, Pending/Upcoming/Completed, regular every-N calendar recurrence and flexible Set Next Time/complete-later. Atomic command groups validate a fresh projection; unchanged editor fields do not overwrite concurrent changes.
+- One Tasks editor, assignee/due dates, Pending/Completed, regular every-N calendar recurrence and flexible Set Next Time/complete-later. Future, overdue and undated unfinished tasks share Pending. Atomic command groups validate a fresh projection; unchanged editor fields do not overwrite concurrent changes.
 - Separate Wishes grants/history, two real member directions, beneficiary items, fulfillment request/beneficiary confirm/reject and auditable quota adjustments/conflicts. Ordinary changes never require partner approval.
 - Exactly Reserves/Expenses/Bills: integer CNY, original currency/frozen rates, deterministic AA, negative reserves, one expense ledger, bill/month uniqueness, provisional/confirmed/skipped, next-natural-month default revisions, forecasts, financial cycles and local/private or shared four-digit card metadata. Reminders are in-app, not a promise of background system notification.
 - Overflow Send Gift / Gift History, local drafts, one shared-zone day per sender, immutable sends and no deletion refund. Original photo/audio are streamed, separate thumbnail caches, 64KiB existing encrypted media frames, durable partial offsets and SHA-256/format validation. Recipient content receipt is separate from operation ACK. Explicit Android recording, manual player and SAF original export; no auto-play or automatic public export.
 - Cached startup gifts open sealed once, only when ready; normal-use arrival is a nonblocking unread notice. Force-stop/relaunch presentation state is independent of sync/What’s New. Review metadata never exposes sealed text/assets. Review pages compute effective before/after values from logical prefixes off-main; reviewed/notified state is local.
 
-## Identity, enrollment and lifecycle
+## Historical C1 enrollment and lifecycle
+
+[Phase A](../../docs/qa/reports/ANDROID_PHASE_A.md), [Phase B QA](../../docs/qa/reports/ANDROID_PHASE_B.md) and [Phase C QA](../../docs/qa/reports/ANDROID_PHASE_C.md) record earlier builds and their exact test environments. Their C1/USB-reverse results do not establish current native Release acceptance. The following retained enrollment implementation applies to C1 Debug, not the single-peer native Release.
 
 Add My Device retains the Phase A signed-file workflow: import a public Mac offer, compare code/fingerprint, generate an independent key, save a proof-of-possession request via Android SAF, import the root-signed completion and atomically activate its own Room workspace. Old unpaired facts are preserved separately. Same user/space, no third partner, no private-key import/export.
 
 Authorized devices show active/revoked state. Existing Protocol4-v1 permits only the original owner root to grant/revoke. An enrolled Android is not silently promoted to root; original-Mac authorization/revocation UI remains required. The root device must stay available. This is not invitation-based creation of a new partner pair on Android.
 
-Foreground C1 API2 challenge/ticket and directed authenticated-encrypted WebSockets use the existing SyncEngine; offline edits persist, foreground reconnect catches up, background cancels sockets. No permanent background connection, C2, offline mailbox or central business database. Local saved / pending / remote persisted / converged / reviewed / domain confirmed are distinct. No Delivered/read/bank-payment claim.
+Foreground C1 API2 challenge/ticket and directed authenticated-encrypted WebSockets use the existing SyncEngine; offline edits persist, foreground reconnect catches up, background cancels sockets. Native Release reuses the same local signed-log business semantics with its native adapter. Neither variant promises a permanent background connection or offline mailbox. Local saved / pending / remote persisted / converged / reviewed / domain confirmed are distinct. No Delivered/read/bank-payment claim.
 
 Each software Ed25519 seed is independently generated and AES-GCM wrapped by an Android Keystore AES key. This does not claim hardware Ed25519 or encryption of the entire Room database. App backup/device-transfer excludes facts/identity. Missing/invalidated keys fail closed; uninstall/device loss can destroy access. There is no root-loss recovery or silent identity rotation. Preserve the trusted root and authorize a genuinely new device.
 
