@@ -21,7 +21,7 @@ data class PartnerPairingState(val stage: String = "idle", val invitation: Partn
 
 /** Same CryptoKit-compatible Relay-1 framing already used by the Mac pairing
  * channel. It is limited to native partner-purpose routes, before Protocol 4. */
-internal class PartnerSecureChannel(private val identity: DeviceIdentity, ephemeral: ByteArray,
+class PartnerSecureChannel(private val identity: DeviceIdentity, ephemeral: ByteArray,
     val local: SignedHello, val remote: SignedHello) {
     val transcript: String
     private val outgoing: ByteArray; private val incoming: ByteArray
@@ -64,15 +64,11 @@ internal class PartnerSecureChannel(private val identity: DeviceIdentity, epheme
 }
 
 /** Persists only after both human consents; adapters serialize their own stores. */
-interface PartnerHistory {
+interface PartnerHistory : PartnerBootstrapHistory {
     suspend fun joinRequest(code: String): String = uid()
-    suspend fun prepare(genesis: SignedGenesis) {}
     suspend fun pendingGenesis(): SignedGenesis? = null
     suspend fun rememberRoute(route: PartnerRoute) {}
     suspend fun pin(peer: DeviceDescriptor, route: PartnerRoute)
-    suspend fun ownHistory(): List<SignedOperation>
-    suspend fun importBatch(operations: List<SignedOperation>)
-    suspend fun checkpoint(): Checkpoint
     suspend fun complete(authorization: AuthorizationArchive, binding: C1Binding)
 }
 
@@ -92,12 +88,8 @@ class PartnerPairingClient(private val origin: String, private val identity: Dev
     private var channel: PartnerSecureChannel? = null
     private var localApproved = false; private var remoteApproved = false; private var present = false
     private var serverPaired = false; private var started = false
-    private var sentHistory = false; private var receivedHistory = false
-    private var expectedHistory: Checkpoint? = null; private var receivedHasher = InventoryHasher()
-    private var receivedCount = 0; private var lastReceived: String? = null
-    private var localGenesis: SignedGenesis? = null; private var remoteGenesis: SignedGenesis? = null
-    private var sentReady = false; private var receivedReady = false; private var finished = false
-    private var expectedAck: Checkpoint? = null; private var ack: CompletableDeferred<Unit>? = null
+    private var bootstrapExchange: PartnerBootstrapExchange? = null
+    private var finished = false
     private val seenHellos = mutableSetOf<String>()
     private var foreground = true
 
@@ -131,7 +123,7 @@ class PartnerPairingClient(private val origin: String, private val identity: Dev
         if (!value) { job?.cancel(); historyJob?.cancel(); transport.disconnect() }
         else if (job?.isActive != true && !finished) (route?.routeId ?: _state.value.invitation?.routeId)?.let(::follow)
     }
-    fun stop() { scope.cancel(); transport.disconnect(); ephemeral.fill(0) }
+    fun stop() { bootstrapExchange?.stop(); scope.cancel(); transport.disconnect(); ephemeral.fill(0) }
     private fun identityBody() = buildJsonObject { put("descriptor", identity.descriptor.json()); put("profileName", name.trim().take(80)) }
     private fun failure(e: Exception) {
         if (e is CancellationException) return
@@ -179,20 +171,19 @@ class PartnerPairingClient(private val origin: String, private val identity: Dev
                     }
                 } catch (e: CancellationException) { throw e }
                 catch (e: Exception) { failure(e) }
-                finally { historyJob?.cancelAndJoin(); historyJob = null; transport.disconnect() }
+                finally { bootstrapExchange?.stop(); bootstrapExchange = null; historyJob?.cancelAndJoin(); historyJob = null; transport.disconnect() }
                 if (!finished) delay(minOf(60_000L, 1000L shl minOf(attempt++, 6)))
             }
         }
     }
     private fun resetHandshake() {
+        bootstrapExchange?.stop(); bootstrapExchange = null
         historyJob?.cancel(); started = false; channel = null; remoteApproved = false
         localApproved = pinned != null; present = false
         ephemeral.fill(0); ephemeral = Crypto.seed(); seenHellos.clear()
         val b = HelloBody(1, route!!.routeId, identity.descriptor, name.trim().take(80), Crypto.xPublic(ephemeral).b64(), uid(), null, null)
         hello = SignedHello(b, identity.sign(Canonical.encode(b)))
-        sentHistory = false; receivedHistory = false; expectedHistory = null; receivedHasher = InventoryHasher()
-        receivedCount = 0; lastReceived = null; localGenesis = null; remoteGenesis = null
-        sentReady = false; receivedReady = false; expectedAck = null; ack = null
+
     }
     suspend fun confirm() = gate.withLock {
         val c = channel ?: throw ProtocolException("PAIRING_NOT_READY")
@@ -224,6 +215,7 @@ class PartnerPairingClient(private val origin: String, private val identity: Dev
                 requireProtocol(route!!.members.any { it.descriptor == remote.body.descriptor }, "IDENTITY_MISMATCH")
                 if (channel?.remote == remote) return
                 requireProtocol(seenHellos.size < 64 && seenHellos.add(sha256(Canonical.encode(remote))), "REPLAYED_HELLO")
+                bootstrapExchange?.stop(); bootstrapExchange = null
                 historyJob?.cancel(); started = false
                 val c = PartnerSecureChannel(identity, ephemeral, hello!!, remote); channel = c
                 remoteApproved = false; localApproved = pinned != null
@@ -250,86 +242,12 @@ class PartnerPairingClient(private val origin: String, private val identity: Dev
         val peer = channel!!.remote.body.descriptor
         history.pin(peer, route!!); pinned = peer; started = true
         _state.value = _state.value.copy(stage = "syncing", error = null)
-        historyJob = scope.launch {
-            try {
-                val operations = history.ownHistory().sortedBy { it.operation.operationId }
-                val initial = checkpoint(operations.map { InventoryEntry(it.operation.operationId, it.contentDigest) })
-                sendFrame(PartnerBootstrapFrame("partner-history-start", checkpoint = initial))
-                var batch = mutableListOf<SignedOperation>(); var size = 0
-                suspend fun flush() {
-                    if (batch.isEmpty()) return
-                    val current = batch.toList(); val wanted = Checkpoint(current.size, sha256(Canonical.encode(current)))
-                    val receipt = CompletableDeferred<Unit>()
-                    gate.withLock { expectedAck = wanted; ack = receipt }
-                    sendFrame(PartnerBootstrapFrame("partner-history", operations = current))
-                    withTimeout(20_000) { receipt.await() }; batch.clear(); size = 0
-                }
-                for (operation in operations) {
-                    val bytes = Canonical.encode(operation).size; requireProtocol(bytes < 230_000, "BATCH_BOUNDS")
-                    if (batch.size == 32 || size + bytes > 230_000) flush()
-                    batch.add(operation); size += bytes
-                }
-                flush(); sendFrame(PartnerBootstrapFrame("partner-history-end", checkpoint = initial))
-                gate.withLock { sentHistory = true; prepareGenesis() }
-            } catch (e: CancellationException) { throw e } catch (e: Exception) { failure(e); transport.disconnect() }
-        }
+        bootstrapExchange = PartnerBootstrapExchange(identity, peer, scope, history,
+            send = ::sendFrame, complete = { genesis -> activate(genesis, route!!.routeId) },
+            failed = { error -> failure(error); transport.disconnect() }).also { it.start() }
     }
     private suspend fun receiveFrame(f: PartnerBootstrapFrame) {
-        when (f.kind) {
-            "partner-history-start" -> { requireProtocol(expectedHistory == null, "INVALID_INVENTORY_PAGE"); expectedHistory = f.checkpoint ?: throw ProtocolException("INVALID_CHECKPOINT"); expectedHistory!!.validate() }
-            "partner-history" -> {
-                val expected = expectedHistory ?: throw ProtocolException("INVALID_INVENTORY_PAGE")
-                val operations = f.operations ?: throw ProtocolException("INVALID_RECORD")
-                requireProtocol(!receivedHistory && operations.isNotEmpty() && operations.size <= 32 && Canonical.encode(f).size <= 240_000, "BATCH_BOUNDS")
-                val peer = channel!!.remote.body.descriptor
-                operations.forEach { operation ->
-                    operation.verify(peer)
-                    requireProtocol(lastReceived == null || lastReceived!! < operation.operation.operationId, "INVALID_INVENTORY_ORDER")
-                    receivedHasher.add(InventoryEntry(operation.operation.operationId, operation.contentDigest))
-                    lastReceived = operation.operation.operationId; receivedCount++
-                }
-                requireProtocol(receivedCount <= expected.count, "CONTENT_COLLISION")
-                history.importBatch(operations)
-                sendFrame(PartnerBootstrapFrame("partner-history-ack", checkpoint = Checkpoint(operations.size, sha256(Canonical.encode(operations)))))
-            }
-            "partner-history-ack" -> { requireProtocol(f.checkpoint == expectedAck, "INVALID_RECEIPT"); ack?.complete(Unit) ?: throw ProtocolException("INVALID_RECEIPT") }
-            "partner-history-end" -> {
-                requireProtocol(!receivedHistory && f.checkpoint == expectedHistory && receivedCount == expectedHistory?.count && receivedHasher.finish() == expectedHistory, "CONTENT_COLLISION")
-                receivedHistory = true; prepareGenesis()
-            }
-            "partner-genesis", "partner-ready" -> {
-                val genesis = f.genesis ?: throw ProtocolException("INVALID_GENESIS")
-                val peer = channel!!.remote.body.descriptor
-                val proof = genesis.signatures.singleOrNull { it.deviceId == peer.deviceId } ?: throw ProtocolException("INVALID_GENESIS_SIGNATURES")
-                requireProtocol(genesis.signatures.map { it.deviceId }.distinct().size == genesis.signatures.size &&
-                    genesis.signatures.all { it.deviceId in listOf(identity.descriptor.deviceId, peer.deviceId) } &&
-                    Crypto.verify(peer.publicKey.unbase64(), proof.signature.unbase64(), Canonical.encode(genesis.body)), "INVALID_GENESIS_SIGNATURES")
-                requireProtocol(remoteGenesis == null || remoteGenesis!!.body == genesis.body, "CONTENT_COLLISION")
-                remoteGenesis = genesis; if (f.kind == "partner-ready") receivedReady = true
-                advanceGenesis()
-            }
-            else -> throw ProtocolException("INVALID_PAIRING_FRAME")
-        }
-    }
-    private suspend fun prepareGenesis() {
-        if (!sentHistory || !receivedHistory || localGenesis != null) return
-        val roots = listOf(identity.descriptor, channel!!.remote.body.descriptor).sortedBy { it.deviceId }
-        val space = stableId("space:" + roots.joinToString(":") { it.deviceId })
-        val body = GenesisBody(4, space, roots.map { it.userId }.sorted(), roots,
-            (roots.map { it.initialSpaceId } + space).distinct().sorted(), roots.first().initialTimeZoneIdentifier ?: "Etc/UTC", history.checkpoint())
-        localGenesis = SignedGenesis(body, listOf(DeviceSignature(identity.descriptor.deviceId, identity.sign(Canonical.encode(body)))))
-        sendFrame(PartnerBootstrapFrame("partner-genesis", genesis = localGenesis)); advanceGenesis()
-    }
-    private suspend fun advanceGenesis() {
-        val own = localGenesis ?: return; val other = remoteGenesis ?: return
-        requireProtocol(own.body == other.body, "INVENTORY_CHANGED")
-        val peer = channel!!.remote.body.descriptor
-        val genesis = SignedGenesis(own.body, listOf(own.signatures.single(), other.signatures.single { it.deviceId == peer.deviceId }).sortedBy { it.deviceId })
-        genesis.verify()
-        history.prepare(genesis)
-        if (!sentReady) { sendFrame(PartnerBootstrapFrame("partner-ready", genesis = genesis)); sentReady = true }
-        if (!receivedReady || finished) return
-        activate(genesis, route!!.routeId)
+        (bootstrapExchange ?: throw ProtocolException("PAIRING_NOT_READY")).receive(f)
     }
     private suspend fun activate(genesis: SignedGenesis, routeId: String) {
         genesis.verify()

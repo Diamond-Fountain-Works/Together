@@ -107,7 +107,7 @@ class OkHttpSyncTransport(private val client: OkHttpClient = OkHttpClient.Builde
 }
 @Serializable private data class Directed(val kind: String = "relay4", val senderDeviceId: String, val recipientDeviceId: String, val packet: RelayPacket)
 @Serializable private data class Presence(val kind: String, val spaceId: String, val devices: List<String>, val authorizationDigest: String)
-@Serializable private data class Content(val kind: String, val frame: ReplicationFrame? = null, val payload: JsonObject? = null)
+private typealias Content = AuthenticatedSyncContent
 
 /** Foreground-owned coroutine. New challenge/ticket/ephemeral on every connection;
  * cancelling the foreground scope closes sockets without discarding local facts. */

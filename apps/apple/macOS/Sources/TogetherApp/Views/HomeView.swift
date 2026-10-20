@@ -13,7 +13,7 @@ struct HomeView: View {
                     HStack(spacing: 22) {
                         person(model.engine.ownProfile, fallback: Copy.text("status.profile.self"), online: true)
                         Divider().frame(height: 46)
-                        person(model.engine.partnerProfile, fallback: model.engine.context.peer == nil ? Copy.text("status.profile.waitingPartner") : Copy.text("status.profile.waitingSync"), online: model.network.partnerIsOnline)
+                        person(model.engine.partnerProfile, fallback: model.engine.context.peer == nil ? Copy.text("status.profile.waitingPartner") : Copy.text("status.profile.waitingSync"), online: model.partnerIsOnline)
                         Spacer()
                     }
                 }

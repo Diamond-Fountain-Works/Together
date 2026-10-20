@@ -9,6 +9,11 @@ import AppKit
     @AppStorage("appearance") private var appearance = "system"
     @NSApplicationDelegateAdaptor(TogetherAppDelegate.self) private var delegate
     init() {
+        #if TOGETHER_NATIVE_P2P_QA
+        do { _model = State(initialValue: try NativeAcceptance.build()) }
+        catch { _startupError = State(initialValue: error.localizedDescription) }
+        return
+        #else
         #if TOGETHER_UI_TEST_HOST
         if !UIFixture.enabled { _startupError=State(initialValue:Copy.text("qa.error.isolatedLaunch")) }
         return
@@ -19,6 +24,7 @@ import AppKit
         do { _model = State(initialValue: ApplicationModel(engine: try ReplicaEngine.production())) }
         catch IdentityStorageError.legacyMigrationRequired { _needsIdentityMigration = State(initialValue: true) }
         catch { _startupError = State(initialValue: error.localizedDescription) }
+        #endif
         #endif
     }
     var body: some Scene {
@@ -47,7 +53,11 @@ import AppKit
             } else {
                 StartupIdentityView(needsMigration: needsIdentityMigration, error: startupError) {
                     do {
+                        #if TOGETHER_NATIVE_P2P_QA
+                        model = try NativeAcceptance.build()
+                        #else
                         model = ApplicationModel(engine: try ReplicaEngine.production(migrateLegacyIdentity: needsIdentityMigration))
+                        #endif
                         startupError = nil; needsIdentityMigration = false
                     } catch { startupError = error.localizedDescription }
                 }

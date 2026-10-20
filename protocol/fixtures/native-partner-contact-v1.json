@@ -1,0 +1,29 @@
+{
+  "bodyCanonical" : "{\"descriptor\":{\"deviceId\":\"00000000-0000-0000-0000-000000000092\",\"displayName\":\"Synthetic QA\",\"initialSpaceId\":\"00000000-0000-0000-0000-000000000094\",\"initialTimeZoneIdentifier\":\"Asia/Shanghai\",\"protocolVersion\":4,\"publicKey\":\"A6EHv/POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg=\",\"userId\":\"00000000-0000-0000-0000-000000000093\"},\"directAddresses\":[\"[2001:db8::1]:4242\"],\"endpointId\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"expiresAt\":1791561600000,\"invitationId\":\"00000000-0000-0000-0000-000000000091\",\"issuedAt\":1791532800000,\"relayURL\":\"https://relay.example.invalid/\",\"transport\":\"iroh-quic\",\"version\":1}",
+  "contact" : {
+    "body" : {
+      "descriptor" : {
+        "deviceId" : "00000000-0000-0000-0000-000000000092",
+        "displayName" : "Synthetic QA",
+        "initialSpaceId" : "00000000-0000-0000-0000-000000000094",
+        "initialTimeZoneIdentifier" : "Asia/Shanghai",
+        "protocolVersion" : 4,
+        "publicKey" : "A6EHv/POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg=",
+        "userId" : "00000000-0000-0000-0000-000000000093"
+      },
+      "directAddresses" : [
+        "[2001:db8::1]:4242"
+      ],
+      "endpointId" : "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "expiresAt" : 1791561600000,
+      "invitationId" : "00000000-0000-0000-0000-000000000091",
+      "issuedAt" : 1791532800000,
+      "relayURL" : "https://relay.example.invalid/",
+      "transport" : "iroh-quic",
+      "version" : 1
+    },
+    "signature" : "QZ2iosQpo4IfNEtE0i3mfJTF43ABo3PNhSVpwMJhuigWSKlsXsiF7ugH/K0V+lDgRZOK9o67VjEOO4t4B7jbCQ=="
+  },
+  "fixtureVersion" : 1,
+  "nowMs" : 1791532800001
+}

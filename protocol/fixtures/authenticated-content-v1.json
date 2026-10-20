@@ -1,0 +1,15 @@
+{
+  "canonicalEnvelopes": [
+    "{\"frame\":{\"hintId\":\"00000000-0000-0000-0000-0000000000A2\",\"kind\":\"syncHint\"},\"kind\":\"replication\"}",
+    "{\"kind\":\"media\",\"payload\":{\"mediaRequest\":{\"_0\":\"00000000-0000-0000-0000-0000000000A1\",\"_1\":65536}}}",
+    "{\"kind\":\"media\",\"payload\":{\"mediaChunk\":{\"_0\":\"00000000-0000-0000-0000-0000000000A1\",\"_1\":65536,\"_2\":\"AP8BAn8=\"}}}",
+    "{\"kind\":\"media\",\"payload\":{\"mediaComplete\":{\"_0\":\"00000000-0000-0000-0000-0000000000A1\",\"_1\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\"}}}",
+    "{\"kind\":\"media\",\"payload\":{\"mediaVerified\":{\"_0\":\"00000000-0000-0000-0000-0000000000A1\",\"_1\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\"}}}",
+    "{\"kind\":\"media\",\"payload\":{\"mediaFailure\":{\"_0\":\"00000000-0000-0000-0000-0000000000A1\",\"_1\":\"Synthetic unavailable\"}}}",
+    "{\"kind\":\"media\",\"payload\":{\"giftReceipt\":{\"_0\":{\"assetHashes\":[\"00000000-0000-0000-0000-0000000000A1\",\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\"],\"creationOperationId\":\"00000000-0000-0000-0000-0000000000A4\",\"giftId\":\"00000000-0000-0000-0000-0000000000A3\",\"recipientId\":\"00000000-0000-0000-0000-0000000000A5\"}}}}"
+  ],
+  "fixtureVersion": 1,
+  "legacyTransportALPN": "together/p4/1",
+  "nativeAppALPN": "together/p4/c1-content/1",
+  "synthetic": true
+}

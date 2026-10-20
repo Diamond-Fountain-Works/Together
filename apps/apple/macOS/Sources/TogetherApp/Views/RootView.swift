@@ -19,8 +19,8 @@ struct RootView: View {
                     ForEach([AppSection.connection, .settings]) { sidebarRow($0) }
                 }.listStyle(.sidebar).frame(height: 100)
                 HStack {
-                    Circle().fill(model.network.isOnline ? .green : .secondary).frame(width: 6, height: 6)
-                    Text(model.network.state.displayName).font(.caption).foregroundStyle(.secondary)
+                    Circle().fill(model.isOnline ? .green : .secondary).frame(width: 6, height: 6)
+                    Text(model.connectionState.displayName).font(.caption).foregroundStyle(.secondary)
                     Spacer()
                 }.padding(18)
             }.navigationSplitViewColumnWidth(min: 190, ideal: 220, max: 270)
@@ -80,7 +80,7 @@ struct RootView: View {
             Button(Copy.text("copy.action.f867f3417859")) { model.errorMessage = nil }
         } message: { Text(model.errorMessage ?? "") }
         .task { model.start() }
-        .onChange(of: model.network.completedSyncCount) { _, _ in model.checkStartupGifts() }
+        .onChange(of: model.completedSyncCount) { _, _ in model.checkStartupGifts() }
         .onChange(of: model.engine.changeNumber) { _, _ in model.checkStartupGifts(); model.refreshFinancialState();model.refreshSharedChanges() }
         .onChange(of: model.section) { _, _ in model.noteUserInteraction() }
         .onReceive(NotificationCenter.default.publisher(for: NSApplication.didBecomeActiveNotification)) { _ in model.currentDate = model.engine.dateProvider.now() }

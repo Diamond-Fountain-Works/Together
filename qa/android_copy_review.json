@@ -4044,5 +4044,75 @@
     "state": "reviewed",
     "reason": "Requested functional pairing action, identity verification or actual connection status; no invented partner data.",
     "sha256": "d751238ba77759d4e873605e5b6cc6fd67962952f6246d506e879024e39e0de7"
+  },
+  "values/app_name_native_qa": {
+    "category": "Status",
+    "context": "Isolated normal native QA App / app_name_native_qa",
+    "state": "reviewed",
+    "reason": "Functional QA App identification, pairing input action and measured connection state. Direct and encrypted relay paths remain distinct; no delivery claim.",
+    "sha256": "d66e7fea8cfa4fd3b5930d041456bf295b4c34cb5a3eef2c1fa1c3e74dfda018"
+  },
+  "values/native_paste_invitation": {
+    "category": "Action",
+    "context": "Isolated normal native QA App / native_paste_invitation",
+    "state": "reviewed",
+    "reason": "Functional QA App identification, pairing input action and measured connection state. Direct and encrypted relay paths remain distinct; no delivery claim.",
+    "sha256": "2964f9c89e33bf84e1b12c32f5376a1e205fd58d3664a738b75ac2c8712a11fd"
+  },
+  "values/native_work_offline": {
+    "category": "Action",
+    "context": "Isolated normal native QA App / native_work_offline",
+    "state": "reviewed",
+    "reason": "Functional QA App identification, pairing input action and measured connection state. Direct and encrypted relay paths remain distinct; no delivery claim.",
+    "sha256": "659b8ae1aa4a1bf6ea6c511ba10f12d8ae08e27a06c0879213cbbfbf66c373f8"
+  },
+  "values/native_path_direct": {
+    "category": "Status",
+    "context": "Isolated normal native QA App / native_path_direct",
+    "state": "reviewed",
+    "reason": "Functional QA App identification, pairing input action and measured connection state. Direct and encrypted relay paths remain distinct; no delivery claim.",
+    "sha256": "28d0ad5455688db8142822ec486c82cfdc9aa909612e10ba0add34fc40fe059b"
+  },
+  "values/native_path_relay": {
+    "category": "Status",
+    "context": "Isolated normal native QA App / native_path_relay",
+    "state": "reviewed",
+    "reason": "Functional QA App identification, pairing input action and measured connection state. Direct and encrypted relay paths remain distinct; no delivery claim.",
+    "sha256": "22e762291b02515ba24b986966c61e5784b8b4eee690a21ea1092524d6fff1c7"
+  },
+  "values-zh-rCN/app_name_native_qa": {
+    "category": "Status",
+    "context": "Isolated normal native QA App / app_name_native_qa",
+    "state": "reviewed",
+    "reason": "Functional QA App identification, pairing input action and measured connection state. Direct and encrypted relay paths remain distinct; no delivery claim.",
+    "sha256": "d66e7fea8cfa4fd3b5930d041456bf295b4c34cb5a3eef2c1fa1c3e74dfda018"
+  },
+  "values-zh-rCN/native_paste_invitation": {
+    "category": "Action",
+    "context": "Isolated normal native QA App / native_paste_invitation",
+    "state": "reviewed",
+    "reason": "Functional QA App identification, pairing input action and measured connection state. Direct and encrypted relay paths remain distinct; no delivery claim.",
+    "sha256": "f35665c73755ee658ef345cf8389285f01e371d6d470899f962f35b15505b5d4"
+  },
+  "values-zh-rCN/native_work_offline": {
+    "category": "Action",
+    "context": "Isolated normal native QA App / native_work_offline",
+    "state": "reviewed",
+    "reason": "Functional QA App identification, pairing input action and measured connection state. Direct and encrypted relay paths remain distinct; no delivery claim.",
+    "sha256": "0a7ecabc2b9e9c94d63612620548900e2b2ba89a411d329539224dae95b29027"
+  },
+  "values-zh-rCN/native_path_direct": {
+    "category": "Status",
+    "context": "Isolated normal native QA App / native_path_direct",
+    "state": "reviewed",
+    "reason": "Functional QA App identification, pairing input action and measured connection state. Direct and encrypted relay paths remain distinct; no delivery claim.",
+    "sha256": "b06325c5660f0c295b1fcdbf9e2dbe645d7fa65ab4ac0128c1f5e8afd106feed"
+  },
+  "values-zh-rCN/native_path_relay": {
+    "category": "Status",
+    "context": "Isolated normal native QA App / native_path_relay",
+    "state": "reviewed",
+    "reason": "Functional QA App identification, pairing input action and measured connection state. Direct and encrypted relay paths remain distinct; no delivery claim.",
+    "sha256": "e920d0820af166e8d4e6f940baa8e31503910ac3347dae98f5338f255259013f"
   }
 }

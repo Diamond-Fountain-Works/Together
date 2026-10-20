@@ -52,7 +52,7 @@ private struct C1Presence: Codable {
   var devices: [UUID]
   var authorizationDigest: String
 }
-private enum C1Content: Codable {
+enum C1Content: Codable {
   case replication(ReplicationFrame)
   case media(WirePayload)
   private enum Keys: String, CodingKey { case kind, frame, payload }

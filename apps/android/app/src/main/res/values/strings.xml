@@ -289,4 +289,9 @@
     <string name="action_newer">Newer</string>
     <string name="action_older">Older</string>
     <string name="status_avatar_changed">Avatar updated</string>
+    <string name="app_name_native_qa">Together QA</string>
+    <string name="native_paste_invitation">Paste invitation</string>
+    <string name="native_work_offline">Work offline</string>
+    <string name="native_path_direct">Direct connection</string>
+    <string name="native_path_relay">Encrypted relay connection</string>
 </resources>
