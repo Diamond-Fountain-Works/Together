@@ -34,7 +34,9 @@ transport tests. The production macOS installation was not replaced.
 | Wish grant → beneficiary creates wish → fulfiller requests completion → beneficiary confirms | PASS | Both Apps show one fulfilled and one remaining wish |
 | Recurring bills and broader financial edge cases | NOT RUN in this physical run | Existing automated domain tests remain distinct from physical UI acceptance |
 | Original photo transfer and content-complete receipt | PASS | Normal Mac composer imports/sends a synthetic 1,845,914-byte PNG; Samsung original SHA-256 and byte count match exactly, and Mac gift history shows Synced from the separate content receipt |
-| Normal-App audio import/playback | NOT RUN / automation blocked | Audio-menu automation did not complete; original failure evidence retained. Shared original-media session tests are not physical audio acceptance |
+| Samsung audio import/preview/send → Mac receive/manual playback | PASS | Audio-only gift, exact 64,044-byte original/hash; sender content receipt and manual receiver playback observed |
+| Mac startup sealed reveal, receive/close, then second restart | PASS | Only the first restart presents the unseen cached gift; no private content before Open, no autoplay and no repeat after closing |
+| Mac audio-import menu automation | NOT RUN / automation blocked | CUA menu errors remain unresolved; Android audio import success does not prove the Mac import action |
 
 The connection used real application traffic, rather than copying signed
 operations between stores. USB was used for test installation, UI input,
@@ -163,9 +165,9 @@ review**, penetration test or production release approval.
    Record direct and encrypted-relay paths separately.
 2. Extend passed wish/expense UI cases to physical recurring bills and remaining
    domain-specific offline/restart cases.
-3. Complete normal-App audio import/playback and physically interrupt/resume a
-   media transfer. The photo raw hash, save-original and content receipt have
-   passed below; local bridge tests do not replace the remaining physical cases.
+3. Complete the Mac audio-import menu automation and physically interrupt/resume
+   a media transfer. Photo transfer/export, reverse audio and startup one-time
+   reveal have passed below; local bridge tests do not replace remaining cases.
 4. Inspect hosted CI for the published commit and preserve independent protocol
    security review, the pinned native-library platform constraints and human
    visual review as release gates.
@@ -184,8 +186,7 @@ initially showed an unopened history item; the sealed reveal contained no privat
 text or image in the UI hierarchy. The transferred original is 1,845,914 bytes and
 matches the imported synthetic PNG SHA-256 exactly. USB was used only to inspect
 the verified QA original after transmission. The sender's normal gift history
-shows **Synced**, independently of the operation ACK. Audio playback and startup one-time reveal acceptance still require
-their own observations.
+shows **Synced**, independently of the operation ACK. The reverse audio and one-time startup reveal subsequently passed below.
 
 An interruption before sending was retained: the phone foreground was the older
 Debug package, so the QA foreground session stopped normally. Reopening the QA
@@ -225,9 +226,48 @@ photo was selected or automatically exported. Private evidence:
   Publication scanning covers tracked/new source and ref/reflog history; this is
   a credential/data-leak gate, not independent protocol security approval.
 
-Normal-App opposite invitation direction, audio-menu/playback completion,
+Normal-App opposite invitation direction, Mac audio-import menu automation,
 physical interrupted-media resume and fully VPN-free public acceptance remain
 NOT RUN. Core synthetic resume coverage is separate. Further phone automation
 paused when the device foreground moved to other applications; no unrelated App
 was controlled. The existing independent protocol/security review release gate
 remains open. No production Worker was deployed or any PR merged.
+
+### Subsequent reverse-audio and actual restart checkpoint
+
+After the user made the Samsung available again, the normal Compose editor
+imported a synthetic two-second WAV through the system document picker. Manual
+preview showed Pause and a progressing time display. The **audio-only** gift was
+sent normally; its sender history reported content synchronized to the partner.
+The Mac verified an exact 64,044-byte original with matching SHA-256. The device
+remained on cellular without an active VPN; the Mac VPN qualification remains.
+
+While the Mac was in use, receipt did not force a gift modal. After a real QA
+process quit/relaunch using the same isolated root, the unseen cached gift
+presented sealed. Its accessibility hierarchy exposed neither audio content nor
+private text. Open revealed the correct girlfriend/audio-only “little gift”
+copy, a Play button, progress zero and 0:00 duration position. Manual Play changed
+to Pause with advancing progress. “Received” closed the sheet. A second true
+quit/relaunch showed Home, no repeated gift sheet, then automatic Connected.
+No pairing, identity or quota reset was performed. Private evidence:
+`android-audio-preview.xml`, `android-audio-gift-synced-history.xml`,
+`mac-audio-original-integrity.json`, `mac-audio-received-real-ack.json` and
+`normal-app-audio-ui-checkpoint.json`.
+
+The native path indicator later changed from relay to direct. This remains an
+application path observation under an active Mac VPN, not proof of a VPN-free
+underlying route. It does not supersede the earlier destination-route evidence.
+
+Relay regression was also rerun locally: TypeScript check PASS / 21 tests PASS.
+The first command lacked this worktree's locked dependencies; installing them
+from the existing lockfile and rerunning fixed the environment without a source
+or service change. The published source checkpoint at `265936c` passed all five
+hosted CI jobs; later documentation commits require their own latest CI result.
+
+A final read-only store comparison after both gifts found **21 operations on each
+App**, identical operation IDs, identical signed-operation content/signatures and
+identical 14 authorized Protocol 4 envelopes. Both inspected SQLite stores passed
+`quick_check`. Seven pre-activation signed operations remain valid legacy
+history; they were not rewritten as new Protocol 4 facts. These are read-only QA
+store observations, not database injection or a USB synchronization mechanism.
+Only this aggregate result is public; the copied QA stores remain ignored.

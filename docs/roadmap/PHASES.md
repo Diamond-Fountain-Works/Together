@@ -8,7 +8,8 @@ confirmation have physical App evidence. Both QA identities survive the update.
 The current route is encrypted relay with **Mac VPN active / Samsung VPN off**;
 this does not pass the requested fully VPN-free or public direct-P2P gate.
 The original photo transfer and normal Save Photo export match the original
-SHA-256; audio and fully VPN-free acceptance remain unverified. No production App, identity,
+SHA-256; Samsung audio import/send, Mac manual playback and one-time startup
+reveal also pass. Fully VPN-free acceptance remains unverified. No production App, identity,
 Worker, parent PR or approved screenshot baseline changed. Exact results and
 remaining gates: [normal-App acceptance](../qa/reports/NATIVE_APP_NETWORK_ACCEPTANCE.md).
 
