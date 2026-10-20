@@ -21,7 +21,13 @@ import AppKit
         #if DEBUG
         if UIFixture.enabled { return }
         #endif
-        do { _model = State(initialValue: ApplicationModel(engine: try ReplicaEngine.production())) }
+        do {
+            #if TOGETHER_NATIVE_TRANSPORT
+            _model = State(initialValue: try NativeProduction.build())
+            #else
+            _model = State(initialValue: ApplicationModel(engine: try ReplicaEngine.production()))
+            #endif
+        }
         catch IdentityStorageError.legacyMigrationRequired { _needsIdentityMigration = State(initialValue: true) }
         catch { _startupError = State(initialValue: error.localizedDescription) }
         #endif
@@ -55,6 +61,8 @@ import AppKit
                     do {
                         #if TOGETHER_NATIVE_P2P_QA
                         model = try NativeAcceptance.build()
+                        #elseif TOGETHER_NATIVE_TRANSPORT
+                        model = try NativeProduction.build(migrateLegacyIdentity: needsIdentityMigration)
                         #else
                         model = ApplicationModel(engine: try ReplicaEngine.production(migrateLegacyIdentity: needsIdentityMigration))
                         #endif

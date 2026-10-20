@@ -1,5 +1,68 @@
 // swift-tools-version: 6.0
 import PackageDescription
+import Foundation
+import CryptoKit
+
+// The upstream v1.1.0 binary contains vulnerable Rust core 1.0.2. Always use
+// our source-built, receipt-verified core 1.1.0; there is no remote fallback.
+let repository = URL(fileURLWithPath: #filePath).deletingLastPathComponent().deletingLastPathComponent().deletingLastPathComponent()
+let secureSources = repository.appendingPathComponent("packages/together-native-source")
+let nativePackage = URL(fileURLWithPath: ProcessInfo.processInfo.environment["TOGETHER_IROH_SECURE_PACKAGE"]
+    ?? repository.appendingPathComponent(".native-build/apple/iroh-ffi").path).standardizedFileURL
+func fail(_ message: String) -> Never {
+    fatalError("Secure Iroh build required: \(message). Run python3 scripts/rebuild_apple_native.py --jobs 2 from the repository root.")
+}
+func checksum(_ url: URL) -> String {
+    guard url.standardizedFileURL.path == url.resolvingSymlinksInPath().path,
+          let stream = try? FileHandle(forReadingFrom: url) else { fail("invalid file \(url.lastPathComponent)") }
+    defer { try? stream.close() }
+    var hash = SHA256()
+    do {
+        while let bytes = try stream.read(upToCount: 1_048_576), !bytes.isEmpty { hash.update(data: bytes) }
+    } catch { fail("unreadable file \(url.lastPathComponent)") }
+    return hash.finalize().map { String(format: "%02x", $0) }.joined()
+}
+func json(_ url: URL) -> [String: Any] {
+    guard let bytes = try? Data(contentsOf: url),
+          let result = try? JSONSerialization.jsonObject(with: bytes) as? [String: Any] else { fail("missing provenance \(url.lastPathComponent)") }
+    return result
+}
+guard ProcessInfo.processInfo.environment["IROH_FORCE_REMOTE_XCFRAMEWORK"] != "1",
+      nativePackage.lastPathComponent == "iroh-ffi",
+      nativePackage.path.hasPrefix(repository.appendingPathComponent(".native-build").path + "/"),
+      nativePackage.path == nativePackage.resolvingSymlinksInPath().path else { fail("unapproved native package path or remote override") }
+let receipt = json(nativePackage.appendingPathComponent("secure-build.json"))
+let secureLock = "0904d9b3cc5c1b5c3384f2a8fc8881da91bcee6231ad1c8813a1ae6eaae268e5"
+let sourceManifest = secureSources.appendingPathComponent("source-manifest.json")
+let bindingManifest = secureSources.appendingPathComponent("apple-bindings-manifest.json")
+guard receipt["format"] as? String == "together-secure-apple-iroh-source-build-v1",
+      receipt["sourceCommit"] as? String == "5e451092dba0c1a09ee83ff6e5be37b1152a5c58",
+      receipt["secureCargoLockSHA256"] as? String == secureLock,
+      checksum(secureSources.appendingPathComponent("Cargo.lock")) == secureLock,
+      receipt["sourceManifestSHA256"] as? String == checksum(sourceManifest),
+      receipt["appleBindingsManifestSHA256"] as? String == checksum(bindingManifest),
+      receipt["ffiExportCount"] as? Int == 413,
+      receipt["ffiExportsEqual"] as? Bool == true,
+      receipt["architecture"] as? String == "arm64",
+      receipt["minimumMacOS"] as? String == "14.5",
+      let versions = receipt["dependencyVersions"] as? [String: String],
+      ["iroh", "iroh-base", "iroh-relay"].allSatisfy({ versions[$0] == "1.1.0" }),
+      let files = receipt["files"] as? [String: String], !files.isEmpty else { fail("stale or unreviewed provenance") }
+let requiredFiles: Set<String> = ["Package.swift", "IrohLib/Sources/IrohLib/IrohLib.swift", "Iroh.xcframework/Info.plist",
+    "Iroh.xcframework/macos-arm64/libiroh_ffi.a", "Iroh.xcframework/macos-arm64/Headers/Export.h",
+    "Iroh.xcframework/macos-arm64/Headers/iroh_ffiFFI.h", "Iroh.xcframework/macos-arm64/Headers/module.modulemap"]
+guard Set(files.keys) == requiredFiles else { fail("incomplete native artifact layout") }
+for (name, expected) in files {
+    guard !name.hasPrefix("/"), !name.split(separator: "/").contains(".."),
+          checksum(nativePackage.appendingPathComponent(name)) == expected else { fail("artifact integrity: \(name)") }
+}
+let bindings = json(bindingManifest)["files"] as? [String: String] ?? [:]
+guard bindings.count == 4 else { fail("missing tracked ABI files") }
+for (name, expected) in bindings {
+    let generated = name.hasPrefix("IrohLib/") ? name : "Iroh.xcframework/macos-arm64/" + name
+    guard checksum(secureSources.appendingPathComponent("apple-bindings/" + name)) == expected,
+          files[generated] == expected else { fail("tracked/generated ABI integrity") }
+}
 
 let package = Package(
     name: "TogetherP2P",
@@ -10,7 +73,7 @@ let package = Package(
         .executable(name: "TogetherP2PPublicQA", targets: ["TogetherP2PPublicQA"])
     ],
     dependencies: [
-        .package(url: "https://github.com/n0-computer/iroh-ffi.git", revision: "5e451092dba0c1a09ee83ff6e5be37b1152a5c58"),
+        .package(path: nativePackage.path),
         .package(path: "../together-core-swift")
     ],
     targets: [

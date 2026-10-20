@@ -40,6 +40,14 @@ import TogetherP2P
     }
 }
 
+#endif
+
+#if TOGETHER_NATIVE_TRANSPORT || TOGETHER_NATIVE_P2P_QA
+import SwiftUI
+import TogetherCore
+import TogetherP2P
+import AppKit
+
 struct NativeConnectionView: View {
     let model: ApplicationModel
     let network: NativeAppPeerService

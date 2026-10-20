@@ -10,7 +10,7 @@ struct ConnectionView: View {
     @TogetherMotionPreference private var reduceMotion
     @Namespace private var pairGeometry
     var body: some View {
-        #if TOGETHER_NATIVE_P2P_QA
+        #if TOGETHER_NATIVE_TRANSPORT || TOGETHER_NATIVE_P2P_QA
         if let nativeNetwork = model.nativeNetwork { NativeConnectionView(model: model, network: nativeNetwork) }
         else { relayContent }
         #else

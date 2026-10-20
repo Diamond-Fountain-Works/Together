@@ -1,5 +1,15 @@
 [
   {
+    "version": "0.2.2",
+    "highlights": [
+      {
+        "icon": "point.3.connected.trianglepath.dotted",
+        "titleKey": "native.release.title",
+        "detailsKey": "native.release.detail"
+      }
+    ]
+  },
+  {
     "version": "0.2.1",
     "highlights": [
       {

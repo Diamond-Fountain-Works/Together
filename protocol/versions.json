@@ -1,13 +1,38 @@
 {
   "appVersionSource": "apps/apple/macOS/Configuration/ReleaseVersion.json",
-  "syncProtocolVersion": 3,
+  "syncProtocolVersion": 4,
   "relayServiceProtocolVersion": 1,
   "databaseSchemaVersion": 1,
   "storageSchemaMeaning": "Existing OperationRecord/LocalRecord/EntityRecord physical SwiftData storage generation; additive replication metadata uses LocalRecord",
   "invitation": {
-    "implementedLifetimeMilliseconds": 600000,
-    "requiredLifetimeMilliseconds": 28800000,
-    "status": "implementation_gap",
+    "requiredPartnerLifetimeMilliseconds": 28800000,
+    "activeForFreshNormalApps": "nativePeer",
+    "legacyRelay": {
+      "lifetimeMilliseconds": 600000,
+      "encoding": "12-character-random-base32-code",
+      "authority": "ConnectionDirectory server clock and atomic stored-invitation consumption",
+      "endpoint": "/v1/invitations",
+      "oneUse": true,
+      "status": "legacy compatibility; not the fresh native App path"
+    },
+    "partnerRelay": {
+      "lifetimeMilliseconds": 28800000,
+      "encoding": "12-character-random-base32-code",
+      "authority": "ConnectionDirectory server clock and atomic stored-invitation consumption",
+      "endpoint": "/v2/partner-invitations",
+      "oneUse": true,
+      "status": "implemented C1 partner purpose; production deployment is a separate gate"
+    },
+    "nativePeer": {
+      "lifetimeMilliseconds": 28800000,
+      "encoding": "signed-canonical-json-native-partner-contact-v1",
+      "authority": "issuer signed issuedAt/expiresAt; receiver local system clock validates fresh joins",
+      "timestampUnit": "unix-milliseconds",
+      "specification": "protocol/NATIVE_PARTNER_INVITATION_V1.md",
+      "reusePolicy": "cannot replace a pinned partner; mutual consent and co-signed genesis grant authority",
+      "pinnedReconnect": "signature and current authorization verified; invitation expiry does not revoke a pair",
+      "status": "normal fresh 0.2.2 App path; no Relay API or server-time guarantee"
+    },
     "issue": "https://github.com/Diamond-Fountain-Works/Together/issues/1"
   },
   "supportedReplicationVersions": [
@@ -18,11 +43,11 @@
     1,
     2
   ],
-  "replication4Activation": "Explicit co-signed legacy checkpoint migration plus authenticated Relay API 2; no silent Protocol 3 semantic change",
+  "replication4Activation": "Fresh native partner bootstrap activates the existing signed Protocol 4 core; existing C1 Mac bindings remain on their saved route and explicit legacy checkpoint migration remains required",
   "experimentalP2P": {
     "transportEnvelopeVersion": 1,
     "replicationVersion": 4,
-    "status": "native-arm64-local-direct-tested; not linked into installed apps; Android/public-network and independent review pending"
+    "status": "0.2.2 normal native App delivery preparation; signed Protocol 4 and content envelope unchanged; public no-VPN and independent-review acceptance pending"
   },
   "android": {
     "appVersionSource": "apps/android/app/build.gradle.kts",
@@ -34,5 +59,15 @@
       2
     ],
     "status": "development-device-acceptance-client; physical Samsung/local native C1 evidence in ANDROID_PHASE_C; public-network, visual-baseline and independent-security acceptance pending"
-  }
+  },
+  "appDelivery": {
+    "marketingVersion": "0.2.2",
+    "macBuild": "20",
+    "androidCode": 15,
+    "freshInstall": "persistent native peer transport; no QA identity/data import",
+    "legacyMacC1": "existing bindings retain C1",
+    "releaseStatus": "security rebuild and validation in progress; not published"
+  },
+  "relayServiceProtocolVersionMeaning": "Existing optional deployed legacy C1 service; normal native pairing does not use Relay API",
+  "nativeSourceManifest": "packages/together-native-source/source-manifest.json"
 }

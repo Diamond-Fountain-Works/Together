@@ -1,5 +1,6 @@
 import Foundation
 import Observation
+import Darwin
 import TogetherCore
 
 private struct NativeAppBinding: Codable {
@@ -9,7 +10,8 @@ private struct NativeAppBinding: Codable {
 
 /// Optional native-app transport adapter. The domain engine, signed log,
 /// bootstrap, inventory, projector and receipt ledger are the existing core.
-/// Production release targets do not link this package.
+/// The App supplies either a bounded QA workspace or an explicit persistent
+/// workspace; neither path falls back to another store.
 @MainActor @Observable public final class NativeAppPeerService {
     public private(set) var state: PairingConnectionState = .unpaired
     public private(set) var errorMessage: String?
@@ -50,13 +52,57 @@ private struct NativeAppBinding: Codable {
     @ObservationIgnored private var attempt = 0
     @ObservationIgnored private var phase = "idle"
 
-    public init(engine: ReplicaEngine, root: URL) throws {
+    public convenience init(engine: ReplicaEngine, root: URL) throws {
         let canonical = root.standardizedFileURL.resolvingSymlinksInPath()
         let allowed = ["/tmp", "/private/tmp", FileManager.default.temporaryDirectory.standardizedFileURL.resolvingSymlinksInPath().path]
         guard canonical.lastPathComponent.hasPrefix("together-native-app-"), allowed.contains(canonical.deletingLastPathComponent().path),
               engine.repository.storageURL?.standardizedFileURL.resolvingSymlinksInPath().deletingLastPathComponent() == canonical else {
             throw P2PTransportError.invalidAddress
         }
+        try self.init(engine: engine, validatedRoot: canonical, diagnostics: true)
+    }
+
+    /// Explicit normal-App entry point. Never permits a temporary QA root or
+    /// redirects a repository into the default workspace.
+    public convenience init(engine: ReplicaEngine, persistentRoot: URL) throws {
+        let support = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)[0]
+        let canonical = try Self.validatePersistentRoot(persistentRoot, applicationSupportDirectory: support,
+                                                      storageURL: engine.repository.storageURL)
+        try FileManager.default.setAttributes([.posixPermissions: 0o700], ofItemAtPath: canonical.path)
+        try self.init(engine: engine, validatedRoot: canonical, diagnostics: false)
+    }
+
+    /// The injectable support parent exists only for filesystem unit tests; the
+    /// public persistent initializer always obtains the system directory itself.
+    static func validatePersistentRoot(_ root: URL, applicationSupportDirectory support: URL, storageURL: URL?) throws -> URL {
+        let canonical = root.standardizedFileURL.resolvingSymlinksInPath()
+        let base = support.standardizedFileURL.appendingPathComponent("Together", isDirectory: true)
+        guard support.standardizedFileURL.path == support.resolvingSymlinksInPath().standardizedFileURL.path,
+              root.standardizedFileURL.path == canonical.path,
+              storageURL?.standardizedFileURL.path == canonical.appendingPathComponent("Together.store").path,
+              storageURL?.resolvingSymlinksInPath().standardizedFileURL.path == storageURL?.standardizedFileURL.path else {
+            throw P2PTransportError.invalidAddress
+        }
+        let isBase = canonical.path == base.path
+        let replicas = base.appendingPathComponent("Replicas", isDirectory: true)
+        let isEnrolled = canonical.deletingLastPathComponent().path == replicas.path && UUID(uuidString: canonical.lastPathComponent) != nil
+        guard isBase || isEnrolled else { throw P2PTransportError.invalidAddress }
+        var cursor = canonical
+        while cursor.path != "/" {
+            let values = try cursor.resourceValues(forKeys: [.isDirectoryKey, .isSymbolicLinkKey])
+            guard values.isDirectory == true, values.isSymbolicLink != true else { throw P2PTransportError.invalidAddress }
+            if cursor == canonical || cursor == base || cursor == replicas {
+                let attrs = try FileManager.default.attributesOfItem(atPath: cursor.path)
+                guard (attrs[.ownerAccountID] as? NSNumber)?.uint32Value == getuid() else { throw P2PTransportError.invalidAddress }
+            }
+            cursor.deleteLastPathComponent()
+        }
+        return canonical
+    }
+
+    @ObservationIgnored private let diagnosticsEnabled: Bool
+    private init(engine: ReplicaEngine, validatedRoot canonical: URL, diagnostics: Bool) throws {
+        diagnosticsEnabled = diagnostics
         self.engine = engine; self.root = canonical
         do {
             let saved = try engine.repository.load(NativeAppBinding.self, key: "native-app/peer-binding")
@@ -398,6 +444,7 @@ private struct NativeAppBinding: Codable {
     }
     private func recordStage(_ stage: String) { self.stage = stage; try? writeDiagnostic() }
     private func writeDiagnostic() throws {
+        guard diagnosticsEnabled else { return }
         struct Diagnostic: Encodable {
             var stage: String; var state: String; var operations: Int; var completedSyncCount: Int
             var partnerPersisted: Bool; var direct: Bool; var relayed: Bool; var error: String?

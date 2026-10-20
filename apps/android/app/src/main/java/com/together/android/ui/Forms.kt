@@ -29,13 +29,15 @@ internal fun FormSheet(
     onError: (String) -> Unit = {},
     enabled: Boolean = true,
     saveLabel: Int = R.string.action_save,
+    dismissible: Boolean = true,
     content: @Composable ColumnScope.() -> Unit,
 ) {
     val scope = rememberCoroutineScope()
     var busy by remember { mutableStateOf(false) }
     Dialog(
-        onDismissRequest = { if (!busy) onClose() },
-        properties = DialogProperties(usePlatformDefaultWidth = false),
+        onDismissRequest = { if (!busy && dismissible) onClose() },
+        properties = DialogProperties(usePlatformDefaultWidth = false,
+            dismissOnBackPress = dismissible && !busy, dismissOnClickOutside = dismissible && !busy),
     ) {
         Surface(
             shape = MaterialTheme.shapes.large,
@@ -60,7 +62,7 @@ internal fun FormSheet(
                     horizontalArrangement = Arrangement.End,
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
-                    TextButton(
+                    if (dismissible) TextButton(
                         onClick = onClose,
                         enabled = !busy,
                         modifier = Modifier.testTag("sheet.close"),

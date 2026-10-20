@@ -48,12 +48,32 @@ class ProtocolConformance(unittest.TestCase):
         v=V['media'];data=base64.b64decode(v['base64'],validate=True)
         self.assertEqual(len(data),v['byteCount']);self.assertEqual(hashlib.sha256(data).hexdigest(),v['sha256'])
     def test_invitation_target_is_not_misreported_as_implemented(self):
+        # This unchanged Protocol 3 fixture records the original v1 relay purpose;
+        # it is not the normal native App's current first-partner contract.
         v=V['invitation'];self.assertEqual(v['implementedTTLms'],600000);self.assertEqual(v['requiredTTLms'],8*60*60*1000);self.assertEqual(v['targetStatus'],'PENDING_NETWORK_CHANGE');self.assertTrue(v['oneUse'])
         source=(ROOT/'services/relay/src/index.ts').read_text()
         # The new, separately versioned partner purpose has an 8-hour TTL;
         # the existing v1 invitation behavior remains unchanged pending PR #3.
         self.assertIn('nativePartner ? 28800000 : 600000',source)
         self.assertIn('path === "/v2/partner-invitations"',source)
+    def test_current_invitation_metadata_separates_authorities_and_wire_encodings(self):
+        v=json.loads((ROOT/'protocol/versions.json').read_text())['invitation']
+        self.assertEqual(v['activeForFreshNormalApps'],'nativePeer')
+        self.assertEqual(v['requiredPartnerLifetimeMilliseconds'],8*60*60*1000)
+        self.assertEqual(v['legacyRelay']['lifetimeMilliseconds'],600000)
+        self.assertEqual(v['legacyRelay']['endpoint'],'/v1/invitations')
+        self.assertEqual(v['partnerRelay']['lifetimeMilliseconds'],28800000)
+        self.assertEqual(v['partnerRelay']['endpoint'],'/v2/partner-invitations')
+        self.assertTrue(v['legacyRelay']['oneUse'] and v['partnerRelay']['oneUse'])
+        native=v['nativePeer']
+        fixture=json.loads((ROOT/'protocol/fixtures/native-partner-contact-v1.json').read_text())
+        contact=fixture['contact'] if 'contact' in fixture else fixture
+        self.assertEqual(contact['body']['expiresAt']-contact['body']['issuedAt'],native['lifetimeMilliseconds'])
+        self.assertEqual(native['encoding'],'signed-canonical-json-native-partner-contact-v1')
+        self.assertEqual(native['timestampUnit'],'unix-milliseconds')
+        self.assertNotEqual(native['authority'],v['partnerRelay']['authority'])
+        self.assertIn('receiver local system clock',native['authority'])
+        self.assertIn('does not revoke',native['pinnedReconnect'])
     def test_version_dimensions(self):
         versions=json.loads((ROOT/'protocol/versions.json').read_text());app=json.loads((ROOT/versions['appVersionSource']).read_text())
         self.assertEqual(app['deviceProtocolVersion'],versions['syncProtocolVersion']);self.assertEqual(versions['databaseSchemaVersion'],1);self.assertEqual(versions['relayServiceProtocolVersion'],1)

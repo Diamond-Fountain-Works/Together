@@ -10,7 +10,7 @@ import java.nio.ByteBuffer
 import java.util.concurrent.atomic.AtomicInteger
 import java.util.concurrent.atomic.AtomicBoolean
 
-/** Native adapter bundled only into the dedicated, isolated nativeQa application. */
+/** Native transport adapter shared by Release and the dedicated isolated QA application. */
 data class AppP2PAddress(val endpointId: String, val relayURL: String?, val directAddresses: List<String>) {
     fun native(): EndpointAddr {
         requireProtocol(Regex("[0-9a-f]{64}").matches(endpointId) && directAddresses.size <= 32 && directAddresses.all { it.toByteArray().size <= 128 }, "INVALID_P2P_ADDRESS")

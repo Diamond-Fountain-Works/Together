@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "ffiSourceCommit": "5e451092dba0c1a09ee83ff6e5be37b1152a5c58",
+  "swiftWrapperSource": "IrohLib/Sources/IrohLib/IrohLib.swift",
+  "swiftWrapperGitBlobSHA256": "681abdbd903ad86848571dbfbbf5540733da541584edae6592e0cabef3c3b856",
+  "headerSource": "IrohLib.xcframework.zip/macos-arm64/Headers from original upstream FFI v1.1.0 archive; unchanged ABI only, original binary is NOT used",
+  "originalUpstreamArchiveURL": "https://github.com/n0-computer/iroh-ffi/releases/download/v1.1.0/IrohLib.xcframework.zip",
+  "originalUpstreamArchiveSHA256": "ad46dadf09f9224157512992923562931ed60f252414230d50893a4d515c5776",
+  "files": {
+    "Headers/Export.h": "0b71d5e0698e3ef0e1a71fcfd7c23fe657093ceea146f43cb122ac13b9ea899c",
+    "Headers/iroh_ffiFFI.h": "8871779ce87fe910192e82e68844b7aa6777b3d4fa056f6f72cdb1b34a90f6df",
+    "Headers/module.modulemap": "d0b241e14f81fa642f0696df2979cbefeeb68530a20725f239e6679d736a8158",
+    "IrohLib/Sources/IrohLib/IrohLib.swift": "681abdbd903ad86848571dbfbbf5540733da541584edae6592e0cabef3c3b856"
+  },
+  "binaryIncluded": false
+}

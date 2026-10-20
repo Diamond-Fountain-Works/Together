@@ -5,11 +5,12 @@ import com.together.protocol.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.StateFlow
 
-/** QA-only transport seam. Ordinary C1 builds never instantiate or bundle the native implementation. */
+/** Transport seam shared by native Release and isolated QA; legacy Debug remains on C1. */
 data class NativeAppStatus(
     val stage: String = "idle",
     val invitation: String? = null,
     val peer: DeviceDescriptor? = null,
+    val peerDisplayName: String? = null,
     val verificationCode: String? = null,
     val path: String? = null,
     val error: String? = null,
@@ -21,6 +22,7 @@ data class NativeRepositoryContext(
     val store: RoomReplicaStore,
     val replica: Replica?,
     val media: MediaChannel?,
+    val profileDisplayName: String,
 )
 
 interface NativeAppRepository {

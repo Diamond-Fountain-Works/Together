@@ -1,9 +1,9 @@
 name: Android clients
 on:
   push:
-    branches: ['feature/**', 'fix/**']
+    branches: ['feature/**', 'fix/**', 'release/**']
   pull_request:
-    branches: [main, 'feature/gitlike-c1-multidevice', 'feature/android-foundation', 'feature/android-business-phase-b']
+    branches: [main, 'feature/gitlike-c1-multidevice', 'feature/android-foundation', 'feature/android-business-phase-b', 'feature/native-app-no-vpn-acceptance']
   workflow_dispatch:
 permissions:
   contents: read
@@ -112,3 +112,80 @@ jobs:
             qa/results/android-phase-b/native-result.json
           retention-days: 7
       # This job is native/JVM interop; it does not claim a phone, emulator UI or independent security review.
+
+  android-release:
+    name: Clean signed Release and 16KiB native artifact
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-java@cf277c60eb25467037889841efdb72551f06f6c3
+        with:
+          distribution: temurin
+          java-version: '21'
+          cache: gradle
+          cache-dependency-path: apps/android/**/*.gradle.kts
+      - name: SDK
+        run: ./scripts/setup_android_sdk_ci.sh
+      - name: Native toolchain
+        run: |
+          sdkmanager --install 'ndk;28.2.13676358'
+          rustup toolchain install 1.96.0 --profile minimal --target aarch64-linux-android
+      - name: Rebuild the exact upstream arm64 source with reviewed linker flags
+        env:
+          RUSTUP_TOOLCHAIN: '1.96.0'
+        run: |
+          mkdir -p qa/results/native-release-ci
+          git clone --filter=blob:none --no-checkout https://github.com/n0-computer/iroh-ffi.git qa/results/native-release-ci/iroh-ffi
+          git -C qa/results/native-release-ci/iroh-ffi checkout --detach 5e451092dba0c1a09ee83ff6e5be37b1152a5c58
+          curl -fL --retry 2 https://repo.maven.apache.org/maven2/computer/iroh/iroh-android/1.1.0/iroh-android-1.1.0.aar \
+            -o qa/results/native-release-ci/original.aar
+          python3 scripts/rebuild_android_native.py \
+            --source qa/results/native-release-ci/iroh-ffi \
+            --ndk "$ANDROID_HOME/ndk/28.2.13676358" \
+            --original-aar qa/results/native-release-ci/original.aar \
+            --output qa/results/native-release-ci/iroh-16k.aar --jobs 4
+      - name: Optimized Release with an ephemeral CI-only signing key
+        working-directory: apps/android
+        run: |
+          umask 077
+          task_sign_dir="$RUNNER_TEMP/together-ci-signing"
+          mkdir -p "$task_sign_dir"
+          openssl rand -hex 32 > "$task_sign_dir/password.txt"
+          keytool -genkeypair -alias ci-only -keyalg RSA -keysize 3072 -validity 2 \
+            -storetype PKCS12 -keystore "$task_sign_dir/ci-only.p12" \
+            -storepass:file "$task_sign_dir/password.txt" -keypass:file "$task_sign_dir/password.txt" \
+            -dname 'CN=Together CI test only' -noprompt
+          TASK_SIGN_DIR="$task_sign_dir" python3 - <<'PYCONFIG'
+          import os
+          from pathlib import Path
+          base = Path(os.environ['TASK_SIGN_DIR'])
+          password = (base / 'password.txt').read_text().strip()
+          (base / 'signing.properties').write_text(
+              f'storeFile={base / "ci-only.p12"}\nstorePassword={password}\n'
+              f'keyAlias=ci-only\nkeyPassword={password}\n')
+          PYCONFIG
+          task_native_dir="$(cd ../../qa/results/native-release-ci && pwd)"
+          task_native_sha="$(sha256sum "$task_native_dir/iroh-16k.aar" | cut -d ' ' -f 1)"
+          ./gradlew :app:assembleRelease :app:lintRelease :app:testReleaseUnitTest \
+            -Ptogether.nativeReleaseAar="$task_native_dir/iroh-16k.aar" \
+            -Ptogether.nativeReleaseAarSha256="$task_native_sha" \
+            -Ptogether.signingProperties="$task_sign_dir/signing.properties" \
+            --dependency-verification=strict --console=plain
+          # Never upload this CI-only APK or use this key as a production credential.
+      - name: Verify the actual optimized APK
+        run: |
+          python3 scripts/test_release_delivery.py \
+            --android-apk apps/android/app/build/outputs/apk/release/app-release.apk \
+            --json qa/results/native-release-ci/artifact.json
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: android-release-verification
+          path: |
+            qa/results/native-release-ci/*.json
+            apps/android/app/build/reports/lint-results-release.xml
+          retention-days: 7
+      # Ephemeral CI key/APK are never public distribution artifacts.

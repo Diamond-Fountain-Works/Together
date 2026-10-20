@@ -1,4 +1,59 @@
-# Together 0.2.1 Architecture
+# Together 0.2.2 Architecture
+
+## Current normal-launch delivery boundary
+
+The macOS 0.2.2 Build 20 package is an ordinary `com.together.app` application:
+double-click uses `NativeProduction`, the existing `ReplicaEngine.production`
+factory and Initial Setup. It does not require the QA launcher, a temporary root
+or launch arguments. The supported native package is Apple Silicon/macOS 14.5+;
+the legacy C1 build switch remains a separate regression path. Build/package
+verification is not an installation, migration or cross-network acceptance claim.
+Current release evidence is recorded in [RELEASE_0_2_2](../qa/reports/RELEASE_0_2_2.md).
+
+Normal storage remains the system Application Support `Together` directory, or
+its existing active `Replicas/<UUID>` workspace. The factory validates the owned,
+non-symlink boundary before opening storage, preserves the existing key and IDs,
+and retains explicit legacy identity migration/missing-key errors. A genuinely
+empty installation creates its own identity and uses the system time zone; it
+does not copy QA identities, profiles or fixtures. The QA bundle/argument path
+retains its separate fail-closed guard and cannot retry into production storage.
+Native production diagnostics are disabled; the package contains no QA database,
+media, identity or fixture data.
+
+For a fresh workspace without an existing C1 binding, `NativeAppPeerService`
+connects the existing partner bootstrap and Protocol 4 replication over the Iroh
+adapter. Signed contacts, mutual identity verification and co-signed genesis
+precede the existing paged operation log/ACK engine. The adapter transports the
+existing authenticated C1 content envelopes, including the existing 64 KiB media
+exchange and verified content receipts; it does not create another business
+ledger. Iroh may select a direct path or an encrypted relay. A successful relay
+path is not evidence of P2P direct connectivity, and availability without VPN is
+not guaranteed for every network.
+
+This native App adapter currently pins **one partner device**. The broader
+Protocol 4 multi-device authorization model remains in the core/C1 workstream;
+its own-device enrollment/revocation UI is not exposed as an implemented native
+pairing capability. Existing `relay-binding` or `replication4/relay-binding`
+records retain the legacy C1 path instead of being silently rebound. No old
+User ID, Device ID, SharedSpace or signed operation is rewritten by this factory.
+Successful automatic migration of arbitrary existing users from C1 to the
+native adapter is **not verified**; preserving the branch in code is not a
+production upgrade test or a reason to reset a user's data.
+
+Apple native dependencies are built locally from the pinned FFI source plus the
+reviewed lock containing Rust `iroh`, `iroh-base` and `iroh-relay` 1.1.0. The
+upstream FFI 1.1.0 prebuilt binary used vulnerable Rust core 1.0.2 and is not a
+fallback. `scripts/rebuild_apple_native.py` produces a local XCframework/receipt;
+the package manifest and release generator reject missing or changed inputs.
+Source/ABI gates and automated tests do not replace independent protocol security
+review. The delivered package is ad-hoc signed and **not notarized**; Gatekeeper
+assessment rejects it, so manual user approval may be necessary. No system trust
+settings are changed by the package.
+
+The sections below retain the finance architecture and earlier transport
+history. This current delivery boundary takes precedence for normal 0.2.2
+launch/packaging; historical C1 deployment and QA results do not certify the new
+normal package's physical-device/network acceptance.
 
 ## Monorepo foundation
 
