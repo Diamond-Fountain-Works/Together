@@ -27,6 +27,13 @@ security-qa:
 	python3 scripts/audit_repository_safety.py --json qa/results/repository-safety.json
 
 .PHONY: android-qa android-copy-qa android-connected-test
+.PHONY: p2p-test
+p2p-test:
+	python3 -m unittest scripts/test_p2p_physical_tools.py -v
+	swift test --package-path packages/together-core-swift --filter PeerTransportBindingTests
+	swift test --package-path packages/together-p2p-swift
+	python3 -m unittest scripts/test_p2p_cli_roots.py -v
+
 android-qa:
 	cd apps/android && ./gradlew :core:protocol:test :core:domain:test :app:assembleDebug :app:lintDebug --console=plain
 	python3 scripts/test_android_copy.py

@@ -49,6 +49,9 @@ jobs:
         env:
           TOGETHER_LOCAL_RELAY_URL: http://127.0.0.1:8796
         run: make android-qa
+      - name: Compile isolated native P2P instrumentation (not physical acceptance)
+        working-directory: apps/android
+        run: ./gradlew :app:assembleDebugAndroidTest --console=plain
       - name: Source publication safety
         run: python3 scripts/audit_repository_safety.py --json qa/results/android-safety.json
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02

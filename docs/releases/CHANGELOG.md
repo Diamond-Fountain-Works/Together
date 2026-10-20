@@ -1,3 +1,20 @@
+# P2P transport foundation — development Build 14 (not packaged/installed)
+
+- Harden the physical QA driver against hotspot/Wi-Fi misclassification, locked
+  device starts and premature participant exit; preserve exact ACK/restart gates.
+- Add explicit LAN versus shared-uplink encrypted-relay diagnostics and
+  test-process network restoration. Physical retry is blocked on phone unlock;
+  the current shared hotspot is not independent-network acceptance.
+- Add isolated native Android instrumentation, Mac QA CLI and a bounded physical
+  public-network driver. Require no VPN/proxy/USB network path, exact signed
+  checkpoints, durable ACKs and distinct-process recovery. Public acceptance
+  remains blocked by device disconnection; [report](../qa/reports/P2P_PUBLIC_ACCEPTANCE.md).
+- Add an optional pinned Iroh QUIC package around the existing Protocol 4 log,
+  signed independent endpoint credentials, bounded frames/queue and reused cipher.
+- Verify local relay-disabled paged convergence, genuine ACK and tombstone;
+  retain explicit Android/public-network, key persistence and security gates.
+- Keep installed App behavior/C1 unchanged. See [scope and evidence](../architecture/P2P_INCREMENTAL_REPLICATION.md).
+
 # Unified Plans — 0.2.1 Build 13 / Android code 8
 
 - Merge Upcoming into Pending on both Mac and Android; retain only Pending /

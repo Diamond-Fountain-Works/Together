@@ -1,5 +1,12 @@
 # Repository migration scope and invitation requirement correction
 
+Current user direction (2026-10-19): require VPN-free local databases with signed
+P2P incremental operation-log replication. Preserve domain data and identities;
+connectivity helpers must not become a central business database or mailbox.
+The [P2P workstream](../architecture/P2P_INCREMENTAL_REPLICATION.md) is incremental
+and not yet installed. This supersedes the earlier C1-only scope for new transport
+development, while retaining C1 until compatibility/public acceptance gates pass.
+
 This repository migration preserves all current runtime behavior. The formally required invitation lifetime is **8 hours**, one successful use. The current 10-minute implementation is an acknowledged legacy gap, not the final requirement. Correct it in a separate coordinated network-protocol PR (server calculation, client wording, specification and tests); deploy only after separate authorization. Do not change C1, identities or production Worker during the directory refactor.
 
 # Together 0.2.1 — Our Finances

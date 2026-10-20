@@ -1,5 +1,11 @@
 # Git-like replication: C1 evolution
 
+2026-10-19 follow-up: the original C1-only paragraph below records that phase's
+scope. The user has since authorized a VPN-free P2P transport workstream;
+[current design, evidence and release gates](P2P_INCREMENTAL_REPLICATION.md)
+preserve this signed-log engine. This does not silently switch the installed app
+or treat local QUIC tests as public-network acceptance.
+
 Status: implemented opt-in foundation with local headless gates passed on `feature/gitlike-c1-multidevice`, based on verified Monorepo commit `1832df0`. Release remains BLOCKED by independent security review, desktop UI/visual acceptance and enrollment/activation UX. PR #2 remains Draft; its 68 Build 5 candidates are not approved by this work. No production deployment, installation, identity rotation, database reset or C2 change is authorized. The QA report records a stopped accidental normal Debug startup during inspection; production startup effects are not proven unchanged.
 
 ## Audited baseline

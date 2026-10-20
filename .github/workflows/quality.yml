@@ -11,6 +11,20 @@ concurrency:
   group: quality-${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 jobs:
+  p2p:
+    name: P2P direct QUIC and signed device binding (arm64)
+    runs-on: macos-26
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - name: Verify supported native test platform
+        run: |
+          test "$(uname -m)" = arm64 || { echo 'NOT RUN: upstream prebuilt Iroh macOS framework requires arm64'; exit 1; }
+          swift --version
+      - name: Relay-disabled P2P and endpoint authorization
+        run: make p2p-test
   macos:
     name: macOS build, Swift, local relay and migration
     runs-on: macos-26

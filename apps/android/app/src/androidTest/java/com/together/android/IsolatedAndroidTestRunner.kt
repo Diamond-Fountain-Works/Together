@@ -23,6 +23,9 @@ class IsolatedAndroidTestRunner : AndroidJUnitRunner() {
             check(arguments.getString("qaRunId")?.matches(Regex("[A-F0-9]{32}")) == true) {
                 "Physical QA run ID required"
             }
+            val nativeP2p = arguments.getString("nativeP2pQa") == "explicit-public-p2p-only" &&
+                arguments.getString("class")?.substringBefore('#') == "com.together.android.P2PPublicNetworkTest" &&
+                arguments.getString("p2pNamespace")?.matches(Regex("QA-P2P-[A-Z0-9-]{1,32}")) == true
             val relay = java.net.URI(arguments.getString("relayURL") ?: "")
             val loopback = relay.scheme == "http" &&
                     relay.host == "127.0.0.1" &&
@@ -30,9 +33,9 @@ class IsolatedAndroidTestRunner : AndroidJUnitRunner() {
             val staging = arguments.getString("publicStagingQa") == "explicit-staging-only" &&
                 relay.scheme == "https" && relay.host == "together-pairing-staging.together-connection-service.workers.dev" && relay.port == -1
             check(
-                (loopback || staging) && relay.rawPath.orEmpty().isEmpty() &&
+                nativeP2p || ((loopback || staging) && relay.rawPath.orEmpty().isEmpty() &&
                     relay.rawQuery == null &&
-                    relay.rawUserInfo == null && relay.rawFragment == null
+                    relay.rawUserInfo == null && relay.rawFragment == null)
             ) {
                 "Physical QA requires an explicitly authorized isolated Relay"
             }
