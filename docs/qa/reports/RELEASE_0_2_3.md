@@ -24,6 +24,16 @@ calendar dates keep their original components and never move a day due to displa
 language. Change history translates statuses while preserving user-written titles
 or notes, including text that happens to equal a status word.
 
+The existing civil-date test now explicitly checks both Chinese and English
+display plus the unchanged ISO date, instead of depending on the test runner's
+preferred language. This test-only portability correction does not change either
+frozen installation package.
+
+The first GitHub macOS QA run failed the old language-dependent civil-date
+assertion on an English runner; its other QA gates and both native builds passed.
+The explicit two-language assertion passes locally. The latest-commit CI result
+is tracked on the pull request rather than inferred from the earlier run.
+
 ## Executed checks
 
 | Gate | Result |

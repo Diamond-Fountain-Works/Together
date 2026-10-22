@@ -69,7 +69,9 @@ import Testing
     }
     @Test func civilDateIndependentOfTimezone() {
         let date = CivilDate(iso: "2026-10-09")!
-        #expect(date.display == "2026年10月9日")
+        #expect(date.display(language: .chinese) == "2026年10月9日")
+        #expect(date.display(language: .english) == "Oct 9, 2026")
+        #expect(date.iso == "2026-10-09")
         #expect(CivilDate(iso: "2026-02-30") == nil)
     }
 }
