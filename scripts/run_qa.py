@@ -15,6 +15,8 @@ try:
     run('repository-safety-tools',[sys.executable,'scripts/test_repository_safety.py'])
     run('repository-safety',[sys.executable,'scripts/audit_repository_safety.py','--json','qa/results/repository-safety.json'])
     run('protocol-conformance',[sys.executable,'-m','unittest','discover','-s','tests/conformance','-v'])
+    run('localization-tools',[sys.executable,'scripts/test_localizations.py'])
+    run('localization',[sys.executable,'scripts/audit_localizations.py','--json','qa/results/localization.json'])
     run('copy',[sys.executable,'scripts/audit_ui_copy.py','--json','qa/results/copy.json'])
     if (out/'copy.json').exists():report['copy']=json.loads((out/'copy.json').read_text())
     run('server-check',['npm','run','check'],RELAY);run('server-tests',['npm','test'],RELAY)

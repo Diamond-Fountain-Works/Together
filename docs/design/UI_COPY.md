@@ -59,3 +59,20 @@ Android uses native `apps/android/app/src/main/res/values*/strings.xml`, with ex
 `qa/android_copy_review.json` registers exact English/Chinese resource hashes and the seven established categories. B adds requested task/wish/finance/media controls, necessary validation and the existing approved sender-label Gift copy. Relationship labels use one parser; the verified partner/sender is looked up, never guessed from the current user. Gift status distinguishes pending operation sync from content-verified partner receipt; no Delivered/read/bank-payment claim. Numeric English labels use “Unopened gifts: N” / “Wishes added: N” / “Changes synced: N” so singular counts remain grammatical. Unused action/status strings are removed, not hidden from the scanner. Existing Apple copy warnings retain their original disposition.
 
 The 552 current localized resources include a specific storage recovery error: “Not enough free storage. Free some space, then retry.” / “存储空间不足。请腾出空间后重试。” It describes actual available-capacity failure, not an application-imposed original-file size limit.
+
+## 0.2.3 bilingual copy
+
+Chinese and English are complete resource sets. Settings exposes only a globe
+icon until its menu opens. Language choice is local to each device. Chinese
+product labels use Chinese; Together, ISO currency identifiers and genuine file
+extensions keep their exact spellings. English gift copy keeps the intimacy of
+“小男友 / 小女友” with “your guy / your girl”; neutral branches use “them”.
+No relationship is inferred from the current user.
+
+Use direct actions and actual states. Remove repeated implementation explanations,
+hypothetical assurances and defensive filler. Keep concise file-sharing consent,
+identity verification and an actionable explanation of a real failure.
+User-authored titles, messages, names and notes remain untouched. Every locale
+has its own reviewed text hash. `make localization-qa` checks both language sets;
+the original copy audit continues to report context-specific duplicate warnings.
+See [copy dispositions](../qa/reports/LOCALIZATION_COPY_0_2_3.md).

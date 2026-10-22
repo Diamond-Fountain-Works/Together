@@ -328,3 +328,12 @@ Authoritative current counts/limits: [C1 QA](../qa/reports/GITLIKE_C1_QA.md) and
 ## C1 final hardening — development Build 10
 
 Incident investigation: read-only frozen private evidence, confirmed local review/launch-preference writes, no new business operation found, historical preference uncertainty retained. Performance: identical 100k workload, final 198.123 s sync / 298.347 s phases / 722.8 MiB RSS; full replay is still O(history). Native own-device signed-file enrollment, list/revoke and explicit two-root migration implemented; independent keys and old IDs/space preserved. Full headless tests: 136 PASS / 0 FAIL / 3 SKIP; Relay 18 / Python protocol 17 pass. New source-review finding corrected with executable regression; independent protocol review remains BLOCKED. Three native device UI cases and cached-gift restart pass together after isolated Runner/locator/reopen fixes (4 PASS / 0 FAIL); the final complete regression reports 20 PASS / 0 FAIL / 1 SKIP and temporary permissions are restored. Visual comparison remains 16 PASS / 50 REVIEW REQUIRED / 2 FAIL with no new human approvals, as tracked in the current report. No installation, merge, production Worker deployment, Android UI, C2 or automatic root recovery. Exact current evidence: [C1_HARDENING](../qa/reports/C1_HARDENING.md).
+
+
+## 0.2.3 — bilingual presentation
+
+Scope: Settings globe menu, complete Chinese/English copy, direct functional
+wording, localized dates/errors and resource quality gates. Existing business,
+identity, schema, replication and transport semantics stay in place. Evidence:
+[0.2.3 release QA](../qa/reports/RELEASE_0_2_3.md); visual captures remain candidates
+until their exact hashes receive human approval.

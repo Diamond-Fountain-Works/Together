@@ -118,6 +118,8 @@ jobs:
           python3 scripts/test_visual_review.py
           python3 scripts/test_repository_safety.py
           python3 scripts/audit_repository_safety.py --json qa/results/repository-safety.json
+      - name: Complete bilingual resources and regression checks
+        run: make localization-qa
       - name: Copy audit (warnings remain visible)
         run: python3 scripts/audit_ui_copy.py --json qa/results/copy.json
       - name: Relay typecheck and actual local-runtime tests

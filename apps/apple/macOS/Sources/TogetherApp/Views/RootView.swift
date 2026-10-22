@@ -74,7 +74,7 @@ struct RootView: View {
             case .changes: SharedChangeHistoryView(model:model)
             case .devices: DeviceManagementView(model:model)
             }
-            }.tint(TogetherTheme.rose)
+            }.tint(TogetherTheme.rose).environment(\.locale, LanguageSettings.shared.language.locale)
         }
         .alert(Copy.text("copy.guidance.1f0a01abb190"), isPresented: Binding(get: { model.errorMessage != nil }, set: { if !$0 { model.errorMessage = nil } })) {
             Button(Copy.text("copy.action.f867f3417859")) { model.errorMessage = nil }

@@ -12,7 +12,7 @@ import TogetherCore
         if let root { try? FileManager.default.removeItem(at: root) }
         super.tearDown()
     }
-    private func launch(page: String = "home", populated: Bool = false, dark: Bool = false, reduce: Bool = false, compact: Bool = false, name: String = "behavior") {
+    private func launch(page: String = "home", populated: Bool = false, dark: Bool = false, reduce: Bool = false, compact: Bool = false, name: String = "behavior", language: String? = "zh-Hans") {
         app?.terminate()
         if let root { try? FileManager.default.removeItem(at: root) }
         // The runner's container tmp belongs to another app's protected data.
@@ -30,6 +30,7 @@ import TogetherCore
         app = XCUIApplication()
         app.launchArguments = ["--ui-testing", "-AppleLanguages", "(zh-Hans)", "-AppleLocale", "zh_CN", "-NSDoubleLocalizedStrings", "NO", "-ApplePersistenceIgnoreState", "YES"]
         app.launchEnvironment = ["TOGETHER_UI_ROOT":root.path, "TOGETHER_UI_PAGE":page, "TOGETHER_UI_STATE":populated ? "populated" : "empty", "TOGETHER_UI_MODE":dark ? "dark" : "light", "TOGETHER_UI_REDUCE_MOTION":reduce ? "1" : "0", "TOGETHER_UI_COMPACT":compact ? "1" : "0", "TOGETHER_UI_CASE":name]
+        if let language { app.launchEnvironment["TOGETHER_UI_LANGUAGE"] = language }
         if let relay = ProcessInfo.processInfo.environment["TOGETHER_UI_RELAY_URL"] { app.launchEnvironment["TOGETHER_UI_RELAY_URL"] = relay }
         continueAfterFailure = false
         print("QA_RUNNER_AX_TRUSTED \(AXIsProcessTrusted())")
@@ -40,6 +41,56 @@ import TogetherCore
         XCTAssertTrue(app.descendants(matching: .any)["nav.home"].waitForExistence(timeout: 15))
         if compact { XCTAssertEqual(app.windows.firstMatch.frame.width, 900, accuracy: 2, "Compact fixture must actually resize the window") }
     }
+    func testSettingsGlobeLanguageSwitchAndPersistence() throws {
+        launch(page: "tasks", populated: true, name: "language-switch", language: "zh-Hans")
+        XCTAssertFalse(app.descendants(matching: .any)["sidebar.language"].firstMatch.exists)
+        app.descendants(matching: .any)["nav.settings"].firstMatch.click()
+        let language = app.descendants(matching: .any)["settings.language"].firstMatch
+        XCTAssertTrue(language.waitForExistence(timeout: 5))
+        XCTAssertLessThanOrEqual(language.frame.width, 50, "The closed language control is an icon, not a visible picker")
+        language.click()
+        app.menuItems["英语"].click()
+        XCTAssertTrue(app.staticTexts["Home"].waitForExistence(timeout: 5))
+        try screenshot("language-en-settings")
+        app.descendants(matching: .any)["nav.plans"].firstMatch.click()
+        app.buttons["task.new"].click()
+        XCTAssertTrue(app.textFields["task.title"].waitForExistence(timeout: 5))
+        try screenshot("language-en-task-editor")
+        app.buttons["sheet.cancel"].click()
+        try screenshot("language-en-plans")
+        launch(page: "settings", populated: true, name: "language-restart", language: nil)
+        XCTAssertTrue(app.staticTexts["Home"].waitForExistence(timeout: 5))
+        app.descendants(matching: .any)["settings.language"].firstMatch.click()
+        app.menuItems["Chinese"].click()
+        XCTAssertTrue(app.staticTexts["首页"].waitForExistence(timeout: 5))
+        try screenshot("language-zh-settings")
+    }
+
+    func testBilingualCandidateScreens() throws {
+        for language in ["zh-Hans", "en"] {
+            for dark in [false, true] {
+                for page in ["home", "tasks", "wishes", "reserves", "expenses", "bills", "settings", "reveal"] {
+                    let name = "language-" + language + "-" + page + (dark ? "-dark" : "-light")
+                    launch(page: page, populated: true, dark: dark, reduce: true, name: name, language: language)
+                    try screenshot(name)
+                    if page == "reveal" {
+                        XCTAssertFalse(app.staticTexts["gift.privateText"].exists)
+                        app.buttons["gift.open"].click()
+                        XCTAssertTrue(app.buttons["gift.received"].waitForExistence(timeout: 5))
+                        let dateElement = app.staticTexts["gift.sentDate"]
+                        XCTAssertTrue(dateElement.waitForExistence(timeout: 5))
+                        let date = dateElement.label + (dateElement.value as? String ?? "")
+                        print("GIFT_DATE_AX", language, dateElement.debugDescription)
+                        XCTAssertTrue(date.contains("2026"), "Gift date must expose its real formatted timestamp: " + date)
+                        if language == "en" { XCTAssertFalse(date.contains("年") || date.contains("月") || date.contains("日"), "English gift dates must use English formatting") }
+                        else { XCTAssertTrue(date.contains("月") || date.contains("/"), "Chinese gift date: " + date) }
+                        try screenshot(name + "-opened")
+                    }
+                }
+            }
+        }
+    }
+
     private func reopenQAHost() {
         guard let verifiedPath = ProcessInfo.processInfo.environment["TOGETHER_UI_VERIFIED_APP_PATH"],
               Bundle(path: verifiedPath)?.bundleIdentifier == "com.together.app.qa" else {
@@ -376,7 +427,7 @@ import TogetherCore
         XCTAssertEqual(app.textFields["plans.taskSearch"].value as? String, "UNDATED")
         app.descendants(matching: .any)["nav.home"].firstMatch.click()
         app.buttons["home.upcoming"].click()
-        let pending = app.radioGroups["plans.taskFilter"].radioButtons["Pending"]
+        let pending = app.radioGroups["plans.taskFilter"].radioButtons[Copy.text("plans.filter.pending", language: .chinese)]
         let selected = XCTNSPredicateExpectation(predicate: NSPredicate(format: "value == '1' OR value == 1"), object: pending)
         XCTAssertEqual(XCTWaiter.wait(for: [selected], timeout: 5), .completed)
         XCTAssertFalse(app.radioGroups["plans.taskFilter"].radioButtons["Upcoming"].exists)
@@ -417,7 +468,7 @@ import TogetherCore
     func testCompactLayoutAndReduceMotion() throws {
         launch(page: "tasks", populated: true, reduce: true, compact: true)
         XCTAssertTrue(app.buttons["task.new"].isHittable)
-        XCTAssertTrue(app.radioGroups["plans.taskFilter"].radioButtons["Pending"].isHittable)
+        XCTAssertTrue(app.radioGroups["plans.taskFilter"].radioButtons[Copy.text("plans.filter.pending", language: .chinese)].isHittable)
         XCTAssertTrue(app.textFields["plans.taskSearch"].isHittable)
         try screenshot("tasks-populated-light-compact-reduced")
         app.buttons["task.new"].click()

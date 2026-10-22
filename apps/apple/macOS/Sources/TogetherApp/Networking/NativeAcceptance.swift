@@ -62,7 +62,7 @@ struct NativeConnectionView: View {
                     Text(network.state.displayName)
                     Spacer()
                 }.accessibilityIdentifier("connection.state")
-                if let error = network.errorMessage { Text(verbatim: error).foregroundStyle(.orange).textSelection(.enabled).accessibilityIdentifier("connection.error") }
+                if let error = network.localizedErrorMessage { Text(verbatim: error).foregroundStyle(.orange).textSelection(.enabled).accessibilityIdentifier("connection.error") }
                 if let code = network.verificationCode {
                     TogetherCard {
                         VStack(alignment: .leading, spacing: 16) {
@@ -84,7 +84,7 @@ struct NativeConnectionView: View {
                             Button(Copy.text("copy.action.1032f5e75333")) { network.createInvitation() }.buttonStyle(.borderedProminent).disabled(network.busy).accessibilityIdentifier("pairing.createInvite")
                             if let code = network.invitationCode {
                                 Text(Copy.text("native.pairing.contactReady")).font(.callout)
-                                if let expires = network.invitationExpiresAt { Text(expires, style: .time).font(.caption).foregroundStyle(.secondary) }
+                                if let expires = network.invitationExpiresAt { Text(Copy.time(expires)).font(.caption).foregroundStyle(.secondary) }
                                 Button(Copy.text("copy.action.52c229c10699")) { NSPasteboard.general.clearContents(); NSPasteboard.general.setString(code, forType: .string) }.accessibilityIdentifier("pairing.copyInvite")
                                 Button(Copy.text("copy.action.2cd0f3be8738")) { network.disconnect() }.accessibilityIdentifier("pairing.cancelInvite")
                             }

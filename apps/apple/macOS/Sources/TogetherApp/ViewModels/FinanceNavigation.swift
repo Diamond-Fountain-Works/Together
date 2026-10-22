@@ -60,7 +60,7 @@ extension ApplicationModel {
                         try await Task.sleep(for: .milliseconds(250))
                         guard let self, !Task.isCancelled else { return }
                         try await FinanceNotificationScheduler.schedule(engine: self.engine, enabled: self.localDefaults.bool(forKey: "financeSystemNotifications"))
-                    } catch is CancellationError {} catch { self?.errorMessage = error.localizedDescription }
+                    } catch is CancellationError {} catch { self?.errorMessage = Copy.userError(error) }
                 }
             }
         }

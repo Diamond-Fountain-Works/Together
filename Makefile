@@ -44,3 +44,8 @@ android-copy-qa:
 	python3 scripts/audit_android_copy.py --json qa/results/android-copy.json
 android-connected-test:
 	cd apps/android && ./gradlew :app:connectedDebugAndroidTest --console=plain
+
+.PHONY: localization-qa
+localization-qa:
+	python3 scripts/test_localizations.py
+	python3 scripts/audit_localizations.py --json qa/results/localization.json

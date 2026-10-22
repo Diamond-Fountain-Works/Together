@@ -15,6 +15,25 @@ private struct NativeAppBinding: Codable {
 @MainActor @Observable public final class NativeAppPeerService {
     public private(set) var state: PairingConnectionState = .unpaired
     public private(set) var errorMessage: String?
+    @ObservationIgnored private var displayError: (any Error)?
+    public var localizedErrorMessage: String? {
+        guard errorMessage != nil else { return nil }
+        if needsRecovery { return Copy.text("native.error.pairingRecovery") }
+        guard let displayError else { return Copy.text("connection.error.retry") }
+        if let error = displayError as? P2PTransportError {
+            switch error {
+            case .invalidAddress: return Copy.text("connection.error.invitation")
+            case .unexpectedPeer: return Copy.text("connection.error.identity")
+            case .busy: return Copy.text("connection.error.busy")
+            case .closed: return Copy.text("connection.error.closed")
+            case .relayReadiness: return Copy.text("connection.error.relay")
+            case .frameBounds: return Copy.text("connection.error.invalidData")
+            }
+        }
+        if displayError is ReplicationError { return displayError.localizedDescription }
+        if let error = displayError as? URLError, error.code == .timedOut { return Copy.text("connection.error.timeout") }
+        return Copy.text("connection.error.retry")
+    }
     public private(set) var invitationCode: String?
     public private(set) var invitationExpiresAt: Date?
     public private(set) var verificationCode: String?
@@ -410,7 +429,7 @@ private struct NativeAppBinding: Codable {
             })
         media.onError = { [weak self] error in
             guard let self, self.generation == token else { return }
-            self.errorMessage = String(describing: error); try? self.writeDiagnostic()
+            self.displayError = error; self.errorMessage = String(describing: error); try? self.writeDiagnostic()
         }
         self.media = media
         let session = PagedReplicationSession(store: store, ledger: ledger, remote: remote,
@@ -470,7 +489,7 @@ private struct NativeAppBinding: Codable {
     }
     private func fail(_ error: Error) {
         if binding == nil { invitationCode = nil; invitationExpiresAt = nil }
-        errorMessage = String(describing: error); state = .error; recordStage("failed-" + stage); closeSession()
+        displayError = error; errorMessage = String(describing: error); state = .error; recordStage("failed-" + stage); closeSession()
         if let endpoint { self.endpoint = nil; Task { try? await endpoint.close() } }
         guard enabled, binding != nil, retry == nil else { return }
         let delay = min(60, pow(2, Double(min(attempt, 6)))); attempt += 1

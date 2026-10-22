@@ -60,7 +60,6 @@ struct ReserveEditor: View {
             if !opening { Picker(Copy.text("finance.deposit.member"), selection: $user) { ForEach(model.engine.context.members.sorted { $0.uuidString < $1.uuidString }, id: \.self) { Text(model.name($0)).tag($0) } } }
             DatePicker(Copy.text("finance.field.date"), selection: $date, displayedComponents: .date).environment(\.timeZone, TimeZone(identifier: model.engine.sharedSpace.timeZoneIdentifier)!)
             TextField(Copy.text("copy.guidance.daede9881787"), text: $notes, axis: .vertical).textFieldStyle(.roundedBorder)
-            if opening { Text(Copy.text("finance.reserves.openingGuidance")).font(.caption).foregroundStyle(.secondary) }
         }
     }
     private func save() {
@@ -70,7 +69,7 @@ struct ReserveEditor: View {
             else if let id { try model.engine.editDeposit(id, amount: value, by: user, on: day, notes: notes, editingBaseline: editingBaseline) }
             else { _ = try model.engine.deposit(value, by: user, on: day, notes: notes) }
             model.dismissSheet()
-        } catch { self.error = error.localizedDescription }
+        } catch { self.error = Copy.userError(error) }
     }
 }
 struct ExpenseEditor: View {
@@ -120,7 +119,7 @@ struct ExpenseEditor: View {
                 if existing.status == .provisional { Button(Copy.text("finance.review.correct")) { review(.reconciled) }.accessibilityIdentifier("finance.review.correct") }
                 Button(Copy.text("finance.review.skipped")) { review(.skipped) }.accessibilityIdentifier("finance.review.skipped")
                 Spacer()
-                if existing.deletedAt == nil { Button(Copy.text("copy.action.2f9daa828907"), role: .destructive) { do { try model.engine.deleteFinance(existing.id, type: .expense); model.dismissSheet() } catch { self.error = error.localizedDescription } }.accessibilityIdentifier("finance.expense.delete") }
+                if existing.deletedAt == nil { Button(Copy.text("copy.action.2f9daa828907"), role: .destructive) { do { try model.engine.deleteFinance(existing.id, type: .expense); model.dismissSheet() } catch { self.error = Copy.userError(error) } }.accessibilityIdentifier("finance.expense.delete") }
             }
         }
     }
@@ -131,7 +130,7 @@ struct ExpenseEditor: View {
                 guard try amount.amount() == current.amount, try payment.payment(model: model, cardId: cardId) == current.payment else { throw FinanceError.recordChanged }
             }
             try model.engine.reviewExpense(id, status: status); model.dismissSheet()
-        } catch { self.error = error.localizedDescription }
+        } catch { self.error = Copy.userError(error) }
     }
     private func save() {
         do {
@@ -140,7 +139,7 @@ struct ExpenseEditor: View {
             if let id { try model.engine.editExpense(id, title: title, amount: value, payment: pay, on: day, category: category, notes: notes, dateEventId: eventId, reviewed: existing?.status == .provisional && existing?.recurringBillId != nil, editingBaseline: editingBaseline) }
             else { _ = try model.engine.createExpense(title: title, amount: value, payment: pay, on: day, category: category, notes: notes, dateEventId: eventId) }
             model.dismissSheet()
-        } catch { self.error = error.localizedDescription }
+        } catch { self.error = Copy.userError(error) }
     }
 }
 struct BillEditor: View {
@@ -207,7 +206,7 @@ struct BillEditor: View {
                 _ = try model.engine.createRecurringBill(title: title, amount: value, payment: pay, day: day, timeZone: zone, startMonth: customStart ? FinanceMonth(start, timeZone: zone) : nil, minuteOfDay: specificTime ? (parts.hour! * 60 + parts.minute!) : nil, category: category)
             }
             model.dismissSheet()
-        } catch { self.error = error.localizedDescription }
+        } catch { self.error = Copy.userError(error) }
     }
 }
 struct OccurrenceEditor: View {
@@ -227,7 +226,7 @@ struct OccurrenceEditor: View {
     }
     var body: some View {
         FinanceEditorLayout(title: Copy.text("finance.bill.editOccurrence"), error: error, save: {
-            do { try model.engine.overrideBillOccurrence(billId, month: month, amount: amount.amount(), payment: payment.payment(model: model, cardId: cardId), editingBaseline: editingBaseline); model.dismissSheet() } catch { self.error = error.localizedDescription }
+            do { try model.engine.overrideBillOccurrence(billId, month: month, amount: amount.amount(), payment: payment.payment(model: model, cardId: cardId), editingBaseline: editingBaseline); model.dismissSheet() } catch { self.error = Copy.userError(error) }
         }, cancel: model.dismissSheet) {
             Text(verbatim: model.engine.snapshot.finance.bills[billId]?.title ?? "").font(.headline)
             Text(verbatim: month.iso).foregroundStyle(.secondary)
@@ -249,7 +248,7 @@ struct DateEventEditor: View {
     }
     var body: some View {
         FinanceEditorLayout(title: Copy.text("finance.events.title"), error: error, save: {
-            do { let day = CivilDate(date, timeZone: TimeZone(identifier: model.engine.sharedSpace.timeZoneIdentifier)!); if let id { try model.engine.editDateEvent(id, title: title, on: day, notes: notes) } else { _ = try model.engine.createDateEvent(title: title, on: day, notes: notes) }; model.dismissSheet() } catch { self.error = error.localizedDescription }
+            do { let day = CivilDate(date, timeZone: TimeZone(identifier: model.engine.sharedSpace.timeZoneIdentifier)!); if let id { try model.engine.editDateEvent(id, title: title, on: day, notes: notes) } else { _ = try model.engine.createDateEvent(title: title, on: day, notes: notes) }; model.dismissSheet() } catch { self.error = Copy.userError(error) }
         }, cancel: model.dismissSheet) {
             TextField(Copy.text("finance.field.title"), text: $title).textFieldStyle(.roundedBorder)
             DatePicker(Copy.text("finance.field.date"), selection: $date, displayedComponents: .date).environment(\.timeZone, TimeZone(identifier: model.engine.sharedSpace.timeZoneIdentifier)!)

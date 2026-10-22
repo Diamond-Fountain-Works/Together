@@ -18,7 +18,7 @@ struct GiftHistoryView: View {
                                 VStack(alignment: .leading, spacing: 6) {
                                     Text(model.engine.snapshot.profiles[gift.senderId]?.displayName ?? Copy.text("copy.status.034fc48ba584")).font(.headline)
                                     Text(gift.textContent ?? (gift.audioAssetId != nil ? Copy.text("copy.status.17441747251a") : Copy.text("copy.status.57dc4c554054"))).lineLimit(2).foregroundStyle(.secondary)
-                                    Text(gift.sentAt, format: .dateTime.year().month().day().hour().minute()).font(.caption).foregroundStyle(.tertiary)
+                                    Text(Copy.date(gift.sentAt, includeTime: true)).font(.caption).foregroundStyle(.tertiary)
                                     if gift.senderId == model.engine.identity.descriptor.userId { Text(model.engine.deliveryState(gift).displayName).font(.caption).foregroundStyle(TogetherTheme.rose) }
                                     else if model.engine.presentation(gift.id).openedAt == nil { Text(Copy.text("copy.status.a0a4c71b52cc")).font(.caption).foregroundStyle(TogetherTheme.rose) }
                                 }; Spacer()

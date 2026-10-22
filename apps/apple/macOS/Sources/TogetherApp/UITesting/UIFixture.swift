@@ -171,7 +171,7 @@ struct UIFixtureRoot: View {
         Group {
             if let model, let fixture {
                 RootView(model: model).id(model.engine.identity.descriptor.deviceId).preferredColorScheme(fixture.dark ? .dark : .light)
-                    .environment(\.locale, Locale(identifier: "zh_CN"))
+                    .environment(\.locale, LanguageSettings.shared.language.locale)
                     .environment(\.togetherMotionOverride, fixture.reduceMotion)
                     .background(FixtureWindowSize())
                     .background(FixtureContentCapture(fixture: fixture))
@@ -182,6 +182,9 @@ struct UIFixtureRoot: View {
         }
         .task {
             guard model == nil else { return }
+            if let value = ProcessInfo.processInfo.environment["TOGETHER_UI_LANGUAGE"], let language = AppLanguage(rawValue: value) {
+                LanguageSettings.shared.language = language
+            }
             do { let configuration = try UIFixture(); model = try await configuration.build() }
             catch { self.error = error.localizedDescription }
         }

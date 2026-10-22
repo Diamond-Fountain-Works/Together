@@ -85,7 +85,7 @@ struct InitialSetupView: View {
         }
         if step == 2 {
             do { try model.engine.setProfile(name: name, label: role ?? .unknown) }
-            catch { model.errorMessage = error.localizedDescription; return }
+            catch { model.errorMessage = Copy.userError(error); return }
         }
         move(1)
     }

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Read-only 0.2.2 artifact gate. Never launches, installs, signs or clears an app.
+"""Read-only configured-release artifact gate. Never launches, installs, signs or clears an app.
 
 An artifact PASS means ready for a separately authorized device test. It is not
 VPN-free network acceptance, a data-migration test, notarization or security review.
@@ -209,7 +209,7 @@ def mac_report(bundle):
     config = json.loads((ROOT / "apps/apple/macOS/Configuration/ReleaseVersion.json").read_text())
     checks, warnings = {}, []
     checks["normalIdentity"] = info.get("CFBundleIdentifier") == "com.together.app"
-    checks["version"] = info.get("CFBundleShortVersionString") == "0.2.2" == config["marketingVersion"]
+    checks["version"] = info.get("CFBundleShortVersionString") == config["marketingVersion"]
     checks["incrementedBuild"] = info.get("CFBundleVersion") == config["buildNumber"] and int(info["CFBundleVersion"]) > 18
     arch = run("lipo", "-archs", binary)
     architectures = arch.stdout.decode().split() if arch.returncode == 0 else []
@@ -258,7 +258,7 @@ def android_report(apk):
     expected_code = int(configured[1])
     signature = run(apksigner, "verify", "--verbose", "--print-certs", apk)
     certs = re.findall(r"certificate SHA-256 digest: ([0-9a-fA-F]+)", signature.stdout.decode())
-    checks = {"normalIdentity": name == "com.together.android", "version": version == "0.2.2",
+    checks = {"normalIdentity": name == "com.together.android", "version": version == json.loads((ROOT / "apps/apple/macOS/Configuration/ReleaseVersion.json").read_text())["marketingVersion"],
               "incrementedBuild": int(code) == expected_code and expected_code > 12,
               "notDebuggable": "application-debuggable" not in text,
               "notTestOnly": "application-testOnly" not in text,

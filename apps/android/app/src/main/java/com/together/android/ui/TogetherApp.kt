@@ -24,6 +24,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.together.android.R
 import com.together.android.data.TogetherRepository
+import com.together.android.localization.AppLanguage
 import com.together.domain.*
 import com.together.protocol.*
 import kotlinx.coroutines.*
@@ -78,7 +79,11 @@ private enum class Page(val label: Int) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TogetherApp(repository: TogetherRepository) = TogetherTheme {
+fun TogetherApp(
+    repository: TogetherRepository,
+    language: AppLanguage? = null,
+    onLanguageChange: ((AppLanguage) -> Unit)? = null,
+) = TogetherTheme {
     val state by repository.state.collectAsStateWithLifecycle()
     var page by rememberSaveable { mutableStateOf(Page.Home) }
     var filter by rememberSaveable { mutableStateOf("pending") }
@@ -97,6 +102,7 @@ fun TogetherApp(repository: TogetherRepository) = TogetherTheme {
     var actions by remember { mutableStateOf(false) }
     val snackbar = remember { SnackbarHostState() }
     val context = LocalContext.current
+    val currentContext by rememberUpdatedState(context)
     var localError by remember { mutableStateOf<String?>(null) }
     val scope = rememberCoroutineScope()
     val drawer = rememberDrawerState(DrawerValue.Closed)
@@ -177,11 +183,11 @@ fun TogetherApp(repository: TogetherRepository) = TogetherTheme {
             .filter { it.isNotEmpty() }
             .distinctUntilChanged()
             .collect { ids ->
-                val message = context.getString(R.string.notice_synced_changes, ids.size)
+                val message = currentContext.getString(R.string.notice_synced_changes, ids.size)
                 val display = async {
                     snackbar.showSnackbar(
                         message,
-                        context.getString(R.string.action_changes),
+                        currentContext.getString(R.string.action_changes),
                         duration = SnackbarDuration.Long,
                     )
                 }
@@ -305,6 +311,9 @@ fun TogetherApp(repository: TogetherRepository) = TogetherTheme {
                                                 )
                                             }
                                     }
+                                }
+                                if (page == Page.Settings && language != null && onLanguageChange != null) {
+                                    LanguageMenu(language, onLanguageChange)
                                 }
                             },
                         )
@@ -1240,6 +1249,7 @@ private fun changeValue(
         return java.time.format.DateTimeFormatter.ofLocalizedDateTime(
                 java.time.format.FormatStyle.MEDIUM
             )
+            .withLocale(androidx.compose.ui.platform.LocalConfiguration.current.locales[0])
             .withZone(java.time.ZoneId.systemDefault())
             .format(java.time.Instant.ofEpochMilli(it))
     }
@@ -1527,6 +1537,38 @@ internal fun EnrollmentSheet(
                 }
             }
             TextButton(onClick = onDismiss) { Text(stringResource(R.string.action_close)) }
+        }
+    }
+}
+
+
+/** Settings-only locale control; the navigation drawer and rail stay unchanged. */
+@Composable
+private fun LanguageMenu(
+    language: AppLanguage,
+    onChange: (AppLanguage) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    var expanded by remember { mutableStateOf(false) }
+    Box(modifier) {
+        IconButton(onClick = { expanded = true }, modifier = Modifier.testTag("settings.language")) {
+            Icon(
+                painter = androidx.compose.ui.res.painterResource(R.drawable.ic_language),
+                contentDescription = stringResource(R.string.label_language),
+            )
+        }
+        DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
+            AppLanguage.entries.forEach { candidate ->
+                DropdownMenuItem(
+                    text = { Text(stringResource(if (candidate == AppLanguage.CHINESE)
+                        R.string.language_chinese else R.string.language_english)) },
+                    trailingIcon = {
+                        if (candidate == language) Icon(Icons.Outlined.Check, contentDescription = null)
+                    },
+                    onClick = { expanded = false; onChange(candidate) },
+                    modifier = Modifier.testTag("language.${candidate.tag}"),
+                )
+            }
         }
     }
 }

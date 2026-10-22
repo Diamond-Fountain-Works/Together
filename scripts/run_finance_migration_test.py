@@ -4,7 +4,7 @@ from pathlib import Path
 import os, subprocess, tempfile, sys
 from project_paths import ROOT, CORE
 from legacy_source import materialized_legacy_fixture
-cache=Path.home()/'.cache/Together/LegacyMigration-SPM'
+cache=ROOT/'qa/results/tool-caches/legacy-migration-swift'
 cache.mkdir(parents=True,exist_ok=True)
 with tempfile.TemporaryDirectory(prefix='together-migration-') as directory:
     with materialized_legacy_fixture() as legacy:

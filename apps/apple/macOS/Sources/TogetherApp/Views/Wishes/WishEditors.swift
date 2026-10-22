@@ -32,7 +32,7 @@ struct WishEditorView: View {
     @State private var details = ""
     var body: some View {
         VStack(alignment: .leading, spacing: 20) {
-            Text(Copy.text("copy.action.3d4a799b170e")).font(.title2.weight(.semibold))
+            Text(Copy.text("copy.action.2b5c98884cf4")).font(.title2.weight(.semibold))
             Text(Copy.text("copy.status.3cfd61f73f08")).font(.callout).foregroundStyle(.secondary)
             TextField(Copy.text("copy.guidance.c28964cec0df"), text: $title).textFieldStyle(.roundedBorder)
             TextField(Copy.text("copy.guidance.d4dfacae27fe"), text: $details, axis: .vertical).lineLimit(4...8).textFieldStyle(.roundedBorder)

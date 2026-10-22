@@ -25,7 +25,7 @@ import TogetherCore
             && state.dispositions[$0.id] == nil
             && (displaying.contains($0.id) || !state.presentedOperationIds.contains($0.id))
         }
-      } catch { if !Task.isCancelled { errorMessage = error.localizedDescription } }
+      } catch { if !Task.isCancelled { errorMessage = Copy.userError(error) } }
     }
   }
   func markSharedBannerPresented() {
@@ -33,7 +33,7 @@ import TogetherCore
     markFinancialBannerPresented()
     Task {
       do { try await changeReview.markPresented(ids) } catch {
-        errorMessage = error.localizedDescription
+        errorMessage = Copy.userError(error)
       }
     }
   }
@@ -43,14 +43,14 @@ import TogetherCore
     dismissFinancialBanner()
     Task {
       do { try await changeReview.mark(ids, as: .dismissed) } catch {
-        errorMessage = error.localizedDescription
+        errorMessage = Copy.userError(error)
       }
     }
   }
   func openChange(_ event: ChangeEvent) {
     Task {
       do { try await changeReview.mark([event.id], as: .reviewed) } catch {
-        errorMessage = error.localizedDescription
+        errorMessage = Copy.userError(error)
         return
       }
       switch event.type {
@@ -200,7 +200,7 @@ struct SharedChangeHistoryView: View {
             do {
               try await model.changeReview.mark(visible.map(\.id), as: .reviewed)
               state = try await model.changeReview.state()
-            } catch { model.errorMessage = error.localizedDescription }
+            } catch { model.errorMessage = Copy.userError(error) }
           }
         }.disabled(visible.isEmpty).accessibilityIdentifier("sync.changes.review")
         Spacer()
@@ -218,7 +218,7 @@ struct SharedChangeHistoryView: View {
         state = try await model.changeReview.state()
         loading = false
       } catch {
-        model.errorMessage = error.localizedDescription
+        model.errorMessage = Copy.userError(error)
         loading = false
       }
     }
@@ -231,7 +231,7 @@ struct SharedChangeHistoryView: View {
           Copy.text("sync.origin." + event.origin(local: model.engine.identity.descriptor).rawValue)
         ).font(.caption).foregroundStyle(.secondary)
         Spacer()
-        Text(event.occurredAt, style: .date).font(.caption).foregroundStyle(.secondary)
+        Text(Copy.date(event.occurredAt)).font(.caption).foregroundStyle(.secondary)
       }
       HStack {
         Text(action(event))
@@ -316,9 +316,13 @@ struct SharedChangeHistoryView: View {
       if text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
         return Copy.text("role.unknown")
       }
+      // Status words are protocol values only in a status field. A task title
+      // or note such as "pending" is user content and stays exactly as written.
+      guard field == "status" else { return text }
       switch text {
       case "pending": return Copy.text("copy.status.7f750504c5ba")
       case "completed": return Copy.text("copy.guidance.f28461bb49c8")
+      case "scheduled": return Copy.text("presentation.status.scheduled")
       case "completionRequested": return Copy.text("status.wish.requested")
       case "open", "fulfilled", "conflict": return Copy.text("status.wish." + text)
       case "provisional", "reconciled", "skipped": return Copy.text("finance.status." + text)
@@ -328,7 +332,7 @@ struct SharedChangeHistoryView: View {
     case .boolean(let flag):
       return Copy.text(flag ? "finance.status.active" : "finance.status.paused")
     case .date(let date):
-      return date.formatted(date: .abbreviated, time: field == "dueAt" ? .shortened : .omitted)
+      return Copy.date(date, includeTime: field == "dueAt")
     case .data(let bytes):
       if let amount = try? CanonicalJSON.decode(FinanceAmount.self, from: bytes) {
         return FinanceMoney.display(amount.finalCNYMinor)

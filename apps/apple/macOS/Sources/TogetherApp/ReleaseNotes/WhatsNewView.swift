@@ -20,7 +20,7 @@ struct WhatsNewView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 22) {
             Text(Copy.text("copy.action.561b17edc33d")).font(.system(size: 28, weight: .semibold, design: .rounded))
-            Text(Copy.format("copy.status.c74259555cfc", String(describing: model.version))).foregroundStyle(.secondary)
+            Text(Copy.format("copy.guidance.5e362a89fa84", String(describing: model.version))).foregroundStyle(.secondary)
             ScrollView { VStack(alignment: .leading, spacing: 22) { if let release {
                 ForEach(release.highlights) { item in
                     HStack(alignment: .top, spacing: 15) {

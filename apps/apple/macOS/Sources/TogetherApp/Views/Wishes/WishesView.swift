@@ -49,7 +49,7 @@ struct WishesView: View {
                     TogetherCard {
                         VStack(alignment: .leading, spacing: 10) {
                             Label(Copy.text("copy.status.b29a53070d95"), systemImage: "exclamationmark.triangle").foregroundStyle(.orange)
-                            ForEach(model.engine.snapshot.conflicts) { conflict in Text(conflict.reason).font(.caption) }
+                            ForEach(model.engine.snapshot.conflicts) { conflict in Text(Copy.domainMessage(conflict.reason)).font(.caption) }
                         }
                     }
                 }

@@ -14,7 +14,7 @@ stamp=datetime.datetime.now().strftime('%Y%m%d-%H%M%S');bundle=results/f'ui-{sta
 output=output/stamp;output.mkdir(parents=True,exist_ok=False)
 env=os.environ.copy()
 report_name='ui'+('-'+args.label if args.label else '')
-derived=Path(os.environ.get('TOGETHER_UI_DERIVED_DATA',str(Path.home()/('.cache/Together/UIQA-'+project.name+'-DerivedData'))))
+derived=Path(os.environ.get('TOGETHER_UI_DERIVED_DATA',str(ROOT/'qa/results/tool-caches'/('UIQA-'+project.name+'-DerivedData'))))
 derived.mkdir(parents=True,exist_ok=True)
 subprocess.run([sys.executable,'script/generate_project.py'],cwd=project,check=True,env=env)
 # Build first, verify the actual bundle, and only then allow XCTest to launch.

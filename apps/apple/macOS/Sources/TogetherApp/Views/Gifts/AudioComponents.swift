@@ -28,7 +28,7 @@ import TogetherCore
             recorder = try AVAudioRecorder(url: file, settings: [AVFormatIDKey: kAudioFormatMPEG4AAC, AVSampleRateKey: 44_100, AVNumberOfChannelsKey: 1, AVEncoderAudioQualityKey: AVAudioQuality.high.rawValue])
             guard recorder?.prepareToRecord() == true, recorder?.record() == true else { throw TogetherError.invalid(Copy.text("copy.error.5ef4f050153c")) }
             url = file; recording = true; paused = false
-        } catch { self.error = error.localizedDescription }
+        } catch { self.error = Copy.userError(error) }
     }
     func togglePause() { if paused { paused = recorder?.record() != true } else { recorder?.pause(); paused = true } }
     func stop() -> URL? { recorder?.stop(); recorder = nil; recording = false; paused = false; return url }
@@ -50,7 +50,7 @@ import TogetherCore
             guard duration.isFinite, duration >= 0 else { throw TogetherError.invalid(Copy.text("copy.error.d0eefe11ae2b")) }
             player?.prepareToPlay()
         }
-        catch { self.error = Copy.format("copy.guidance.0bade33ffdbe", String(describing: error.localizedDescription)) }
+        catch { self.error = Copy.format("copy.guidance.0bade33ffdbe", String(describing: Copy.userError(error))) }
     }
     func toggle() {
         guard let player else { return }

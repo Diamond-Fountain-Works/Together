@@ -267,17 +267,17 @@
   },
   "values-zh-rCN/guidance_add_device": {
     "category": "Guidance",
-    "context": "Native partner invitation; separate from own-device enrollment",
+    "context": "Android 0.2.3 / guidance_add_device",
     "state": "reviewed",
-    "reason": "Requested functional pairing action, identity verification or actual connection status; no invented partner data.",
-    "sha256": "1a20dd8711e008b00dfcac675cf238672e73d4356b858f5a84070bd202f5ca2e"
+    "reason": "Localization 0.2.3 editorial review: concise actionable state or recovery guidance; remove redundant defensive prose while retaining consent and privacy information.",
+    "sha256": "9d38280c4eb48261f4024c1e2d7e9baec009154a8163a4178fd0eddff9ec6140"
   },
   "values-zh-rCN/guidance_request": {
     "category": "Guidance",
-    "context": "Android Phase A / guidance_request",
+    "context": "Android 0.2.3 / guidance_request",
     "state": "reviewed",
-    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
-    "sha256": "aa8cf9806c336576f15a799a9c7bc1346eb4f18f96a3dab0fcc13a0fee562358"
+    "reason": "Localization 0.2.3 editorial review: concise actionable state or recovery guidance; remove redundant defensive prose while retaining consent and privacy information.",
+    "sha256": "2dc8891617cb3379ebb4b5446d1d51fb06bb98882f986095eb8c4bfe8f23f6cc"
   },
   "values-zh-rCN/confirm_identity": {
     "category": "Guidance",
@@ -302,38 +302,38 @@
   },
   "values-zh-rCN/confirm_revoke": {
     "category": "Guidance",
-    "context": "Android Phase A / confirm_revoke",
+    "context": "Android 0.2.3 / confirm_revoke",
     "state": "reviewed",
-    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
-    "sha256": "95eb277614d173ccaaad8326bd7a85e4cdd619b1bc29685a72ccb63d83e6f618"
+    "reason": "Localization 0.2.3 editorial review: concise actionable state or recovery guidance; remove redundant defensive prose while retaining consent and privacy information.",
+    "sha256": "fead9d5e0c81fb4731b4a78667f858448d14d5e5b50a8c111c93d49ee3275cd8"
   },
   "values-zh-rCN/guidance_root_required": {
     "category": "Guidance",
-    "context": "Android Phase A / guidance_root_required",
+    "context": "Android 0.2.3 / guidance_root_required",
     "state": "reviewed",
-    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
-    "sha256": "ea6a6695221174a53e5b1b210689a5943c9e9936faed56ce7833b5fc98983b9d"
+    "reason": "Localization 0.2.3 editorial review: concise actionable state or recovery guidance; remove redundant defensive prose while retaining consent and privacy information.",
+    "sha256": "0fd141481b179d5e30b0641cba47f3912d4098135f3bbb9e525a79414db6befd"
   },
   "values-zh-rCN/guidance_offline": {
     "category": "Guidance",
-    "context": "Android Phase A / guidance_offline",
+    "context": "Android 0.2.3 / guidance_offline",
     "state": "reviewed",
-    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
-    "sha256": "b45d427a2a59e015699ee2b034d695f2e7d7f357d1a33c451a288650640c9662"
+    "reason": "Localization 0.2.3 editorial review: concise actionable state or recovery guidance; remove redundant defensive prose while retaining consent and privacy information.",
+    "sha256": "47f8d648f96894decb6b19dc4b81a95eba3ff9df7999ba5a8728d35b73b956fc"
   },
   "values-zh-rCN/label_user": {
     "category": "Guidance",
-    "context": "Android Phase A / label_user",
+    "context": "Android 0.2.3 / label_user",
     "state": "reviewed",
-    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
-    "sha256": "0fe5ee2cee4e9b732d2f5122c2cb0289d351f206e7d35572929a249573f35eb8"
+    "reason": "Localization 0.2.3 editorial review: native locale wording for the existing action or true state; replace untranslated English in Chinese without changing business semantics.",
+    "sha256": "42dff475ce68f6dff9b772451aebedf473785cc9e719bf5eba80e0f1ae2409cc"
   },
   "values-zh-rCN/label_device": {
     "category": "Guidance",
-    "context": "Android Phase A / label_device",
+    "context": "Android 0.2.3 / label_device",
     "state": "reviewed",
-    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
-    "sha256": "1628b59870ffa0a295071412f45e6dd48a66d959100e91b243f30a428337437d"
+    "reason": "Localization 0.2.3 editorial review: native locale wording for the existing action or true state; replace untranslated English in Chinese without changing business semantics.",
+    "sha256": "beb98356ea35310383cc212c29afbe5d54b8628adebd24c531cea27293166c12"
   },
   "values-zh-rCN/label_version": {
     "category": "Guidance",
@@ -351,24 +351,24 @@
   },
   "values-zh-rCN/error_identity": {
     "category": "Error",
-    "context": "Android Phase A / error_identity",
+    "context": "Android 0.2.3 / error_identity",
     "state": "reviewed",
-    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
-    "sha256": "a7da8b0cd2f828f602a7cd2e7eb031d7255b11f53cc0ebd64f8efccb2cc71b6e"
+    "reason": "Localization 0.2.3 editorial review: concise actionable state or recovery guidance; remove redundant defensive prose while retaining consent and privacy information.",
+    "sha256": "aa871389f995e968f345b606ddef4fe192bcc6c0463bbd89d9569546960ea1c8"
   },
   "values-zh-rCN/error_offer_expired": {
     "category": "Error",
-    "context": "Android Phase A / error_offer_expired",
+    "context": "Android 0.2.3 / error_offer_expired",
     "state": "reviewed",
-    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
-    "sha256": "9b88cb7b6588f88aeb805b3542ab291ee92238f7915be04f1414bb435f1691a0"
+    "reason": "Localization 0.2.3 editorial review: concise actionable state or recovery guidance; remove redundant defensive prose while retaining consent and privacy information.",
+    "sha256": "574292ebd8d6575e348e2fa43d3ff66da56e5ba0a0e20a90937d9d46fd5a15be"
   },
   "values-zh-rCN/error_existing_data": {
     "category": "Error",
-    "context": "Android Phase A / error_existing_data",
+    "context": "Android 0.2.3 / error_existing_data",
     "state": "reviewed",
-    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
-    "sha256": "10ca00ee82573f15afc6ef75446873b9ddb5cac3315266d86acec733d1447bbe"
+    "reason": "Localization 0.2.3 editorial review: concise actionable state or recovery guidance; remove redundant defensive prose while retaining consent and privacy information.",
+    "sha256": "b613c560642aeb3e728237abdbd48db8e72745a253a15dd973c363a878931188"
   },
   "values-zh-rCN/error_invalid_file": {
     "category": "Error",
@@ -379,10 +379,10 @@
   },
   "values-zh-rCN/error_network": {
     "category": "Error",
-    "context": "Android Phase A / error_network",
+    "context": "Android 0.2.3 / error_network",
     "state": "reviewed",
-    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
-    "sha256": "0a0447b1e2ba246c4f3393e5992ebeef97279bf5535e016375729bc37697c957"
+    "reason": "Localization 0.2.3 editorial review: concise actionable state or recovery guidance; remove redundant defensive prose while retaining consent and privacy information.",
+    "sha256": "a7b749f7e83af7062cfce816559d48d563469b79b0ed7ff91d43f5718020b50d"
   },
   "values-zh-rCN/label_pending_tasks": {
     "category": "Guidance",
@@ -505,10 +505,10 @@
   },
   "values-zh-rCN/filename_device_request": {
     "category": "Guidance",
-    "context": "Android Phase A / filename_device_request",
+    "context": "Android 0.2.3 / filename_device_request",
     "state": "reviewed",
-    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
-    "sha256": "1e8f1a734d9f74f2cb90f7b5cf04094fef922f6368a0d12c2f5d31ca5c752629"
+    "reason": "Localization 0.2.3 editorial review: native locale wording for the existing action or true state; replace untranslated English in Chinese without changing business semantics.",
+    "sha256": "34bcc32d10c7ab7784ec4eaa8bb9d4437ef6baa24ce777fcd5d60252a0dbd31d"
   },
   "values/app_name": {
     "category": "Status",
@@ -778,10 +778,10 @@
   },
   "values/guidance_add_device": {
     "category": "Guidance",
-    "context": "Native partner invitation; separate from own-device enrollment",
+    "context": "Android 0.2.3 / guidance_add_device",
     "state": "reviewed",
-    "reason": "Requested functional pairing action, identity verification or actual connection status; no invented partner data.",
-    "sha256": "70f30bf5377028c4e10f86ac15f1848ef9a934f3586d55550fbe82d1911e787d"
+    "reason": "Localization 0.2.3 editorial review: concise actionable state or recovery guidance; remove redundant defensive prose while retaining consent and privacy information.",
+    "sha256": "fdc872dedaae13b41880cd897fb88107e343cf2b666710d6cd6b68159bcfdcb1"
   },
   "values/guidance_request": {
     "category": "Guidance",
@@ -813,10 +813,10 @@
   },
   "values/confirm_revoke": {
     "category": "Guidance",
-    "context": "Android Phase A / confirm_revoke",
+    "context": "Android 0.2.3 / confirm_revoke",
     "state": "reviewed",
-    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
-    "sha256": "a0cafc3aece2eb6091049c6adcde1c671e37d803b5d708aa1f526601bc4e7d50"
+    "reason": "Localization 0.2.3 editorial review: concise actionable state or recovery guidance; remove redundant defensive prose while retaining consent and privacy information.",
+    "sha256": "e7e35e2c6b94c113b285b4b91581558682efb2ea01c08bca259828fd17b6fc5b"
   },
   "values/guidance_root_required": {
     "category": "Guidance",
@@ -827,10 +827,10 @@
   },
   "values/guidance_offline": {
     "category": "Guidance",
-    "context": "Android Phase A / guidance_offline",
+    "context": "Android 0.2.3 / guidance_offline",
     "state": "reviewed",
-    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
-    "sha256": "8597d913ccbd07e739c08508aff95b42fbd13f679fd8a1dd249d4f9c5a22a02f"
+    "reason": "Localization 0.2.3 editorial review: concise actionable state or recovery guidance; remove redundant defensive prose while retaining consent and privacy information.",
+    "sha256": "41b5825d2971da1b7ed2d2a9c070b557996249d014d2858bf93cdddee725a6ef"
   },
   "values/label_user": {
     "category": "Guidance",
@@ -862,10 +862,10 @@
   },
   "values/error_identity": {
     "category": "Error",
-    "context": "Android Phase A / error_identity",
+    "context": "Android 0.2.3 / error_identity",
     "state": "reviewed",
-    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
-    "sha256": "7c8ada572f96f8796610dcf387e0010a1ff952dd612691703640b8d044fd7932"
+    "reason": "Localization 0.2.3 editorial review: concise actionable state or recovery guidance; remove redundant defensive prose while retaining consent and privacy information.",
+    "sha256": "f922a1be700dcfbfba8a80964501b1f2a59c23fb7b06219b62aeca5393e6794f"
   },
   "values/error_offer_expired": {
     "category": "Error",
@@ -876,10 +876,10 @@
   },
   "values/error_existing_data": {
     "category": "Error",
-    "context": "Android Phase A / error_existing_data",
+    "context": "Android 0.2.3 / error_existing_data",
     "state": "reviewed",
-    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
-    "sha256": "f45a2cfa0f93142e91cfcf6df39d5b22d4dabf2385268e96639a43e069fceda4"
+    "reason": "Localization 0.2.3 editorial review: concise actionable state or recovery guidance; remove redundant defensive prose while retaining consent and privacy information.",
+    "sha256": "5629891c4b5bc04c2e3ffeb602135740e867ae280c20321bb2fb43d4c754e594"
   },
   "values/error_invalid_file": {
     "category": "Error",
@@ -890,10 +890,10 @@
   },
   "values/error_network": {
     "category": "Error",
-    "context": "Android Phase A / error_network",
+    "context": "Android 0.2.3 / error_network",
     "state": "reviewed",
-    "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
-    "sha256": "6315e1b0e8bc226b2e6a860ee8bc04fc4cdfe36ef370c4247bb075ed7f153d3a"
+    "reason": "Localization 0.2.3 editorial review: concise actionable state or recovery guidance; remove redundant defensive prose while retaining consent and privacy information.",
+    "sha256": "2a1e921142655a719afd3da0ac38d99ddc385e34e5655197ee19424409918f53"
   },
   "values/label_pending_tasks": {
     "category": "Guidance",
@@ -1870,10 +1870,10 @@
   },
   "values/guidance_planned_deposit": {
     "category": "Guidance",
-    "context": "Android Phase B guidance_planned_deposit",
+    "context": "Android 0.2.3 / guidance_planned_deposit",
     "state": "reviewed",
-    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
-    "sha256": "383a39317b42774c2a6740f307fb5f6063bba9f684903d9c717a19a58ab87810"
+    "reason": "Localization 0.2.3 editorial review: concise actionable state or recovery guidance; remove redundant defensive prose while retaining consent and privacy information.",
+    "sha256": "63a6c629cc856c0d243abbae223c12cb5e0ce97059e3eb3c78f20990d6fa557c"
   },
   "values/label_payment_methods": {
     "category": "Navigation",
@@ -1940,10 +1940,10 @@
   },
   "values/guidance_card_history": {
     "category": "Guidance",
-    "context": "Android Phase B guidance_card_history",
+    "context": "Android 0.2.3 / guidance_card_history",
     "state": "reviewed",
-    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
-    "sha256": "00723dbeb75f08e0e5dcfc93e882d855b90a9acee03bc51ae0fcec4541b14bc3"
+    "reason": "Localization 0.2.3 editorial review: concise actionable state or recovery guidance; remove redundant defensive prose while retaining consent and privacy information.",
+    "sha256": "e6858a327ba3c1700cc730211f2f12a6e2a03a1762a539f38f50145b65816007"
   },
   "values/action_add_card": {
     "category": "Action",
@@ -2003,38 +2003,38 @@
   },
   "values/gift_prompt_boy": {
     "category": "Emotional",
-    "context": "Android Phase B gift_prompt_boy",
+    "context": "Android 0.2.3 / gift_prompt_boy",
     "state": "reviewed",
-    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
-    "sha256": "04a82071ebdb4daede09a320b7f23795f893221c17576739d28ae6dde3033990"
+    "reason": "Localization 0.2.3 editorial review: retain the approved intimate gift meaning and sender identity; saved-state wording does not assert delivery. Candidate copy, not human visual approval.",
+    "sha256": "3cb0319d3103c7ed5ae7db1aa4a4f591b116e180a0150a3cc9ab0c386de5839c"
   },
   "values/gift_prompt_girl": {
     "category": "Emotional",
-    "context": "Android Phase B gift_prompt_girl",
+    "context": "Android 0.2.3 / gift_prompt_girl",
     "state": "reviewed",
-    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
-    "sha256": "080e149841cf94024c1993ee54449e7f1fa5a997182fdc2d216f61d950f84ae8"
+    "reason": "Localization 0.2.3 editorial review: retain the approved intimate gift meaning and sender identity; saved-state wording does not assert delivery. Candidate copy, not human visual approval.",
+    "sha256": "55082cb7920e1a7237450df845521fc9e931887d99c926273e4a253944850de8"
   },
   "values/gift_prompt_unknown": {
     "category": "Emotional",
-    "context": "Android Phase B gift_prompt_unknown",
+    "context": "Android 0.2.3 / gift_prompt_unknown",
     "state": "reviewed",
-    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
-    "sha256": "e41dc479482df2b9217443259cf401a3c37068161e832df4b8e6e12c41aba7ac"
+    "reason": "Localization 0.2.3 editorial review: retain the approved intimate gift meaning and sender identity; saved-state wording does not assert delivery. Candidate copy, not human visual approval.",
+    "sha256": "3d32ab39c3fd80f187a2562d414e053eba9b0bb54f80d9b18383ef4382bae2e3"
   },
   "values/gift_quota_used": {
     "category": "Status",
-    "context": "Android Phase B gift_quota_used",
+    "context": "Android 0.2.3 / gift_quota_used",
     "state": "reviewed",
-    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
-    "sha256": "166dc429e831033029d7689188c8c9646cf4d5805436ca0c1ebf49da964103dc"
+    "reason": "Localization 0.2.3 editorial review: retain the approved intimate gift meaning and sender identity; saved-state wording does not assert delivery. Candidate copy, not human visual approval.",
+    "sha256": "4dd0d8390c1f6a090b7cc88e2b111b50fb52187283214a48d7a2a261e05d43cc"
   },
   "values/gift_input_hint": {
     "category": "Emotional",
-    "context": "Android Phase B gift_input_hint",
+    "context": "Android 0.2.3 / gift_input_hint",
     "state": "reviewed",
-    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
-    "sha256": "cced4b4679f79f0990d8a79c78edc2fc323ee302daf0d22106476c29a8627488"
+    "reason": "Localization 0.2.3 editorial review: retain the approved intimate gift meaning and sender identity; saved-state wording does not assert delivery. Candidate copy, not human visual approval.",
+    "sha256": "228be32219a7c284d12e95e341c8de9435d6bbd6a1b3a14a5bbe37128225cc0f"
   },
   "values/action_add_photo": {
     "category": "Action",
@@ -2066,10 +2066,10 @@
   },
   "values/guidance_photo_metadata": {
     "category": "Guidance",
-    "context": "Android Phase B guidance_photo_metadata",
+    "context": "Android 0.2.3 / guidance_photo_metadata",
     "state": "reviewed",
-    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
-    "sha256": "1dbbffb512f0d857eb477442d498dd92fc019c16cbf28a180c188e72e05f4417"
+    "reason": "Localization 0.2.3 editorial review: concise actionable state or recovery guidance; remove redundant defensive prose while retaining consent and privacy information.",
+    "sha256": "e8c277e9a095465e49c1255bdf27f83fb5e2081d591888e3ef50de4ef8c11d99"
   },
   "values/action_remove_photo": {
     "category": "Action",
@@ -2136,31 +2136,31 @@
   },
   "values/gift_title_boy_text": {
     "category": "Emotional",
-    "context": "Android Phase B gift_title_boy_text",
+    "context": "Android 0.2.3 / gift_title_boy_text",
     "state": "reviewed",
-    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
-    "sha256": "3ad902d282e75817394115156af0359a9ea180dafe1929b9df85c3c9b4382719"
+    "reason": "Localization 0.2.3 editorial review: retain the approved intimate gift meaning and sender identity; saved-state wording does not assert delivery. Candidate copy, not human visual approval.",
+    "sha256": "7295e96a1d2b48ef78f5b29a7d76f088a7170ae811322c7714bf3cd7daf58a22"
   },
   "values/gift_title_boy_media": {
     "category": "Emotional",
-    "context": "Android Phase B gift_title_boy_media",
+    "context": "Android 0.2.3 / gift_title_boy_media",
     "state": "reviewed",
-    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
-    "sha256": "e6161e750f64c38accbdb4c50c3049fa3a634fb5427ab3cea1468920069d1787"
+    "reason": "Localization 0.2.3 editorial review: retain the approved intimate gift meaning and sender identity; saved-state wording does not assert delivery. Candidate copy, not human visual approval.",
+    "sha256": "ffb69cf61becb5a0aa156acb11cd6a5df42d71f5538c2332ed7d34f71022dfe7"
   },
   "values/gift_title_girl_text": {
     "category": "Emotional",
-    "context": "Android Phase B gift_title_girl_text",
+    "context": "Android 0.2.3 / gift_title_girl_text",
     "state": "reviewed",
-    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
-    "sha256": "abf91b8fdf13c8d7605261e763e01ba775a6ab70343f16d26a340579681b595c"
+    "reason": "Localization 0.2.3 editorial review: retain the approved intimate gift meaning and sender identity; saved-state wording does not assert delivery. Candidate copy, not human visual approval.",
+    "sha256": "5d8acdcf847e9ce5f19442a31e9cfa4bd61f437a122686feee5726ba0a7563b2"
   },
   "values/gift_title_girl_media": {
     "category": "Emotional",
-    "context": "Android Phase B gift_title_girl_media",
+    "context": "Android 0.2.3 / gift_title_girl_media",
     "state": "reviewed",
-    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
-    "sha256": "d6a4cc360b3cafd0f8e6313c1051177ffdc297d9791313439364874b9a69e38f"
+    "reason": "Localization 0.2.3 editorial review: retain the approved intimate gift meaning and sender identity; saved-state wording does not assert delivery. Candidate copy, not human visual approval.",
+    "sha256": "c8d069a7f236086f580bd7ab8ca13e7ba069a3c6d137baee7709b89f2eff33ed"
   },
   "values/gift_title_unknown_text": {
     "category": "Emotional",
@@ -2185,10 +2185,10 @@
   },
   "values/gift_sealed_title": {
     "category": "Emotional",
-    "context": "Android Phase B gift_sealed_title",
+    "context": "Android 0.2.3 / gift_sealed_title",
     "state": "reviewed",
-    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
-    "sha256": "3c503fc7aaff76ecff61122f2fdab8dda64b9c53b83ce8535fac4ecc82e4f15d"
+    "reason": "Localization 0.2.3 editorial review: retain the approved intimate gift meaning and sender identity; saved-state wording does not assert delivery. Candidate copy, not human visual approval.",
+    "sha256": "d9a4dc15afb2cf7b8727198607c1bfc96b5ada44e76b59e9d28d81f3421c7b97"
   },
   "values/status_media_pending": {
     "category": "Status",
@@ -2220,24 +2220,24 @@
   },
   "values/gift_ending_boy": {
     "category": "Emotional",
-    "context": "Android Phase B gift_ending_boy",
+    "context": "Android 0.2.3 / gift_ending_boy",
     "state": "reviewed",
-    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
-    "sha256": "0041997779636160fd760a53bc265ff2fcf34cfb63d04835a8d017e99d318511"
+    "reason": "Localization 0.2.3 editorial review: retain the approved intimate gift meaning and sender identity; saved-state wording does not assert delivery. Candidate copy, not human visual approval.",
+    "sha256": "519b26979f5ad7890e1beb9e00f08c045138f2b2778da6a2618bae26d5be0e02"
   },
   "values/gift_ending_girl": {
     "category": "Emotional",
-    "context": "Android Phase B gift_ending_girl",
+    "context": "Android 0.2.3 / gift_ending_girl",
     "state": "reviewed",
-    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
-    "sha256": "b0075cb519a4b01f3a09e0270e3f6a129db8341928f23ce610a744727a970368"
+    "reason": "Localization 0.2.3 editorial review: retain the approved intimate gift meaning and sender identity; saved-state wording does not assert delivery. Candidate copy, not human visual approval.",
+    "sha256": "d9fa79d4f2bd01623a61ef5e2bf80be61596ddebf003ab35fb84eaa3515739c8"
   },
   "values/gift_ending_unknown": {
     "category": "Emotional",
-    "context": "Android Phase B gift_ending_unknown",
+    "context": "Android 0.2.3 / gift_ending_unknown",
     "state": "reviewed",
-    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
-    "sha256": "2bb69c98c0266765b404ca664037a2e9488b70354eff29f66323480af97e9d8e"
+    "reason": "Localization 0.2.3 editorial review: retain the approved intimate gift meaning and sender identity; saved-state wording does not assert delivery. Candidate copy, not human visual approval.",
+    "sha256": "8a77c1e972674bb04bd2b5f7800c0a45fdd3213c1aa9cc4268c4e58a1e9e7a05"
   },
   "values/action_reply_love": {
     "category": "Action",
@@ -2255,10 +2255,10 @@
   },
   "values/action_gift_received": {
     "category": "Action",
-    "context": "Android Phase B action_gift_received",
+    "context": "Android 0.2.3 / action_gift_received",
     "state": "reviewed",
-    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
-    "sha256": "ab147b306bc295e9ee10b66a9335d47b91292a9ac3896ec66abd0aa66eff9d4d"
+    "reason": "Localization 0.2.3 editorial review: retain the approved intimate gift meaning and sender identity; saved-state wording does not assert delivery. Candidate copy, not human visual approval.",
+    "sha256": "73cb69bfbe2e154459e4f6128208f6868db7a3a89caa7a8e485bb3363c96d417"
   },
   "values/label_nickname": {
     "category": "Guidance",
@@ -2339,10 +2339,10 @@
   },
   "values/guidance_identity_recovery": {
     "category": "Guidance",
-    "context": "Android Phase B guidance_identity_recovery",
+    "context": "Android 0.2.3 / guidance_identity_recovery",
     "state": "reviewed",
-    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
-    "sha256": "06e999611708cc97564471f5d02b042166f372c75d67ec4bcfd2559e31a2f98a"
+    "reason": "Localization 0.2.3 editorial review: concise actionable state or recovery guidance; remove redundant defensive prose while retaining consent and privacy information.",
+    "sha256": "6a7971b547e02d5f21318ed652e714052499b07de17e5a5667c200ae3c44864b"
   },
   "values/error_amount": {
     "category": "Error",
@@ -2353,10 +2353,10 @@
   },
   "values/error_quota": {
     "category": "Error",
-    "context": "Android Phase B error_quota",
+    "context": "Android 0.2.3 / error_quota",
     "state": "reviewed",
-    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
-    "sha256": "74b1515bf22a5f0579cdb31a5856ff36dd02d0482ba9414beb8a8339ee72bc7a"
+    "reason": "Localization 0.2.3 editorial review: concise actionable state or recovery guidance; remove redundant defensive prose while retaining consent and privacy information.",
+    "sha256": "9cdb2a851d5a83c1d9f666bf60bbcb85398d668db82240a0b0df7216447c8c37"
   },
   "values/error_media": {
     "category": "Error",
@@ -2451,10 +2451,10 @@
   },
   "values-zh-rCN/label_time": {
     "category": "Guidance",
-    "context": "Android Phase B label_time",
+    "context": "Android 0.2.3 / label_time",
     "state": "reviewed",
-    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
-    "sha256": "2847b41dc50fa2f2c713ffc20873e6c283db1d9c56d9d806ba18dbbb17320947"
+    "reason": "Localization 0.2.3 editorial review: native locale wording for the existing action or true state; replace untranslated English in Chinese without changing business semantics.",
+    "sha256": "4fae9d7d92d184bc22dd816ce33d9081260169da67cbc16fa52657115c3cc3a1"
   },
   "values-zh-rCN/label_recurrence": {
     "category": "Guidance",
@@ -2507,17 +2507,17 @@
   },
   "values-zh-rCN/label_every_n": {
     "category": "Guidance",
-    "context": "Android Phase B label_every_n",
+    "context": "Android 0.2.3 / label_every_n",
     "state": "reviewed",
-    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
-    "sha256": "70ccbe927bb39e6871ae6f7628c6a270b66b1febd49a4fba4c1afc52162f8358"
+    "reason": "Localization 0.2.3 editorial review: native locale wording for the existing action or true state; replace untranslated English in Chinese without changing business semantics.",
+    "sha256": "815ed4936d95fe035fc5b496a0f38701eaa41dbabcbc06d40eeb29bdd21c5975"
   },
   "values-zh-rCN/label_time_zone": {
     "category": "Guidance",
-    "context": "Android Phase B label_time_zone",
+    "context": "Android 0.2.3 / label_time_zone",
     "state": "reviewed",
-    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
-    "sha256": "0e6741b5e32380aa4e5697126d9b1a8f558f4eae457d7aaf55e48aa74aa8b267"
+    "reason": "Localization 0.2.3 editorial review: native locale wording for the existing action or true state; replace untranslated English in Chinese without changing business semantics.",
+    "sha256": "b5d72c5c00f2d88ed138f2a833b5a73affb1058f6a9bf7568bc97e229a961266"
   },
   "values-zh-rCN/action_set_next": {
     "category": "Action",
@@ -2829,10 +2829,10 @@
   },
   "values-zh-rCN/payment_aa": {
     "category": "Status",
-    "context": "Android Phase B payment_aa",
+    "context": "Android 0.2.3 / payment_aa",
     "state": "reviewed",
-    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
-    "sha256": "eefe9a603858a96633b8c82245cfc457e77a3eb57826b8d0003411647b768ef6"
+    "reason": "Localization 0.2.3 editorial review: native locale wording for the existing action or true state; replace untranslated English in Chinese without changing business semantics.",
+    "sha256": "82a31788846b2f1d16c607b6160acad807197c2355f88742ea8ebe137217b54c"
   },
   "values-zh-rCN/label_payment_tool": {
     "category": "Guidance",
@@ -2969,10 +2969,10 @@
   },
   "values-zh-rCN/label_occurrence_month": {
     "category": "Guidance",
-    "context": "Android Phase B label_occurrence_month",
+    "context": "Android 0.2.3 / label_occurrence_month",
     "state": "reviewed",
-    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
-    "sha256": "3cd0c252fb1d56abc5342771f8f7d65fb4e4a64708a84069fa9ae3b967ebe2b5"
+    "reason": "Localization 0.2.3 editorial review: native locale wording for the existing action or true state; replace untranslated English in Chinese without changing business semantics.",
+    "sha256": "ad06699d5d008c9ffb6f0babac5ca8beb59413170a03b0f9e98884bebc33ad19"
   },
   "values-zh-rCN/action_confirm_bill": {
     "category": "Action",
@@ -3039,10 +3039,10 @@
   },
   "values-zh-rCN/guidance_planned_deposit": {
     "category": "Guidance",
-    "context": "Android Phase B guidance_planned_deposit",
+    "context": "Android 0.2.3 / guidance_planned_deposit",
     "state": "reviewed",
-    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
-    "sha256": "fad3e887dd20091dc89165ef39702cdaeaf773807ca0ccc1456505c2f3964e0a"
+    "reason": "Localization 0.2.3 editorial review: concise actionable state or recovery guidance; remove redundant defensive prose while retaining consent and privacy information.",
+    "sha256": "ced6c398c95deb06f5d40695312fedc47a92aae61dab6c89b53648bd8cedc134"
   },
   "values-zh-rCN/label_payment_methods": {
     "category": "Navigation",
@@ -3109,10 +3109,10 @@
   },
   "values-zh-rCN/guidance_card_history": {
     "category": "Guidance",
-    "context": "Android Phase B guidance_card_history",
+    "context": "Android 0.2.3 / guidance_card_history",
     "state": "reviewed",
-    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
-    "sha256": "f53cf5b9400d8822523ee0c82a5acd8114e75fec8cd189ce54bcaeb7e6f468a5"
+    "reason": "Localization 0.2.3 editorial review: concise actionable state or recovery guidance; remove redundant defensive prose while retaining consent and privacy information.",
+    "sha256": "fb89085ffac74412de00fc654381f4c559aef6fa1252a9001ae334d592d26aa9"
   },
   "values-zh-rCN/action_add_card": {
     "category": "Action",
@@ -3165,10 +3165,10 @@
   },
   "values-zh-rCN/action_send_with_love": {
     "category": "Action",
-    "context": "Android Phase B action_send_with_love",
+    "context": "Android 0.2.3 / action_send_with_love",
     "state": "reviewed",
-    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
-    "sha256": "1a1a433b6d1e22c91d4ba93cfedd81716bf7ceb86b9e7f40bc77f21a6492030f"
+    "reason": "Localization 0.2.3 editorial review: native locale wording for the existing action or true state; replace untranslated English in Chinese without changing business semantics.",
+    "sha256": "a449e7e1e91fe22e6ab7f78e034aca8bb1fd276547228162fa1bcdc48ad49186"
   },
   "values-zh-rCN/gift_prompt_boy": {
     "category": "Emotional",
@@ -3186,24 +3186,24 @@
   },
   "values-zh-rCN/gift_prompt_unknown": {
     "category": "Emotional",
-    "context": "Android Phase B gift_prompt_unknown",
+    "context": "Android 0.2.3 / gift_prompt_unknown",
     "state": "reviewed",
-    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
-    "sha256": "a248339fcf7be73c7e5c33e1bea369e0dfb4fc049202202a19d7e87725760dbd"
+    "reason": "Localization 0.2.3 editorial review: retain the approved intimate gift meaning and sender identity; saved-state wording does not assert delivery. Candidate copy, not human visual approval.",
+    "sha256": "3403028140790b9bcba321912441e867a006ae32ff3556c1b088f9ffe8b403ab"
   },
   "values-zh-rCN/gift_quota_used": {
     "category": "Status",
     "context": "Android Phase B gift_quota_used",
     "state": "reviewed",
     "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
-    "sha256": "9aab56ff5b73d1e3497ffa191cc58e3e4e7427ea036a3be2506c59278782b91b"
+    "sha256": "a37e84535cb55346ec05eb203900805b044b194e7f32778093566e00f9265295"
   },
   "values-zh-rCN/gift_input_hint": {
     "category": "Emotional",
-    "context": "Android Phase B gift_input_hint",
+    "context": "Android 0.2.3 / gift_input_hint",
     "state": "reviewed",
-    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
-    "sha256": "2c30c02277888bdd4091a1d4cb08ad3acb9995c06728f78a019ca18e5f5ea58d"
+    "reason": "Localization 0.2.3 editorial review: retain the approved intimate gift meaning and sender identity; saved-state wording does not assert delivery. Candidate copy, not human visual approval.",
+    "sha256": "cd21bb516c7f3d0f584da14ccc162c434277965437f5bf7333b433cf803ac802"
   },
   "values-zh-rCN/action_add_photo": {
     "category": "Action",
@@ -3235,10 +3235,10 @@
   },
   "values-zh-rCN/guidance_photo_metadata": {
     "category": "Guidance",
-    "context": "Android Phase B guidance_photo_metadata",
+    "context": "Android 0.2.3 / guidance_photo_metadata",
     "state": "reviewed",
-    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
-    "sha256": "4679f52577892a78cd6486888b5c028b578116f3052fecfdeb92c3dcc8419093"
+    "reason": "Localization 0.2.3 editorial review: concise actionable state or recovery guidance; remove redundant defensive prose while retaining consent and privacy information.",
+    "sha256": "faf1aff66e13eb4f899f41fa2dcd5448a309edfc2d5e9462dfedee47b74bbc36"
   },
   "values-zh-rCN/action_remove_photo": {
     "category": "Action",
@@ -3333,17 +3333,17 @@
   },
   "values-zh-rCN/gift_title_unknown_text": {
     "category": "Emotional",
-    "context": "Android Phase B gift_title_unknown_text",
+    "context": "Android 0.2.3 / gift_title_unknown_text",
     "state": "reviewed",
-    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
-    "sha256": "8935db691b300c89f790d74e85f8fe291274138ac87909e8e370410e2877cdd1"
+    "reason": "Localization 0.2.3 editorial review: retain the approved intimate gift meaning and sender identity; saved-state wording does not assert delivery. Candidate copy, not human visual approval.",
+    "sha256": "ab56f73ae29d2e024df704c6c48dc8d3e9feacd56e42cb32c8ba42d40562db3d"
   },
   "values-zh-rCN/gift_title_unknown_media": {
     "category": "Emotional",
-    "context": "Android Phase B gift_title_unknown_media",
+    "context": "Android 0.2.3 / gift_title_unknown_media",
     "state": "reviewed",
-    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
-    "sha256": "a4cd1e0dd2339916d43a0a1d0dc1c06fe753d9256ae84588c583c98922e25ce4"
+    "reason": "Localization 0.2.3 editorial review: retain the approved intimate gift meaning and sender identity; saved-state wording does not assert delivery. Candidate copy, not human visual approval.",
+    "sha256": "89bed9e2ebbd56e750c563c3ef3289bff26ca148ebd78f72ffa2f286d7707cdb"
   },
   "values-zh-rCN/label_sealed_gift": {
     "category": "Status",
@@ -3403,10 +3403,10 @@
   },
   "values-zh-rCN/gift_ending_unknown": {
     "category": "Emotional",
-    "context": "Android Phase B gift_ending_unknown",
+    "context": "Android 0.2.3 / gift_ending_unknown",
     "state": "reviewed",
-    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
-    "sha256": "e897ce0b55cf65fcd5a1ed9dc4660d2b185858e572db489ce360228424124928"
+    "reason": "Localization 0.2.3 editorial review: retain the approved intimate gift meaning and sender identity; saved-state wording does not assert delivery. Candidate copy, not human visual approval.",
+    "sha256": "63e68c951a4af144936988c62a648b1351285258780b9f8b64475fe07ed753b1"
   },
   "values-zh-rCN/action_reply_love": {
     "category": "Action",
@@ -3508,10 +3508,10 @@
   },
   "values-zh-rCN/guidance_identity_recovery": {
     "category": "Guidance",
-    "context": "Android Phase B guidance_identity_recovery",
+    "context": "Android 0.2.3 / guidance_identity_recovery",
     "state": "reviewed",
-    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
-    "sha256": "a5762ce998d140d5a88a6f63aee0e1a0a2b9b64108aa8faa3ce5da5e50b07d12"
+    "reason": "Localization 0.2.3 editorial review: concise actionable state or recovery guidance; remove redundant defensive prose while retaining consent and privacy information.",
+    "sha256": "e04064e9cc4697fee734dbe98c07463501e1d6dd3fbc55d7c794df832b6d272d"
   },
   "values-zh-rCN/error_amount": {
     "category": "Error",
@@ -3525,7 +3525,7 @@
     "context": "Android Phase B error_quota",
     "state": "reviewed",
     "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
-    "sha256": "3e87f80cd6fdef9be0479c699e9b5e0516ffd58ce20e767a73e97e920d19dd32"
+    "sha256": "d9f8b63045a0641a2f968fefa1dca26c46817b60fc88e3916ee495b21a6a129d"
   },
   "values-zh-rCN/error_media": {
     "category": "Error",
@@ -3585,24 +3585,24 @@
   },
   "values/label_domain": {
     "category": "Guidance",
-    "context": "Android Phase B label_domain",
+    "context": "Android 0.2.3 / label_domain",
     "state": "reviewed",
-    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
-    "sha256": "79fa33618d8eaa1fc55f6f8a2d34c65ececc4c5961ac2b1433802c2629d55ca1"
+    "reason": "Localization 0.2.3 editorial review: native locale wording for the existing action or true state; replace untranslated English in Chinese without changing business semantics.",
+    "sha256": "292c06f0045a45d044be282b132b7055ae224e18e02b523a451d8ea96fadfd24"
   },
   "values/status_local_saved": {
     "category": "Status",
-    "context": "Android Phase B status_local_saved",
+    "context": "Android 0.2.3 / status_local_saved",
     "state": "reviewed",
-    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
-    "sha256": "d7b6284e6c18fbde35222606fc9a4cddb75813958d8f809d427150ef6387b010"
+    "reason": "Localization 0.2.3 editorial review: native locale wording for the existing action or true state; replace untranslated English in Chinese without changing business semantics.",
+    "sha256": "ade5400f2170d79f7ea73f31931d0061eab6a8f1245a9724a8831f49a4d16ff2"
   },
   "values/status_remote_persisted": {
     "category": "Status",
-    "context": "Android Phase B status_remote_persisted",
+    "context": "Android 0.2.3 / status_remote_persisted",
     "state": "reviewed",
-    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
-    "sha256": "3296011c339f89963200178b36180522e0b12a8ac56092bce1afb8f87af8002e"
+    "reason": "Localization 0.2.3 editorial review: native locale wording for the existing action or true state; replace untranslated English in Chinese without changing business semantics.",
+    "sha256": "770d1f7fe2aafb109af8deb05ece61bc58a8ac5fb62d39a4ba3cfee54345b3d4"
   },
   "values/status_converged": {
     "category": "Status",
@@ -3935,10 +3935,10 @@
   },
   "values-zh-rCN/partner_finishing": {
     "category": "Status",
-    "context": "Native partner invitation; separate from own-device enrollment",
+    "context": "Android 0.2.3 / partner_finishing",
     "state": "reviewed",
-    "reason": "Requested functional pairing action, identity verification or actual connection status; no invented partner data.",
-    "sha256": "933023cb51d2a721ec67eccbabb6404bc4e5caf3132b498ee61bcb979f712499"
+    "reason": "Localization 0.2.3 editorial review: native locale wording for the existing action or true state; replace untranslated English in Chinese without changing business semantics.",
+    "sha256": "7c3cf4cacd25d2441ecb557c82ae0a8b6570fe99805061fa3f8aa6fd30521932"
   },
   "values-zh-rCN/partner_service_upgrade": {
     "category": "Error",
@@ -4026,10 +4026,10 @@
   },
   "values/partner_finishing": {
     "category": "Status",
-    "context": "Native partner invitation; separate from own-device enrollment",
+    "context": "Android 0.2.3 / partner_finishing",
     "state": "reviewed",
-    "reason": "Requested functional pairing action, identity verification or actual connection status; no invented partner data.",
-    "sha256": "15ae73d32dea59a839f9a0f4717099985f4daef3aa9fae07aa4d745e27874ec1"
+    "reason": "Localization 0.2.3 editorial review: native locale wording for the existing action or true state; replace untranslated English in Chinese without changing business semantics.",
+    "sha256": "c83291edab41d7f6b9eab8d075742fd83ed8299d338d58e48a2bd997dc03c888"
   },
   "values/partner_service_upgrade": {
     "category": "Error",
@@ -4082,10 +4082,10 @@
   },
   "values-zh-rCN/app_name_native_qa": {
     "category": "Status",
-    "context": "Isolated normal native QA App / app_name_native_qa",
+    "context": "Android 0.2.3 / app_name_native_qa",
     "state": "reviewed",
-    "reason": "Functional QA App identification, pairing input action and measured connection state. Direct and encrypted relay paths remain distinct; no delivery claim.",
-    "sha256": "d66e7fea8cfa4fd3b5930d041456bf295b4c34cb5a3eef2c1fa1c3e74dfda018"
+    "reason": "Localization 0.2.3 editorial review: native locale wording for the existing action or true state; replace untranslated English in Chinese without changing business semantics.",
+    "sha256": "a5f691a0c18a78af493015ffe06cb9c121b308121cddd30cf9d0b88222977870"
   },
   "values-zh-rCN/native_paste_invitation": {
     "category": "Action",
@@ -4114,5 +4114,47 @@
     "state": "reviewed",
     "reason": "Functional QA App identification, pairing input action and measured connection state. Direct and encrypted relay paths remain distinct; no delivery claim.",
     "sha256": "e920d0820af166e8d4e6f940baa8e31503910ac3347dae98f5338f255259013f"
+  },
+  "values/label_language": {
+    "category": "Navigation",
+    "context": "Android 0.2.3 / label_language",
+    "state": "reviewed",
+    "reason": "Requested persistent Chinese/English app-language selector; options are named in the active language. Engineering copy review, pending visual review.",
+    "sha256": "a4fe65264ef7dbb38d104b1e81eb3350f3142f3d16f32bdec39b1d9b42c1b8d1"
+  },
+  "values/language_chinese": {
+    "category": "Action",
+    "context": "Android 0.2.3 / language_chinese",
+    "state": "reviewed",
+    "reason": "Requested persistent Chinese/English app-language selector; options are named in the active language. Engineering copy review, pending visual review.",
+    "sha256": "8a9779f421280dfc90a1178539800fb0f3b5244af428b6125703ef068307e24b"
+  },
+  "values/language_english": {
+    "category": "Action",
+    "context": "Android 0.2.3 / language_english",
+    "state": "reviewed",
+    "reason": "Requested persistent Chinese/English app-language selector; options are named in the active language. Engineering copy review, pending visual review.",
+    "sha256": "ba118bf7fc9c1aedc1edb28a0aa86e0b43b681f222af6616e13c43be87815b06"
+  },
+  "values-zh-rCN/label_language": {
+    "category": "Navigation",
+    "context": "Android 0.2.3 / label_language",
+    "state": "reviewed",
+    "reason": "Requested persistent Chinese/English app-language selector; options are named in the active language. Engineering copy review, pending visual review.",
+    "sha256": "9f6fee1aba17a56586bf16a77b07b1a76d8c4e867430c6ee6abfa3128b55fa98"
+  },
+  "values-zh-rCN/language_chinese": {
+    "category": "Action",
+    "context": "Android 0.2.3 / language_chinese",
+    "state": "reviewed",
+    "reason": "Requested persistent Chinese/English app-language selector; options are named in the active language. Engineering copy review, pending visual review.",
+    "sha256": "72726d8818f693066ceb69afa364218b692e62ea92b385782363780f47529c21"
+  },
+  "values-zh-rCN/language_english": {
+    "category": "Action",
+    "context": "Android 0.2.3 / language_english",
+    "state": "reviewed",
+    "reason": "Requested persistent Chinese/English app-language selector; options are named in the active language. Engineering copy review, pending visual review.",
+    "sha256": "d1648bacbc1630a60ebc0091fa7a4cb7d831c4696a80f302dcacfc59838895a0"
   }
 }

@@ -21,7 +21,7 @@
 	<key>LSMinimumSystemVersion</key>
 	<string>$(MACOSX_DEPLOYMENT_TARGET)</string>
 	<key>NSMicrophoneUsageDescription</key>
-	<string>Together 使用麦克风为伴侣录制每日爱意礼物。录音只保存在你的 Mac 并同步给已配对的伴侣。</string>
+	<string>为伴侣录制爱意礼物。</string>
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
 	<key>TogetherDeviceProtocolVersion</key>
