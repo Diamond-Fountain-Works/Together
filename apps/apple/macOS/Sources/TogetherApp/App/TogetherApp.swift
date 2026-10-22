@@ -6,12 +6,13 @@ import AppKit
     @State private var model: ApplicationModel?
     @State private var startupError: String?
     @State private var needsIdentityMigration = false
+    @State private var languageSettings = LanguageSettings.shared
     @AppStorage("appearance") private var appearance = "system"
     @NSApplicationDelegateAdaptor(TogetherAppDelegate.self) private var delegate
     init() {
         #if TOGETHER_NATIVE_P2P_QA
         do { _model = State(initialValue: try NativeAcceptance.build()) }
-        catch { _startupError = State(initialValue: error.localizedDescription) }
+        catch { _startupError = State(initialValue: Copy.userError(error)) }
         return
         #else
         #if TOGETHER_UI_TEST_HOST
@@ -29,18 +30,20 @@ import AppKit
             #endif
         }
         catch IdentityStorageError.legacyMigrationRequired { _needsIdentityMigration = State(initialValue: true) }
-        catch { _startupError = State(initialValue: error.localizedDescription) }
+        catch { _startupError = State(initialValue: Copy.userError(error)) }
         #endif
         #endif
     }
     var body: some Scene {
         WindowGroup("Together", id: "main") {
+            Group {
             #if DEBUG
             if UIFixture.enabled { UIFixtureRoot(model: $model).frame(minWidth: 900, minHeight: 620) }
             else { normalContent }
             #else
             normalContent
             #endif
+            }.environment(\.locale, languageSettings.language.locale)
         }
         .defaultSize(width: 1100, height: 760)
         .commands { appCommands }
@@ -67,7 +70,7 @@ import AppKit
                         model = ApplicationModel(engine: try ReplicaEngine.production(migrateLegacyIdentity: needsIdentityMigration))
                         #endif
                         startupError = nil; needsIdentityMigration = false
-                    } catch { startupError = error.localizedDescription }
+                    } catch { startupError = Copy.userError(error) }
                 }
             }
         }

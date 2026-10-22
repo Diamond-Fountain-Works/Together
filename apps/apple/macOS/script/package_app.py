@@ -52,7 +52,8 @@ def main():
     if architectures != expected_architectures:
         raise RuntimeError(f"Release architectures must be {expected_architectures}; got {architectures}")
     arch_label = "AppleSilicon" if native else "Universal"
-    platform_label = "Apple 芯片（不支持 Intel）" if native else "Intel 和 Apple 芯片"
+    platform_label = "苹果芯片" if native else "英特尔和苹果芯片"
+    platform_english = "Apple silicon" if native else "Intel and Apple silicon"
     name = f"Together-{version}-Build{build}-{arch_label}.dmg"
     destination = DIST / name
     source_manifest = manifest(app)
@@ -64,22 +65,23 @@ def main():
         raise RuntimeError(signature.stderr)
     gatekeeper = subprocess.run(["spctl", "--assess", "--type", "execute", "--verbose", str(app)],
                                capture_output=True, text=True)
-    instruction = f"""Together {version} · Build {build}
+    instruction = f"""Together {version}（构建 {build}）
 
-安装：将 Together.app 拖入 Applications。打开 Applications 中的 Together。
-支持 macOS {info['LSMinimumSystemVersion']} 及以上，{platform_label}。
+安装：将 Together.app 拖入「应用程序」，然后从「应用程序」打开。
+系统：macOS {info['LSMinimumSystemVersion']} 及以上，{platform_label}。
+签名：临时签名，未经苹果公证。
+首次打开：先尝试打开应用；若被系统阻止，进入
+系统设置 → 隐私与安全性 → 仍要打开，按提示确认。
+同步：双方打开应用并联网后交换改动。
 
-当前为开发分发包，使用 ad-hoc 签名，尚未完成 Developer ID 签名和 Apple 公证。
-若 macOS 阻止打开，在确认来源可信后，可先尝试打开 App，再进入
-系统设置 → 隐私与安全性 → 仍要打开。不要关闭系统 Gatekeeper。
-Apple 说明：https://support.apple.com/zh-cn/102445
+Together {version} (Build {build})
 
-首次双击直接进入个人资料设置；此包不需要 QA 启动器或临时目录。
-通过设备邀请和双方身份确认配对；无需安装 Tailscale。
-根据网络状况使用直连或加密中继，不保证所有网络环境均可达。
-尚未同步的内容需要双方 App 在线才能交换。没有离线服务器邮箱。
-升级不会主动清除原有数据；此安装包不包含个人资料、任务、愿望、媒体或测试身份。
-独立协议安全审查仍未完成。本包不能视为所有跨网络及免 VPN 情况已验收。
+Install: Drag Together.app into Applications, then open it from Applications.
+Requires macOS {info['LSMinimumSystemVersion']} or later; {platform_english}.
+Signing: Ad-hoc signed; not notarized by Apple.
+First launch: Open Together once. If macOS blocks it, go to
+System Settings → Privacy & Security → Open Anyway, then follow the prompts.
+Sync: Keep both apps open and online to exchange changes.
 """
     with tempfile.TemporaryDirectory(prefix="together-package-", dir=DIST) as temporary:
         work = Path(temporary)

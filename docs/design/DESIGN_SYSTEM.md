@@ -57,3 +57,11 @@ Use native Jetpack Compose Material controls with the same ivory (#FBF7F0), warm
 ## Android Phase B business surfaces
 
 Phone drawer / ≥600dp rail use Home, Our Plans, Wishes, Our Finances, Connection and Settings with one state/domain layer. Finances has exactly three tabs; Gift send/history are overflow actions, not destinations or permanent Home cards. Forms scroll inside a bounded native dialog with pinned close/save actions. Original media uses independent previews; sealing hides private content and semantics until explicit opening. Use system font scaling and animation duration scale, including zero-duration transitions; ordinary task inserts use small native item movement. Android candidates require human review and never replace Apple baselines.
+
+## Language menu
+
+Settings places one globe at the trailing edge of its title row. Its closed state
+shows the icon only; opening it reveals the two language choices and current
+selection. Keep it out of navigation rows. Native menu, keyboard activation and
+localized accessibility labels share the existing control metrics. Both languages
+must remain usable at compact window sizes and in light/dark appearances.

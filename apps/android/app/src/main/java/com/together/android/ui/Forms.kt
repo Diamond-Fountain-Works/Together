@@ -251,6 +251,7 @@ internal fun DayWheel(day: Int, onChange: (Int) -> Unit) {
 @Composable
 internal fun CurrencyWheel(currency: String, onChange: (String) -> Unit) {
     val context = androidx.compose.ui.platform.LocalContext.current
+    val locale = androidx.compose.ui.platform.LocalConfiguration.current.locales[0]
     val names =
         mapOf(
             "CNY" to R.string.currency_cny,
@@ -269,7 +270,15 @@ internal fun CurrencyWheel(currency: String, onChange: (String) -> Unit) {
                 code +
                 " — " +
                 (names[code]?.let { context.getString(it) }
-                    ?: info.getValue("name").jsonPrimitive.content)
+                    ?: runCatching {
+                        val name = java.util.Currency.getInstance(code)
+                            .getDisplayName(locale)
+                        if (locale.language == "zh" &&
+                            name.none { it in '\u4e00'..'\u9fff' }) code else name
+                    }.getOrElse {
+                        if (locale.language == "zh") code
+                        else info.getValue("name").jsonPrimitive.content
+                    })
         }
     var expanded by remember { mutableStateOf(false) }
     var search by rememberSaveable { mutableStateOf("") }

@@ -24,7 +24,7 @@ struct ConnectionView: View {
                 HStack { Circle().fill(model.network.isOnline ? .green : .secondary).frame(width: 7, height: 7); Text(model.network.state.displayName).font(.callout); Spacer() }
                     .accessibilityIdentifier("connection.state")
                 Button(Copy.text("device.title"), systemImage: "desktopcomputer") { model.show(.devices) }.accessibilityIdentifier("connection.devices")
-                if let error = model.network.errorMessage { Text(error).foregroundStyle(.orange).accessibilityIdentifier("connection.error") }
+                if let error = model.network.errorMessage { Text(Copy.userErrorMessage(error)).foregroundStyle(.orange).accessibilityIdentifier("connection.error") }
                 if !model.network.isConfigured {
                     Text(Copy.text("copy.guidance.4d93993d5b23")).font(.callout).foregroundStyle(.secondary)
                 } else if let proposal = model.network.proposal {
@@ -53,7 +53,7 @@ struct ConnectionView: View {
                             Button(Copy.text("copy.action.1032f5e75333")) { Task { await model.network.createInvitation() } }.buttonStyle(.borderedProminent).disabled(model.network.busy).accessibilityIdentifier("pairing.createInvite")
                             if let code = model.network.invitationCode {
                                 Text(verbatim: code).font(.system(size: 28, weight: .semibold, design: .monospaced)).textSelection(.enabled).accessibilityIdentifier("pairing.invitationCode")
-                                if let expires = model.network.invitationExpiresAt { Text(expires, style: .time).font(.caption).foregroundStyle(.secondary) }
+                                if let expires = model.network.invitationExpiresAt { Text(Copy.time(expires)).font(.caption).foregroundStyle(.secondary) }
                                 Button(Copy.text("copy.action.52c229c10699")) { NSPasteboard.general.clearContents(); NSPasteboard.general.setString(code, forType: .string) }.accessibilityIdentifier("pairing.copyInvite")
                             }
                             Divider()
@@ -75,7 +75,7 @@ struct ConnectionView: View {
                 }
                 if model.network.busy { ProgressView().controlSize(.small) }
                 MediaTransferProgressView(engine: model.engine)
-                if !model.engine.snapshot.conflicts.isEmpty { ForEach(model.engine.snapshot.conflicts) { Text($0.reason).font(.caption).foregroundStyle(.orange) } }
+                if !model.engine.snapshot.conflicts.isEmpty { ForEach(model.engine.snapshot.conflicts) { Text(Copy.domainMessage($0.reason)).font(.caption).foregroundStyle(.orange) } }
             }.padding(30)
         }.onChange(of: model.network.pairedFeedback) { _, _ in
             withAnimation(TogetherTheme.motion(reduceMotion)) { showSuccess = true }
@@ -96,7 +96,7 @@ struct MediaTransferProgressView: View {
                         Text(engine.mediaAsset(progress.assetId)?.originalFilename ?? Copy.text("copy.status.c7225dbf105e")).font(.callout).lineLimit(1)
                         ProgressView(value: progress.fraction)
                         Text(progress.status.displayName).font(.caption).foregroundStyle(.secondary)
-                        if let error = progress.error { Text(error).font(.caption).foregroundStyle(.orange) }
+                        if let error = progress.error { Text(Copy.userErrorMessage(error)).font(.caption).foregroundStyle(.orange) }
                     }
                 }
             }

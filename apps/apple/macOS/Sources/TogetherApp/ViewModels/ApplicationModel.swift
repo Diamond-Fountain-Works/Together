@@ -189,7 +189,7 @@ enum AppSheet: Identifiable {
         network.restore()
         #endif
     }
-    func perform(_ action: () throws -> Void) { do { try action() } catch { errorMessage = error.localizedDescription } }
+    func perform(_ action: () throws -> Void) { do { try action() } catch { errorMessage = Copy.userError(error) } }
     func show(_ value: AppSheet) {
         switch value { case .task, .nextTime, .grant, .grantDetail, .wish, .adjustment, .giftEditor, .finance: noteUserInteraction(); default: break }
         if sheet != nil { pendingSheets.append(value) }
@@ -294,7 +294,7 @@ enum AppSheet: Identifiable {
             let access = url.startAccessingSecurityScopedResource(); defer { if access { url.stopAccessingSecurityScopedResource() }; importingMedia = false }
             do { cropAsset = try await engine.importMedia(from: url, type: .avatar)
                 if showCrop { show(.crop) } else if let cropAsset { try engine.setAvatar(assetId: cropAsset.id) }
-            } catch { errorMessage = error.localizedDescription }
+            } catch { errorMessage = Copy.userError(error) }
         }
     }
     func savePhoto(_ asset: MediaAsset) {
@@ -309,7 +309,7 @@ enum AppSheet: Identifiable {
         Task { @MainActor in
             let access = target.startAccessingSecurityScopedResource(); defer { if access { target.stopAccessingSecurityScopedResource() } }
             do { try await Task.detached { try store.exportOriginal(asset, to: target) }.value }
-            catch { errorMessage = Copy.format("copy.guidance.6b5df256e07f", String(describing: error.localizedDescription)) }
+            catch { errorMessage = Copy.format("copy.guidance.6b5df256e07f", String(describing: Copy.userError(error))) }
         }
     }
 }

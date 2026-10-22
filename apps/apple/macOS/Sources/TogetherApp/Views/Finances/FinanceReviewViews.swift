@@ -12,7 +12,6 @@ struct FinanceChangeBanner: View {
                 let depositors = Set(deposits.compactMap { model.engine.snapshot.finance.reserves[$0.entityId]?.depositedBy })
                 if deposits.count == changes.count, depositors.count == 1, let total = try? FinanceMoney.sum(deposits.compactMap(\.newCNYMinor)), let user = depositors.first {
                     Text(Copy.format("finance.banner.deposits", model.name(user), FinanceMoney.display(total)))
-                    Text(Copy.text("finance.balance.guidance")).font(.caption).foregroundStyle(.secondary)
                 } else { Text(Copy.format("finance.banner.changes", String(changes.count))) }
             }
             Spacer()
@@ -86,7 +85,7 @@ struct FinanceChangeHistoryView: View {
                     if changes.isEmpty { ContentUnavailableView(Copy.text("finance.empty.changes"), systemImage: "clock.arrow.circlepath") }
                     ForEach(changes) { change in
                         VStack(alignment: .leading, spacing: 6) {
-                            HStack { Text(model.name(change.actorId)).font(.headline); Spacer(); Text(change.createdAt, style: .date).font(.caption).foregroundStyle(.secondary) }
+                            HStack { Text(model.name(change.actorId)).font(.headline); Spacer(); Text(Copy.date(change.createdAt)).font(.caption).foregroundStyle(.secondary) }
                             HStack {
                                 Text(Copy.text("finance.change." + change.type.rawValue + "." + change.action.rawValue))
                                 if !change.title.isEmpty { Text(verbatim: change.title) }

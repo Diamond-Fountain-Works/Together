@@ -88,7 +88,7 @@ struct DeviceManagementView: View {
             if let offer = manager.offer, manager.request == nil {
                 code(try? offer.verificationCode)
                 Text(Copy.text("device.guidance.offer")).font(.callout).foregroundStyle(.secondary)
-                Text(offer.body.expiresAt, style: .time).font(.caption)
+                Text(Copy.time(offer.body.expiresAt)).font(.caption)
                 Button(Copy.text("device.action.exportOffer")) { manager.exportOfferAgain() }.disabled(manager.busy)
             }
             if let request = manager.request {
@@ -118,7 +118,6 @@ struct DeviceManagementView: View {
                 }
                 if manager.completion != nil {
                     Toggle(Copy.text("device.guidance.checkCompletion"), isOn: $manager.verifiedCompletion).accessibilityIdentifier("devices.verifyCompletion")
-                    Text(Copy.text("device.guidance.preserve")).font(.caption).foregroundStyle(.secondary)
                     Button(Copy.text("device.action.use")) { manager.useDevice() }.buttonStyle(.borderedProminent).disabled(!manager.verifiedCompletion).accessibilityIdentifier("devices.use")
                 }
             }

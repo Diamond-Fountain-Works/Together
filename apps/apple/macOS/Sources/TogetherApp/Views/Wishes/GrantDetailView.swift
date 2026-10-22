@@ -41,7 +41,7 @@ private struct GrantContentView: View {
                 }
                 Text(Copy.format("copy.guidance.11c84b5da239", String(describing: balance.total), String(describing: balance.fulfilled), String(describing: balance.remaining), String(describing: balance.availableToDefine))).font(.caption).foregroundStyle(.secondary)
                 ForEach(model.engine.snapshot.adjustments.filter { $0.grantId == grant.id }) { adjustment in
-                    Text(Copy.format("copy.guidance.fc1abea23df7", String(describing: adjustment.delta > 0 ? "+" : ""), String(describing: adjustment.delta), String(describing: adjustment.notes), String(describing: adjustment.isEffective ? "" : "（冲突，未生效）"))).font(.caption).foregroundStyle(adjustment.isEffective ? Color.secondary : Color.orange)
+                    Text(Copy.format("copy.guidance.fc1abea23df7", String(describing: adjustment.delta > 0 ? "+" : ""), String(describing: adjustment.delta), String(describing: adjustment.notes), adjustment.isEffective ? "" : Copy.text("wish.adjustment.conflict"))).font(.caption).foregroundStyle(adjustment.isEffective ? Color.secondary : Color.orange)
                 }
                 if grant.beneficiaryId == model.engine.identity.descriptor.userId && balance.availableToDefine > 0 {
                     Button(Copy.text("copy.action.2b5c98884cf4"), systemImage: "plus") { model.replaceSheet(.wish(grant.id)) }.buttonStyle(.borderless)
@@ -53,7 +53,7 @@ private struct GrantContentView: View {
                             Text(wish.title).font(.headline)
                             if !wish.description.isEmpty { Text(wish.description).font(.callout).foregroundStyle(.secondary) }
                             Text(status(wish)).font(.caption).foregroundStyle(wish.status == .conflict ? .orange : .secondary)
-                            if let date = wish.fulfilledAt { Text(date, style: .date).font(.caption).foregroundStyle(.secondary) }
+                            if let date = wish.fulfilledAt { Text(Copy.date(date)).font(.caption).foregroundStyle(.secondary) }
                         }
                         Spacer()
                         if wish.status == .open && wish.fulfillerId == model.engine.identity.descriptor.userId {

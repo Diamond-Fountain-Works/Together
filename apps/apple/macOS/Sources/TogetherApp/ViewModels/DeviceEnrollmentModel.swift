@@ -48,7 +48,7 @@ import UniformTypeIdentifiers
             defer { busy = false; refresh() }
             do { try await action() }
             catch let value as ReplicationError where value == .inventoryChanged { error = Copy.text("device.error.historyChanged") }
-            catch { self.error = error.localizedDescription }
+            catch { self.error = Copy.userError(error) }
         }
     }
     func createOffer() {

@@ -87,12 +87,11 @@ struct GiftContentsView: View {
     let model: ApplicationModel
     let gift: DailyLoveGift
     private var profile: UserProfile? { model.engine.snapshot.profiles[gift.senderId] }
-    @Environment(\.locale) private var locale
     var body: some View {
         VStack(alignment: .leading, spacing: 20) {
             HStack(spacing: 12) {
                 AvatarView(profile: profile, size: 48, engine: model.engine)
-                VStack(alignment: .leading, spacing: 5) { Text(profile?.displayName ?? Copy.text("copy.status.034fc48ba584")).font(.headline); Text(gift.sentAt, format: .dateTime.year().month().day().hour().minute().locale(locale)).font(.caption).foregroundStyle(.secondary) }
+                VStack(alignment: .leading, spacing: 5) { Text(profile?.displayName ?? Copy.text("copy.status.034fc48ba584")).font(.headline); Text(Copy.date(gift.sentAt, includeTime: true)).font(.caption).foregroundStyle(.secondary).accessibilityIdentifier("gift.sentDate") }
                 Spacer()
             }
             Text(LoveCopy.title(sender: profile?.role ?? .unknown, hasText: gift.hasText)).font(.title2.weight(.medium))

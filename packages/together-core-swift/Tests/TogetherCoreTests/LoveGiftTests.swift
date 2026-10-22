@@ -22,21 +22,21 @@ func instant(_ text: String) -> Date { ISO8601DateFormatter().date(from: text)! 
         #expect(RelationshipLabel("女朋友") == .girlfriend)
         for value: String? in [nil, "", " \n", "Partner", "unknown", "parent", "🐶"] {
             let role = RelationshipLabel(value)
-            #expect(role == .unknown && role.affectionateName == "TA" && role.pronoun == "TA")
+            #expect(role == .unknown && role.affectionateName(language: .chinese) == "对方" && role.pronoun(language: .chinese) == "对方")
         }
-        #expect(LoveCopy.ending(sender: .boyfriend).contains("找他"))
-        #expect(LoveCopy.ending(sender: .girlfriend).contains("找她"))
-        #expect(LoveCopy.ending(sender: .unknown).contains("找 TA"))
-        #expect(LoveCopy.prompt(partner: .boyfriend).contains("小男友"))
-        #expect(LoveCopy.prompt(partner: .girlfriend).contains("小女友"))
-        #expect(LoveCopy.prompt(partner: .unknown).contains("TA"))
-        #expect(LoveCopy.avatarPrompt(partner: .unknown).contains("TA"))
+        #expect(LoveCopy.ending(sender: .boyfriend, language: .chinese).contains("找他"))
+        #expect(LoveCopy.ending(sender: .girlfriend, language: .chinese).contains("找她"))
+        #expect(LoveCopy.ending(sender: .unknown, language: .chinese).contains("找对方"))
+        #expect(LoveCopy.prompt(partner: .boyfriend, language: .chinese).contains("小男友"))
+        #expect(LoveCopy.prompt(partner: .girlfriend, language: .chinese).contains("小女友"))
+        #expect(LoveCopy.prompt(partner: .unknown, language: .chinese).contains("对方"))
+        #expect(LoveCopy.avatarPrompt(partner: .unknown, language: .chinese).contains("对方"))
     }
     @Test func textAndAttachmentOnlyCopy() {
-        #expect(LoveCopy.title(sender: .boyfriend, hasText: true) == "这是小男友专门送给你的情话 ♡")
-        #expect(LoveCopy.title(sender: .girlfriend, hasText: true) == "这是小女友专门送给你的情话 ♡")
-        #expect(LoveCopy.title(sender: .unknown, hasText: true) == "这是 TA 专门送给你的一份爱意 ♡")
-        for role in RelationshipLabel.allCases { #expect(LoveCopy.title(sender: role, hasText: false).contains("小礼物")) }
+        #expect(LoveCopy.title(sender: .boyfriend, hasText: true, language: .chinese) == "这是小男友专门送给你的情话 ♡")
+        #expect(LoveCopy.title(sender: .girlfriend, hasText: true, language: .chinese) == "这是小女友专门送给你的情话 ♡")
+        #expect(LoveCopy.title(sender: .unknown, hasText: true, language: .chinese) == "这是对方专门送给你的一份爱意 ♡")
+        for role in RelationshipLabel.allCases { #expect(LoveCopy.title(sender: role, hasText: false, language: .chinese).contains("小礼物")) }
     }
     @Test func legacyProfileMissingOrNullRelationship() throws {
         let profile = UserProfile(userId: UUID(), deviceId: UUID(), displayName: "保留昵称", relationshipLabel: "Boyfriend", avatarData: nil, updatedAt: instant("2026-10-09T12:00:00Z"))
@@ -107,8 +107,8 @@ func instant(_ text: String) -> Date { ISO8601DateFormatter().date(from: text)! 
         let withoutProfile = a.operations.filter { $0.operation.entityType != .profile }
         let snapshot = OperationProjector.replay(withoutProfile, context: b.context)
         #expect(snapshot.gifts[id] != nil)
-        let neutralTitle = LoveCopy.title(sender: snapshot.profiles[a.identity.descriptor.userId]?.role ?? .unknown, hasText: true)
-        #expect(neutralTitle.contains("TA"))
+        let neutralTitle = LoveCopy.title(sender: snapshot.profiles[a.identity.descriptor.userId]?.role ?? .unknown, hasText: true, language: .chinese)
+        #expect(neutralTitle.contains("对方"))
         try b.merge(a.operations)
         try b.markGiftPresented(id, automatic: true)
         #expect(b.presentation(id).hasAutoPresented && b.presentation(id).openedAt == nil)

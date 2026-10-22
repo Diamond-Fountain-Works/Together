@@ -31,7 +31,7 @@ struct HomeView: View {
                         }.buttonStyle(.plain).accessibilityIdentifier("home.upcoming.open")
                         ForEach(model.upcomingTasks.prefix(3)) { task in
                             Button { model.show(.task(task.id)) } label: {
-                                HStack { Text(task.title); Spacer(); if let date = task.dueAt { Text(date, style: .date).foregroundStyle(.secondary) } }
+                                HStack { Text(task.title); Spacer(); if let date = task.dueAt { Text(Copy.date(date)).foregroundStyle(.secondary) } }
                             }.buttonStyle(.plain).accessibilityIdentifier("home.task.open." + task.id.uuidString)
                         }
                     }

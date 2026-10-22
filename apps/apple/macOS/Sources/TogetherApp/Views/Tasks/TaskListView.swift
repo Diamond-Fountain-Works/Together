@@ -57,7 +57,7 @@ struct TaskListView: View {
                                         if !task.notes.isEmpty { Text(task.notes).font(.callout).foregroundStyle(.secondary).lineLimit(2) }
                                         HStack(spacing: 12) {
                                             if let assigned = task.assignedTo { Label(model.name(assigned), systemImage: "person").font(.caption) }
-                                            if let due = task.dueAt { Label(due.formatted(date: .abbreviated, time: .shortened), systemImage: "calendar").font(.caption) }
+                                            if let due = task.dueAt { Label(Copy.date(due, includeTime: true), systemImage: "calendar").font(.caption) }
                                             if let id = task.recurrenceRuleId, let rule = model.engine.snapshot.rules[id] { Label(rule.mode == .flexible ? Copy.text("copy.status.9622d2850be8") : Copy.format("copy.guidance.26272e530d64", String(describing: rule.interval), rule.unit.displayName), systemImage: "repeat").font(.caption) }
                                         }.foregroundStyle(.secondary)
                                     }.frame(maxWidth: .infinity, alignment: .leading).contentShape(Rectangle())

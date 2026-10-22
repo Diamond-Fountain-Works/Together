@@ -5,6 +5,7 @@
 - Do not add decorative prose, fake statistics, mock product content, or unimplemented feature claims. Never rewrite user-authored text automatically.
 - Love Gifts are event-driven sheets and native menus, never a permanent Home/sidebar module.
 - Sidebar is Home / Plans / Wishes / Our Finances, stacked vertically, with Connection / Settings at the bottom. Our Finances has only Reserves / Expenses / Bills tabs. Reuse one task list/editor; Wishes retains its separate ledger. No horizontal Tasks / Wishes mode picker.
+- Language selection is an icon-only globe inside Settings; click/tap opens Chinese/English choices. Keep both resource sets complete and run `make localization-qa`. Preserve user-authored text.
 - Mac and Android Plans expose only Pending / Completed. Future, overdue and undated unfinished tasks share Pending; do not restore a separate Upcoming tab. Preserve scheduled-task execution rules.
 - Device identity uses owner-only local files; preserve existing keys/pins and require explicit legacy migration, never silent rotation or automatic Keychain reads.
 - Use isolated deterministic test fixtures. Production must never load them. Our Story/Time Capsule are not implemented; do not invent placeholder pages.
@@ -13,6 +14,7 @@
 - Keep legacy transport until migration tests pass. Do not deploy, claim E2EE review, offline delivery or real cross-Wi-Fi acceptance without evidence.
 - Finance uses integer minor units/Decimal, frozen CNY snapshots and one Expenses ledger. Preserve existing storage schema, signed logs, keys and pairings; recurring instances use deterministic bill/month IDs. Private card metadata stays local.
 - Build/package does not authorize replacing `/Applications/Together.app`. Install or deliver to Desktop only when the current user task explicitly authorizes it; preserve source, QA and user data.
+- Local development/QA cleanup is a completion gate: before handoff, stop task-owned processes and delete every temporary file, build cache and disposable test runtime created by the task, including failed/interrupted runs. Keep temporary work in a project-local ignored run directory; first retain only named deliverables and the minimal required verification/review evidence. Inventory exact targets, verify cleanup afterward, and report reclaimed space or specific failures. Never remove source, Git history, signing keys, backups, user data, approved baselines or pending review evidence as temporary files; never sweep shared caches belonging to other projects.
 - Final report: Changed / Build / Tests / Data Migration / Sync QA / Copy QA / Visual QA / Issues, normally at most 10 lines; include concrete failures and unrun checks.
 
 - Monorepo source authority: apps/apple/macOS, packages/together-core-swift, services/relay; qa/project.json resolves tooling paths. Version history lives in Git, never new copied source folders.

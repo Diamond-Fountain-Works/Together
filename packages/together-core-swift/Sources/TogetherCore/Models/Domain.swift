@@ -91,7 +91,14 @@ public struct CivilDate: Codable, Equatable, Comparable, Sendable {
         guard isValid else { return nil }
     }
     public var iso: String { String(format: "%04d-%02d-%02d", year, month, day) }
-    public var display: String { "\(year)年\(month)月\(day)日" }
+    public var display: String { display(language: LanguageSettings.shared.language) }
+    public func display(language: AppLanguage) -> String {
+        let zone = TimeZone(secondsFromGMT: 0)!
+        var calendar = Calendar(identifier: .gregorian); calendar.timeZone = zone
+        guard isValid, let date = calendar.date(from: DateComponents(year: year, month: month, day: day)) else { return iso }
+        return date.formatted(Date.FormatStyle(date: .abbreviated, time: .omitted,
+                                              locale: language.locale, calendar: calendar, timeZone: zone))
+    }
     public var isValid: Bool {
         guard (1900...3000).contains(year) else { return false }
         var c = Calendar(identifier: .gregorian); c.timeZone = TimeZone(secondsFromGMT: 0)!

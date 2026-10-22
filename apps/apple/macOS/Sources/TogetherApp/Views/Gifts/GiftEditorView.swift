@@ -73,7 +73,7 @@ struct GiftComposerView: View {
             Text(Copy.format("copy.guidance.c17ea66392d2", String(describing: model.engine.sharedSpace.timeZoneIdentifier))).font(.caption).foregroundStyle(.secondary)
         }
         .onAppear { draft = (try? model.engine.draft()) ?? LoveGiftDraft(); if let replyTo { draft.replyToGiftId = replyTo } }
-        .onChange(of: draft) { _, value in do { try model.engine.saveDraft(value) } catch { saveError = error.localizedDescription } }
+        .onChange(of: draft) { _, value in do { try model.engine.saveDraft(value) } catch { saveError = Copy.userError(error) } }
         .onDisappear { recorder.discard() }
     }
     private func importAttachment(_ type: MediaType) { guard let url = model.chooseMedia(type) else { return }; attach(url, type: type) }
@@ -86,21 +86,21 @@ struct GiftComposerView: View {
                 let asset = try await model.engine.importMedia(from: url, type: type)
                 if type == .audio { draft.audioAssetId = asset.id } else { draft.photoAssetId = asset.id }
                 try model.engine.saveDraft(draft)
-            } catch { saveError = error.localizedDescription }
+            } catch { saveError = Copy.userError(error) }
         }
     }
-    private func saveAndFinish() { do { try model.engine.saveDraft(draft); onFinish() } catch { saveError = error.localizedDescription } }
+    private func saveAndFinish() { do { try model.engine.saveDraft(draft); onFinish() } catch { saveError = Copy.userError(error) } }
     private func removeAttachment(_ type: MediaType) {
         let id = type == .audio ? draft.audioAssetId : draft.photoAssetId
         if type == .audio { draft.audioAssetId = nil } else { draft.photoAssetId = nil }
         do { try model.engine.saveDraft(draft); if let id { try model.engine.discardUnpublishedMedia(id) } }
-        catch { saveError = error.localizedDescription }
+        catch { saveError = Copy.userError(error) }
     }
     private func send() {
         guard !sent else { return }
         if model.engine.context.peer == nil { saveAndFinish(); return }
         do { _ = try model.engine.sendGift(draft); sent = true; model.lovePulse += 1; onFinish() }
-        catch { saveError = error.localizedDescription }
+        catch { saveError = Copy.userError(error) }
     }
 }
 
@@ -117,7 +117,7 @@ struct MediaPhotoView: View {
             else { ProgressView(Copy.text("status.media.preview")) }
         }.task(id: asset.id) {
             do { let store = engine.mediaStore; let url = try await Task.detached { try store.thumbnail(asset) }.value; preview = NSImage(contentsOf: url) }
-            catch { self.error = error.localizedDescription }
+            catch { self.error = Copy.userError(error) }
         }
     }
 }

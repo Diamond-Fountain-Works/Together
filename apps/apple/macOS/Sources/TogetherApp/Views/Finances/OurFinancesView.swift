@@ -45,7 +45,6 @@ struct UnitedReservesView: View {
     var body: some View {
         if let stats {
             TogetherCard { HStack(spacing: 22) { FinanceStat(title: Copy.text("finance.balance.book"), value: stats.bookBalance); FinanceStat(title: Copy.text("finance.balance.verified"), value: stats.verifiedBalance); FinanceStat(title: Copy.text("finance.balance.provisional"), value: stats.provisionalReservesAmount) } }.accessibilityIdentifier("finance.balance")
-            Text(Copy.text("finance.balance.guidance")).font(.caption).foregroundStyle(.secondary)
         }
         FinanceCycleSummary(model: model)
         HStack { Text(Copy.text("finance.reserves.history")).font(.headline); Spacer(); Button(Copy.text("finance.reserves.opening")) { model.showFinance(.deposit(StableID.make("finance-reserves-opening"), true)) }.accessibilityIdentifier("finance.opening") }

@@ -45,12 +45,14 @@ if (nativeReleaseAar != null) {
 android {
     namespace = "com.together.android"
     compileSdk = 36
+    // Both app languages remain available offline when distributed as an App Bundle.
+    bundle { language { enableSplit = false } }
     defaultConfig {
         applicationId = "com.together.android"
         minSdk = 28
         targetSdk = 36
-        versionCode = 15
-        versionName = "0.2.2"
+        versionCode = 16
+        versionName = "0.2.3"
         buildConfigField("String", "RELAY_URL", "\"https://together-connection.together-connection-service.workers.dev\"")
         buildConfigField("boolean", "NATIVE_QA", "false")
         buildConfigField("boolean", "NATIVE_P2P", "false")

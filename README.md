@@ -2,6 +2,18 @@
 
 Native macOS and Android, Local-first shared space for two people. Tasks, Wishes and Daily Love Gifts use a signed operation log; Our Finances uses one Expenses ledger and derived reserve balances. SwiftUI, SwiftData and the existing signed-log engine remain the architecture. Normal 0.2.2 clients use the native peer adapter; established legacy C1 Mac bindings retain their WebSocket route. No central business database, offline mailbox or banking connection is included. Android Phase B adds native Tasks, Wishes, Finances, event-driven Gifts and change review on the existing Kotlin Protocol 4 core. Phase C records physical Samsung and native Swift interoperability over a USB-reversed local Relay. Public cross-network acceptance and independent security review remain release gates.
 
+## 0.2.3 — Chinese and English
+
+Mac Build 21 and Android code 16 add a globe in Settings. Open its menu to
+choose Chinese or English; the choice stays on that device and refreshes the
+interface immediately. Gifts keep their affectionate tone; everyday actions,
+statuses and errors use concise wording. User-written content stays as written.
+
+`make localization-qa` checks complete bilingual resources, format arguments,
+review hashes, mixed-language leaks and defensive filler. The existing copy
+and human visual review gates remain separate. Release evidence and remaining
+checks are in [0.2.3 QA](docs/qa/reports/RELEASE_0_2_3.md).
+
 ## 0.2.2 clean-install delivery preparation
 
 The `release/0.2.2-delivery` branch prepares ordinary, empty-on-install clients:

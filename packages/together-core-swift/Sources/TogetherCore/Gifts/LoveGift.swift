@@ -9,19 +9,34 @@ public enum RelationshipLabel: String, Codable, CaseIterable, Sendable {
         default: self = .unknown
         }
     }
-    public var displayName: String { switch self { case .boyfriend: Copy.text("role.boyfriend"); case .girlfriend: Copy.text("role.girlfriend"); case .unknown: Copy.text("role.unknown") } }
-    public var affectionateName: String { switch self { case .boyfriend: Copy.text("role.affection.boyfriend"); case .girlfriend: Copy.text("role.affection.girlfriend"); case .unknown: Copy.text("copy.status.034fc48ba584") } }
-    public var pronoun: String { switch self { case .boyfriend: Copy.text("role.pronoun.boyfriend"); case .girlfriend: Copy.text("role.pronoun.girlfriend"); case .unknown: Copy.text("copy.status.034fc48ba584") } }
+    public var displayName: String { displayName(language: LanguageSettings.shared.language) }
+    public func displayName(language: AppLanguage) -> String { Copy.text("role." + rawValue, language: language) }
+    public var affectionateName: String { affectionateName(language: LanguageSettings.shared.language) }
+    public func affectionateName(language: AppLanguage) -> String {
+        Copy.text(self == .unknown ? "copy.status.034fc48ba584" : "role.affection." + rawValue, language: language)
+    }
+    public var pronoun: String { pronoun(language: LanguageSettings.shared.language) }
+    public func pronoun(language: AppLanguage) -> String {
+        Copy.text(self == .unknown ? "copy.status.034fc48ba584" : "role.pronoun." + rawValue, language: language)
+    }
 }
 public enum LoveCopy {
-    public static func prompt(partner: RelationshipLabel) -> String { partner == .unknown ? Copy.text("gift.prompt.unknown") : Copy.format("gift.prompt.known", partner.affectionateName) }
-    public static func title(sender: RelationshipLabel, hasText: Bool) -> String {
-        if sender == .unknown { return Copy.text(hasText ? "gift.title.unknown.text" : "gift.title.unknown.attachment") }
-        return Copy.format(hasText ? "gift.title.known.text" : "gift.title.known.attachment", sender.affectionateName)
+    public static func prompt(partner: RelationshipLabel, language: AppLanguage = LanguageSettings.shared.language) -> String {
+        partner == .unknown ? Copy.text("gift.prompt.unknown", language: language) : Copy.format("gift.prompt.known", language: language, partner.affectionateName(language: language))
     }
-    public static func introduction(sender: RelationshipLabel) -> String { sender == .unknown ? Copy.text("gift.intro.unknown") : Copy.format("gift.intro.known", sender.affectionateName) }
-    public static func avatarPrompt(partner: RelationshipLabel) -> String { partner == .unknown ? Copy.text("gift.avatar.unknown") : Copy.format("gift.avatar.known", partner.affectionateName) }
-    public static func ending(sender: RelationshipLabel) -> String { sender == .unknown ? Copy.text("gift.ending.unknown") : Copy.format("gift.ending.known", sender.pronoun) }
+    public static func title(sender: RelationshipLabel, hasText: Bool, language: AppLanguage = LanguageSettings.shared.language) -> String {
+        if sender == .unknown { return Copy.text(hasText ? "gift.title.unknown.text" : "gift.title.unknown.attachment", language: language) }
+        return Copy.format(hasText ? "gift.title.known.text" : "gift.title.known.attachment", language: language, sender.affectionateName(language: language))
+    }
+    public static func introduction(sender: RelationshipLabel, language: AppLanguage = LanguageSettings.shared.language) -> String {
+        sender == .unknown ? Copy.text("gift.intro.unknown", language: language) : Copy.format("gift.intro.known", language: language, sender.affectionateName(language: language))
+    }
+    public static func avatarPrompt(partner: RelationshipLabel, language: AppLanguage = LanguageSettings.shared.language) -> String {
+        partner == .unknown ? Copy.text("gift.avatar.unknown", language: language) : Copy.format("gift.avatar.known", language: language, partner.affectionateName(language: language))
+    }
+    public static func ending(sender: RelationshipLabel, language: AppLanguage = LanguageSettings.shared.language) -> String {
+        sender == .unknown ? Copy.text("gift.ending.unknown", language: language) : Copy.format("gift.ending.known", language: language, sender.pronoun(language: language))
+    }
 }
 public protocol DateProvider: Sendable { func now() -> Date }
 public struct SystemDateProvider: DateProvider { public init() {}; public func now() -> Date { Date() } }

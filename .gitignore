@@ -63,3 +63,7 @@ local.properties
 
 # Rebuilt upstream native artifacts, checkouts and receipts are local-only.
 .native-build/
+
+# Private release credentials and local backups
+/ReleaseSigning/
+/RepositoryBackups/

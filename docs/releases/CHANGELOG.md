@@ -1,3 +1,20 @@
+# 0.2.3 — Chinese and English
+
+- Add an icon-only globe menu in Settings on macOS and Android, with device-local
+  Chinese/English choice and immediate UI refresh.
+- Complete both catalogs, including affectionate gift copy, currencies, native
+  permission purposes, status/error messages and release notes.
+- Remove repeated settings/finance explanations and defensive product prose.
+- Keep calendar-date semantics and existing data/identity/protocols unchanged;
+  dates follow the selected interface language. Change history translates status
+  fields and preserves user-authored text that happens to match a status word.
+- Add bilingual resource and formatter/review regression gates to local QA and CI.
+- App metadata: macOS 0.2.3 Build 21; Android 0.2.3 code 16.
+
+[Build and acceptance evidence](../qa/reports/RELEASE_0_2_3.md).
+
+---
+
 # 0.2.2 — delivery preparation (unreleased)
 
 - Add normal persistent-storage native App startup and empty first-run setup;

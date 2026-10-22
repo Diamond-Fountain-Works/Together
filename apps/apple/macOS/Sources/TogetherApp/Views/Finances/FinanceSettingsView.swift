@@ -44,7 +44,7 @@ struct FinanceSettingsView: View {
             Divider()
             Toggle(Copy.text("finance.notifications.enable"), isOn: $systemNotifications).onChange(of: systemNotifications) { _, enabled in
                 guard enabled else { return }
-                Task { do { let allowed = try await FinanceNotificationScheduler.requestPermission(); if !allowed { systemNotifications = false; error = Copy.text("finance.notifications.denied") } } catch { systemNotifications = false; self.error = error.localizedDescription } }
+                Task { do { let allowed = try await FinanceNotificationScheduler.requestPermission(); if !allowed { systemNotifications = false; error = Copy.text("finance.notifications.denied") } } catch { systemNotifications = false; self.error = Copy.userError(error) } }
             }
             HStack { Text(Copy.text("finance.cards.title")).font(.headline); Spacer(); Button(Copy.text("finance.cards.new")) { model.replaceSheet(.finance(.card(nil))) }.accessibilityIdentifier("finance.card.new") }
             ForEach(model.engine.visiblePaymentMethods) { card in
@@ -59,7 +59,7 @@ struct FinanceSettingsView: View {
             model.localDefaults.set(systemNotifications, forKey: "financeSystemNotifications")
             model.refreshFinancialState()
             model.dismissSheet()
-        } catch { self.error = error.localizedDescription }
+        } catch { self.error = Copy.userError(error) }
     }
 }
 struct PaymentCardEditor: View {
@@ -83,7 +83,7 @@ struct PaymentCardEditor: View {
     }
     var body: some View {
         FinanceEditorLayout(title: Copy.text("finance.cards.title"), error: error, save: {
-            do { try model.engine.savePaymentMethod(PaymentMethodProfile(id: id, ownerId: model.engine.identity.descriptor.userId, holderId: holder, bankName: bank, name: name, cardKind: kind, lastFour: lastFour, currencyCode: hasCurrency ? currency : nil, isShared: shared)); model.dismissSheet() } catch { self.error = error.localizedDescription }
+            do { try model.engine.savePaymentMethod(PaymentMethodProfile(id: id, ownerId: model.engine.identity.descriptor.userId, holderId: holder, bankName: bank, name: name, cardKind: kind, lastFour: lastFour, currencyCode: hasCurrency ? currency : nil, isShared: shared)); model.dismissSheet() } catch { self.error = Copy.userError(error) }
         }, cancel: model.dismissSheet) {
             TextField(Copy.text("finance.cards.bank"), text: $bank).textFieldStyle(.roundedBorder)
             TextField(Copy.text("finance.cards.name"), text: $name).textFieldStyle(.roundedBorder)
