@@ -1,9 +1,13 @@
 import SwiftUI
 import TogetherCore
+#if os(macOS)
 import AppKit
+#else
+import UIKit
+#endif
 
 struct ConnectionView: View {
-    let model: ApplicationModel
+    @ObservedObject var model: ApplicationModel
     @State private var invitation = ""
     @State private var verified = false
     @State private var showSuccess = false
@@ -23,10 +27,10 @@ struct ConnectionView: View {
                 PageHeading(title: Copy.text("nav.connection"), subtitle: "")
                 HStack { Circle().fill(model.network.isOnline ? .green : .secondary).frame(width: 7, height: 7); Text(model.network.state.displayName).font(.callout); Spacer() }
                     .accessibilityIdentifier("connection.state")
-                Button(Copy.text("device.title"), systemImage: "desktopcomputer") { model.show(.devices) }.accessibilityIdentifier("connection.devices")
-                if let error = model.network.errorMessage { Text(Copy.userErrorMessage(error)).foregroundStyle(.orange).accessibilityIdentifier("connection.error") }
+                TogetherIconButton(Copy.text("device.title"), systemImage: TogetherSymbols.name("desktopcomputer")) { model.show(.devices) }.accessibilityIdentifier("connection.devices")
+                if let error = model.network.errorMessage { Text(Copy.userErrorMessage(error)).foregroundColor(.orange).accessibilityIdentifier("connection.error") }
                 if !model.network.isConfigured {
-                    Text(Copy.text("copy.guidance.4d93993d5b23")).font(.callout).foregroundStyle(.secondary)
+                    Text(Copy.text("copy.guidance.4d93993d5b23")).font(.callout).foregroundColor(.secondary)
                 } else if let proposal = model.network.proposal {
                     TogetherCard {
                         VStack(alignment: .leading, spacing: 16) {
@@ -36,25 +40,25 @@ struct ConnectionView: View {
                                 Text(proposal.name).font(.title3.weight(.semibold))
                             }
                             Text(verbatim: proposal.verificationCode).font(.system(size: 30, weight: .semibold, design: .monospaced)).accessibilityIdentifier("pairing.verificationCode")
-                            Text(Copy.text("copy.status.3ebca10fcb10")).font(.callout).foregroundStyle(.secondary)
-                            Text(verbatim: proposal.fingerprint).font(.caption.monospaced()).textSelection(.enabled)
+                            Text(Copy.text("copy.status.3ebca10fcb10")).font(.callout).foregroundColor(.secondary)
+                            Text(verbatim: proposal.fingerprint).font(.system(.caption, design: .monospaced)).togetherTextSelection()
                             Toggle(Copy.text("copy.guidance.9132a75101e9"), isOn: $verified).accessibilityIdentifier("pairing.verified")
                             HStack {
                                 Button(Copy.text("copy.action.2cd0f3be8738")) { model.network.rejectPairing(); verified = false }.accessibilityIdentifier("pairing.cancel")
                                 Spacer()
-                                Button(Copy.text("copy.action.2fd9629c1a44")) { Task { await model.network.confirmPairing() } }.buttonStyle(.borderedProminent).disabled(!verified || model.network.busy).accessibilityIdentifier("pairing.confirm")
+                                Button(Copy.text("copy.action.2fd9629c1a44")) { Task { await model.network.confirmPairing() } }.togetherProminentButton().disabled(!verified || model.network.busy).accessibilityIdentifier("pairing.confirm")
                             }
                         }
                     }
                 } else if model.engine.context.peer == nil || model.network.needsMigration {
-                    if model.network.needsMigration { Text(Copy.text("copy.guidance.0c2e0cb3cd53")).font(.callout).foregroundStyle(.secondary) }
+                    if model.network.needsMigration { Text(Copy.text("copy.guidance.0c2e0cb3cd53")).font(.callout).foregroundColor(.secondary) }
                     TogetherCard {
                         VStack(alignment: .leading, spacing: 16) {
-                            Button(Copy.text("copy.action.1032f5e75333")) { Task { await model.network.createInvitation() } }.buttonStyle(.borderedProminent).disabled(model.network.busy).accessibilityIdentifier("pairing.createInvite")
+                            Button(Copy.text("copy.action.1032f5e75333")) { Task { await model.network.createInvitation() } }.togetherProminentButton().disabled(model.network.busy).accessibilityIdentifier("pairing.createInvite")
                             if let code = model.network.invitationCode {
-                                Text(verbatim: code).font(.system(size: 28, weight: .semibold, design: .monospaced)).textSelection(.enabled).accessibilityIdentifier("pairing.invitationCode")
-                                if let expires = model.network.invitationExpiresAt { Text(Copy.time(expires)).font(.caption).foregroundStyle(.secondary) }
-                                Button(Copy.text("copy.action.52c229c10699")) { NSPasteboard.general.clearContents(); NSPasteboard.general.setString(code, forType: .string) }.accessibilityIdentifier("pairing.copyInvite")
+                                Text(verbatim: code).font(.system(size: 28, weight: .semibold, design: .monospaced)).togetherTextSelection().accessibilityIdentifier("pairing.invitationCode")
+                                if let expires = model.network.invitationExpiresAt { Text(Copy.time(expires)).font(.caption).foregroundColor(.secondary) }
+                                Button(Copy.text("copy.action.52c229c10699")) { TogetherPlatform.copy(code) }.accessibilityIdentifier("pairing.copyInvite")
                             }
                             Divider()
                             TextField(Copy.text("copy.guidance.c8b56dca7aed"), text: $invitation).textFieldStyle(.roundedBorder).frame(maxWidth: 300).accessibilityIdentifier("pairing.codeInput")
@@ -65,7 +69,7 @@ struct ConnectionView: View {
                     TogetherCard {
                         HStack(spacing: 18) {
                             AvatarView(profile: model.engine.ownProfile, size: 54, engine: model.engine).matchedGeometryEffect(id: "self", in: pairGeometry)
-                            if showSuccess { Image(systemName: "heart.fill").foregroundStyle(TogetherTheme.rose); Text(Copy.text("copy.status.15a314eb8b4d")).font(.headline) }
+                            if showSuccess { Image(systemName: TogetherSymbols.name("heart.fill")).foregroundColor(TogetherTheme.rose); Text(Copy.text("copy.status.15a314eb8b4d")).font(.headline) }
                             AvatarView(profile: model.engine.partnerProfile, size: 54, engine: model.engine).matchedGeometryEffect(id: "partner", in: pairGeometry)
                             Spacer()
                             Button(Copy.text("copy.action.68891ab35cab")) { model.network.reconnect() }.disabled(model.network.busy).accessibilityIdentifier("connection.reconnect")
@@ -75,18 +79,18 @@ struct ConnectionView: View {
                 }
                 if model.network.busy { ProgressView().controlSize(.small) }
                 MediaTransferProgressView(engine: model.engine)
-                if !model.engine.snapshot.conflicts.isEmpty { ForEach(model.engine.snapshot.conflicts) { Text(Copy.domainMessage($0.reason)).font(.caption).foregroundStyle(.orange) } }
-            }.padding(30)
-        }.onChange(of: model.network.pairedFeedback) { _, _ in
+                if !model.engine.snapshot.conflicts.isEmpty { ForEach(model.engine.snapshot.conflicts) { Text(Copy.domainMessage($0.reason)).font(.caption).foregroundColor(.orange) } }
+            }.togetherPadding(30)
+        }.onChange(of: model.network.pairedFeedback) { _ in
             withAnimation(TogetherTheme.motion(reduceMotion)) { showSuccess = true }
-            Task { @MainActor in try? await Task.sleep(for: .seconds(2)); withAnimation(TogetherTheme.motion(reduceMotion)) { showSuccess = false } }
+            Task { @MainActor in try? await Task.sleep(nanoseconds: 2_000_000_000); withAnimation(TogetherTheme.motion(reduceMotion)) { showSuccess = false } }
         }
     }
 }
 
 /// Shared existing progress presentation for authenticated relay/native sessions.
 struct MediaTransferProgressView: View {
-    let engine: ReplicaEngine
+    @ObservedObject var engine: ReplicaEngine
     var body: some View {
         if !engine.mediaProgress.isEmpty {
             TogetherCard {
@@ -95,8 +99,8 @@ struct MediaTransferProgressView: View {
                     ForEach(engine.mediaProgress.values.sorted { $0.assetId.uuidString < $1.assetId.uuidString }, id: \.assetId) { progress in
                         Text(engine.mediaAsset(progress.assetId)?.originalFilename ?? Copy.text("copy.status.c7225dbf105e")).font(.callout).lineLimit(1)
                         ProgressView(value: progress.fraction)
-                        Text(progress.status.displayName).font(.caption).foregroundStyle(.secondary)
-                        if let error = progress.error { Text(Copy.userErrorMessage(error)).font(.caption).foregroundStyle(.orange) }
+                        Text(progress.status.displayName).font(.caption).foregroundColor(.secondary)
+                        if let error = progress.error { Text(Copy.userErrorMessage(error)).font(.caption).foregroundColor(.orange) }
                     }
                 }
             }

@@ -32,6 +32,7 @@ import TogetherCore
         app.launchEnvironment = ["TOGETHER_UI_ROOT":root.path, "TOGETHER_UI_PAGE":page, "TOGETHER_UI_STATE":populated ? "populated" : "empty", "TOGETHER_UI_MODE":dark ? "dark" : "light", "TOGETHER_UI_REDUCE_MOTION":reduce ? "1" : "0", "TOGETHER_UI_COMPACT":compact ? "1" : "0", "TOGETHER_UI_CASE":name]
         if let language { app.launchEnvironment["TOGETHER_UI_LANGUAGE"] = language }
         if let relay = ProcessInfo.processInfo.environment["TOGETHER_UI_RELAY_URL"] { app.launchEnvironment["TOGETHER_UI_RELAY_URL"] = relay }
+        if ProcessInfo.processInfo.environment["TOGETHER_QA_LEGACY_STORAGE"] == "1" { app.launchEnvironment["TOGETHER_QA_LEGACY_STORAGE"] = "1" }
         continueAfterFailure = false
         print("QA_RUNNER_AX_TRUSTED \(AXIsProcessTrusted())")
         app.launch()
@@ -312,19 +313,19 @@ import TogetherCore
         let service = try C1ReplicationService(engine: device, binding: completion.body.binding, store: store)
         defer { service.stop() }
         await service.start()
-        let deadline = ContinuousClock.now.advanced(by: .seconds(30))
+        let deadline = CompatibilityClock.now.advanced(by: .seconds(30))
         while service.state != .connected || service.completedSyncCount == 0 || device.operations.isEmpty {
-            guard ContinuousClock.now < deadline else { return XCTFail("Independent device failed to sync: \(service.errorMessage ?? "none")") }
-            try await Task.sleep(for: .milliseconds(100))
+            guard CompatibilityClock.now < deadline else { return XCTFail("Independent device failed to sync: \(service.errorMessage ?? "none")") }
+            try await Task.sleep(nanoseconds: 100_000_000)
         }
         XCTAssertFalse(device.operations.isEmpty)
         try screenshot("devices-controller-light-candidate")
         deviceButton("devices.revoke." + device.identity.descriptor.deviceId.uuidString).click()
         deviceButton("devices.revoke.confirm").click()
-        let stopped = ContinuousClock.now.advanced(by: .seconds(20))
+        let stopped = CompatibilityClock.now.advanced(by: .seconds(20))
         while service.state != .error {
-            guard ContinuousClock.now < stopped else { return XCTFail("Revoked device still appeared connected") }
-            try await Task.sleep(for: .milliseconds(100))
+            guard CompatibilityClock.now < stopped else { return XCTFail("Revoked device still appeared connected") }
+            try await Task.sleep(nanoseconds: 100_000_000)
         }
         let revoked = app.descendants(matching: .any)["devices.state." + device.identity.descriptor.deviceId.uuidString]
         XCTAssertTrue(revoked.waitForExistence(timeout: 8))

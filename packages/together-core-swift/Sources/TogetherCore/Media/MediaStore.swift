@@ -146,7 +146,7 @@ public final class MediaStore: Sendable {
     }
     private func writeMarker(_ asset: MediaAsset) throws {
         let attrs = try FileManager.default.attributesOfItem(atPath: originalURL(asset).path)
-        let marker = VerificationMarker(sha256: asset.sha256, byteCount: asset.byteCount, modifiedAt: attrs[.modificationDate] as? Date ?? .now)
+        let marker = VerificationMarker(sha256: asset.sha256, byteCount: asset.byteCount, modifiedAt: attrs[.modificationDate] as? Date ?? Date())
         try CanonicalJSON.encode(marker).write(to: markerURL(asset), options: .atomic)
     }
 }

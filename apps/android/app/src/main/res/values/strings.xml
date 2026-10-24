@@ -297,4 +297,5 @@
     <string name="label_language">Language</string>
     <string name="language_chinese">Chinese</string>
     <string name="language_english">English</string>
+    <string name="status_preview_unavailable">Preview unavailable. Original retained.</string>
 </resources>

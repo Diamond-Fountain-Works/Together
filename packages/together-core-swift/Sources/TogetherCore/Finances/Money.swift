@@ -20,7 +20,7 @@ public struct FinanceCurrency: Identifiable, Equatable, Sendable {
     public static let supported: [FinanceCurrency] = {
         struct Reference: Decodable { var currencies: [Item] }
         struct Item: Decodable { var code: String; var symbol: String; var minorDigits: Int }
-        guard let url = Bundle.module.url(forResource: "FinanceCurrencies", withExtension: "json"), let data = try? Data(contentsOf: url), let reference = try? JSONDecoder().decode(Reference.self, from: data) else { return baseline }
+        guard let url = TogetherResources.bundle.url(forResource: "FinanceCurrencies", withExtension: "json"), let data = try? Data(contentsOf: url), let reference = try? JSONDecoder().decode(Reference.self, from: data) else { return baseline }
         return reference.currencies.map { .init(code: $0.code, symbol: $0.symbol, minorDigits: $0.minorDigits) }
     }()
     public static func find(_ code: String) -> FinanceCurrency? { supported.first { $0.code == code } }

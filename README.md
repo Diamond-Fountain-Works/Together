@@ -1,6 +1,23 @@
 # Together
 
-Native macOS and Android, Local-first shared space for two people. Tasks, Wishes and Daily Love Gifts use a signed operation log; Our Finances uses one Expenses ledger and derived reserve balances. SwiftUI, SwiftData and the existing signed-log engine remain the architecture. Normal 0.2.2 clients use the native peer adapter; established legacy C1 Mac bindings retain their WebSocket route. No central business database, offline mailbox or banking connection is included. Android Phase B adds native Tasks, Wishes, Finances, event-driven Gifts and change review on the existing Kotlin Protocol 4 core. Phase C records physical Samsung and native Swift interoperability over a USB-reversed local Relay. Public cross-network acceptance and independent security review remain release gates.
+Native Apple and Android clients, Local-first shared space for two people. Tasks, Wishes and Daily Love Gifts use a signed operation log; Our Finances uses one Expenses ledger and derived reserve balances. SwiftUI, SwiftData and the existing signed-log engine remain the architecture. Normal 0.2.2 clients use the native peer adapter; established legacy C1 Mac bindings retain their WebSocket route. No central business database, offline mailbox or banking connection is included. Android Phase B adds native Tasks, Wishes, Finances, event-driven Gifts and change review on the existing Kotlin Protocol 4 core. Phase C records physical Samsung and native Swift interoperability over a USB-reversed local Relay. Public cross-network acceptance and independent security review remain release gates.
+
+## 0.2.4 — platform compatibility candidate
+
+The configured floors are **Apple Silicon macOS 11**, **iOS/iPadOS 15**, and
+**Android 7 / API 24** (ARM64 and ARMv7). Mac Build 24 and Android code 17 are
+local compatibility candidates, not a replacement for the published 0.2.3 RC.
+The iPhone/iPad target reuses the existing core and feature views; old Apple
+systems use transactional SQLite, while existing SwiftData stores and identities
+are preserved. Unknown/newer stores fail closed.
+
+Actual Mac DMG and Android APK validation passed; generic iPhone/iPad Release
+and isolated QA targets compile and link. Android 15 ARM64 emulator tests and
+normal Release UI ran. **Physical old-OS and iPhone/iPad runtime acceptance is
+NOT RUN**; the user deferred iOS simulator testing. Native code is checked against
+actual Mach-O/ELF floors rather than relying on bundle metadata alone.
+[Support contract](docs/product/PLATFORM_COMPATIBILITY.md) and
+[QA evidence](docs/qa/reports/PLATFORM_COMPATIBILITY_QA.md) separate these results.
 
 ## 0.2.3 — Chinese and English
 
@@ -40,7 +57,8 @@ reports below are historical checkpoints, not approval of the new binaries.
 
 | Location | Responsibility |
 | --- | --- |
-| `apps/apple/macOS/` | Xcode project, SwiftUI app, UI tests and release scripts |
+| `apps/apple/macOS/` | macOS target, shared Apple feature views, UI tests and release scripts |
+| `apps/apple/iOS/` | iPhone/iPad target and UIKit lifecycle/identity bootstrap; shared domain and views |
 | `apps/android/` | Kotlin/Compose app, Room/Keystore adapters, Protocol 4 and domain JVM modules |
 | `packages/together-core-swift/` | TogetherCore library, services, storage/network adapters and Swift tests |
 | `packages/together-p2p-swift/` | Native transport adapter around the unchanged Protocol 4 engine |
@@ -53,11 +71,11 @@ reports below are historical checkpoints, not approval of the new binaries.
 | `qa/visual/` | Human-approved synthetic baselines; unreviewed candidates stay local |
 | `scripts/` | Build/QA orchestration and publication safety checks |
 
-Current source is not copied per version. Old tracked source is recoverable in Git; local ignored build/release artifacts are retained. [Migration and rollback](docs/architecture/MONOREPO_MIGRATION.md) records the checkpoint and path changes. TogetherCore is currently macOS-tested and still contains Apple adapters; iOS/watchOS require further adapter work. [Android Phase A](apps/android/README.md) records the actual Kotlin/Compose/Room build and its remaining UI/device limits.
+Current source is not copied per version. Old tracked source is recoverable in Git; local ignored build/release artifacts are retained. [Migration and rollback](docs/architecture/MONOREPO_MIGRATION.md) records the checkpoint and path changes. TogetherCore shares Apple domain/storage logic. iPhone/iPad compile with UIKit adapters; runtime acceptance and watchOS remain separate work. [Android Phase A](apps/android/README.md) records the actual Kotlin/Compose/Room build and its remaining UI/device limits.
 
 ## Build and QA
 
-Normal 0.2.2 runtime: Apple Silicon/macOS 14.5+; Swift 6 / Xcode 26+ development and the pinned Rust native build. Node 22.16+ (CI uses 24), Python 3.10+ for QA.
+Compatibility candidate runtime floors: Apple Silicon/macOS 11, iOS/iPadOS 15 and Android/API 24. Swift 6 / Xcode 26+ development and the pinned Rust native build are required. Node 22.16+ (CI uses 24), Python 3.10+ for QA.
 
 ```sh
 python3 scripts/rebuild_apple_native.py --jobs 2
@@ -110,11 +128,11 @@ fixtures preserve the earlier C1 work history, not a blanket ten-minute claim
 about current native pairing. Source implementation is not production deployment
 verification.
 
-App, sync and storage are separate dimensions: app 0.2.2, active signed
+App, sync and storage are separate dimensions: candidate app 0.2.4, active signed
 replication Protocol 4, preserved Protocol 3 history, and physical SwiftData
-storage generation 1. Existing descriptors/keys are not relabelled or replaced
+storage generation 1 (SwiftData or the legacy SQLite backend). Existing descriptors/keys are not relabelled or replaced
 to force activation. Relay API 1/2 metadata describes optional legacy C1, not the
-normal native contact. The storage index does not claim a new VersionedSchema.
+normal native contact. The guarded SwiftData schema preserves the existing three global model classes and fields.
 Both native libraries are rebuilt from the [fixed source inputs](packages/together-native-source/README.md);
 old FFI 1.1.0 prebuilt binaries contained affected Rust core 1.0.2 and cannot be
 used as a safe fallback. Native dependency builds and an artifact PASS still do

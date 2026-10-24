@@ -3,12 +3,12 @@ on:
   push:
     branches: ['feature/**', 'fix/**', 'release/**']
   pull_request:
-    branches: [main, 'feature/gitlike-c1-multidevice', 'feature/android-foundation', 'feature/android-business-phase-b', 'feature/native-app-no-vpn-acceptance']
+    branches: [main, 'feature/localization-0.2.3', 'feature/gitlike-c1-multidevice', 'feature/android-foundation', 'feature/android-business-phase-b', 'feature/native-app-no-vpn-acceptance']
   workflow_dispatch:
 permissions:
   contents: read
 concurrency:
-  group: android-${{ github.ref }}
+  group: android-${{ github.head_ref || github.ref_name }}
   cancel-in-progress: true
 jobs:
   android:
@@ -67,6 +67,7 @@ jobs:
             qa/results/android-copy.json
             qa/results/android-safety.json
           retention-days: 7
+      # Instrumentation above is compilation-only; local emulator/device results are separate.
       # Emulator/TalkBack/physical phone and Mac↔Android UI are not claimed by this job.
   native-interop:
     name: Swift–Kotlin business and original-media C1
@@ -129,11 +130,14 @@ jobs:
           cache-dependency-path: apps/android/**/*.gradle.kts
       - name: SDK
         run: ./scripts/setup_android_sdk_ci.sh
+      - name: Native compatibility and provenance regression gates
+        run: python3 scripts/test_android_native_build.py
       - name: Native toolchain
         run: |
           sdkmanager --install 'ndk;28.2.13676358'
           rustup toolchain install 1.96.0 --profile minimal --target aarch64-linux-android
-      - name: Rebuild the exact upstream arm64 source with reviewed linker flags
+          rustup target add --toolchain 1.96.0 armv7-linux-androideabi
+      - name: Rebuild the exact upstream ARM64 and ARMv7 source at API 24
         env:
           RUSTUP_TOOLCHAIN: '1.96.0'
         run: |
@@ -146,7 +150,8 @@ jobs:
             --source qa/results/native-release-ci/iroh-ffi \
             --ndk "$ANDROID_HOME/ndk/28.2.13676358" \
             --original-aar qa/results/native-release-ci/original.aar \
-            --output qa/results/native-release-ci/iroh-16k.aar --jobs 4
+            --output qa/results/native-release-ci/iroh-16k.aar \
+            --android-api 24 --abi arm64-v8a --abi armeabi-v7a --jobs 4
       - name: Optimized Release with an ephemeral CI-only signing key
         working-directory: apps/android
         run: |

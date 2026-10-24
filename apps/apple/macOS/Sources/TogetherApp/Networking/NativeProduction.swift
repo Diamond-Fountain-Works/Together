@@ -18,7 +18,14 @@ import Darwin
     static func build(migrateLegacyIdentity: Bool = false) throws -> ApplicationModel {
         try validateLaunch(bundleIdentifier: Bundle.main.bundleIdentifier,
                            arguments: ProcessInfo.processInfo.arguments)
-        let support = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)[0]
+        let systemSupport = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)[0]
+        #if os(iOS)
+        // Canonicalize only the trusted sandbox parent. A user-controlled
+        // Together child still goes through the unchanged symlink rejection.
+        let support = systemSupport.standardizedFileURL.resolvingSymlinksInPath()
+        #else
+        let support = systemSupport
+        #endif
         let root = support.appendingPathComponent("Together", isDirectory: true)
         try validateStorageBoundary(root)
         try FileManager.default.createDirectory(at: root, withIntermediateDirectories: true,

@@ -3,6 +3,7 @@
 from pathlib import Path
 import subprocess,json,os,re,sys,time,urllib.request,tempfile,socket,signal
 from project_paths import ROOT, APP as project, CORE, RELAY
+from qa_evidence import swift_test_evidence, swift_suite_counts
 out=ROOT/'qa/results';out.mkdir(parents=True,exist_ok=True);report={};owned_server=None;owned_state=None;server_log=None
 
 def run(name,command,cwd=ROOT,env=None):
@@ -40,14 +41,12 @@ try:
     text=(out/'business.log').read_text()
     # Swift Testing's summary count includes disabled/skipped tests. Report the
     # actual outcomes separately rather than treating the headline as passes.
-    report['business']['passedCount']=len(re.findall(r'^✔ Test (?!run with)[^\n]+ passed after',text,re.M))
-    report['business']['skippedCount']=len(re.findall(r'^➜ Test [^\n]+ skipped\.',text,re.M))
-    report['business']['failedCount']=len(re.findall(r'^✘ Test (?!run with)[^\n]+ failed',text,re.M))
+    report['business'].update(swift_suite_counts(text))
     report['business']['discoveredCount']=int(re.search(r'Test run with (\d+) tests',text).group(1)) if re.search(r'Test run with (\d+) tests',text) else None
-    report['dataMigration']={'status':'PASS' if 'actualLegacyStoreKeepsIdentityDataAndFinancialRestart() passed' in text else 'NOT RUN','sourceVersion':'0.0.1','targetVersion':json.loads((project/'Configuration/ReleaseVersion.json').read_text())['marketingVersion'],'isolation':'private temporary store created with original source'}
-    report['relayIntegration']={'status':'PASS' if available() and 'invitationMutualConfirmEncryptedLogMediaReconnectAndPersistentMigration() passed' in text else 'NOT RUN' if not available() else 'FAIL','endpoint':relay_origin,'isolatedWorkerState':True}
-    report['multiDeviceIntegration']={'status':'PASS' if available() and 'fourNativeClientsMigrateCatchUpMediaAndRevokeOverRealLocalWorker() passed' in text else 'NOT RUN' if not available() else 'FAIL','endpoint':relay_origin,'physicalDevices':False,'clients':4}
-    report['crashRecovery']={'status':'PASS' if 'killedWriterRestoresFactsStagingIdentityPairingAndReceipts() passed' in text else 'NOT RUN','isolation':'synthetic child process and temporary database'}
+    report['dataMigration']={**swift_test_evidence(text, 'actualLegacyStoreKeepsIdentityDataAndFinancialRestart()'),'sourceVersion':'0.0.1','targetVersion':json.loads((project/'Configuration/ReleaseVersion.json').read_text())['marketingVersion'],'isolation':'private temporary store created with original source'}
+    report['relayIntegration']={**swift_test_evidence(text, 'invitationMutualConfirmEncryptedLogMediaReconnectAndPersistentMigration()', endpoint_ready=available()),'endpoint':relay_origin,'isolatedWorkerState':True}
+    report['multiDeviceIntegration']={**swift_test_evidence(text, 'fourNativeClientsMigrateCatchUpMediaAndRevokeOverRealLocalWorker()', endpoint_ready=available()),'endpoint':relay_origin,'physicalDevices':False,'clients':4}
+    report['crashRecovery']={**swift_test_evidence(text, 'killedWriterRestoresFactsStagingIdentityPairingAndReceipts()'),'isolation':'synthetic child process and temporary database'}
     run('build',['./script/build_and_run.sh','--build-only'],project)
     if '--skip-ui' in sys.argv:
         report['ui']={'status':'NOT RUN','reason':'Explicit --skip-ui; previous runs cannot substitute for current verification.'}

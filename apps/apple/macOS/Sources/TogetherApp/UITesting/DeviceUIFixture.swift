@@ -1,4 +1,4 @@
-#if DEBUG
+#if DEBUG && os(macOS)
 import Foundation
 import TogetherCore
 
@@ -39,7 +39,7 @@ import TogetherCore
                             model?.qaC1Peers.append(service); await service.start()
                             break
                         }
-                        try await Task.sleep(for: .milliseconds(150))
+                        try await Task.sleep(nanoseconds: 150000000)
                     }
                 } catch { model?.errorMessage = error.localizedDescription }
             }
@@ -77,7 +77,7 @@ import TogetherCore
                         try CanonicalJSON.encode(completion).write(to: output.appendingPathComponent(Copy.text("device.file.completion")), options: .atomic)
                         break
                     }
-                    try await Task.sleep(for: .milliseconds(150))
+                    try await Task.sleep(nanoseconds: 150000000)
                 }
             } catch { model?.errorMessage = error.localizedDescription }
         }
@@ -85,10 +85,10 @@ import TogetherCore
         return model
     }
     private static func wait(_ ready: () -> Bool) async throws {
-        let deadline = ContinuousClock.now.advanced(by: .seconds(25))
+        let deadline = CompatibilityClock.now.advanced(by: .seconds(25))
         while !ready() {
-            guard ContinuousClock.now < deadline else { throw TogetherError.invalid("Isolated peer setup timed out") }
-            try await Task.sleep(for: .milliseconds(100))
+            guard CompatibilityClock.now < deadline else { throw TogetherError.invalid("Isolated peer setup timed out") }
+            try await Task.sleep(nanoseconds: 100000000)
         }
     }
 }

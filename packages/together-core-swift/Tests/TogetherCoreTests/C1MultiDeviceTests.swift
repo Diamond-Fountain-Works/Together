@@ -172,6 +172,11 @@ import Testing
       URL(
         string: ProcessInfo.processInfo.environment["TOGETHER_RELAY_TEST_URL"]
           ?? "http://127.0.0.1:8787"))
+    // This fixture exercises an already trusted Protocol 3 pair. Fresh
+    // unpaired Protocol 3 users intentionally enter the native Protocol 4
+    // partner flow now; calling migrate again would correctly be unauthorized.
+    try a.authorize(PairedPeer(descriptor: ib.descriptor, host: "127.0.0.1", port: 0))
+    try b.authorize(PairedPeer(descriptor: ia.descriptor, host: "127.0.0.1", port: 0))
     let oldA = PairingService(engine: a, serviceURL: url)
     let oldB = PairingService(engine: b, serviceURL: url)
     defer {
@@ -185,11 +190,22 @@ import Testing
     await oldB.confirmPairing()
     try await eventually(
       { oldA.isOnline && oldB.isOnline && a.snapshot == b.snapshot }, seconds: 20)
+    #expect(!a.usesReplication4 && !b.usesReplication4)
+    // Equal projections alone do not prove an exact signed-history barrier.
+    // Keep the transports alive until the persisted inventories also match.
+    let indexA = OperationInventoryIndex(repository: a.repository)
+    let indexB = OperationInventoryIndex(repository: b.repository)
+    let deadline = Date().addingTimeInterval(20)
+    var cp = try await indexA.checkpoint()
+    while cp != (try await indexB.checkpoint()) {
+      guard Date() < deadline else { throw TestTimeout.expired }
+      try await CompatibilityClock.sleep(for: .milliseconds(30))
+      cp = try await indexA.checkpoint()
+    }
     let oldBinding = try #require(try a.repository.load(RelayBinding.self, key: "relay-binding"))
     let space = a.context.spaceId
     oldA.disconnect()
     oldB.disconnect()
-    let cp = try await OperationInventoryIndex(repository: a.repository).checkpoint()
     let genesis = try SignedSpaceGenesis.sign(
       SpaceGenesisBody(context: a.context, legacyCheckpoint: cp), with: [ia, ib])
     let sa = try await C1ReplicationService.migrate(engine: a, genesis: genesis)

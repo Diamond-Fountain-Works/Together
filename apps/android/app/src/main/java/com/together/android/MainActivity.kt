@@ -10,6 +10,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalResources
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 
 class MainActivity : ComponentActivity() {
@@ -25,6 +26,9 @@ class MainActivity : ComponentActivity() {
             CompositionLocalProvider(
                 LocalContext provides localized,
                 LocalConfiguration provides localized.resources.configuration,
+                // stringResource/Popup/Dialog consume LocalResources independently
+                // of the Activity context; update all three locals as one choice.
+                LocalResources provides localized.resources,
             ) {
                 TogetherApp(app.repository, language, app.languages::select)
             }

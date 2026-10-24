@@ -9,7 +9,7 @@ public struct FinanceAmountDraft {
     public var rate = ""
     public var rateSource = ""
     public var rateDate: Date
-    public init(_ amount: FinanceAmount? = nil, now: Date = .now) {
+    public init(_ amount: FinanceAmount? = nil, now: Date = Date()) {
         rateDate = now
         if let amount {
             currency = amount.currencyCode; original = FinanceMoney.string(amount.originalMinor, currency: currency)

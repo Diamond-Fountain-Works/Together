@@ -1,3 +1,23 @@
+# 0.2.4 compatibility — current isolated workstream
+
+`feature/platform-compatibility` is stacked on the verified localization
+checkpoint `833d11e96e29973f3916a3e34662ef8b15b51739`. No parent PR, published
+release, installed App or production Relay is changed.
+
+- Core: macOS11/iOS15 APIs, Combine observation, transactional legacy SQLite,
+  guarded existing SwiftData stores, resource and clock/network backports.
+- Apple: one shared feature implementation with native Mac and iPhone/iPad
+  targets; genuine native floors and generic device builds, no fake pages.
+- Android: API24 ARM64/ARMv7 native source rebuild, matching JNA, Java backports,
+  older-codec original retention and live language resource propagation.
+- QA: actual builds, synthetic store migration, existing domain/protocol/network
+  regression and isolated runtime evidence. Old physical OS/device acceptance,
+  iPhone/iPad runtime, visual approval and independent security review remain
+  separately tracked in [compatibility QA](../qa/reports/PLATFORM_COMPATIBILITY_QA.md).
+
+This stage does not deploy, install, reset data, merge PRs or promise all devices
+have passed. Historical stages below retain their original scope/results.
+
 # 0.2.2 clean-install delivery — in progress
 
 User authorized ordinary Mac/Android delivery and an explicit fresh start on both

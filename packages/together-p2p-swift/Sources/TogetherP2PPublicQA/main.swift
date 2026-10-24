@@ -81,7 +81,7 @@ private actor Failures {
         try CanonicalJSON.encode(value).write(to: url, options: .atomic)
         try FileManager.default.setAttributes([.posixPermissions: 0o600], ofItemAtPath: url.path)
     }
-    private static func wait(_ name: String, root: URL, deadline: ContinuousClock.Instant,
+    private static func wait(_ name: String, root: URL, deadline: CompatibilityClock.Instant,
                              failures: Failures? = nil, condition: (() async throws -> Bool)? = nil) async throws {
         while true {
             try Task.checkCancellation()
@@ -89,8 +89,8 @@ private actor Failures {
             if let condition {
                 if try await condition() { return }
             } else if FileManager.default.fileExists(atPath: root.appendingPathComponent(name).path) { return }
-            guard ContinuousClock.now < deadline else { throw QAError.deadline(name) }
-            try await Task.sleep(for: .milliseconds(100))
+            guard CompatibilityClock.now < deadline else { throw QAError.deadline(name) }
+            try await CompatibilityClock.sleep(for: .milliseconds(100))
         }
     }
     private static func stage(_ name: String, _ root: URL) throws {
@@ -122,7 +122,7 @@ private actor Failures {
               ["directOnly", "automatic"].contains(launch.mode),
               (30...300).contains(launch.deadlineSeconds),
               !loopback || (launch.mode == "automatic" && launch.bindAddress == nil) else { throw QAError.arguments }
-        let deadline = ContinuousClock.now.advanced(by: .seconds(launch.deadlineSeconds))
+        let deadline = CompatibilityClock.now.advanced(by: .seconds(launch.deadlineSeconds))
         try stage("independent identity", root)
         let metadataURL = root.appendingPathComponent("metadata.json")
         let existing = FileManager.default.fileExists(atPath: metadataURL.path)
@@ -165,17 +165,17 @@ private actor Failures {
         do {
             if launch.mode == "automatic" {
                 try stage("automatic relay address", root)
-                let started = ContinuousClock.now
+                let started = CompatibilityClock.now
                 let available: Bool
                 do { available = try await endpoint.waitForRelayAddress(timeout: .seconds(15)) }
                 catch {
-                    let elapsed = started.duration(to: .now).components
+                    let elapsed = started.duration(to: CompatibilityClock.now).components
                     try write(RelayReadiness(relayAddressAvailable: false,
                         elapsedMilliseconds: elapsed.seconds * 1_000 + elapsed.attoseconds / 1_000_000_000_000_000),
                         "relay-readiness.json", root)
                     throw error
                 }
-                let elapsed = started.duration(to: .now).components
+                let elapsed = started.duration(to: CompatibilityClock.now).components
                 try write(RelayReadiness(relayAddressAvailable: available,
                     elapsedMilliseconds: elapsed.seconds * 1_000 + elapsed.attoseconds / 1_000_000_000_000_000),
                     "relay-readiness.json", root)
@@ -207,7 +207,7 @@ private actor Failures {
     private static func synchronize(_ root: URL, identity: DeviceIdentity, peer: DeviceDescriptor,
                                     trust: SpaceAuthorization, endpoint: IrohEndpoint,
                                     link: IrohFrameConnection, relayOnly: Bool,
-                                    deadline: ContinuousClock.Instant) async throws {
+                                    deadline: CompatibilityClock.Instant) async throws {
         try stage("signed endpoint and Protocol 4 handshake", root)
         if relayOnly {
             try await endpoint.requireLoopbackQuicForQA()

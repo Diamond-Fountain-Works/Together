@@ -106,7 +106,12 @@ object AndroidMedia {
         } else {
             val options = BitmapFactory.Options().apply { inJustDecodeBounds = true }
             BitmapFactory.decodeFile(file.absolutePath, options)
-            requireProtocol(options.outWidth > 0 && options.outHeight > 0, "UNSUPPORTED_MEDIA")
+            if (options.outWidth <= 0 || options.outHeight <= 0) {
+                // API24–27 has no system HEIF decoder. Preserve a structurally valid
+                // original for authenticated transfer/export; never pretend it rendered.
+                if (android.os.Build.VERSION.SDK_INT < 28 && HeifContainer.recognizes(file)) return
+                throw ProtocolException("UNSUPPORTED_MEDIA")
+            }
             options.inSampleSize = sample(options.outWidth, options.outHeight, 64)
             options.inJustDecodeBounds = false
             val bitmap =

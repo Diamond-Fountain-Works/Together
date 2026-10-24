@@ -143,7 +143,7 @@ public actor OperationInventoryIndex {
       catch ReplicationError.inventoryChanged {
         try Task.checkCancellation()
         guard attempt < 7 else { throw ReplicationError.inventoryChanged }
-        try await Task.sleep(for: .milliseconds(1 << attempt))
+        try await CompatibilityClock.sleep(for: .milliseconds(1 << attempt))
       }
     }
     throw ReplicationError.inventoryChanged

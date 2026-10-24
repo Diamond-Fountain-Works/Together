@@ -96,8 +96,7 @@ public struct CivilDate: Codable, Equatable, Comparable, Sendable {
         let zone = TimeZone(secondsFromGMT: 0)!
         var calendar = Calendar(identifier: .gregorian); calendar.timeZone = zone
         guard isValid, let date = calendar.date(from: DateComponents(year: year, month: month, day: day)) else { return iso }
-        return date.formatted(Date.FormatStyle(date: .abbreviated, time: .omitted,
-                                              locale: language.locale, calendar: calendar, timeZone: zone))
+        return Copy.formattedDate(date, dateStyle: .medium, timeStyle: .none, language: language, timeZone: zone)
     }
     public var isValid: Bool {
         guard (1900...3000).contains(year) else { return false }

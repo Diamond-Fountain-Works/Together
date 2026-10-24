@@ -10737,6 +10737,54 @@
         "zh-Hans": "2fcab8f67ceeae3eea96c9c1b748bcba890af51655f4fed2725b0b521a1a58c0",
         "en": "4724f344c1c0e4a1c5e4085610cc31bf67d0959dfda9793d4605b7b329399775"
       }
+    },
+    "storage.error.unsupported": {
+      "category": "Error",
+      "context": "Legacy storage availability recovery; preserves existing store unchanged.",
+      "review": "approved",
+      "reason": "Unsupported system or incompatible/newer application database requires an explicit update; storage is not replaced.",
+      "textSHA256": "beea1a468bb16366278ffd9b2911811de2278ba8472eebf12e458a0d03074e8d",
+      "translationSHA256": {
+        "zh-Hans": "beea1a468bb16366278ffd9b2911811de2278ba8472eebf12e458a0d03074e8d",
+        "en": "163d73e3f85d0d02fba632b7fe255e05a0c5e5db7f5900eac709e024a63caf2e"
+      },
+      "localizationReview": "Bilingual compatibility UI review; existing business behavior and user data preserved."
+    },
+    "navigation.menu": {
+      "category": "Action",
+      "context": "Native compact iPhone navigation menu for existing destinations.",
+      "review": "approved",
+      "reason": "Functional platform compatibility action or real storage recovery; no decorative prose.",
+      "textSHA256": "e72622fe470d04bc588375b9a788202c36a9a133eba8701f2ce12ecdb8924e0d",
+      "translationSHA256": {
+        "zh-Hans": "e72622fe470d04bc588375b9a788202c36a9a133eba8701f2ce12ecdb8924e0d",
+        "en": "3db65f8c2a7d1861b4bca37da3adec5aa7905931eb6faddbc595a35f75e6ca40"
+      },
+      "localizationReview": "Bilingual compatibility UI review; existing business behavior and user data preserved."
+    },
+    "navigation.more": {
+      "category": "Action",
+      "context": "Native iPhone overflow for existing gift/history/help actions; no permanent Gift destination.",
+      "review": "approved",
+      "reason": "Functional platform compatibility action or real storage recovery; no decorative prose.",
+      "textSHA256": "9f07d2ce4115f575694847a5da6bdc5cbbf67aad7db91922c31cd289cca8fb96",
+      "translationSHA256": {
+        "zh-Hans": "9f07d2ce4115f575694847a5da6bdc5cbbf67aad7db91922c31cd289cca8fb96",
+        "en": "98eea4c1c21f333640ea131c6484e3a8a861029affc6ac5438a67df28df6af68"
+      },
+      "localizationReview": "Bilingual compatibility UI review; existing business behavior and user data preserved."
+    },
+    "NSLocalNetworkUsageDescription": {
+      "category": "Guidance",
+      "context": "Native local-network permission for authenticated partner/device sessions.",
+      "review": "approved",
+      "reason": "Required system permission disclosure for the requested iOS/iPadOS compatibility.",
+      "textSHA256": "665ef1a2f9e32027430094884dd68ebcf39fc06efd3ee8101838ab8a978c6e64",
+      "translationSHA256": {
+        "zh-Hans": "665ef1a2f9e32027430094884dd68ebcf39fc06efd3ee8101838ab8a978c6e64",
+        "en": "a3fa74ba1a127101efd190d1f46f28d18201ef492ae730643e4111c25495ad09"
+      },
+      "localizationReview": "Bilingual native permission purpose review."
     }
   }
 }

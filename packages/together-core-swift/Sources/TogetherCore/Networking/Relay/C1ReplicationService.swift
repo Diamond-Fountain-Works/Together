@@ -1,7 +1,7 @@
 import CryptoKit
 import Foundation
 @preconcurrency import Network
-import Observation
+import Combine
 
 public struct C1ReplicationBinding: Codable, Equatable, Sendable {
   public var serviceURL: URL
@@ -133,34 +133,34 @@ extension RelayAPI {
 /// operation database, projector and chunked media implementation as protocol 3.
 /// It is activated only after a verified, co-signed migration, never by an
 /// untrusted server capability flag or a profile's claimed user ID.
-@MainActor @Observable public final class C1ReplicationService {
-  public private(set) var state: PairingConnectionState = .offline
-  public private(set) var errorMessage: String?
-  public private(set) var connectedDevices: Set<UUID> = []
-  public private(set) var completedSyncCount = 0
-  @ObservationIgnored public var onStateChanged: ((PairingConnectionState) -> Void)?
-  @ObservationIgnored public var onConverged: (() -> Void)?
-  @ObservationIgnored private let engine: ReplicaEngine
-  @ObservationIgnored private let transport: any SyncTransport
-  @ObservationIgnored private let api: RelayAPI
-  @ObservationIgnored private let binding: C1ReplicationBinding
-  @ObservationIgnored private let store: AuthorizedReplicationStore
-  @ObservationIgnored private let ledger: DeviceAcknowledgementLedger
-  @ObservationIgnored private var channels: [UUID: C1PeerChannel] = [:]
-  @ObservationIgnored private var incoming: [Data] = []
-  @ObservationIgnored private var incomingBytes = 0
-  @ObservationIgnored private var receiver: Task<Void, Never>?
-  @ObservationIgnored private var outgoing: [(Data, CheckedContinuation<Void, any Error>)] = []
-  @ObservationIgnored private var outgoingBytes = 0
-  @ObservationIgnored private var sender: Task<Void, Never>?
-  @ObservationIgnored private var retry: Task<Void, Never>?
-  @ObservationIgnored private var announcedRevision: UInt64 = 0
-  @ObservationIgnored private var attempt = 0
-  @ObservationIgnored private var enabled = false
-  @ObservationIgnored private var opening = false
-  @ObservationIgnored private var nextSendAt: ContinuousClock.Instant?
-  @ObservationIgnored private var generation = UUID()
-  @ObservationIgnored private let monitor = NWPathMonitor()
+@MainActor public final class C1ReplicationService: ObservableObject {
+  @Published public private(set) var state: PairingConnectionState = .offline
+  @Published public private(set) var errorMessage: String?
+  @Published public private(set) var connectedDevices: Set<UUID> = []
+  @Published public private(set) var completedSyncCount = 0
+  public var onStateChanged: ((PairingConnectionState) -> Void)?
+  public var onConverged: (() -> Void)?
+  private let engine: ReplicaEngine
+  private let transport: any SyncTransport
+  private let api: RelayAPI
+  private let binding: C1ReplicationBinding
+  private let store: AuthorizedReplicationStore
+  private let ledger: DeviceAcknowledgementLedger
+  private var channels: [UUID: C1PeerChannel] = [:]
+  private var incoming: [Data] = []
+  private var incomingBytes = 0
+  private var receiver: Task<Void, Never>?
+  private var outgoing: [(Data, CheckedContinuation<Void, any Error>)] = []
+  private var outgoingBytes = 0
+  private var sender: Task<Void, Never>?
+  private var retry: Task<Void, Never>?
+  private var announcedRevision: UInt64 = 0
+  private var attempt = 0
+  private var enabled = false
+  private var opening = false
+  private var nextSendAt: CompatibilityClock.Instant?
+  private var generation = UUID()
+  private let monitor = NWPathMonitor()
   public init(
     engine: ReplicaEngine, binding: C1ReplicationBinding, store: AuthorizedReplicationStore,
     transport: (any SyncTransport)? = nil
@@ -323,12 +323,12 @@ extension RelayAPI {
   public func devices() async -> [AuthorizedDevice] {
     await store.authorization.devices.values.sorted { $0.id.uuidString < $1.id.uuidString }
   }
-  public func createDeviceOffer(now: Date = .now) async throws -> DeviceEnrollmentOffer {
+  public func createDeviceOffer(now: Date = Date()) async throws -> DeviceEnrollmentOffer {
     let offer = try await DeviceEnrollmentOffer.issue(identity: engine.identity, trust: store.authorization, binding: binding, now: now)
     try engine.repository.save(offer, key: "replication4/enrollment/offer/\(offer.body.id)")
     return offer
   }
-  public func approveDeviceRequest(_ request: DeviceEnrollmentRequest, verified: Bool, now: Date = .now) async throws -> DeviceEnrollmentCompletion {
+  public func approveDeviceRequest(_ request: DeviceEnrollmentRequest, verified: Bool, now: Date = Date()) async throws -> DeviceEnrollmentCompletion {
     guard verified else { throw DeviceEnrollmentError.confirmationRequired }
     let prefix = "replication4/enrollment/", id = request.body.offerId.uuidString
     guard let offer = try engine.repository.load(DeviceEnrollmentOffer.self, key: prefix + "offer/" + id),
@@ -591,7 +591,7 @@ extension RelayAPI {
           let (data, completion) = self.outgoing.removeFirst()
           self.outgoingBytes -= data.count
           do {
-            let clock = ContinuousClock()
+            let clock = CompatibilityClock()
             let now = clock.now
             let target = self.nextSendAt ?? now
             if target > now { try await clock.sleep(until: target) }
@@ -636,7 +636,7 @@ extension RelayAPI {
     let delay = min(60, pow(2, Double(min(attempt, 6))))
     attempt += 1
     retry = Task { @MainActor [weak self] in
-      try? await Task.sleep(for: .seconds(delay))
+      try? await CompatibilityClock.sleep(for: .seconds(delay))
       guard !Task.isCancelled, let self else { return }
       self.retry = nil
       await self.open()

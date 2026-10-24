@@ -1,5 +1,5 @@
 import Foundation
-import Observation
+import Combine
 import Testing
 @testable import TogetherCore
 
@@ -37,9 +37,12 @@ import Testing
         defer { defaults.removePersistentDomain(forName: suite) }
         let settings = LanguageSettings(defaults: defaults, preferredLanguages: ["zh-Hans"])
         let changed = Flag()
-        withObservationTracking { _ = settings.language } onChange: { changed.set() }
+        let subscription = settings.objectWillChange.sink { changed.set() }
+        defer { subscription.cancel() }
+        _ = settings.language
         settings.language = .english
         #expect(changed.isSet)
+        #expect(settings.language == .english)
     }
 
     @Test func explicitLocaleLookupAndFormattingDoNotCrossLanguages() {

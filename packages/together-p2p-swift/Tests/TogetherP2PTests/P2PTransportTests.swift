@@ -53,11 +53,11 @@ struct P2PTransportTests {
 
     @Test func relayAddressWaitIsBoundedCancellableAndRequiresOpenEndpoint() async throws {
         let endpoint = try await IrohEndpoint.bind(secretKey: IrohEndpoint.generateTransportKey(), bindAddress: "127.0.0.1:0")
-        let start = ContinuousClock.now
+        let start = CompatibilityClock.now
         #expect(try await endpoint.waitForRelayAddress(timeout: .milliseconds(50)) == false)
-        #expect(start.duration(to: .now) < .seconds(2))
+        #expect(start.duration(to: CompatibilityClock.now) < .seconds(2))
         let pending = Task { try await endpoint.waitForRelayAddress(timeout: .seconds(15)) }
-        try await Task.sleep(for: .milliseconds(20))
+        try await CompatibilityClock.sleep(for: .milliseconds(20))
         pending.cancel()
         do { _ = try await pending.value; Issue.record("Cancelled helper-address wait unexpectedly succeeded") }
         catch is CancellationError { }
@@ -120,8 +120,8 @@ struct P2PTransportTests {
         try await ab.synchronize(); try await bb.synchronize()
         try await waitForConvergence(sa, sb, count: 258, failures: failures)
         let entry = try await sa.index.entry(for: #require(first).id)
-        let deadline = ContinuousClock.now.advanced(by: .seconds(10))
-        while !(try await al.partnerHasPersisted(entry, trust: sa.authorization)), ContinuousClock.now < deadline { try await failures.check(); try await Task.sleep(for: .milliseconds(10)) }
+        let deadline = CompatibilityClock.now.advanced(by: .seconds(10))
+        while !(try await al.partnerHasPersisted(entry, trust: sa.authorization)), CompatibilityClock.now < deadline { try await failures.check(); try await CompatibilityClock.sleep(for: .milliseconds(10)) }
         #expect(try await al.partnerHasPersisted(entry, trust: sa.authorization))
         _ = try await sb.append(f.operation(f.b, clock: 1000, entity: target, deleted: true))
         try await bb.synchronize(); try await waitForConvergence(sa, sb, count: 259, failures: failures)
@@ -147,8 +147,8 @@ struct P2PTransportTests {
     }
 
     @MainActor private func waitForConvergence(_ a: AuthorizedReplicationStore, _ b: AuthorizedReplicationStore, count: Int, failures: LinkFailures) async throws {
-        let deadline = ContinuousClock.now.advanced(by: .seconds(15))
-        while ContinuousClock.now < deadline {
+        let deadline = CompatibilityClock.now.advanced(by: .seconds(15))
+        while CompatibilityClock.now < deadline {
             try await failures.check()
             // The observer can race durable imports. A changed snapshot is
             // retried here; errors inside the actual replication loops still
@@ -156,7 +156,7 @@ struct P2PTransportTests {
             do {
                 if try await a.index.checkpoint() == b.index.checkpoint(), try a.repository.operationCount() == count { return }
             } catch ReplicationError.inventoryChanged { }
-            try await Task.sleep(for: .milliseconds(10))
+            try await CompatibilityClock.sleep(for: .milliseconds(10))
         }
         throw P2PTransportError.closed
     }

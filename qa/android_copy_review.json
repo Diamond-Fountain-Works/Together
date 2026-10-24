@@ -4156,5 +4156,19 @@
     "state": "reviewed",
     "reason": "Requested persistent Chinese/English app-language selector; options are named in the active language. Engineering copy review, pending visual review.",
     "sha256": "d1648bacbc1630a60ebc0091fa7a4cb7d831c4696a80f302dcacfc59838895a0"
+  },
+  "values/status_preview_unavailable": {
+    "category": "Status",
+    "context": "Legacy Android original-media preview capability",
+    "state": "reviewed",
+    "reason": "Real codec-unavailable state; verified original bytes remain available for transfer and explicit export. No rendering claim or decorative prose.",
+    "sha256": "2a4aae3855cd2e5343a97c2816a4f433b7d6278d4bb589c312d376193dd310e7"
+  },
+  "values-zh-rCN/status_preview_unavailable": {
+    "category": "Status",
+    "context": "Legacy Android original-media preview capability",
+    "state": "reviewed",
+    "reason": "Real codec-unavailable state; verified original bytes remain available for transfer and explicit export. No rendering claim or decorative prose.",
+    "sha256": "7e9bcc94d7bf154898dc4153603b9fe253eb7e6d2dd669d03929e66becb2bca9"
   }
 }

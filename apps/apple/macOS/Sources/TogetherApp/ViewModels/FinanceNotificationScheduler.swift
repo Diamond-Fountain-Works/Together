@@ -5,7 +5,7 @@ import TogetherCore
 @MainActor enum FinanceNotificationScheduler {
     static func requestPermission() async throws -> Bool { try await UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound]) }
     static func schedule(engine: ReplicaEngine, enabled: Bool) async throws {
-        #if DEBUG
+        #if DEBUG && os(macOS)
         if UIFixture.enabled { return }
         #endif
         let center = UNUserNotificationCenter.current(), pending = await center.pendingNotificationRequests()

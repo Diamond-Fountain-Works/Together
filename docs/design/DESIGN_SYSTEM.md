@@ -65,3 +65,18 @@ shows the icon only; opening it reveals the two language choices and current
 selection. Keep it out of navigation rows. Native menu, keyboard activation and
 localized accessibility labels share the existing control metrics. Both languages
 must remain usable at compact window sizes and in light/dark appearances.
+
+
+## Platform availability
+
+The same tokens and business views serve macOS11+ and iOS/iPadOS15+. Modern
+controls are availability-gated: older systems use native equivalents with the
+same actions, reachable sheets and semantic contrast. No absent API may be
+replaced with a decorative dead button. Compact phones use a menu; regular iPads
+use a split layout. UIKit file pickers and user-initiated media export preserve
+original files. Permission dialogs do not suspend an active connection; only
+backgrounding does. Reduce Motion and system accessibility remain independent
+of the fallback. Android keeps its common phone/tablet domain implementation.
+
+A successful generic device build is not visual approval. Old-system, phone,
+tablet, dark-mode and accessibility captures remain candidates until reviewed.

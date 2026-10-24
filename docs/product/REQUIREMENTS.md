@@ -1,3 +1,23 @@
+# 0.2.4 compatibility revision
+
+This revision supersedes the older platform exclusions below. Target Apple
+Silicon macOS 11+, iOS/iPadOS 15+, and Android 7/API 24+ on ARM64/ARMv7. Exact
+build floors live in `packages/together-native-source/platform-support.json`;
+compiled native dependencies must meet the same floors. Do not override a
+pinned dependency manifest or accept an insecure old binary to claim support.
+
+Reuse the existing signed log, domain services, IDs, pairing and media pipeline.
+Retain SwiftData on modern systems and add transactional SQLite only for systems
+without SwiftData. Existing SQLite stores remain readable after OS upgrades;
+unknown/future stores must fail closed without data loss. No production reset,
+install, network deployment or automatic data downgrade is authorized.
+
+One iPhone/iPad target shares features and adapts navigation, file panels, media
+permissions and foreground lifecycle. Compile/link validation, emulator and
+physical runtime acceptance are distinct. The user has deferred iOS simulator
+testing. See [support contract](PLATFORM_COMPATIBILITY.md) and
+[results](../qa/reports/PLATFORM_COMPATIBILITY_QA.md).
+
 # Together 0.2.2 — normal native App delivery
 
 This section records the current release boundary; the earlier product and
@@ -139,7 +159,7 @@ What's New 独立 Sheet 与结构化数据源；读取 Bundle 版本，升级时
 Warm Ivory / Soft Rose / Muted Gray；原生控件、适度 opacity/movement、180–450ms 微交互、spring 与 matchedGeometryEffect；遵循 Reduce Motion、Light/Dark Mode 和键盘操作。
 图标为暖白底、玫瑰色饱满心形，无文字。检查 Icon Composer；无 MCP 时提供 SVG 与手动导入说明，图标集成必须经实际构建。
 
-## 排除项
+## 原始 v0.0.1 排除项（平台范围由 0.2.4 修订覆盖）
 
 不实现 AI、支付、社交动态、中心云数据库、普通即时聊天、语音/视频通话、独立相册、多图媒体库、iOS/iPadOS、家庭多人、完整卸载器。媒体仅用于头像和每日礼物的一段语音、一张照片。
 

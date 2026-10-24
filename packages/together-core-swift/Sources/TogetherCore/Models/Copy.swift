@@ -1,5 +1,5 @@
 import Foundation
-import Observation
+import Combine
 
 public enum AppLanguage: String, CaseIterable, Sendable {
     case chinese = "zh-Hans"
@@ -14,14 +14,15 @@ public enum AppLanguage: String, CaseIterable, Sendable {
 }
 
 /// A device-local display preference. It never enters the operation log.
-/// Observation refreshes Copy.text callers without recreating the application,
+/// ObservableObject refreshes presentation without recreating the application,
 /// losing an editor draft or restarting a network session.
-@Observable public final class LanguageSettings: @unchecked Sendable {
+public final class LanguageSettings: ObservableObject, @unchecked Sendable {
     public static let preferenceKey = "interfaceLanguage"
     public static let shared = LanguageSettings()
-    @ObservationIgnored private let defaults: UserDefaults
-    @ObservationIgnored private let lock = NSLock()
-    @ObservationIgnored private var selection: AppLanguage
+    public let objectWillChange = ObservableObjectPublisher()
+    private let defaults: UserDefaults
+    private let lock = NSLock()
+    private var selection: AppLanguage
 
     public init(defaults: UserDefaults = .standard, preferredLanguages: [String] = Locale.preferredLanguages) {
         self.defaults = defaults
@@ -30,16 +31,14 @@ public enum AppLanguage: String, CaseIterable, Sendable {
 
     public var language: AppLanguage {
         get {
-            access(keyPath: \.language)
             return lock.withLock { selection }
         }
         set {
-            withMutation(keyPath: \.language) {
-                lock.withLock {
-                    selection = newValue
-                    defaults.set(newValue.rawValue, forKey: Self.preferenceKey)
-                    defaults.set([newValue.rawValue], forKey: "AppleLanguages")
-                }
+            objectWillChange.send()
+            lock.withLock {
+                selection = newValue
+                defaults.set(newValue.rawValue, forKey: Self.preferenceKey)
+                defaults.set([newValue.rawValue], forKey: "AppleLanguages")
             }
         }
     }
@@ -48,7 +47,7 @@ public enum AppLanguage: String, CaseIterable, Sendable {
 public enum Copy {
     // SwiftPM retains the catalog; Xcode may compile it into .lproj resources.
     private static let values: [String: [String: String]] = {
-        guard let url = Bundle.module.url(forResource: "UI", withExtension: "xcstrings"),
+        guard let url = TogetherResources.bundle.url(forResource: "UI", withExtension: "xcstrings"),
               let data = try? Data(contentsOf: url), let source = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
               let strings = source["strings"] as? [String: [String: Any]] else { return [:] }
         return strings.mapValues { entry in
@@ -60,7 +59,7 @@ public enum Copy {
     public static func text(_ key: String, language: AppLanguage? = nil) -> String {
         let language = language ?? LanguageSettings.shared.language
         if let value = values[key]?[language.rawValue] { return value }
-        if let path = Bundle.module.path(forResource: language.rawValue, ofType: "lproj"), let bundle = Bundle(path: path) {
+        if let path = TogetherResources.bundle.path(forResource: language.rawValue, ofType: "lproj"), let bundle = Bundle(path: path) {
             return bundle.localizedString(forKey: key, value: key, table: "UI")
         }
         return key
@@ -73,7 +72,7 @@ public enum Copy {
         }
         // Xcode may compile the catalog into localized strings resources.
         for sourceLanguage in AppLanguage.allCases {
-            guard let path = Bundle.module.path(forResource: sourceLanguage.rawValue, ofType: "lproj"),
+            guard let path = TogetherResources.bundle.path(forResource: sourceLanguage.rawValue, ofType: "lproj"),
                   let data = try? Data(contentsOf: URL(fileURLWithPath: path).appendingPathComponent("UI.strings")),
                   let table = try? PropertyListSerialization.propertyList(from: data, format: nil) as? [String: String],
                   let key = table.keys.sorted().first(where: { table[$0] == message }) else { continue }

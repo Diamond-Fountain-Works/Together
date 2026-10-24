@@ -1,6 +1,7 @@
 import Foundation
 import CryptoKit
 import CoreGraphics
+import Darwin
 import TogetherCore
 
 /// Builds a real store using the untouched 0.0.1 source, never production data.
@@ -11,15 +12,35 @@ import TogetherCore
             return
         }
         guard CommandLine.arguments.count == 2 else { throw FixtureError.invalidPath }
-        let root = URL(fileURLWithPath: CommandLine.arguments[1], isDirectory: true).standardizedFileURL.resolvingSymlinksInPath()
+        let requested = URL(fileURLWithPath: CommandLine.arguments[1], isDirectory: true).standardizedFileURL
+        let root = requested.resolvingSymlinksInPath()
         let temporary = FileManager.default.temporaryDirectory.standardizedFileURL.resolvingSymlinksInPath()
-        guard root.path.hasPrefix(temporary.path), root.lastPathComponent.hasPrefix("together-migration-") else { throw FixtureError.invalidPath }
+        guard root.path == requested.path, root.lastPathComponent.hasPrefix("together-migration-") else { throw FixtureError.invalidPath }
+        try requireOwnedDirectory(root)
+        if let configured = ProcessInfo.processInfo.environment["TOGETHER_MIGRATION_TEMP_PARENT"] {
+            guard let projectPath = ProcessInfo.processInfo.environment["TOGETHER_MIGRATION_PROJECT_ROOT"] else { throw FixtureError.invalidPath }
+            let project = URL(fileURLWithPath: projectPath, isDirectory: true).standardizedFileURL
+            let allowed = project.appendingPathComponent("qa/results", isDirectory: true)
+            let parent = URL(fileURLWithPath: configured, isDirectory: true).standardizedFileURL
+            // Bind the override to the actual materialized fixture source,
+            // not merely to an arbitrary caller-declared directory.
+            let source = URL(fileURLWithPath: #filePath).standardizedFileURL.resolvingSymlinksInPath()
+            guard project.path == project.resolvingSymlinksInPath().path,
+                  parent.path == parent.resolvingSymlinksInPath().path,
+                  parent.path == allowed.path || parent.path.hasPrefix(allowed.path + "/"),
+                  source.path.hasPrefix(allowed.path + "/"),
+                  root.deletingLastPathComponent().path == parent.path else { throw FixtureError.invalidPath }
+            try requireOwnedDirectory(parent)
+        } else {
+            guard root.path.hasPrefix(temporary.path + "/") else { throw FixtureError.invalidPath }
+        }
+        guard try FileManager.default.contentsOfDirectory(atPath: root.path).isEmpty else { throw FixtureError.invalidPath }
         let meta = LocalIdentityMetadata()
         let identity = try DeviceIdentity.persistent(deviceId: meta.deviceId, userId: meta.userId, spaceId: meta.spaceId, directory: root.appendingPathComponent("Identity"), needsExistingIdentity: false, timeZoneIdentifier: "Asia/Shanghai")
         let peer = try DeviceIdentity(timeZoneIdentifier: "America/Los_Angeles")
         let now = ISO8601DateFormatter().date(from: "2026-10-09T04:00:00Z")!, clock = FixedDateProvider(now)
         let a = try ReplicaEngine(repository: TogetherRepository(url: root.appendingPathComponent("legacy.store")), identity: identity, mediaRoot: root.appendingPathComponent("Media"), dateProvider: clock)
-        let b = try ReplicaEngine(repository: TogetherRepository(inMemory: true), identity: peer, dateProvider: clock)
+        let b = try ReplicaEngine(repository: TogetherRepository(inMemory: true), identity: peer, mediaRoot: root.appendingPathComponent("PeerMedia"), dateProvider: clock)
         try a.authorize(.init(descriptor: peer.descriptor, host: "100.70.80.90", port: 58431))
         try b.authorize(.init(descriptor: identity.descriptor, host: "100.70.80.91", port: 58431))
         let canvas = CGContext(data: nil, width: 32, height: 32, bitsPerComponent: 8, bytesPerRow: 0, space: CGColorSpace(name: CGColorSpace.sRGB)!, bitmapInfo: CGImageAlphaInfo.noneSkipLast.rawValue)!
@@ -44,6 +65,11 @@ import TogetherCore
         let expected = Expectation(metadata: meta, descriptor: identity.descriptor, peer: a.peer!, binding: binding, spaceId: a.context.spaceId, taskId: task, grantId: grant, wishId: wish, giftId: gift, avatarHash: digest(avatar), operationHashes: hashes)
         try CanonicalJSON.encode(expected).write(to: root.appendingPathComponent("expected.json"))
         print("Legacy 0.0.1 store created: \(hashes.count) signed operations")
+    }
+    private static func requireOwnedDirectory(_ url: URL) throws {
+        var info = stat()
+        guard url.path.withCString({ lstat($0, &info) }) == 0,
+              info.st_mode & mode_t(S_IFMT) == mode_t(S_IFDIR), info.st_uid == getuid() else { throw FixtureError.invalidPath }
     }
     static func digest(_ bytes: Data) -> String { SHA256.hash(data: bytes).map { String(format: "%02x", $0) }.joined() }
 }

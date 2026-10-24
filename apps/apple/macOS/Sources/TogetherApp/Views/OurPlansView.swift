@@ -2,13 +2,13 @@ import SwiftUI
 import TogetherCore
 
 struct OurPlansView: View {
-    @Bindable var model: ApplicationModel
+    @ObservedObject var model: ApplicationModel
     @TogetherMotionPreference private var reduceMotion
 
     var body: some View {
         VStack(alignment: .leading, spacing: 20) {
             PageHeading(title: model.section.title, subtitle: "")
-                .padding(.horizontal, 30).padding(.top, 30)
+                .togetherHorizontalPadding(30).padding(.top, 30)
             ZStack(alignment: .topLeading) {
                 TaskListView(model: model)
                     .opacity(model.plansMode == .tasks ? 1 : 0)
@@ -20,8 +20,8 @@ struct OurPlansView: View {
                     .allowsHitTesting(model.plansMode == .wishes).accessibilityHidden(model.plansMode != .wishes)
             }.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
         }
-        .animation(TogetherTheme.standardMotion(reduceMotion), value: model.plansMode)
-        .onChange(of: model.plansMode) { _, _ in model.noteUserInteraction() }
-        .onChange(of: model.taskFilter) { _, _ in model.noteUserInteraction() }
+        .togetherAnimation(TogetherTheme.standardMotion(reduceMotion), value: model.plansMode)
+        .onChange(of: model.plansMode) { _ in model.noteUserInteraction() }
+        .onChange(of: model.taskFilter) { _ in model.noteUserInteraction() }
     }
 }

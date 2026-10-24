@@ -49,7 +49,7 @@ public struct SyncOperation: Codable, Equatable, Sendable, Identifiable {
     public var payload: [String: LogValue]
     public var createdAt: Date
     public init(operationId: UUID = UUID(), deviceId: UUID, actorId: UUID, entityId: UUID, entityType: EntityType,
-                operationType: OperationType, lamportClock: Int64, payload: [String: LogValue], createdAt: Date = .now) {
+                operationType: OperationType, lamportClock: Int64, payload: [String: LogValue], createdAt: Date = Date()) {
         self.operationId = operationId; self.deviceId = deviceId; self.actorId = actorId; self.entityId = entityId
         self.entityType = entityType; self.operationType = operationType; self.lamportClock = lamportClock
         self.payload = payload; self.createdAt = createdAt

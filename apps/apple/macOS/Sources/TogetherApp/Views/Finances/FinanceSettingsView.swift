@@ -2,7 +2,7 @@ import SwiftUI
 import TogetherCore
 
 struct FinanceSettingsView: View {
-    let model: ApplicationModel
+    @ObservedObject var model: ApplicationModel
     @State private var personal = false
     @State private var sharedDay: Int
     @State private var personalDay: Int
@@ -33,22 +33,22 @@ struct FinanceSettingsView: View {
             Picker(Copy.text("finance.cycle.scope"), selection: $personal) { Text(Copy.text("finance.cycle.shared")).tag(false); Text(Copy.text("finance.cycle.personal")).tag(true) }.pickerStyle(.segmented).accessibilityIdentifier("finance.cycle.scope")
             HStack { Text(Copy.text("finance.cycle.startDay")); Spacer(); MonthDayWheelPicker(selection: personal ? $personalDay : $sharedDay).id(personal) }
             TextField(Copy.text("finance.field.timeZone"), text: personal ? $personalZone : $sharedZone).textFieldStyle(.roundedBorder)
-            Text(Copy.text("finance.cycle.guidance")).font(.caption).foregroundStyle(.secondary)
+            Text(Copy.text("finance.cycle.guidance")).font(.caption).foregroundColor(.secondary)
             if personal {
                 Toggle(Copy.text("finance.cycle.salaryDay"), isOn: $salaryEnabled)
                 if salaryEnabled { MonthDayWheelPicker(selection: $salaryDay) }
                 Toggle(Copy.text("finance.cycle.depositDay"), isOn: $planEnabled)
                 if planEnabled { MonthDayWheelPicker(selection: $planDay) }
-                Text(Copy.text("finance.cycle.planGuidance")).font(.caption).foregroundStyle(.secondary)
+                Text(Copy.text("finance.cycle.planGuidance")).font(.caption).foregroundColor(.secondary)
             }
             Divider()
-            Toggle(Copy.text("finance.notifications.enable"), isOn: $systemNotifications).onChange(of: systemNotifications) { _, enabled in
+            Toggle(Copy.text("finance.notifications.enable"), isOn: $systemNotifications).onChange(of: systemNotifications) { enabled in
                 guard enabled else { return }
                 Task { do { let allowed = try await FinanceNotificationScheduler.requestPermission(); if !allowed { systemNotifications = false; error = Copy.text("finance.notifications.denied") } } catch { systemNotifications = false; self.error = Copy.userError(error) } }
             }
             HStack { Text(Copy.text("finance.cards.title")).font(.headline); Spacer(); Button(Copy.text("finance.cards.new")) { model.replaceSheet(.finance(.card(nil))) }.accessibilityIdentifier("finance.card.new") }
             ForEach(model.engine.visiblePaymentMethods) { card in
-                HStack { VStack(alignment: .leading) { Text(Copy.format("finance.format.detail", card.name, card.lastFour)); Text(Copy.format("finance.format.detail", card.bankName, model.name(card.holderId))).font(.caption).foregroundStyle(.secondary) }; Spacer(); if card.ownerId == model.engine.identity.descriptor.userId { Button(Copy.text("copy.action.051836569928")) { model.replaceSheet(.finance(.card(card.id))) }; Button(Copy.text("copy.action.2f9daa828907"), role: .destructive) { model.perform { try model.engine.deletePaymentMethod(card.id) } } } }
+                HStack { VStack(alignment: .leading) { Text(Copy.format("finance.format.detail", card.name, card.lastFour)); Text(Copy.format("finance.format.detail", card.bankName, model.name(card.holderId))).font(.caption).foregroundColor(.secondary) }; Spacer(); if card.ownerId == model.engine.identity.descriptor.userId { Button(Copy.text("copy.action.051836569928")) { model.replaceSheet(.finance(.card(card.id))) }; TogetherRoleButton(Copy.text("copy.action.2f9daa828907"), role: .destructive) { model.perform { try model.engine.deletePaymentMethod(card.id) } } } }
             }
         }
     }
@@ -63,7 +63,7 @@ struct FinanceSettingsView: View {
     }
 }
 struct PaymentCardEditor: View {
-    let model: ApplicationModel
+    @ObservedObject var model: ApplicationModel
     let id: UUID
     @State private var bank: String
     @State private var name: String
@@ -93,7 +93,7 @@ struct PaymentCardEditor: View {
             Toggle(Copy.text("finance.cards.optionalCurrency"), isOn: $hasCurrency)
             if hasCurrency { CurrencyWheelPicker(selection: $currency) }
             Toggle(Copy.text("finance.cards.shared"), isOn: $shared)
-            Text(Copy.text("finance.cards.privacy")).font(.caption).foregroundStyle(.secondary)
+            Text(Copy.text("finance.cards.privacy")).font(.caption).foregroundColor(.secondary)
         }
     }
 }

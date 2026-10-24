@@ -18,6 +18,23 @@
           }
         }
       }
+    },
+    "NSLocalNetworkUsageDescription": {
+      "comment": "Guidance; native local-network permission for authenticated device connections",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "允许 Together 与你的其他设备和伴侣的设备连接。"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Allow Together to connect to your devices and your partner’s devices."
+          }
+        }
+      }
     }
   }
 }

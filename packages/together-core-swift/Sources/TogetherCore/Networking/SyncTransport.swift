@@ -1,5 +1,5 @@
 import Foundation
-import Observation
+import Combine
 @preconcurrency import Network
 
 public enum TransportState: Sendable { case offline, connecting, connected, error }
@@ -14,14 +14,14 @@ public enum TransportEndpoint: Sendable { case relay(url: URL, ticket: String), 
     func disconnect()
 }
 
-@MainActor @Observable public final class RelayWebSocketTransport: SyncTransport {
-    public private(set) var state: TransportState = .offline
-    @ObservationIgnored public var onReceive: ((Data) -> Void)?
-    @ObservationIgnored public var onState: ((TransportState) -> Void)?
-    @ObservationIgnored public var onError: ((Error) -> Void)?
-    @ObservationIgnored private var task: URLSessionWebSocketTask?
-    @ObservationIgnored private var receiveTask: Task<Void, Never>?
-    @ObservationIgnored private let session: URLSession
+@MainActor public final class RelayWebSocketTransport: SyncTransport, ObservableObject {
+    @Published public private(set) var state: TransportState = .offline
+    public var onReceive: ((Data) -> Void)?
+    public var onState: ((TransportState) -> Void)?
+    public var onError: ((Error) -> Void)?
+    private var task: URLSessionWebSocketTask?
+    private var receiveTask: Task<Void, Never>?
+    private let session: URLSession
     public init(session: URLSession? = nil) { self.session = session ?? RelayURLSession.make() }
     public func connect(_ endpoint: TransportEndpoint) async throws {
         guard case let .relay(url, ticket) = endpoint else { throw TogetherError.invalid(Copy.text("copy.error.3df54032c0e6")) }
@@ -31,7 +31,7 @@ public enum TransportEndpoint: Sendable { case relay(url: URL, ticket: String), 
         receiveTask = Task { @MainActor [weak self] in
             do {
                 while !Task.isCancelled {
-                    let message = try await task.receive()
+                    let message = try await CompatibilityURLSession.receive(task)
                     guard let self, self.task === task else { return }
                     self.set(.connected)
                     let data: Data; switch message { case .data(let bytes): data = bytes; case .string(let text): data = Data(text.utf8); @unknown default: throw TogetherError.invalid(Copy.text("copy.error.5de002320d44")) }
@@ -43,7 +43,7 @@ public enum TransportEndpoint: Sendable { case relay(url: URL, ticket: String), 
     }
     public func send(_ data: Data) async throws {
         guard let task, data.count <= FrameDecoder.maximum else { throw TogetherError.invalid(Copy.text("copy.error.c71af0e23a33")) }
-        try await task.send(.data(data))
+        try await CompatibilityURLSession.send(.data(data), through: task)
     }
     public func disconnect() { receiveTask?.cancel(); receiveTask = nil; task?.cancel(with: .goingAway, reason: nil); task = nil; set(.offline) }
     private func set(_ state: TransportState) { self.state = state; onState?(state) }
@@ -52,7 +52,7 @@ public enum TransportEndpoint: Sendable { case relay(url: URL, ticket: String), 
 /// Retained low-level TCP adapter for migration and local regression tests.
 /// Legacy PeerService still owns its original listener/pairing lifecycle.
 @MainActor public final class LegacyTailscaleTransport: SyncTransport {
-    public private(set) var state: TransportState = .offline
+    @Published public private(set) var state: TransportState = .offline
     public var onReceive: ((Data) -> Void)?
     public var onState: ((TransportState) -> Void)?
     public var onError: ((Error) -> Void)?

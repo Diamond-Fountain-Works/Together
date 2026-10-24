@@ -1,6 +1,6 @@
 import Foundation
 import CryptoKit
-import Observation
+import Combine
 
 public struct RecurrenceDraft: Sendable {
     public var mode: RecurrenceMode
@@ -22,26 +22,26 @@ public enum TogetherError: LocalizedError {
     public var errorDescription: String? { if case let .invalid(text) = self { text } else { nil } }
 }
 
-@MainActor @Observable public final class ReplicaEngine {
+@MainActor public final class ReplicaEngine: ObservableObject {
     public let identity: DeviceIdentity
     public let repository: TogetherRepository
     public let mediaStore: MediaStore
     public let enrollmentRoot: URL?
-    @ObservationIgnored public let dateProvider: any DateProvider
-    public private(set) var mediaProgress: [UUID: MediaProgress] = [:]
-    public private(set) var stagedAssets: [UUID: MediaAsset] = [:]
-    public private(set) var peer: PairedPeer?
-    public private(set) var snapshot = DomainSnapshot()
-    public private(set) var operations: [SignedOperation] = []
-    public private(set) var changeNumber = 0
-    @ObservationIgnored public var onOperationsChanged: (() -> Void)?
-    @ObservationIgnored private var mediaDownloadSources:[UUID:UUID]=[:]
-    @ObservationIgnored private var giftSourceDevices: [UUID: UUID] = [:]
-    @ObservationIgnored private var presentationCache: [UUID: GiftPresentationState] = [:]
-    @ObservationIgnored private var progressPublishedAt: [UUID: ContinuousClock.Instant] = [:]
-    @ObservationIgnored var financeChangeCache: (operationCount: Int, members: Set<UUID>, limit: Int, changes: [FinanceChange])?
-    @ObservationIgnored private var replicationContext: ReplicaContext?
-    @ObservationIgnored private var activatingReplication = false
+    public let dateProvider: any DateProvider
+    @Published public private(set) var mediaProgress: [UUID: MediaProgress] = [:]
+    @Published public private(set) var stagedAssets: [UUID: MediaAsset] = [:]
+    @Published public private(set) var peer: PairedPeer?
+    @Published public private(set) var snapshot = DomainSnapshot()
+    @Published public private(set) var operations: [SignedOperation] = []
+    @Published public private(set) var changeNumber = 0
+    public var onOperationsChanged: (() -> Void)?
+    private var mediaDownloadSources:[UUID:UUID]=[:]
+    private var giftSourceDevices: [UUID: UUID] = [:]
+    private var presentationCache: [UUID: GiftPresentationState] = [:]
+    private var progressPublishedAt: [UUID: CompatibilityClock.Instant] = [:]
+    var financeChangeCache: (operationCount: Int, members: Set<UUID>, limit: Int, changes: [FinanceChange])?
+    private var replicationContext: ReplicaContext?
+    private var activatingReplication = false
     public var context: ReplicaContext { replicationContext ?? ReplicaContext(local: identity.descriptor, peer: peer?.descriptor) }
     public var usesReplication4: Bool { replicationContext != nil }
     public var isCompletingPartnership: Bool { (try? repository.load(Bool.self, key: "partner4/pending")) == true && !usesReplication4 }
@@ -75,8 +75,16 @@ public enum TogetherError: LocalizedError {
     }
 
     public static func production(migrateLegacyIdentity: Bool = false) throws -> ReplicaEngine {
-        guard Bundle.main.bundleIdentifier != "com.together.app.qa" else {throw TogetherError.invalid(Copy.text("qa.error.isolatedLaunch"))}
-        let root = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)[0].appendingPathComponent("Together", isDirectory: true)
+        guard !["com.together.app.qa", "com.together.app.ios.qa"].contains(Bundle.main.bundleIdentifier ?? "") else {throw TogetherError.invalid(Copy.text("qa.error.isolatedLaunch"))}
+        let systemSupport = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)[0]
+        #if os(iOS)
+        // Canonicalize only the OS-provided parent (/var's sandbox alias),
+        // never the user-controlled Together child or identity workspace.
+        let support = systemSupport.resolvingSymlinksInPath()
+        #else
+        let support = systemSupport
+        #endif
+        let root = support.appendingPathComponent("Together", isDirectory: true)
         let directory = try DeviceEnrollmentWorkspace(root: root).activeDirectory()
         if !FileManager.default.fileExists(atPath: directory.appendingPathComponent("Together.store").path) {
             let keys = (try? FileManager.default.contentsOfDirectory(at: directory.appendingPathComponent("Identity"), includingPropertiesForKeys: nil)) ?? []
@@ -217,7 +225,7 @@ public enum TogetherError: LocalizedError {
         ["spaceId": .id(asset.spaceId), "ownerId": .id(asset.ownerId), "mediaType": .string(asset.mediaType.rawValue), "originalFilename": .string(asset.originalFilename), "fileExtension": .string(asset.fileExtension), "sha256": .string(asset.sha256), "byteCount": .integer(Int(asset.byteCount))]
     }
     public func setMediaProgress(_ progress: MediaProgress) {
-        let now = ContinuousClock.now
+        let now = CompatibilityClock.now
         if progress.status == .transferring, mediaProgress[progress.assetId]?.status == .transferring,
            let previous = progressPublishedAt[progress.assetId], previous.duration(to: now) < .milliseconds(100) { return }
         progressPublishedAt[progress.assetId] = now; mediaProgress[progress.assetId] = progress; changeNumber += 1

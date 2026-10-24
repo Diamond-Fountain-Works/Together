@@ -12,7 +12,7 @@ public enum LaunchPresentation: String, Identifiable, Sendable { case advisor, w
     public var hasCompletedInitialSetup: Bool { defaults.bool(forKey: "hasCompletedInitialSetup") }
     public func finishInitialSetup() { defaults.set(true, forKey: "hasCompletedInitialSetup") }
 
-    public func processLaunch(version: String, now: Date = .now) -> [LaunchPresentation] {
+    public func processLaunch(version: String, now: Date = Date()) -> [LaunchPresentation] {
         let previous = lastAppOpenedAt
         let first = previous == nil
         let stale = previous.map { now.timeIntervalSince($0) >= 60 * 24 * 60 * 60 } ?? false

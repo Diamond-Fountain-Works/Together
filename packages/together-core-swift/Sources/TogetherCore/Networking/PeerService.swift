@@ -1,5 +1,5 @@
 import Foundation
-import Observation
+import Combine
 import CryptoKit
 @preconcurrency import Network
 
@@ -14,31 +14,31 @@ public struct PairingProposal: Identifiable, Sendable {
     public let userId: UUID
 }
 
-@MainActor @Observable public final class PeerService {
-    public private(set) var state: ConnectionState = .disconnected
-    public private(set) var errorMessage: String?
-    public private(set) var boundPort: UInt16 = 0
-    public private(set) var localHost = "127.0.0.1"
-    public private(set) var proposal: PairingProposal?
-    public private(set) var lastSynchronizedAt: Date?
-    public private(set) var completedSyncCount = 0
-    public private(set) var retryDelay: Double = 0
+@MainActor public final class PeerService: ObservableObject {
+    @Published public private(set) var state: ConnectionState = .disconnected
+    @Published public private(set) var errorMessage: String?
+    @Published public private(set) var boundPort: UInt16 = 0
+    @Published public private(set) var localHost = "127.0.0.1"
+    @Published public private(set) var proposal: PairingProposal?
+    @Published public private(set) var lastSynchronizedAt: Date?
+    @Published public private(set) var completedSyncCount = 0
+    @Published public private(set) var retryDelay: Double = 0
     public var isOnline: Bool { state == .connected || state == .syncing }
-    @ObservationIgnored private let engine: ReplicaEngine
-    @ObservationIgnored private let queue = DispatchQueue(label: "com.together.network")
-    @ObservationIgnored private var listener: NWListener?
-    @ObservationIgnored private var sessions: [UUID: PeerSession] = [:]
-    @ObservationIgnored private var activeId: UUID?
-    @ObservationIgnored private var monitor = NWPathMonitor()
-    @ObservationIgnored private var reconnectTask: Task<Void, Never>?
-    @ObservationIgnored private var reconnectEnabled = true
-    @ObservationIgnored private var applyingRemote = false
-    @ObservationIgnored private var retryAttempt = 0
-    @ObservationIgnored private var resolving = false
-    @ObservationIgnored private var running = false
-    @ObservationIgnored private var automaticallyManagingListener = false
-    @ObservationIgnored private var listenerRecoveryTask: Task<Void, Never>?
-    @ObservationIgnored private var listenerStarting = false
+    private let engine: ReplicaEngine
+    private let queue = DispatchQueue(label: "com.together.network")
+    private var listener: NWListener?
+    private var sessions: [UUID: PeerSession] = [:]
+    private var activeId: UUID?
+    private var monitor = NWPathMonitor()
+    private var reconnectTask: Task<Void, Never>?
+    private var reconnectEnabled = true
+    private var applyingRemote = false
+    private var retryAttempt = 0
+    private var resolving = false
+    private var running = false
+    private var automaticallyManagingListener = false
+    private var listenerRecoveryTask: Task<Void, Never>?
+    private var listenerStarting = false
 
     public init(engine: ReplicaEngine) {
         self.engine = engine
@@ -151,7 +151,7 @@ public struct PairingProposal: Identifiable, Sendable {
         }
         connection.start(queue: queue)
         session.handshakeTimeout = Task { @MainActor [weak self] in
-            try? await Task.sleep(for: .seconds(45))
+            try? await CompatibilityClock.sleep(for: .seconds(45))
             guard !Task.isCancelled, let self, self.activeId != session.id else { return }
             self.close(session, error: TogetherError.invalid(Copy.text("copy.error.f459dd8f6b10")))
         }
@@ -241,7 +241,7 @@ public struct PairingProposal: Identifiable, Sendable {
         let sync = OperationLogSyncSession(engine: engine, remote: remote.descriptor) { [weak self, weak session] payload in
             if let self, let session, self.activeId == session.id { self.enqueue(payload, on: session) }
         }
-        sync.onConverged = { [weak self] in self?.state = .connected; self?.lastSynchronizedAt = .now; self?.completedSyncCount += 1; self?.retryAttempt = 0; self?.retryDelay = 0; self?.errorMessage = nil }
+        sync.onConverged = { [weak self] in self?.state = .connected; self?.lastSynchronizedAt = Date(); self?.completedSyncCount += 1; self?.retryAttempt = 0; self?.retryDelay = 0; self?.errorMessage = nil }
         sync.onSyncing = { [weak self] in self?.state = .syncing }
         sync.onError = { [weak self] error in self?.errorMessage = error.localizedDescription }
         session.sync = sync; sync.synchronize()
@@ -294,7 +294,7 @@ public struct PairingProposal: Identifiable, Sendable {
         retryAttempt += 1
         let delay = retryDelay
         reconnectTask = Task { @MainActor [weak self] in
-            try? await Task.sleep(for: .seconds(delay))
+            try? await CompatibilityClock.sleep(for: .seconds(delay))
             guard !Task.isCancelled, let self else { return }
             self.reconnectTask = nil
             guard self.activeId == nil, self.sessions.isEmpty, let peer = self.engine.peer else { return }
@@ -314,7 +314,7 @@ public struct PairingProposal: Identifiable, Sendable {
         guard automaticallyManagingListener, listenerRecoveryTask == nil else { return }
         listenerRecoveryTask = Task { @MainActor [weak self] in
             while !Task.isCancelled {
-                try? await Task.sleep(for: .seconds(15))
+                try? await CompatibilityClock.sleep(for: .seconds(15))
                 guard !Task.isCancelled, let self, self.running else { return }
                 self.recoverListenerIfNeeded()
             }

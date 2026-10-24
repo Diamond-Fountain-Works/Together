@@ -1,27 +1,32 @@
+import Combine
+#if os(macOS)
 import AppKit
+#else
+import UIKit
+#endif
 import SwiftUI
 import TogetherCore
 import UniformTypeIdentifiers
 
-@MainActor @Observable final class DeviceEnrollmentModel {
+@MainActor final class DeviceEnrollmentModel: ObservableObject {
     let model: ApplicationModel
-    var offer: DeviceEnrollmentOffer?
-    var request: DeviceEnrollmentRequest?
-    var completion: DeviceEnrollmentCompletion?
-    var migration: LegacyMigrationExchange?
-    var deviceName = Host.current().localizedName ?? Copy.text("device.default.name")
-    var verifiedOffer = false
-    var verifiedRequest = false
-    var verifiedCompletion = false
-    var verifiedMigration = false
-    var busy = false
-    var error: String?
-    var status: String?
-    var revoking: AuthorizedDevice?
-    var devices: [AuthorizedDevice] = []
+    @Published var offer: DeviceEnrollmentOffer?
+    @Published var request: DeviceEnrollmentRequest?
+    @Published var completion: DeviceEnrollmentCompletion?
+    @Published var migration: LegacyMigrationExchange?
+    @Published var deviceName = TogetherPlatform.deviceName
+    @Published var verifiedOffer = false
+    @Published var verifiedRequest = false
+    @Published var verifiedCompletion = false
+    @Published var verifiedMigration = false
+    @Published var busy = false
+    @Published var error: String?
+    @Published var status: String?
+    @Published var revoking: AuthorizedDevice?
+    @Published var devices: [AuthorizedDevice] = []
     init(model: ApplicationModel) {
         self.model = model
-        #if DEBUG
+        #if DEBUG && os(macOS)
         if UIFixture.enabled { deviceName = Copy.text("device.default.name") }
         #endif
         if let root = model.engine.enrollmentRoot {
@@ -56,13 +61,13 @@ import UniformTypeIdentifiers
             guard let service = self.service else { throw ReplicationError.incompatibleProtocol }
             self.offer = try await service.createDeviceOffer()
             self.request = nil; self.completion = nil; self.verifiedRequest = false
-            if let offer = self.offer { try self.export(offer, filename: "device.file.offer") }
+            if let offer = self.offer { try await self.export(offer, filename: "device.file.offer") }
         }
     }
-    func exportOfferAgain() { if let offer { run { try self.export(offer, filename: "device.file.offer") } } }
+    func exportOfferAgain() { if let offer { run { try await self.export(offer, filename: "device.file.offer") } } }
     func importRequest() {
         run {
-            guard let request = try self.read(DeviceEnrollmentRequest.self) else { return }
+            guard let request = try await self.read(DeviceEnrollmentRequest.self) else { return }
             guard let offer = try self.model.engine.repository.load(DeviceEnrollmentOffer.self, key: "replication4/enrollment/offer/\(request.body.offerId)") else { throw ReplicationError.unauthorized }
             try request.verify(offer: offer)
             self.request = request; self.offer = offer; self.completion = nil; self.verifiedRequest = false
@@ -74,30 +79,30 @@ import UniformTypeIdentifiers
             let done = try await service.approveDeviceRequest(request, verified: self.verifiedRequest)
             self.completion = done
             self.status = Copy.text("device.status.authorized")
-            try self.export(done, filename: "device.file.completion")
+            try await self.export(done, filename: "device.file.completion")
         }
     }
-    func exportCompletionAgain() { if let completion { run { try self.export(completion, filename: "device.file.completion") } } }
+    func exportCompletionAgain() { if let completion { run { try await self.export(completion, filename: "device.file.completion") } } }
     func importOffer() {
         run {
             guard self.canJoin else { throw DeviceEnrollmentError.existingData }
-            guard let offer = try self.read(DeviceEnrollmentOffer.self) else { return }
-            _ = try offer.verify(now: .now)
+            guard let offer = try await self.read(DeviceEnrollmentOffer.self) else { return }
+            _ = try offer.verify(now: Date())
             self.offer = offer; self.request = nil; self.completion = nil; self.verifiedOffer = false; self.verifiedCompletion = false
         }
     }
     func createRequest() {
         run {
             guard self.canJoin, let root = self.model.engine.enrollmentRoot, let offer = self.offer else { throw DeviceEnrollmentError.existingData }
-            let request = try DeviceEnrollmentWorkspace(root: root).stage(offer: offer, name: self.deviceName, verified: self.verifiedOffer, now: .now, source: self.model.engine)
+            let request = try DeviceEnrollmentWorkspace(root: root).stage(offer: offer, name: self.deviceName, verified: self.verifiedOffer, now: Date(), source: self.model.engine)
             self.request = request
-            try self.export(request, filename: "device.file.request")
+            try await self.export(request, filename: "device.file.request")
         }
     }
     func importCompletion() {
         run {
             guard self.canJoin, let offer = self.offer, let request = self.request else { throw DeviceEnrollmentError.existingData }
-            guard let completion = try self.read(DeviceEnrollmentCompletion.self) else { return }
+            guard let completion = try await self.read(DeviceEnrollmentCompletion.self) else { return }
             _ = try completion.verify(request: request, offer: offer)
             self.completion = completion; self.verifiedCompletion = false
         }
@@ -113,12 +118,12 @@ import UniformTypeIdentifiers
         run {
             self.migration = try await LegacyMigrationExchange.begin(self.model.engine)
             self.verifiedMigration = false
-            if let migration = self.migration { try self.export(migration, filename: "device.file.migration") }
+            if let migration = self.migration { try await self.export(migration, filename: "device.file.migration") }
         }
     }
     func importMigration() {
         run {
-            guard let migration = try self.read(LegacyMigrationExchange.self) else { return }
+            guard let migration = try await self.read(LegacyMigrationExchange.self) else { return }
             try await migration.validate(self.model.engine)
             self.migration = migration; self.verifiedMigration = false
         }
@@ -127,7 +132,7 @@ import UniformTypeIdentifiers
         run {
             guard let proposal = self.migration else { throw ReplicationError.unauthorized }
             self.migration = try await proposal.cosign(self.model.engine, verified: self.verifiedMigration)
-            try self.export(self.migration!, filename: "device.file.migration")
+            try await self.export(self.migration!, filename: "device.file.migration")
         }
     }
     func activateMigration() {
@@ -144,22 +149,16 @@ import UniformTypeIdentifiers
             self.status = Copy.text("device.status.revoked")
         }
     }
-    private func read<T: Decodable>(_ type: T.Type) throws -> T? {
-        let panel = NSOpenPanel(); panel.allowedContentTypes = [.json]; panel.allowsMultipleSelection = false
-        if let directory = model.filePanelDirectory { panel.directoryURL = directory }
-        guard panel.runModal() == .OK, let url = panel.url else { return nil }
+    private func read<T: Decodable>(_ type: T.Type) async throws -> T? {
+        guard let url = try await TogetherFilePanels.choose(types: [.json], directory: model.filePanelDirectory) else { return nil }
         let scoped = url.startAccessingSecurityScopedResource(); defer { if scoped { url.stopAccessingSecurityScopedResource() } }
         let values = try url.resourceValues(forKeys: [.isRegularFileKey, .fileSizeKey])
         guard values.isRegularFile == true, let size = values.fileSize, size <= 524288 else { throw ReplicationError.bounds }
         return try CanonicalJSON.decode(type, from: Data(contentsOf: url))
     }
-    private func export<T: Encodable>(_ value: T, filename: String) throws {
+    private func export<T: Encodable>(_ value: T, filename: String) async throws {
         let bytes = try CanonicalJSON.encode(value)
         guard bytes.count <= 524288 else { throw ReplicationError.bounds }
-        let panel = NSSavePanel(); panel.allowedContentTypes = [.json]; panel.nameFieldStringValue = Copy.text(filename)
-        if let directory = model.filePanelDirectory { panel.directoryURL = directory }
-        guard panel.runModal() == .OK, let url = panel.url else { return }
-        let scoped = url.startAccessingSecurityScopedResource(); defer { if scoped { url.stopAccessingSecurityScopedResource() } }
-        try bytes.write(to: url, options: .atomic)
+        try await TogetherFilePanels.exportJSON(bytes, filename: Copy.text(filename), directory: model.filePanelDirectory)
     }
 }

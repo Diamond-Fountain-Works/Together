@@ -20,6 +20,7 @@ import tempfile
 import zipfile
 
 ROOT = Path(__file__).resolve().parents[1]
+PLATFORM_SUPPORT = ROOT / "packages/together-native-source/platform-support.json"
 PRIVATE = re.compile(r"(?i)(?:^|/)(?:[^/]+\.(?:sqlite3?|db|store)(?:-wal|-shm)?|[^/]+\.(?:key|p12|pfx|jks|keystore)|\.env(?:\.[^/]+)?|\.dev\.vars(?:\.[^/]+)?|native-app-state\.json)$")
 
 
@@ -33,6 +34,18 @@ def digest(path):
 
 def run(*args):
     return subprocess.run([str(a) for a in args], capture_output=True, timeout=120)
+
+
+def minimum_android_api(badging):
+    # aapt/aapt2 releases use both spellings. Never infer a minimum from target.
+    rows = re.findall(r"^\s*(?:sdkVersion|minSdkVersion):([^\n]*)$", badging, re.M)
+    values = [re.fullmatch(r"\s*'(\d+)'\s*", row) for row in rows]
+    if not rows or not all(values):
+        return None
+    levels = {int(value[1]) for value in values}
+    if len(levels) != 1:
+        raise ValueError("Conflicting Android minimum SDK declarations")
+    return next(iter(levels))
 
 
 def sdk_tool(name):
@@ -50,23 +63,28 @@ def sdk_tool(name):
 
 
 def elf_load_segments(data):
-    """Parse ELF program headers; inspect real p_align, not a filename/ZIP claim."""
-    if len(data) < 64 or data[:4] != b"\x7fELF" or data[4] not in (1, 2) or data[5] not in (1, 2):
-        raise ValueError("Invalid ELF header")
-    order = "<" if data[5] == 1 else ">"
+    """Parse Android little-endian ELF LOAD metadata and validate its file ranges."""
+    if len(data) < 64 or data[:4] != b"\x7fELF" or data[4] not in (1, 2) or data[5] != 1:
+        raise ValueError("Invalid Android little-endian ELF header")
+    order = "<"
     wide = data[4] == 2
     offset = struct.unpack_from(order + ("Q" if wide else "I"), data, 32 if wide else 28)[0]
     entry_size, count = struct.unpack_from(order + "HH", data, 54 if wide else 42)
     minimum = 56 if wide else 32
-    if not 0 < count < 65535 or entry_size < minimum or offset + count * entry_size > len(data):
+    if not 0 < count < 65535 or entry_size < minimum or offset < (64 if wide else 52) or offset + count * entry_size > len(data):
         raise ValueError("Invalid ELF program-header bounds")
     result = []
     for index in range(count):
         start = offset + index * entry_size
         if struct.unpack_from(order + "I", data, start)[0] == 1:
             value_format = "Q" if wide else "I"
+            file_offset = struct.unpack_from(order + value_format, data, start + (8 if wide else 4))[0]
+            file_size = struct.unpack_from(order + value_format, data, start + (32 if wide else 16))[0]
+            memory_size = struct.unpack_from(order + value_format, data, start + (40 if wide else 20))[0]
+            if file_offset > len(data) or file_size > len(data) - file_offset or file_size > memory_size:
+                raise ValueError("Invalid ELF LOAD file or memory bounds")
             result.append({
-                "offset": struct.unpack_from(order + value_format, data, start + (8 if wide else 4))[0],
+                "offset": file_offset,
                 "virtualAddress": struct.unpack_from(order + value_format, data, start + (16 if wide else 8))[0],
                 "alignment": struct.unpack_from(order + value_format, data, start + (48 if wide else 28))[0],
             })
@@ -91,6 +109,49 @@ def signed_entitlements(result):
             except (plistlib.InvalidFileException, ValueError):
                 continue
     return {}
+
+
+def apple_build_targets(text):
+    """Read complete LC_BUILD_VERSION records; do not confuse iOS and Simulator."""
+    targets = []
+    for block in re.split(r"(?m)^\s*Load command\s+\d+\s*$", text):
+        if not re.search(r"(?m)^\s*cmd\s+LC_BUILD_VERSION\s*$", block):
+            continue
+        fields = {}
+        for key in ("platform", "minos"):
+            values = re.findall(r"(?m)^\s*" + key + r"\s+(\S+)\s*$", block)
+            if len(values) != 1:
+                raise ValueError("Missing or contradictory Mach-O " + key)
+            fields[key] = values[0]
+        targets.append(fields)
+    return targets
+
+
+def modern_weak_imports(text):
+    """Prove each used modern module is weak, including Swift runtime overlays."""
+    imports = {"SwiftData": [], "Observation": []}
+    for block in text.split("Load command"):
+        name = re.search(r"(?m)^\s*name\s+(\S+)\s+\(offset\s+\d+\)", block)
+        command = re.search(r"(?m)^\s*cmd\s+(\S+)\s*$", block)
+        if not (name and command):
+            continue
+        for module in imports:
+            if module + ".framework/" in name[1] or "/libswift" + module + ".dylib" in name[1]:
+                imports[module].append(command[1] == "LC_LOAD_WEAK_DYLIB")
+    return {name: bool(values) and all(values) for name, values in imports.items()}
+
+
+def contains_file_markers(path, markers):
+    # Scan arbitrary-size executables without reading a whole binary into memory.
+    overlap = max(len(value) for value in markers) - 1
+    tail = b""
+    with path.open("rb") as stream:
+        for block in iter(lambda: stream.read(1024 * 1024), b""):
+            data = tail + block
+            if any(value in data for value in markers):
+                return True
+            tail = data[-overlap:] if overlap else b""
+    return False
 
 
 def mac_native_symbols(bundle, binary):
@@ -213,8 +274,19 @@ def mac_report(bundle):
     checks["incrementedBuild"] = info.get("CFBundleVersion") == config["buildNumber"] and int(info["CFBundleVersion"]) > 18
     arch = run("lipo", "-archs", binary)
     architectures = arch.stdout.decode().split() if arch.returncode == 0 else []
-    checks["nativeArchitecture"] = architectures in (["arm64"], ["arm64", "x86_64"], ["x86_64", "arm64"])
-    checks["minimumOS"] = tuple(map(int, info.get("LSMinimumSystemVersion", "0").split("."))) >= (14, 5)
+    support = json.loads(PLATFORM_SUPPORT.read_text())["macOS"]
+    checks["nativeArchitecture"] = architectures == support["architectures"]
+    checks["minimumOS"] = info.get("LSMinimumSystemVersion") == support["minimumVersion"]
+    build_version = run("xcrun", "vtool", "-arch", "arm64", "-show-build", binary)
+    minimum = re.search(r"platform\s+MACOS.*?minos\s+([0-9.]+)", build_version.stdout.decode(), re.S)
+    checks["actualMachOMinimum"] = minimum is not None and minimum[1] == support["minimumVersion"]
+    load_commands = run("otool", "-l", binary).stdout.decode()
+    modern_frameworks = [entry for entry in load_commands.split("Load command") if
+                         any(name in entry for name in ["SwiftData.framework/", "Observation.framework/"])]
+    checks["newerFrameworksWeakLinked"] = all("LC_LOAD_WEAK_DYLIB" in entry for entry in modern_frameworks)
+    dependencies = run("otool", "-L", binary).stdout.decode()
+    concurrency_needed = "@rpath/libswift_Concurrency.dylib" in dependencies
+    checks["oldSystemConcurrencyRuntimeIncluded"] = not concurrency_needed or (bundle / "Contents/Frameworks/libswift_Concurrency.dylib").is_file()
     checks["signature"] = run("codesign", "--verify", "--deep", "--strict", bundle).returncode == 0
     signed = run("codesign", "-d", "--entitlements", ":-", bundle)
     entitlements = signed_entitlements(signed) if signed.returncode == 0 else {}
@@ -241,6 +313,79 @@ def mac_report(bundle):
             "nativeSymbolEvidence": native, "packagedPrivatePaths": private}
 
 
+def ios_report(bundle):
+    info = plistlib.loads((bundle / "Info.plist").read_bytes())
+    executable = info.get("CFBundleExecutable")
+    if not isinstance(executable, str) or Path(executable).name != executable or executable in (".", ".."):
+        raise ValueError("iOS executable must be a bundle-local filename")
+    binary = bundle / executable
+    config = json.loads((ROOT / "apps/apple/macOS/Configuration/ReleaseVersion.json").read_text())
+    policy = json.loads(PLATFORM_SUPPORT.read_text())
+    support = policy["iOS"]
+    checks, warnings = {}, []
+    checks["normalIdentity"] = info.get("CFBundleIdentifier") == "com.together.app"
+    checks["version"] = info.get("CFBundleShortVersionString") == config["marketingVersion"]
+    checks["configuredBuild"] = info.get("CFBundleVersion") == config["buildNumber"]
+    checks["phoneAndTabletFamilies"] = info.get("UIDeviceFamily") == [1, 2]
+    checks["devicePlatform"] = info.get("CFBundleSupportedPlatforms") == ["iPhoneOS"] and info.get("DTPlatformName") == "iphoneos"
+    checks["minimumOSMatchesPolicy"] = info.get("MinimumOSVersion") == support["minimumVersion"] == policy["iPadOS"]["minimumVersion"]
+    checks["nativeTransport"] = info.get("TogetherTransport") == "native" and info.get("TogetherDeviceProtocolVersion") == config["deviceProtocolVersion"]
+    arch = run("lipo", "-archs", binary)
+    architectures = arch.stdout.decode().split() if arch.returncode == 0 else []
+    checks["nativeArchitecture"] = architectures == support["architectures"] == policy["iPadOS"]["architectures"]
+    build_version = run("xcrun", "vtool", "-arch", "arm64", "-show-build", binary)
+    targets = apple_build_targets(build_version.stdout.decode()) if build_version.returncode == 0 else []
+    checks["actualMachOMinimum"] = targets == [{"platform": "IOS", "minos": support["minimumVersion"]}]
+    commands = run("otool", "-l", binary)
+    weak = modern_weak_imports(commands.stdout.decode()) if commands.returncode == 0 else {}
+    checks["newerFrameworksWeakLinked"] = bool(weak) and all(weak.values())
+    paths = [p for p in bundle.rglob("*") if p.is_file()]
+    private = [str(p.relative_to(bundle)) for p in paths if PRIVATE.search(str(p.relative_to(bundle)))]
+    checks["noPackagedUserStoresOrKeys"] = not private
+    checks["noDebugSupportBinaries"] = not any(p.name.endswith(".debug.dylib") or p.name == "__preview.dylib" for p in paths)
+    markers = (b"together-native-app-ios-qa-", b"TOGETHER_IOS_QA")
+    checks["noQAStartupMarkers"] = not any(contains_file_markers(p, markers) for p in [binary] + [p for p in paths if p.suffix == ".dylib"])
+    catalog = json.loads((ROOT / "packages/together-core-swift/Sources/TogetherCore/Resources/UI.xcstrings").read_text())["strings"]
+    resources = {locale: plistlib.loads((bundle / "TogetherCore_TogetherCore.bundle" / (locale + ".lproj/UI.strings")).read_bytes()) for locale in ("en", "zh-Hans")}
+    checks["completeBilingualUIKeys"] = bool(catalog) and all(set(value) == set(catalog) and all(isinstance(text, str) and text for text in value.values()) for value in resources.values())
+    purposes = json.loads((ROOT / "apps/apple/macOS/Sources/TogetherApp/Resources/InfoPlist.xcstrings").read_text())["strings"]
+    permission_keys = ("NSLocalNetworkUsageDescription", "NSMicrophoneUsageDescription")
+    localized = {locale: plistlib.loads((bundle / (locale + ".lproj/InfoPlist.strings")).read_bytes()) for locale in ("en", "zh-Hans")}
+    checks["localizedPermissionPurposes"] = all(localized[locale].get(key) == purposes[key]["localizations"][locale]["stringUnit"]["value"] for locale in localized for key in permission_keys)
+    checks["basePermissionPurposes"] = all(info.get(key) == localized["zh-Hans"][key] for key in permission_keys)
+    notes = json.loads((bundle / "ReleaseNotes.json").read_text())
+    source_notes = json.loads((ROOT / "apps/apple/macOS/Sources/TogetherApp/Resources/ReleaseNotes.json").read_text())
+    valid_notes = isinstance(notes, list) and bool(notes) and all(
+        isinstance(note, dict) and isinstance(note.get("version"), str) and
+        isinstance(note.get("highlights"), list) and all(
+            isinstance(highlight, dict) and all(isinstance(highlight.get(key), str) and
+                highlight[key] in catalog for key in ("titleKey", "detailsKey"))
+            for highlight in note["highlights"]) for note in notes)
+    checks["releaseNotesResource"] = valid_notes and notes == source_notes
+    current_notes = any(isinstance(note, dict) and note.get("version") == config["marketingVersion"] for note in notes) if isinstance(notes, list) else False
+    if not current_notes:
+        warnings.append("currentVersionReleaseNotesMissing: add approved What's New content before a public release")
+    checks["appAssetsIncluded"] = (bundle / "Assets.car").is_file() and bool(info.get("CFBundleIcons")) and bool(info.get("CFBundleIcons~ipad"))
+    verification = run("codesign", "--verify", "--deep", "--strict", bundle)
+    signing = run("codesign", "-dvv", bundle)
+    unsigned = signing.returncode != 0 and "not signed at all" in signing.stderr.decode(errors="replace")
+    checks["signatureValidOrExplicitlyUnsigned"] = verification.returncode == 0 or unsigned
+    entitlements = signed_entitlements(run("codesign", "-d", "--entitlements", ":-", bundle)) if not unsigned else {}
+    checks["releaseDebuggerDisabled"] = not entitlements.get("get-task-allow", False)
+    signature_state = "UNSIGNED" if unsigned else "VERIFIED" if verification.returncode == 0 else "INVALID"
+    if unsigned:
+        warnings.append("Unsigned generic iOS bundle; not an installable/signed IPA. Provisioning, signing and physical-device acceptance remain required")
+    else:
+        warnings.append("Signature inspection does not verify a distribution provisioning profile or App Store acceptance")
+    return {"platform": "iOS/iPadOS", "path": str(bundle), "checks": checks, "warnings": warnings,
+            "architectures": architectures, "version": info.get("CFBundleShortVersionString"), "build": info.get("CFBundleVersion"),
+            "bundleIdentifier": info.get("CFBundleIdentifier"), "minimumOS": info.get("MinimumOSVersion"),
+            "actualMachOTargets": targets, "modernWeakImports": weak, "signature": signature_state,
+            "executableSHA256": digest(binary), "resourceKeyCounts": {key: len(value) for key, value in resources.items()},
+            "currentVersionReleaseNotesIncluded": current_notes, "packagedPrivatePaths": private,
+            "runtimeAcceptance": "NOT RUN", "provisioningAndInstallation": "NOT RUN"}
+
+
 def android_report(apk):
     aapt, apksigner, zipalign = (sdk_tool(n) for n in ("aapt2", "apksigner", "zipalign"))
     badging = run(aapt, "dump", "badging", apk)
@@ -251,6 +396,8 @@ def android_report(apk):
     if package is None:
         raise RuntimeError("APK package metadata missing")
     name, code, version = package.groups()
+    support = json.loads(PLATFORM_SUPPORT.read_text())["android"]
+    sdk = minimum_android_api(text)
     configured = re.search(r"^\s*versionCode\s*=\s*(\d+)\s*$",
         (ROOT / "apps/android/app/build.gradle.kts").read_text(), re.M)
     if configured is None:
@@ -263,7 +410,10 @@ def android_report(apk):
               "notDebuggable": "application-debuggable" not in text,
               "notTestOnly": "application-testOnly" not in text,
               "signature": signature.returncode == 0 and bool(certs)}
+    checks["minimumAPIMatchesPolicy"] = sdk == support["minimumAPI"]
+    checks["noMaximumAPIFilter"] = "maxSdkVersion:" not in text
     segments, private, warnings = {}, [], []
+    native_headers, native_levels = {}, {}
     with zipfile.ZipFile(apk) as archive:
         names = archive.namelist()
         checks["safeArchivePaths"] = all(not p.startswith("/") and ".." not in PurePosixPath(p).parts for p in names)
@@ -271,9 +421,19 @@ def android_report(apk):
         checks["noPackagedUserStoresOrKeys"] = not private
         for path in names:
             if path.startswith("lib/") and path.endswith(".so"):
-                segments[path] = elf_load_segments(archive.read(path))
+                data = archive.read(path)
+                segments[path] = elf_load_segments(data)
+                abi = path.split("/")[1]
+                expected = {"arm64-v8a": (2, 183), "armeabi-v7a": (1, 40)}.get(abi)
+                native_headers[path] = expected is not None and (data[4], struct.unpack_from("<H", data, 18)[0]) == expected
+                if path.endswith("/libiroh_ffi.so"):
+                    from rebuild_android_native import android_api_note
+                    native_levels[path] = android_api_note(data)
         checks["nativeLibraryIncluded"] = any(p.endswith("/libiroh_ffi.so") for p in segments)
         checks["samsungARM64Included"] = "lib/arm64-v8a/libiroh_ffi.so" in segments
+        checks["allSupportedNativeABIsIncluded"] = all("lib/" + abi + "/libiroh_ffi.so" in segments for abi in support["architectures"])
+        checks["nativeABIHeaders"] = bool(native_headers) and all(native_headers.values())
+        checks["nativeMinimumAPI"] = bool(native_levels) and all(level is not None and level <= support["minimumAPI"] for level in native_levels.values())
         checks["nativeELF16KiB"] = bool(segments) and all(
             all(s["alignment"] >= 16384 and s["alignment"] & (s["alignment"] - 1) == 0 and
                 s["offset"] % s["alignment"] == s["virtualAddress"] % s["alignment"] and
@@ -289,19 +449,21 @@ def android_report(apk):
             "expectedVersionCode": expected_code, "sha256": digest(apk),
             "bytes": apk.stat().st_size, "signerSHA256": certs,
             "abis": sorted({p.split("/")[1] for p in segments}), "elfLoadSegments": segments,
+            "minimumAPI": sdk, "nativeAPILevels": native_levels,
             "jnaJNIABI": jna, "packagedPrivatePaths": private}
 
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--mac-app", type=Path)
+    parser.add_argument("--ios-app", type=Path)
     parser.add_argument("--android-apk", type=Path)
     parser.add_argument("--json", type=Path)
     args = parser.parse_args()
-    if not (args.mac_app or args.android_apk):
+    if not (args.mac_app or args.ios_app or args.android_apk):
         parser.error("Provide at least one explicit artifact path; this tool never builds or installs")
     reports = []
-    for path, inspect in ((args.mac_app, mac_report), (args.android_apk, android_report)):
+    for path, inspect in ((args.mac_app, mac_report), (args.ios_app, ios_report), (args.android_apk, android_report)):
         if path:
             try:
                 report = inspect(path.resolve(strict=True))

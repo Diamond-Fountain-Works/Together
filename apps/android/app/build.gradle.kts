@@ -6,6 +6,18 @@ import java.util.zip.ZipFile
 import groovy.json.JsonSlurper
 
 plugins { id("com.android.application"); kotlin("android"); id("org.jetbrains.kotlin.plugin.compose"); id("com.google.devtools.ksp") }
+val platformPolicyFile = rootProject.file("../../packages/together-native-source/platform-support.json")
+val platformPolicy = JsonSlurper().parse(platformPolicyFile) as Map<*, *>
+val androidPolicy = platformPolicy["android"] as? Map<*, *> ?: error("Missing Android platform policy")
+val minimumAndroidAPI = (androidPolicy["minimumAPI"] as? Number)?.toInt() ?: error("Missing minimum Android API")
+val releaseAndroidABIs = (androidPolicy["architectures"] as? List<*>)?.map {
+    it as? String ?: error("Invalid Android ABI policy")
+} ?: error("Missing Android ABI policy")
+check(platformPolicy["schemaVersion"] == 1 && minimumAndroidAPI >= 24 &&
+    releaseAndroidABIs.isNotEmpty() && releaseAndroidABIs.distinct() == releaseAndroidABIs &&
+    releaseAndroidABIs.all { it in setOf("arm64-v8a", "armeabi-v7a") }) {
+    "Invalid Android platform policy or violation of the pinned native wrapper minimum API 24"
+}
 val togetherTestBuildType = providers.gradleProperty("together.testBuildType").orElse("debug").get().also {
     require(it in setOf("debug", "nativeQa")) { "Unsupported isolated test build type" }
 }
@@ -49,10 +61,11 @@ android {
     bundle { language { enableSplit = false } }
     defaultConfig {
         applicationId = "com.together.android"
-        minSdk = 28
+        // The pinned Iroh Android wrapper requires API 24; do not override its manifest.
+        minSdk = minimumAndroidAPI
         targetSdk = 36
-        versionCode = 16
-        versionName = "0.2.3"
+        versionCode = 17
+        versionName = "0.2.4"
         buildConfigField("String", "RELAY_URL", "\"https://together-connection.together-connection-service.workers.dev\"")
         buildConfigField("boolean", "NATIVE_QA", "false")
         buildConfigField("boolean", "NATIVE_P2P", "false")
@@ -88,8 +101,8 @@ android {
             buildConfigField("boolean", "NATIVE_P2P", "true")
             buildConfigField("String", "RELAY_URL", "\"\"")
             if (hasReleaseSigning) signingConfig = signingConfigs.getByName("release")
-            // This release supports Android arm64 phones; other ABIs require their own rebuilt ELF.
-            ndk { abiFilters += "arm64-v8a" }
+            // Both native libraries must be independently rebuilt and receipt-verified below.
+            ndk { abiFilters += releaseAndroidABIs }
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
     }
@@ -103,11 +116,18 @@ android {
             manifest.srcFile("src/nativeQaAndroidTest/AndroidManifest.xml")
         }
     }
-    compileOptions { sourceCompatibility = JavaVersion.VERSION_17; targetCompatibility = JavaVersion.VERSION_17 }
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+        // java.time, java.util.Base64 and atomic java.nio.file operations are also
+        // used by shared JVM modules. Backport them without changing signed bytes.
+        isCoreLibraryDesugaringEnabled = true
+    }
     packaging { resources.excludes += setOf("META-INF/versions/9/OSGI-INF/MANIFEST.MF", "META-INF/LICENSE*", "META-INF/NOTICE*") }
 }
 ksp { arg("room.schemaLocation", "$projectDir/schemas") }
 dependencies {
+    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs_nio:2.1.5")
     implementation(project(":core:domain"))
     implementation(platform("androidx.compose:compose-bom:2025.10.01"))
     implementation("androidx.activity:activity-compose:1.11.0")
@@ -128,17 +148,21 @@ dependencies {
     androidTestImplementation("androidx.test.ext:junit:1.3.0")
     androidTestImplementation("androidx.test:runner:1.7.0")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.7.0")
-    // Debug retains legacy C1; Release and isolated native QA reuse one native adapter.
-    androidTestImplementation("computer.iroh:iroh-android:1.1.0")
-    "nativeQaImplementation"("computer.iroh:iroh-android:1.1.0")
-    if (nativeReleaseAar != null) {
-        "releaseImplementation"(files(nativeReleaseAar))
-        // The original AAR declares this dependency; a local AAR has no Maven POM.
-        "releaseImplementation"("computer.iroh:iroh:1.1.0") {
-            exclude(group = "net.java.dev.jna", module = "jna")
+    // Debug retains legacy C1. Every native consumer uses a matched JNA Java/JNI
+    // AAR with the upstream 16KiB-call and older-Android reflection fixes.
+    for (configuration in listOf("androidTestImplementation", "nativeQaImplementation", "releaseImplementation")) {
+        if (nativeReleaseAar != null) {
+            add(configuration, files(nativeReleaseAar))
+            add(configuration, "computer.iroh:iroh:1.1.0") {
+                exclude(group = "net.java.dev.jna", module = "jna")
+            }
+        } else {
+            add(configuration, "computer.iroh:iroh-android:1.1.0") {
+                exclude(group = "net.java.dev.jna", module = "jna")
+            }
         }
-        "releaseImplementation"("net.java.dev.jna:jna:5.15.0@aar") { isTransitive = false }
-    } else "releaseImplementation"("computer.iroh:iroh-android:1.1.0")
+        add(configuration, "net.java.dev.jna:jna:5.19.1@aar") { isTransitive = false }
+    }
     androidTestImplementation(platform("androidx.compose:compose-bom:2025.10.01"))
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
@@ -156,7 +180,7 @@ val validateReleaseSigning by tasks.registering {
 val validateReleaseNativeArtifact by tasks.registering {
     doLast {
         check(nativeReleaseAar != null) {
-            "Release packaging is blocked: supply the security-patched arm64 16 KiB AAR, exact SHA-256 and source receipt"
+            "Release packaging is blocked: supply the security-patched API 24 ARM64/ARMv7 AAR, exact SHA-256 and source receipt"
         }
         // This checks reproducible build provenance, not independent protocol/security approval.
         val trustedManifestFile = rootProject.file("../../packages/together-native-source/source-manifest.json")
@@ -184,7 +208,9 @@ val validateReleaseNativeArtifact by tasks.registering {
             receipt["originalAARSHA256"] == trusted["originalAndroidAARSHA256"] &&
             receipt["outputAARSHA256"] == nativeReleaseAarDigest &&
             receipt["classesJarPreserved"] == true && receipt["otherEntriesPreserved"] == true &&
-            receipt["ffiExportsEqual"] == true && receipt["rebuiltABI"] == "arm64-v8a") {
+            receipt["ffiExportsEqual"] == true && receipt["androidAPI"] == minimumAndroidAPI &&
+            receipt["platformSupportSHA256"] == digest(platformPolicyFile.readBytes()) &&
+            (receipt["rebuiltABIs"] as? List<*>)?.toSet() == releaseAndroidABIs.toSet()) {
             "Native Release receipt does not prove the pinned security source/build; old alignment-only artifacts are rejected"
         }
         ZipFile(nativeReleaseAar).use { archive ->
@@ -195,33 +221,45 @@ val validateReleaseNativeArtifact by tasks.registering {
             check(classDigest == trusted["classesJarSHA256"] && classDigest == receipt["classesJarSHA256"]) {
                 "Native AAR changed the original verified Iroh 1.1.0 Android classes"
             }
-            val library = archive.getEntry("jni/arm64-v8a/libiroh_ffi.so") ?: error("Native AAR is missing arm64 ELF")
-            val bytes = archive.getInputStream(library).use { it.readBytes() }
-            check(digest(bytes) == receipt["arm64LibrarySHA256"]) { "Native ELF differs from its security build receipt" }
-            check(bytes.size >= 64 && bytes.copyOfRange(0, 4).contentEquals(byteArrayOf(0x7f, 0x45, 0x4c, 0x46)) &&
-                bytes[4].toInt() == 2 && bytes[5].toInt() == 1) { "Native artifact is not a little-endian ELF64" }
-            val elf = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-            check(elf.getShort(18).toInt() == 183) { "Native artifact is not Android arm64" }
-            val headersAt = elf.getLong(32)
-            val headerSize = elf.getShort(54).toInt() and 0xffff
-            val headerCount = elf.getShort(56).toInt() and 0xffff
-            check(headerSize >= 56 && headerCount > 0 && headersAt >= 64 &&
-                headersAt + headerCount.toLong() * headerSize <= bytes.size) { "Invalid native program headers" }
-            var loads = 0
-            repeat(headerCount) { index ->
-                val at = (headersAt + index.toLong() * headerSize).toInt()
-                if (elf.getInt(at) == 1) {
-                    loads++
-                    val offset = elf.getLong(at + 8)
-                    val address = elf.getLong(at + 16)
-                    val alignment = elf.getLong(at + 48)
-                    check(alignment >= 16_384 && (alignment and (alignment - 1)) == 0L &&
-                        offset % alignment == address % alignment && offset % 16_384 == address % 16_384) {
-                        "Release packaging is blocked: native LOAD segment is not compatible with 16 KiB pages"
+            val libraries = receipt["libraries"] as? Map<*, *> ?: error("Missing per-ABI build receipts")
+            check(libraries.keys == releaseAndroidABIs.toSet()) { "Unexpected native ABI receipt set" }
+            val elfIdentities = mapOf("arm64-v8a" to (2 to 183), "armeabi-v7a" to (1 to 40))
+            for (abi in releaseAndroidABIs) {
+                val (elfClass, machine) = elfIdentities.getValue(abi)
+                val info = libraries[abi] as? Map<*, *> ?: error("Missing native build receipt for $abi")
+                check(info["abi"] == abi && info["androidAPI"] == minimumAndroidAPI && info["ffiExportsEqual"] == true) {
+                    "Native library does not prove the API 24 FFI boundary: $abi"
+                }
+                val library = archive.getEntry("jni/$abi/libiroh_ffi.so") ?: error("Native AAR is missing $abi ELF")
+                val bytes = archive.getInputStream(library).use { it.readBytes() }
+                check(digest(bytes) == info["sha256"]) { "Native ELF differs from its security build receipt: $abi" }
+                check(bytes.size >= 64 && bytes.copyOfRange(0, 4).contentEquals(byteArrayOf(0x7f, 0x45, 0x4c, 0x46)) &&
+                    bytes[4].toInt() == elfClass && bytes[5].toInt() == 1) { "Wrong native ELF class/order: $abi" }
+                val elf = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
+                check(elf.getShort(18).toInt() == machine) { "Native artifact ABI mismatch: $abi" }
+                val wide = elfClass == 2
+                val headersAt = if (wide) elf.getLong(32) else elf.getInt(28).toLong() and 0xffffffffL
+                val headerSize = elf.getShort(if (wide) 54 else 42).toInt() and 0xffff
+                val headerCount = elf.getShort(if (wide) 56 else 44).toInt() and 0xffff
+                check(headerSize >= (if (wide) 56 else 32) && headerCount > 0 && headersAt >= (if (wide) 64 else 52) &&
+                    headersAt + headerCount.toLong() * headerSize <= bytes.size) { "Invalid native program headers: $abi" }
+                fun word(at: Int): Long = if (wide) elf.getLong(at) else elf.getInt(at).toLong() and 0xffffffffL
+                var loads = 0
+                repeat(headerCount) { index ->
+                    val at = (headersAt + index.toLong() * headerSize).toInt()
+                    if (elf.getInt(at) == 1) {
+                        loads++
+                        val offset = word(at + if (wide) 8 else 4)
+                        val address = word(at + if (wide) 16 else 8)
+                        val alignment = word(at + if (wide) 48 else 28)
+                        check(alignment >= 16_384 && (alignment and (alignment - 1)) == 0L &&
+                            offset % alignment == address % alignment && offset % 16_384 == address % 16_384) {
+                            "Release packaging is blocked: $abi native LOAD segment is not compatible with 16 KiB pages"
+                        }
                     }
                 }
+                check(loads > 0) { "Native artifact has no LOAD segments: $abi" }
             }
-            check(loads > 0) { "Native artifact has no LOAD segments" }
         }
     }
 }
@@ -237,8 +275,8 @@ androidComponents {
     }
     onVariants(selector().withBuildType("nativeQa")) { variant ->
         variant.outputs.forEach { output ->
-            output.versionCode.set(15)
-            output.versionName.set("0.2.2-native-app-qa")
+            output.versionCode.set(17)
+            output.versionName.set("0.2.4-native-app-qa")
         }
     }
 }
