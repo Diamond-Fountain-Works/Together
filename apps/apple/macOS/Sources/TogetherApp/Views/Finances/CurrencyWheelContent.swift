@@ -13,37 +13,37 @@ struct CurrencyWheelContent: View {
     }
     var body: some View {
         VStack(spacing: 12) {
-            TextField(Copy.text("finance.currency.search"), text: $search).textFieldStyle(.roundedBorder).autocorrectionDisabled().accessibilityIdentifier("finance.currency.search")
+            TextField(Copy.text("finance.currency.search"), text: $search).textFieldStyle(.roundedBorder).disableAutocorrection(true).accessibilityIdentifier("finance.currency.search")
             ScrollViewReader { proxy in
                 ScrollView(.vertical) {
                     LazyVStack(spacing: 0) {
                         ForEach(currencies) { currency in
                             Button { selection = currency.code; isPresented = false } label: {
-                                HStack { Text(verbatim: currency.symbol + " " + currency.code); Spacer(); Text(currency.name).foregroundStyle(.secondary) }
+                                HStack { Text(verbatim: currency.symbol + " " + currency.code); Spacer(); Text(currency.name).foregroundColor(.secondary) }
                                     .padding(.horizontal, 12).frame(height: 42)
-                                    .background(selection == currency.code ? TogetherTheme.rose.opacity(0.13) : .clear, in: RoundedRectangle(cornerRadius: 8))
+                                    .togetherBackground(selection == currency.code ? TogetherTheme.rose.opacity(0.13) : .clear, in: RoundedRectangle(cornerRadius: 8))
                                     .contentShape(Rectangle())
                             }.buttonStyle(.plain).id(currency.code).accessibilityIdentifier("finance.currency." + currency.code)
                         }
-                    }.scrollTargetLayout().padding(.vertical, 42)
-                }.scrollIndicators(.hidden).frame(height: 150)
-                .scrollTargetBehavior(.viewAligned).scrollPosition(id: $centered, anchor: .center)
-                .focusable().onMoveCommand { direction in
+                    }.togetherScrollTargetLayout().padding(.vertical, 42)
+                }.togetherHideScrollIndicators().frame(height: 150)
+                .togetherViewAlignedScrolling().togetherScrollPosition(id: $centered, anchor: .center)
+                .togetherFocusable().togetherOnMove { direction in
                     guard let index = currencies.firstIndex(where: { $0.code == selection }) else { return }
                     let next = direction == .up ? max(0, index - 1) : direction == .down ? min(currencies.count - 1, index + 1) : index
                     selection = currencies[next].code; centered = selection; proxy.scrollTo(selection, anchor: .center)
                 }
                 .onAppear { centered = selection; proxy.scrollTo(selection, anchor: .center) }
-                .onChange(of: search) { _, _ in
+                .onChange(of: search) { _ in
                     // A stale scroll ID from the full list can hide a filtered
                     // first row. This changes layout, never the selected currency.
                     centered = search.isEmpty ? selection : currencies.first?.code
                 }
-                .onChange(of: centered) { _, value in
+                .onChange(of: centered) { value in
                     if search.isEmpty, let value, FinanceCurrency.find(value) != nil { selection = value }
                 }
             }
             Button(Copy.text("copy.action.c0b3fbff51cc")) { isPresented = false }.keyboardShortcut(.defaultAction)
-        }.padding(16).frame(width: 330)
+        }.padding(16).togetherSheetSize(width: 330)
     }
 }

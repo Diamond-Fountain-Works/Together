@@ -11,7 +11,7 @@ root = Path(__file__).resolve().parent.parent
 native_transport = os.environ.get("TOGETHER_LEGACY_C1") != "1"
 if native_transport:
     subprocess.run(["python3", str(root.parents[2] / "scripts/rebuild_apple_native.py"), "--verify-only"], check=True)
-minimum_macos = "14.5" if native_transport else "14.0"
+minimum_macos = json.loads((root.parents[2] / "packages/together-native-source/platform-support.json").read_text())["macOS"]["minimumVersion"]
 release_version = json.loads((root / "Configuration/ReleaseVersion.json").read_text())
 relay_config = root / "Configuration/RelayService.json"
 default_relay = json.loads(relay_config.read_text()).get("origin", "") if relay_config.exists() else ""
@@ -80,7 +80,7 @@ framework_phase = add("frameworks", f'isa = PBXFrameworksBuildPhase; buildAction
 project_configs, target_configs = [], []
 for configuration in ["Debug", "Release", "UITesting"]:
     project_configs.append(add("project-" + configuration, f'isa = XCBuildConfiguration; name = {configuration}; buildSettings = {{ MACOSX_DEPLOYMENT_TARGET = {minimum_macos}; {"ARCHS = arm64;" if native_transport else ""} SDKROOT = macosx; SWIFT_VERSION = 6.0; CLANG_ENABLE_MODULES = YES; }};'))
-    settings = 'PRODUCT_NAME = Together; PRODUCT_MODULE_NAME = TogetherApp; PRODUCT_BUNDLE_IDENTIFIER = com.together.app; MARKETING_VERSION = __VERSION__; CURRENT_PROJECT_VERSION = __BUILD__; GENERATE_INFOPLIST_FILE = YES; INFOPLIST_KEY_CFBundleDisplayName = Together; INFOPLIST_KEY_NSMicrophoneUsageDescription = "__MICROPHONE_COPY__"; CODE_SIGN_ENTITLEMENTS = Sources/TogetherApp/Resources/Together.entitlements; INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity"; MACOSX_DEPLOYMENT_TARGET = 14.0; SWIFT_VERSION = 6.0; ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon; CODE_SIGN_STYLE = Manual; CODE_SIGN_IDENTITY = "-"; ENABLE_APP_SANDBOX = NO; ENABLE_HARDENED_RUNTIME = YES; LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";'
+    settings = 'PRODUCT_NAME = Together; PRODUCT_MODULE_NAME = TogetherApp; PRODUCT_BUNDLE_IDENTIFIER = com.together.app; MARKETING_VERSION = __VERSION__; CURRENT_PROJECT_VERSION = __BUILD__; GENERATE_INFOPLIST_FILE = YES; ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES; INFOPLIST_KEY_CFBundleDisplayName = Together; INFOPLIST_KEY_NSMicrophoneUsageDescription = "__MICROPHONE_COPY__"; CODE_SIGN_ENTITLEMENTS = Sources/TogetherApp/Resources/Together.entitlements; INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity"; MACOSX_DEPLOYMENT_TARGET = 14.0; SWIFT_VERSION = 6.0; ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon; CODE_SIGN_STYLE = Manual; CODE_SIGN_IDENTITY = "-"; ENABLE_APP_SANDBOX = NO; ENABLE_HARDENED_RUNTIME = YES; LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";'
     settings = settings.replace("__VERSION__", release_version["marketingVersion"]).replace("__BUILD__", release_version["buildNumber"])
     settings = settings.replace("__MICROPHONE_COPY__", microphone_copy.replace(chr(92), chr(92) * 2).replace(chr(34), chr(92) + chr(34)).replace(chr(10), chr(92) + "n"))
     settings = settings.replace("MACOSX_DEPLOYMENT_TARGET = 14.0;", f"MACOSX_DEPLOYMENT_TARGET = {minimum_macos};")
@@ -117,7 +117,7 @@ ui_core_build = add("ui-core-build", f"isa = PBXBuildFile; productRef = {depende
 ui_framework = add("ui-frameworks", f'isa = PBXFrameworksBuildPhase; buildActionMask = 2147483647; files = ({ui_core_build}); runOnlyForDeploymentPostprocessing = 0;')
 ui_configs = []
 for configuration in ["Debug", "Release", "UITesting"]:
-    ui_configs.append(add("ui-"+configuration, f'isa = XCBuildConfiguration; name = {configuration}; buildSettings = {{ CODE_SIGN_ENTITLEMENTS = Tests/TogetherUITests/Runner.entitlements; PRODUCT_NAME = TogetherUITests; PRODUCT_BUNDLE_IDENTIFIER = com.together.app.qa.UITests; GENERATE_INFOPLIST_FILE = YES; MACOSX_DEPLOYMENT_TARGET = 14.0; SWIFT_VERSION = 6.0; CODE_SIGN_STYLE = Manual; CODE_SIGN_IDENTITY = "-"; TEST_TARGET_NAME = TogetherNative; ONLY_ACTIVE_ARCH = YES; LD_RUNPATH_SEARCH_PATHS = "$(inherited) @loader_path/../Frameworks @executable_path/../Frameworks"; }};'))
+    ui_configs.append(add("ui-"+configuration, f'isa = XCBuildConfiguration; name = {configuration}; buildSettings = {{ CODE_SIGN_ENTITLEMENTS = Tests/TogetherUITests/Runner.entitlements; PRODUCT_NAME = TogetherUITests; PRODUCT_BUNDLE_IDENTIFIER = com.together.app.qa.UITests; GENERATE_INFOPLIST_FILE = YES; ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES; MACOSX_DEPLOYMENT_TARGET = 14.0; SWIFT_VERSION = 6.0; CODE_SIGN_STYLE = Manual; CODE_SIGN_IDENTITY = "-"; TEST_TARGET_NAME = TogetherNative; ONLY_ACTIVE_ARCH = YES; LD_RUNPATH_SEARCH_PATHS = "$(inherited) @loader_path/../Frameworks @executable_path/../Frameworks"; }};'))
 ui_list = add("ui-configs", f'isa = XCConfigurationList; buildConfigurations = ({", ".join(ui_configs)}); defaultConfigurationIsVisible = 0; defaultConfigurationName = Debug;')
 proxy = add("ui-proxy", f'isa = PBXContainerItemProxy; containerPortal = {ref("project")}; proxyType = 1; remoteGlobalIDString = {target}; remoteInfo = Together;')
 ui_dependency = add("ui-dependency", f'isa = PBXTargetDependency; target = {target}; targetProxy = {proxy};')

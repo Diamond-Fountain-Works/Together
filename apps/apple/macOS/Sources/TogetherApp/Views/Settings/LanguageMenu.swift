@@ -2,7 +2,7 @@ import SwiftUI
 import TogetherCore
 
 struct LanguageMenu: View {
-    @State private var settings = LanguageSettings.shared
+    @ObservedObject private var settings = LanguageSettings.shared
 
     var body: some View {
         Menu {
@@ -12,9 +12,9 @@ struct LanguageMenu: View {
                 }
             }
         } label: {
-            Image(systemName: "globe").font(.system(size: 18)).frame(width: 32, height: 30)
+            Image(systemName: TogetherSymbols.name("globe")).font(.system(size: 18)).frame(width: 32, height: 30)
         }
-        .menuStyle(.borderlessButton).menuIndicator(.hidden).fixedSize()
+        .togetherBorderlessMenu().togetherHideMenuIndicator().fixedSize()
         .accessibilityLabel(Copy.text("language.title"))
         .accessibilityIdentifier("settings.language")
         .help(Copy.text("language.title"))

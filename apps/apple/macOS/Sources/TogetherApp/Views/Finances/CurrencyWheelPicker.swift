@@ -8,7 +8,7 @@ struct CurrencyWheelPicker: View {
         Button {
             expanded = true
         } label: {
-            HStack { Text(verbatim: (FinanceCurrency.find(selection)?.symbol ?? "") + " " + selection); Image(systemName: "chevron.up.chevron.down").font(.caption) }
+            HStack { Text(verbatim: (FinanceCurrency.find(selection)?.symbol ?? "") + " " + selection); Image(systemName: TogetherSymbols.name("chevron.up.chevron.down")).font(.caption) }
         }.accessibilityIdentifier("finance.currency.open")
         .popover(isPresented: $expanded) {
             CurrencyWheelContent(selection: $selection, isPresented: $expanded)
@@ -24,19 +24,19 @@ struct MonthDayWheelPicker: View {
                 LazyVStack(spacing: 0) {
                     ForEach(1...31, id: \.self) { day in
                         Button { selection = day; centered = day } label: {
-                            Text(day, format: .number).font(.title3.monospacedDigit()).frame(maxWidth: .infinity).frame(height: 32)
-                                .background(day == selection ? TogetherTheme.rose.opacity(0.13) : .clear, in: RoundedRectangle(cornerRadius: 6))
+                            Text(String(day)).font(.title3.monospacedDigit()).frame(maxWidth: .infinity).frame(height: 32)
+                                .togetherBackground(day == selection ? TogetherTheme.rose.opacity(0.13) : .clear, in: RoundedRectangle(cornerRadius: 6))
                                 .contentShape(Rectangle())
                         }.buttonStyle(.plain).id(day).accessibilityIdentifier("finance.day.\(day)")
                     }
-                }.scrollTargetLayout().padding(.vertical, 32)
-            }.scrollIndicators(.hidden).frame(width: 95, height: 104).scrollTargetBehavior(.viewAligned).scrollPosition(id: $centered, anchor: .center)
-                .focusable().onMoveCommand { direction in selection = direction == .up ? max(1, selection - 1) : direction == .down ? min(31, selection + 1) : selection; proxy.scrollTo(selection, anchor: .center) }
+                }.togetherScrollTargetLayout().padding(.vertical, 32)
+            }.togetherHideScrollIndicators().frame(width: 95, height: 104).togetherViewAlignedScrolling().togetherScrollPosition(id: $centered, anchor: .center)
+                .togetherFocusable().togetherOnMove { direction in selection = direction == .up ? max(1, selection - 1) : direction == .down ? min(31, selection + 1) : selection; proxy.scrollTo(selection, anchor: .center) }
                 .onAppear { centered = selection; proxy.scrollTo(selection, anchor: .center) }
-                .onChange(of: selection) { _, value in
+                .onChange(of: selection) { value in
                     if centered != value { centered = value; proxy.scrollTo(value, anchor: .center) }
                 }
-                .onChange(of: centered) { _, value in if let value { selection = value } }
+                .onChange(of: centered) { value in if let value { selection = value } }
         }.accessibilityIdentifier("finance.dayWheel")
     }
 }
@@ -52,7 +52,7 @@ struct FinanceAmountFields: View {
                     TextField(Copy.text("finance.amount.rate"), text: $draft.rate).textFieldStyle(.roundedBorder)
                     TextField(Copy.text("finance.amount.source"), text: $draft.rateSource).textFieldStyle(.roundedBorder)
                     DatePicker(Copy.text("finance.amount.rateDate"), selection: $draft.rateDate, displayedComponents: .date).environment(\.timeZone, TimeZone(secondsFromGMT: 0)!)
-                    Text(Copy.text("finance.amount.rateGuidance")).font(.caption).foregroundStyle(.secondary)
+                    Text(Copy.text("finance.amount.rateGuidance")).font(.caption).foregroundColor(.secondary)
                 }
             }
             if let amount = try? draft.amount() { Text(verbatim: FinanceMoney.display(amount.finalCNYMinor)).font(.title3.monospacedDigit()).accessibilityIdentifier("finance.amount.preview") }
@@ -60,7 +60,7 @@ struct FinanceAmountFields: View {
     }
 }
 struct FinancePaymentFields: View {
-    let model: ApplicationModel
+    @ObservedObject var model: ApplicationModel
     @Binding var selection: RelativeFinancePayment
     @Binding var cardId: UUID?
     let amount: FinanceAmount?
@@ -79,7 +79,7 @@ struct FinancePaymentFields: View {
                 let half = NSDecimalNumber(decimal: Decimal(amount.finalCNYMinor) / 200).stringValue
                 Text(Copy.format("finance.aa.formula", FinanceMoney.display(amount.finalCNYMinor), half)).font(.callout.monospacedDigit())
                 ForEach(payment.allocations(amount: amount), id: \.userId) { share in HStack { Text(model.name(share.userId)); Spacer(); Text(verbatim: FinanceMoney.display(share.cnyMinor)) } }
-                Text(Copy.text("finance.aa.rounding")).font(.caption).foregroundStyle(.secondary)
+                Text(Copy.text("finance.aa.rounding")).font(.caption).foregroundColor(.secondary)
             }
         }
     }

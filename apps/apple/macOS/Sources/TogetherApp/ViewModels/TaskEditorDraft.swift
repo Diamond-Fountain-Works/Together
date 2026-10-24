@@ -1,18 +1,18 @@
 import Foundation
-import Observation
+import Combine
 import TogetherCore
 
 /// Sheet-owned editing state. Commit still uses the existing task domain service.
-@MainActor @Observable final class TaskEditorDraft {
-    var title: String
-    var notes: String
-    var assignedTo: UUID?
-    var hasDue: Bool
-    var due: Date
-    var recurrenceMode: String
-    var unit: RecurrenceUnit
-    var interval: Int
-    var isCompleted: Bool
+@MainActor final class TaskEditorDraft: ObservableObject {
+    @Published var title: String
+    @Published var notes: String
+    @Published var assignedTo: UUID?
+    @Published var hasDue: Bool
+    @Published var due: Date
+    @Published var recurrenceMode: String
+    @Published var unit: RecurrenceUnit
+    @Published var interval: Int
+    @Published var isCompleted: Bool
     let initialCompletion: Bool
 
     init(task: TodoTask?, engine: ReplicaEngine) {

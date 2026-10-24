@@ -37,6 +37,7 @@ import kotlinx.coroutines.*
 @Composable
 internal fun AssetPreview(asset: Asset, repository: TogetherRepository, avatar: Boolean = false) {
     var bitmap by remember(asset.sha256) { mutableStateOf<android.graphics.Bitmap?>(null) }
+    var previewAttempted by remember(asset.sha256) { mutableStateOf(false) }
     LaunchedEffect(asset.sha256) {
         bitmap =
             withContext(Dispatchers.IO) {
@@ -47,6 +48,18 @@ internal fun AssetPreview(asset: Asset, repository: TogetherRepository, avatar: 
                     }
                     .getOrNull()
             }
+        previewAttempted = true
+    }
+    if (bitmap == null && avatar) {
+        Surface(shape = CircleShape, color = MaterialTheme.colorScheme.secondaryContainer,
+            modifier = Modifier.size(64.dp)) {
+            Box(contentAlignment = Alignment.Center) {
+                Icon(Icons.Outlined.Person, contentDescription = stringResource(R.string.label_avatar))
+            }
+        }
+    } else if (bitmap == null && previewAttempted) {
+        Text(stringResource(R.string.status_preview_unavailable),
+            style = MaterialTheme.typography.bodySmall, modifier = Modifier.testTag("media.preview.unavailable"))
     }
     bitmap?.let {
         Image(

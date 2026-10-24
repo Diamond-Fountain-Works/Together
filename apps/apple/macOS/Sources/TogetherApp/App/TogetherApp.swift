@@ -1,17 +1,23 @@
+#if os(macOS)
 import SwiftUI
+import Combine
 import TogetherCore
 import AppKit
 
 @main struct TogetherApp: App {
-    @State private var model: ApplicationModel?
+    @StateObject private var session = TogetherSceneSession()
+    private var model: ApplicationModel? {
+        get { session.model }
+        nonmutating set { session.model = newValue }
+    }
     @State private var startupError: String?
     @State private var needsIdentityMigration = false
-    @State private var languageSettings = LanguageSettings.shared
+    @ObservedObject private var languageSettings = LanguageSettings.shared
     @AppStorage("appearance") private var appearance = "system"
     @NSApplicationDelegateAdaptor(TogetherAppDelegate.self) private var delegate
     init() {
         #if TOGETHER_NATIVE_P2P_QA
-        do { _model = State(initialValue: try NativeAcceptance.build()) }
+        do { let initialModel = try NativeAcceptance.build(); _session = StateObject(wrappedValue: TogetherSceneSession(model: initialModel)) }
         catch { _startupError = State(initialValue: Copy.userError(error)) }
         return
         #else
@@ -24,10 +30,11 @@ import AppKit
         #endif
         do {
             #if TOGETHER_NATIVE_TRANSPORT
-            _model = State(initialValue: try NativeProduction.build())
+            let initialModel = try NativeProduction.build()
             #else
-            _model = State(initialValue: ApplicationModel(engine: try ReplicaEngine.production()))
+            let initialModel = ApplicationModel(engine: try ReplicaEngine.production())
             #endif
+            _session = StateObject(wrappedValue: TogetherSceneSession(model: initialModel))
         }
         catch IdentityStorageError.legacyMigrationRequired { _needsIdentityMigration = State(initialValue: true) }
         catch { _startupError = State(initialValue: Copy.userError(error)) }
@@ -35,30 +42,24 @@ import AppKit
         #endif
     }
     var body: some Scene {
-        WindowGroup("Together", id: "main") {
+        WindowGroup("Together") {
             Group {
             #if DEBUG
-            if UIFixture.enabled { UIFixtureRoot(model: $model).frame(minWidth: 900, minHeight: 620) }
+            if UIFixture.enabled { UIFixtureRoot(model: $session.model).frame(minWidth: 900, minHeight: 620) }
             else { normalContent }
             #else
             normalContent
             #endif
             }.environment(\.locale, languageSettings.language.locale)
         }
-        .defaultSize(width: 1100, height: 760)
         .commands { appCommands }
     }
     @ViewBuilder private var normalContent: some View {
             if let model {
-                RootView(model: model)
+                TogetherSessionView(model: model) { self.model = $0 }
                     .id(model.engine.identity.descriptor.deviceId)
-                    .frame(minWidth: 900, minHeight: 620)
+                    .frame(minWidth: 900, idealWidth: 1100, minHeight: 620, idealHeight: 760)
                     .preferredColorScheme(appearance == "system" ? nil : appearance == "dark" ? .dark : .light)
-                    .onChange(of: model.requestedReplica?.identity.descriptor.deviceId) { _, _ in
-                        if let engine = model.requestedReplica {
-                            self.model = model.replacement(with: engine)
-                        }
-                    }
             } else {
                 StartupIdentityView(needsMigration: needsIdentityMigration, error: startupError) {
                     do {
@@ -96,9 +97,22 @@ import AppKit
             }
     }
 }
+/// The Scene owns the optional session and follows its current model so native
+/// Commands and their enabled states refresh after modal and replica changes.
+@MainActor final class TogetherSceneSession: ObservableObject {
+    @Published var model: ApplicationModel? { didSet { observeCurrentModel() } }
+    private var modelChanges: AnyCancellable?
+    init(model: ApplicationModel? = nil) { self.model = model; observeCurrentModel() }
+    private func observeCurrentModel() {
+        modelChanges = model?.objectWillChange.sink { [weak self] _ in self?.objectWillChange.send() }
+    }
+}
+
 @MainActor final class TogetherAppDelegate: NSObject, NSApplicationDelegate {
     func applicationDidFinishLaunching(_ notification: Notification) {
         NSApp.setActivationPolicy(.regular); NSApp.activate(ignoringOtherApps: true)
     }
     func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool { false }
 }
+
+#endif

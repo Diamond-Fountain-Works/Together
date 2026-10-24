@@ -57,7 +57,7 @@ extension ApplicationModel {
                 financialNotificationTask?.cancel()
                 financialNotificationTask = Task { @MainActor [weak self] in
                     do {
-                        try await Task.sleep(for: .milliseconds(250))
+                        try await Task.sleep(nanoseconds: 250000000)
                         guard let self, !Task.isCancelled else { return }
                         try await FinanceNotificationScheduler.schedule(engine: self.engine, enabled: self.localDefaults.bool(forKey: "financeSystemNotifications"))
                     } catch is CancellationError {} catch { self?.errorMessage = Copy.userError(error) }

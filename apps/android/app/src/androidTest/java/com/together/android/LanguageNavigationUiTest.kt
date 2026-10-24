@@ -6,6 +6,7 @@ import android.os.LocaleList
 import androidx.compose.runtime.*
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -43,7 +44,8 @@ class LanguageNavigationUiTest {
                     }
                 }
                 CompositionLocalProvider(LocalContext provides localized,
-                    LocalConfiguration provides localized.resources.configuration) {
+                    LocalConfiguration provides localized.resources.configuration,
+                    LocalResources provides localized.resources) {
                     TogetherApp(repository, language, { language = it })
                 }
             }
@@ -58,17 +60,53 @@ class LanguageNavigationUiTest {
             compose.onNodeWithText("Language").assertDoesNotExist()
             compose.onNodeWithTag("language.zh-CN").assertDoesNotExist()
             compose.onNodeWithTag("settings.language").performClick()
+            waitForLanguagePopup()
             compose.onNodeWithTag("language.zh-CN").assertIsDisplayed().performClick()
             compose.onNodeWithTag("language.zh-CN").assertDoesNotExist()
             compose.onAllNodesWithText("设置").assertAny(hasText("设置"))
+            compose.onNodeWithTag("profile.open").assertTextContains("资料").performClick()
+            compose.onNodeWithTag("profile.editor").assertIsDisplayed()
+            compose.onNodeWithTag("sheet.close").assertIsDisplayed().assertTextContains("取消").performClick()
+            compose.onNodeWithTag("profile.editor").assertDoesNotExist()
             compose.onNodeWithTag("settings.language").assertIsDisplayed().performClick()
-            compose.onNodeWithText("中文").assertIsDisplayed()
-            compose.onNodeWithText("英语").assertIsDisplayed()
+            waitForLanguagePopup()
+            compose.onNodeWithTag("language.zh-CN").assertIsDisplayed().assertTextContains("中文")
+            compose.onNodeWithTag("language.en").assertIsDisplayed().assertTextContains("英语")
+            val screenshot = InstrumentationRegistry.getInstrumentation().uiAutomation.takeScreenshot()
+            java.io.File(context.cacheDir, "language-settings-zh-menu.png").outputStream().use {
+                screenshot.compress(android.graphics.Bitmap.CompressFormat.PNG, 100, it)
+            }
             compose.onNodeWithTag("language.en").performClick()
             compose.onAllNodesWithText("Settings").assertAny(hasText("Settings"))
+        } catch (failure: Throwable) {
+            runCatching {
+                println("LANGUAGE_MENU_FAILURE_NODES " +
+                    compose.onAllNodesWithTag("language.zh-CN", useUnmergedTree = true)
+                        .fetchSemanticsNodes().map { it.boundsInRoot })
+            }
+            runCatching {
+                val screenshot = InstrumentationRegistry.getInstrumentation().uiAutomation.takeScreenshot()
+                java.io.File(context.cacheDir, "language-navigation-failure.png").outputStream().use {
+                    screenshot.compress(android.graphics.Bitmap.CompressFormat.PNG, 100, it)
+                }
+            }
+            throw failure
         } finally {
             runBlocking { repository.close() }
             scope.cancel()
         }
     }
+    private fun waitForLanguagePopup() {
+        // PopupWindow layout is asynchronous to Compose's recomposition/animation clock.
+        // Wait for actual visible menu bounds, retaining the final assertions and real click.
+        val started = System.nanoTime()
+        compose.waitUntil(timeoutMillis = 3000) {
+            runCatching {
+                compose.onNodeWithTag("language.zh-CN").assertIsDisplayed()
+                compose.onNodeWithTag("language.en").assertIsDisplayed()
+            }.isSuccess
+        }
+        println("LANGUAGE_POPUP_VISIBLE_MS " + (System.nanoTime() - started) / 1_000_000)
+    }
+
 }

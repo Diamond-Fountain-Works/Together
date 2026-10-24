@@ -1,4 +1,4 @@
-#if DEBUG
+#if DEBUG && os(macOS)
 import SwiftUI
 import TogetherCore
 import AppKit
@@ -60,8 +60,11 @@ struct UIFixture {
         func deviceID(_ role: String, fallback: String) -> UUID { deviceCase.map { StableID.make($0 + role) } ?? UUID(uuidString: fallback)! }
         let ia = try DeviceIdentity(deviceId: deviceID("a", fallback: "00000000-0000-0000-0000-000000000001"), userId: UUID(uuidString: "00000000-0000-0000-0000-000000000101")!, initialSpaceId: deviceID("space-a", fallback: "00000000-0000-0000-0000-000000000201"), privateKeyData: Data(repeating: 1, count: 32), timeZoneIdentifier: "Asia/Shanghai", protocolVersion: 3)
         let ib = try DeviceIdentity(deviceId: deviceID("b", fallback: "00000000-0000-0000-0000-000000000002"), userId: UUID(uuidString: "00000000-0000-0000-0000-000000000102")!, initialSpaceId: deviceID("space-b", fallback: "00000000-0000-0000-0000-000000000202"), privateKeyData: Data(repeating: 2, count: 32), timeZoneIdentifier: "Asia/Shanghai", protocolVersion: 3)
-        let a = try ReplicaEngine(repository: TogetherRepository(url: root.appendingPathComponent("fixture.store")), identity: ia, mediaRoot: root.appendingPathComponent("media"), dateProvider: clock)
-        let b = try ReplicaEngine(repository: TogetherRepository(inMemory: true), identity: ib, mediaRoot: root.appendingPathComponent("partner-media"), dateProvider: clock)
+        // Exercise the real old-system storage backend from a current-host QA
+        // process. This is never an OS-runtime emulation or production selector.
+        let storage: RepositoryBackendSelection = ProcessInfo.processInfo.environment["TOGETHER_QA_LEGACY_STORAGE"] == "1" ? .legacySQLite : .automatic
+        let a = try ReplicaEngine(repository: TogetherRepository(url: root.appendingPathComponent("fixture.store"), backend: storage), identity: ia, mediaRoot: root.appendingPathComponent("media"), dateProvider: clock)
+        let b = try ReplicaEngine(repository: TogetherRepository(inMemory: true, backend: storage), identity: ib, mediaRoot: root.appendingPathComponent("partner-media"), dateProvider: clock)
         if (try a.repository.load(Bool.self, key: "ui-fixture-built")) != true {
         try a.setProfile(name: "测试成员 A", label: .boyfriend)
         if populated || page == "reveal" {
@@ -170,17 +173,14 @@ struct UIFixtureRoot: View {
     var body: some View {
         Group {
             if let model, let fixture {
-                RootView(model: model).id(model.engine.identity.descriptor.deviceId).preferredColorScheme(fixture.dark ? .dark : .light)
+                TogetherSessionView(model: model) { self.model = $0 }.id(model.engine.identity.descriptor.deviceId).preferredColorScheme(fixture.dark ? .dark : .light)
                     .environment(\.locale, LanguageSettings.shared.language.locale)
                     .environment(\.togetherMotionOverride, fixture.reduceMotion)
                     .background(FixtureWindowSize())
                     .background(FixtureContentCapture(fixture: fixture))
-                    .onChange(of: model.requestedReplica?.identity.descriptor.deviceId) { _, _ in
-                        if let engine = model.requestedReplica { self.model = model.replacement(with: engine) }
-                    }
             } else { ProgressView().accessibilityIdentifier("qa.loading") }
         }
-        .task {
+        .togetherTask {
             guard model == nil else { return }
             if let value = ProcessInfo.processInfo.environment["TOGETHER_UI_LANGUAGE"], let language = AppLanguage(rawValue: value) {
                 LanguageSettings.shared.language = language
@@ -188,7 +188,7 @@ struct UIFixtureRoot: View {
             do { let configuration = try UIFixture(); model = try await configuration.build() }
             catch { self.error = error.localizedDescription }
         }
-        .alert("UI Fixture Error", isPresented: Binding(get: { error != nil }, set: { _ in })) { Button("Close") {} } message: { Text(error ?? "") }
+        .alert(isPresented: Binding(get: { error != nil }, set: { _ in })) { Alert(title: Text("UI Fixture Error"), message: Text(error ?? ""), dismissButton: .default(Text("Close"))) }
     }
 }
 private struct FixtureWindowSize: NSViewRepresentable {

@@ -15,7 +15,7 @@ expected = {'CFBundleIdentifier': 'com.together.app', 'CFBundleShortVersionStrin
 native = info.get('TogetherTransport') == 'native'
 if native:
     if info.get('TogetherRelayURL'): raise SystemExit('Bundle verification FAIL: native launch includes an obsolete default Relay origin')
-    expected['LSMinimumSystemVersion'] = '14.5'
+    expected['LSMinimumSystemVersion'] = json.loads((root.parents[2] / 'packages/together-native-source/platform-support.json').read_text())['macOS']['minimumVersion']
     if subprocess.check_output(['lipo','-archs',str(bundle/'Contents/MacOS/Together')],text=True).split() != ['arm64']:
         raise SystemExit('Bundle verification FAIL: native distribution requires the verified Apple Silicon slice')
 elif expected_origin:
@@ -39,6 +39,6 @@ if native and '--release' in sys.argv:
         raise SystemExit('Bundle verification FAIL: QA startup/fixtures linked into the Release executable')
     for name in ['Iroh-LICENSE-MIT.txt','Iroh-LICENSE-APACHE.txt']:
         if not (bundle/'Contents/Resources'/name).is_file(): raise SystemExit('Bundle verification FAIL: missing native transport license: '+name)
-    print('Native Release boundary PASS: normal startup, Apple Silicon, macOS 14.5+, no QA fixture symbols, license notices')
+    print('Native Release boundary PASS: normal startup, Apple Silicon, macOS 11+, no QA fixture symbols, license notices')
 
 print('Bundle verification PASS: version, identity, transport configuration, microphone purpose, entitlements and signature')

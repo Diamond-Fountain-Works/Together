@@ -1,6 +1,11 @@
+import Combine
 import SwiftUI
 import TogetherCore
+#if os(macOS)
 import AppKit
+#else
+import UIKit
+#endif
 import UniformTypeIdentifiers
 #if TOGETHER_NATIVE_TRANSPORT || TOGETHER_NATIVE_P2P_QA
 import TogetherP2P
@@ -51,21 +56,22 @@ enum AppSheet: Identifiable {
         switch self { case .initialSetup: .initialSetup; case .giftReveal: .giftReveal; case .whatsNew: .whatsNew; case .advisor: .advisor; default: nil }
     }
 }
-@MainActor @Observable final class ApplicationModel {
+@MainActor final class ApplicationModel: ObservableObject {
+    private var observationTokens: Set<AnyCancellable> = []
     let engine: ReplicaEngine
-    var requestedReplica: ReplicaEngine?
+    @Published var requestedReplica: ReplicaEngine?
     #if DEBUG
-    @ObservationIgnored var qaC1Peers: [C1ReplicationService] = []
-    @ObservationIgnored var qaLegacyPeers: [PairingService] = []
-    @ObservationIgnored var qaDeviceTask: Task<Void, Never>?
-    var qaAllowsLocalNetwork = false
+    var qaC1Peers: [C1ReplicationService] = []
+    var qaLegacyPeers: [PairingService] = []
+    var qaDeviceTask: Task<Void, Never>?
+    @Published var qaAllowsLocalNetwork = false
     #endif
     let changeReview:ChangeReviewService
-    var changeBannerEvents:[ChangeEvent]=[]
-    @ObservationIgnored var changeReviewTask:Task<Void,Never>?
+    @Published var changeBannerEvents:[ChangeEvent]=[]
+    var changeReviewTask:Task<Void,Never>?
     let network: PairingService
     #if TOGETHER_NATIVE_TRANSPORT || TOGETHER_NATIVE_P2P_QA
-    var nativeNetwork: NativeAppPeerService?
+    @Published var nativeNetwork: NativeAppPeerService? { didSet { bindNestedPublishers() } }
     #endif
     var usesNativeTransport: Bool {
         #if TOGETHER_NATIVE_TRANSPORT || TOGETHER_NATIVE_P2P_QA
@@ -107,38 +113,38 @@ enum AppSheet: Identifiable {
     let preferences: LocalAppPreferences
     let localDefaults: UserDefaults
     let version: String
-    var section: AppSection = .home
+    @Published var section: AppSection = .home
     var plansMode: PlansMode { section == .wishes ? .wishes : .tasks }
-    var financeTab: FinanceTab = .reserves
-    var financialReminders: [FinanceReminder] = []
-    var financialBannerChanges: [FinanceChange] = []
-    var financialExpenseSearch = ""
-    var financialPaymentFilter = "all"
-    var financialSourceFilter = "all"
-    var financialStatusFilter = "all"
-    var financialCategoryFilter = "all"
-    var financialDateFilter = "all"
-    var financialRangeStart = Date.now
-    var financialRangeEnd = Date.now
-    @ObservationIgnored var lastFinancialOperationCount = -1
-    @ObservationIgnored var financialNotificationSignature = ""
-    @ObservationIgnored var financialNotificationTask: Task<Void, Never>?
-    var taskFilter: TaskListFilter = .pending
-    var taskSearch = ""
-    var taskScrollAnchors: [TaskListFilter: UUID] = [:]
-    var grantScrollAnchor: String?
-    var sheet: AppSheet?
-    var errorMessage: String?
-    var cropAsset: MediaAsset?
-    var importingMedia = false
-    var lovePulse = 0
-    var currentDate = Date.now
-    @ObservationIgnored private var clockTask: Task<Void, Never>?
-    @ObservationIgnored private var pendingSheets: [AppSheet] = []
-    @ObservationIgnored private var lastSheet: AppSheet?
-    @ObservationIgnored private var started = false
-    @ObservationIgnored let filePanelDirectory: URL?
-    @ObservationIgnored private var giftLaunchPolicy = GiftLaunchPolicy(cachedInboxIds: [])
+    @Published var financeTab: FinanceTab = .reserves
+    @Published var financialReminders: [FinanceReminder] = []
+    @Published var financialBannerChanges: [FinanceChange] = []
+    @Published var financialExpenseSearch = ""
+    @Published var financialPaymentFilter = "all"
+    @Published var financialSourceFilter = "all"
+    @Published var financialStatusFilter = "all"
+    @Published var financialCategoryFilter = "all"
+    @Published var financialDateFilter = "all"
+    @Published var financialRangeStart = Date()
+    @Published var financialRangeEnd = Date()
+    var lastFinancialOperationCount = -1
+    var financialNotificationSignature = ""
+    var financialNotificationTask: Task<Void, Never>?
+    @Published var taskFilter: TaskListFilter = .pending
+    @Published var taskSearch = ""
+    @Published var taskScrollAnchors: [TaskListFilter: UUID] = [:]
+    @Published var grantScrollAnchor: String?
+    @Published var sheet: AppSheet?
+    @Published var errorMessage: String?
+    @Published var cropAsset: MediaAsset?
+    @Published var importingMedia = false
+    @Published var lovePulse = 0
+    @Published var currentDate = Date()
+    private var clockTask: Task<Void, Never>?
+    private var pendingSheets: [AppSheet] = []
+    private var lastSheet: AppSheet?
+    private var started = false
+    let filePanelDirectory: URL?
+    private var giftLaunchPolicy = GiftLaunchPolicy(cachedInboxIds: [])
 
     init(engine: ReplicaEngine, defaults: UserDefaults = .standard, serviceURL: URL? = nil, useBundledService: Bool = true, filePanelDirectory: URL? = nil) {
         self.engine = engine
@@ -158,6 +164,18 @@ enum AppSheet: Identifiable {
         giftLaunchPolicy = GiftLaunchPolicy(cachedInboxIds: engine.receivedGifts.map(\.id), clock: engine.dateProvider)
         currentDate = engine.dateProvider.now()
         financialRangeStart = currentDate; financialRangeEnd = currentDate
+        bindNestedPublishers()
+    }
+    /// Combine is supported on the oldest M-series system. Forward nested
+    /// publishers because the prior Observation graph tracked these implicitly.
+    private func bindNestedPublishers() {
+        observationTokens.removeAll()
+        engine.objectWillChange.sink { [weak self] _ in self?.objectWillChange.send() }.store(in: &observationTokens)
+        network.objectWillChange.sink { [weak self] _ in self?.objectWillChange.send() }.store(in: &observationTokens)
+        LanguageSettings.shared.objectWillChange.sink { [weak self] _ in self?.objectWillChange.send() }.store(in: &observationTokens)
+        #if TOGETHER_NATIVE_TRANSPORT || TOGETHER_NATIVE_P2P_QA
+        nativeNetwork?.objectWillChange.sink { [weak self] _ in self?.objectWillChange.send() }.store(in: &observationTokens)
+        #endif
     }
     func start() {
         guard !started else { return }; started = true
@@ -173,7 +191,7 @@ enum AppSheet: Identifiable {
                 guard let self else { return }
                 var calendar = Calendar(identifier: .gregorian); calendar.timeZone = TimeZone(identifier: self.engine.sharedSpace.timeZoneIdentifier) ?? .current
                 let nextDay = calendar.date(byAdding: .day, value: 1, to: calendar.startOfDay(for: Date())) ?? Date().addingTimeInterval(30)
-                try? await Task.sleep(for: .seconds(max(0.05, min(30, nextDay.timeIntervalSinceNow))))
+                try? await Task.sleep(nanoseconds: UInt64(max(0.05, min(30, nextDay.timeIntervalSinceNow)) * 1_000_000_000))
                 guard !Task.isCancelled else { return }
                 self.currentDate = self.engine.dateProvider.now()
                 self.checkStartupGifts()
@@ -181,8 +199,25 @@ enum AppSheet: Identifiable {
             }
         }
     }
+    /// Foreground resume reuses the existing identity and route. It does not
+    /// rerun Initial Setup, Advisor timing or the process-launch gift policy.
+    func resumeNetworking() {
+        guard started else { return }
+        #if TOGETHER_NATIVE_TRANSPORT || TOGETHER_NATIVE_P2P_QA
+        if let nativeNetwork { nativeNetwork.restore() } else { restoreLegacyNetwork() }
+        #else
+        restoreLegacyNetwork()
+        #endif
+        currentDate = engine.dateProvider.now()
+    }
+    func suspendNetworking() {
+        #if TOGETHER_NATIVE_TRANSPORT || TOGETHER_NATIVE_P2P_QA
+        nativeNetwork?.disconnect()
+        #endif
+        network.disconnect()
+    }
     private func restoreLegacyNetwork() {
-        #if DEBUG
+        #if DEBUG && os(macOS)
         // Persisted C1 addresses must not activate from isolated UI fixtures.
         if !UIFixture.enabled || qaAllowsLocalNetwork { network.restore() }
         #else
@@ -275,41 +310,32 @@ enum AppSheet: Identifiable {
         try engine.setCompleted(task.id, completed: completed)
         if completed, let id = task.recurrenceRuleId, engine.snapshot.rules[id]?.mode == .flexible { show(.nextTime(task.id)) }
     }
-    func chooseMedia(_ type: MediaType) -> URL? {
-        let panel = NSOpenPanel(); panel.allowedContentTypes = [.image]; panel.allowsMultipleSelection = false
-        if type == .audio { panel.allowedContentTypes = [.audio] }
-        guard panel.runModal() == .OK, let url = panel.url else { return nil }
-        if type != .audio {
-            let alert = NSAlert(); alert.messageText = Copy.text("copy.status.aed97e682ab9")
-            alert.informativeText = Copy.text("copy.guidance.fdb33a105fcd")
-            alert.addButton(withTitle: Copy.text("copy.action.08ff51a8822a")); alert.addButton(withTitle: Copy.text("copy.action.2cd0f3be8738"))
-            guard alert.runModal() == .alertFirstButtonReturn else { return nil }
-        }
-        return url
+    func chooseMedia(_ type: MediaType) async -> URL? {
+        do {
+            guard let url = try await TogetherFilePanels.choose(types: type == .audio ? [.audio] : [.image], directory: filePanelDirectory) else { return nil }
+            if type != .audio {
+                guard await TogetherFilePanels.confirm(title: Copy.text("copy.status.aed97e682ab9"), message: Copy.text("copy.guidance.fdb33a105fcd"), action: Copy.text("copy.action.08ff51a8822a")) else { return nil }
+            }
+            return url
+        } catch { errorMessage = Copy.userError(error); return nil }
     }
     func importAvatar(showCrop: Bool = true) {
-        guard !importingMedia, let url = chooseMedia(.avatar) else { return }
-        importingMedia = true
+        guard !importingMedia else { return }; importingMedia = true
         Task { @MainActor in
-            let access = url.startAccessingSecurityScopedResource(); defer { if access { url.stopAccessingSecurityScopedResource() }; importingMedia = false }
-            do { cropAsset = try await engine.importMedia(from: url, type: .avatar)
+            defer { importingMedia = false }
+            guard let url = await chooseMedia(.avatar) else { return }
+            let access = url.startAccessingSecurityScopedResource(); defer { if access { url.stopAccessingSecurityScopedResource() } }
+            do {
+                cropAsset = try await engine.importMedia(from: url, type: .avatar)
                 if showCrop { show(.crop) } else if let cropAsset { try engine.setAvatar(assetId: cropAsset.id) }
             } catch { errorMessage = Copy.userError(error) }
         }
     }
     func savePhoto(_ asset: MediaAsset) {
         guard asset.mediaType == .photo, engine.mediaStore.hasVerified(asset) else { errorMessage = Copy.text("copy.status.d01432dc56c6"); return }
-        let panel = NSSavePanel()
-        if let filePanelDirectory { panel.directoryURL = filePanelDirectory }
-        panel.nameFieldStringValue = (asset.originalFilename as NSString).lastPathComponent
-        if let type = UTType(filenameExtension: asset.fileExtension) { panel.allowedContentTypes = [type] }
-        panel.allowsOtherFileTypes = false
-        guard panel.runModal() == .OK, let target = panel.url else { return }
-        let store = engine.mediaStore
         Task { @MainActor in
-            let access = target.startAccessingSecurityScopedResource(); defer { if access { target.stopAccessingSecurityScopedResource() } }
-            do { try await Task.detached { try store.exportOriginal(asset, to: target) }.value }
-            catch { errorMessage = Copy.format("copy.guidance.6b5df256e07f", String(describing: Copy.userError(error))) }
+            do { try await TogetherFilePanels.exportOriginal(asset, store: engine.mediaStore, directory: filePanelDirectory) }
+            catch { errorMessage = Copy.format("copy.guidance.6b5df256e07f", Copy.userError(error)) }
         }
     }
 }

@@ -7,7 +7,7 @@ private struct AdvisorStep {
     let icon: String
 }
 struct AdvisorView: View {
-    let model: ApplicationModel
+    @ObservedObject var model: ApplicationModel
     @State private var step = 0
     @State private var neverAgain = false
     @TogetherMotionPreference private var reduceMotion
@@ -23,11 +23,11 @@ struct AdvisorView: View {
     ]
     var body: some View {
         VStack(alignment: .leading, spacing: 24) {
-            HStack { Text(Copy.text("copy.action.58383b09e244")).font(.headline); Spacer(); Text(Copy.format("copy.guidance.f7fe73b265ee", String(describing: step + 1), String(describing: steps.count))).font(.caption.monospacedDigit()).foregroundStyle(.secondary) }
+            HStack { Text(Copy.text("copy.action.58383b09e244")).font(.headline); Spacer(); Text(Copy.format("copy.guidance.f7fe73b265ee", String(describing: step + 1), String(describing: steps.count))).font(.caption.monospacedDigit()).foregroundColor(.secondary) }
             VStack(alignment: .leading, spacing: 20) {
-                Image(systemName: steps[step].icon).font(.system(size: 42, weight: .light)).foregroundStyle(TogetherTheme.rose).matchedGeometryEffect(id: "advisor-icon", in: geometry)
+                Image(systemName: TogetherSymbols.name(steps[step].icon)).font(.system(size: 42, weight: .light)).foregroundColor(TogetherTheme.rose).matchedGeometryEffect(id: "advisor-icon", in: geometry)
                 Text(steps[step].title).font(.system(size: 28, weight: .semibold, design: .rounded))
-                Text(steps[step].text).font(.body).lineSpacing(5).foregroundStyle(.secondary).frame(minHeight: 80, alignment: .top)
+                Text(steps[step].text).font(.body).lineSpacing(5).foregroundColor(.secondary).frame(minHeight: 80, alignment: .top)
             }.id(step).transition(reduceMotion ? .identity : .opacity.combined(with: .move(edge: .trailing)))
             HStack(spacing: 5) { ForEach(steps.indices, id: \.self) { index in Capsule().fill(index <= step ? TogetherTheme.rose : .secondary.opacity(0.18)).frame(height: 3) } }
             Toggle(Copy.text("copy.guidance.59f48b3f4a8e"), isOn: $neverAgain).disabled(model.preferences.neverShowAdvisorAgain)
@@ -38,9 +38,9 @@ struct AdvisorView: View {
                 Spacer()
                 Button(step == steps.count - 1 ? Copy.text("copy.action.a6c7a84baa67") : Copy.text("copy.action.1ff57a29d7c9")) {
                     if step == steps.count - 1 { finish() } else { withAnimation(TogetherTheme.motion(reduceMotion)) { step += 1 } }
-                }.buttonStyle(.borderedProminent).keyboardShortcut(.defaultAction)
+                }.togetherProminentButton().keyboardShortcut(.defaultAction)
             }
-        }.padding(30).frame(width: 510).tint(TogetherTheme.rose)
+        }.togetherPadding(30).togetherSheetSize(width: 510).togetherScrollableOnPhone().togetherTint(TogetherTheme.rose)
     }
     private func finish() { model.preferences.finishAdvisor(neverAgain: neverAgain); model.dismissSheet() }
 }

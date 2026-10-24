@@ -107,13 +107,13 @@ private func isFinanceChange(_ type: EntityType) -> Bool {
 }
 
 struct SharedChangeBanner: View {
-  let model: ApplicationModel
+  @ObservedObject var model: ApplicationModel
   private var ids: [UUID] {
     Array(Set(model.changeBannerEvents.map(\.id) + model.financialBannerChanges.map(\.id)))
   }
   var body: some View {
     HStack(spacing: 14) {
-      Image(systemName: "arrow.triangle.2.circlepath").foregroundStyle(TogetherTheme.rose)
+      Image(systemName: TogetherSymbols.name("arrow.triangle.2.circlepath")).foregroundColor(TogetherTheme.rose)
       Text(Copy.format("sync.changes.count", String(ids.count)))
       Spacer()
       Button(Copy.text("copy.action.db8db0530432")) {
@@ -125,10 +125,10 @@ struct SharedChangeBanner: View {
       Button {
         model.dismissSharedBanner()
       } label: {
-        Image(systemName: "xmark")
+        Image(systemName: TogetherSymbols.name("xmark"))
       }.buttonStyle(.plain).accessibilityLabel(Copy.text("copy.action.3fd47edce45b"))
-    }.padding(16).background(.thinMaterial).accessibilityIdentifier("sync.changes.banner")
-      .onAppear { model.markSharedBannerPresented() }.onChange(of: ids) { _, _ in
+    }.padding(16).togetherMaterialSurface().accessibilityIdentifier("sync.changes.banner")
+      .onAppear { model.markSharedBannerPresented() }.onChange(of: ids) { _ in
         model.markSharedBannerPresented()
       }
   }
@@ -158,14 +158,14 @@ private enum ChangeDomain: String, CaseIterable, Identifiable {
   }
 }
 struct SharedChangeHistoryView: View {
-  let model: ApplicationModel
+  @ObservedObject var model: ApplicationModel
   @State private var events: [ChangeEvent] = []
   @State private var state = ChangeReviewState()
   @State private var domain = ChangeDomain.all
   @State private var loading = true
   init(model: ApplicationModel) {
     self.model = model
-    #if DEBUG
+    #if DEBUG && os(macOS)
       if UIFixture.enabled, let fixture = try? UIFixture(), fixture.page == "changes",
         !fixture.populated
       {
@@ -186,9 +186,8 @@ struct SharedChangeHistoryView: View {
       if loading {
         ProgressView().frame(maxWidth: .infinity, maxHeight: .infinity)
       } else if visible.isEmpty {
-        ContentUnavailableView(
-          Copy.text("sync.changes.empty"), systemImage: "clock.arrow.circlepath"
-        ).frame(maxWidth: .infinity, maxHeight: .infinity)
+        TogetherEmptyState(
+          Copy.text("sync.changes.empty"), systemImage: TogetherSymbols.name("clock.arrow.circlepath")).frame(maxWidth: .infinity, maxHeight: .infinity)
       } else {
         ScrollView {
           LazyVStack(alignment: .leading, spacing: 16) { ForEach(visible) { event in row(event) } }
@@ -208,11 +207,11 @@ struct SharedChangeHistoryView: View {
           .cancelAction
         ).accessibilityIdentifier("sync.changes.close")
       }
-    }.padding(28).frame(
+    }.togetherPadding(28).frame(
       minWidth: 620, idealWidth: 700, maxWidth: 760, minHeight: 500, idealHeight: 660,
       maxHeight: 720
     )
-    .task(id: model.engine.changeNumber) {
+    .togetherTask(id: model.engine.changeNumber) {
       do {
         events = try await model.changeReview.events(context: model.engine.context)
         state = try await model.changeReview.state()
@@ -229,23 +228,23 @@ struct SharedChangeHistoryView: View {
         Text(model.name(event.actorId)).font(.headline)
         Text(
           Copy.text("sync.origin." + event.origin(local: model.engine.identity.descriptor).rawValue)
-        ).font(.caption).foregroundStyle(.secondary)
+        ).font(.caption).foregroundColor(.secondary)
         Spacer()
-        Text(Copy.date(event.occurredAt)).font(.caption).foregroundStyle(.secondary)
+        Text(Copy.date(event.occurredAt)).font(.caption).foregroundColor(.secondary)
       }
       HStack {
         Text(action(event))
-        Text(domainName(event)).foregroundStyle(.secondary)
+        Text(domainName(event)).foregroundColor(.secondary)
         if !event.title.isEmpty { Text(verbatim: event.title).lineLimit(2) }
         Spacer()
         if event.resolution != .effective {
           Text(Copy.text("sync.resolution." + event.resolution.rawValue)).font(.caption)
-            .foregroundStyle(.secondary)
+            .foregroundColor(.secondary)
         }
         if let disposition = state.dispositions[event.id] {
           Text(
             Copy.text(disposition == .reviewed ? "sync.review.reviewed" : "sync.review.dismissed")
-          ).font(.caption).foregroundStyle(.secondary)
+          ).font(.caption).foregroundColor(.secondary)
         }
         Button(Copy.text("copy.action.db8db0530432")) { model.openChange(event) }
           .accessibilityIdentifier("sync.change.open." + event.id.uuidString)
@@ -261,12 +260,12 @@ struct SharedChangeHistoryView: View {
         let fields = candidates.filter { event.before[$0] != event.after[$0] }
         ForEach(fields, id: \.self) { key in
           VStack(alignment: .leading, spacing: 4) {
-            Text(fieldName(key)).font(.caption).foregroundStyle(.secondary)
+            Text(fieldName(key)).font(.caption).foregroundColor(.secondary)
             HStack(alignment: .top) {
-              Text(verbatim: value(event.before[key], field: key)).foregroundStyle(.secondary)
-              Image(systemName: "arrow.right").foregroundStyle(.tertiary)
+              Text(verbatim: value(event.before[key], field: key)).foregroundColor(.secondary)
+              Image(systemName: TogetherSymbols.name("arrow.right")).foregroundColor(Color.secondary.opacity(0.65))
               Text(verbatim: value(event.after[key], field: key))
-            }.font(.callout).textSelection(.enabled).frame(maxWidth: .infinity, alignment: .leading)
+            }.font(.callout).togetherTextSelection().frame(maxWidth: .infinity, alignment: .leading)
           }
         }
       }

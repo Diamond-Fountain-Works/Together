@@ -13,13 +13,19 @@ import datetime,hashlib
 stamp=datetime.datetime.now().strftime('%Y%m%d-%H%M%S');bundle=results/f'ui-{stamp}.xcresult'
 output=output/stamp;output.mkdir(parents=True,exist_ok=False)
 env=os.environ.copy()
+# This runner checks UI on the current host. Its SDK-supported test minimum is
+# separate from the release minimum, which is verified in the actual Mach-O.
+sdk=Path(subprocess.check_output(['xcrun','--sdk','macosx','--show-sdk-path'],text=True).strip())
+sdk_min=json.loads((sdk/'SDKSettings.json').read_text())['SupportedTargets']['macosx']['MinimumDeploymentTarget']
+release_min=json.loads((ROOT/'packages/together-native-source/platform-support.json').read_text())['macOS']['minimumVersion']
+qa_min=max([sdk_min,release_min],key=lambda value:tuple(map(int,value.split('.'))))
 report_name='ui'+('-'+args.label if args.label else '')
 derived=Path(os.environ.get('TOGETHER_UI_DERIVED_DATA',str(ROOT/'qa/results/tool-caches'/('UIQA-'+project.name+'-DerivedData'))))
 derived.mkdir(parents=True,exist_ok=True)
 subprocess.run([sys.executable,'script/generate_project.py'],cwd=project,check=True,env=env)
 # Build first, verify the actual bundle, and only then allow XCTest to launch.
 # A stale scheme/configuration must never fall back to the production bundle ID.
-base=['xcodebuild','-project','Together.xcodeproj','-scheme','Together','-configuration','UITesting','-destination',f'platform=macOS,arch={platform.machine()}','-derivedDataPath',str(derived),'ARCHS='+platform.machine(),'ONLY_ACTIVE_ARCH=YES','SWIFT_ACTIVE_COMPILATION_CONDITIONS=DEBUG TOGETHER_UI_TEST_HOST','SWIFT_OPTIMIZATION_LEVEL=-Onone']
+base=['xcodebuild','-project','Together.xcodeproj','-scheme','Together','-configuration','UITesting','-destination',f'platform=macOS,arch={platform.machine()}','-derivedDataPath',str(derived),'ARCHS='+platform.machine(),'MACOSX_DEPLOYMENT_TARGET='+qa_min,'ONLY_ACTIVE_ARCH=YES','SWIFT_ACTIVE_COMPILATION_CONDITIONS=DEBUG TOGETHER_UI_TEST_HOST','SWIFT_OPTIMIZATION_LEVEL=-Onone']
 log_path=results/(report_name+'-test.log')
 with log_path.open('w') as log:
     build=subprocess.CompletedProcess([],0) if args.without_building else subprocess.run(base+['build-for-testing'],cwd=project,env=env,stdout=log,stderr=subprocess.STDOUT)
@@ -38,6 +44,7 @@ if build.returncode==0:
             info=plistlib.loads((bundle_path/'Contents/Info.plist').read_bytes())
             assert info['CFBundleIdentifier']==expected, 'QA bundle identifier mismatch'
         config.setdefault('EnvironmentVariables',{})['TOGETHER_UI_VERIFIED_APP_PATH']=str(host)
+        if env.get('TOGETHER_QA_LEGACY_STORAGE')=='1':config['EnvironmentVariables']['TOGETHER_QA_LEGACY_STORAGE']='1'
         # xcodebuild does not promise to propagate arbitrary parent variables
         # into the sandboxed test host. Declare the one loopback origin needed
         # by device fixtures explicitly in the generated test configuration.
@@ -65,6 +72,11 @@ else:
         run.returncode=65
         with log_path.open('a') as log:log.write('QA isolation preflight refused launch: '+isolation_error+'\n')
 summary={'status':'PASS' if run.returncode==0 else 'FAIL','resultBundle':str(bundle),'exitCode':run.returncode,'screenshots':[],'screenshotSHA256':{},'captureDirectory':str(output.relative_to(ROOT)),'skippedPages':['Our Story: not implemented'],'qaHostVerified':build.returncode==0 and isolation_error is None}
+summary['selectedTests']=selected
+summary['qaHostDeploymentMinimum']=qa_min
+summary['releaseDeploymentMinimum']=release_min
+summary['forcedLegacyStorage']=env.get('TOGETHER_QA_LEGACY_STORAGE')=='1'
+summary['oldOSRuntimeAcceptance']='NOT RUN; these tests execute on the current host'
 summary['buildForTesting']='NOT RUN (explicit verified existing QA artifact)' if args.without_building else 'PASS' if build.returncode==0 else 'FAIL'
 log_text=(results/(report_name+'-test.log')).read_text()
 if run.returncode!=0 and 'Timed out while enabling automation mode' in log_text and 'Test Case ' not in log_text:
