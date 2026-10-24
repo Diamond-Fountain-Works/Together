@@ -55,8 +55,9 @@ import TogetherP2P
             }
             model = try Self.isolatedSession()
             #else
-            model = try NativeProduction.build(migrateLegacyIdentity: needsMigration)
-            try Self.protectDeviceOnlyFiles(model!)
+            let candidate = try NativeProduction.build(migrateLegacyIdentity: needsMigration)
+            try Self.protectDeviceOnlyFiles(candidate)
+            model = candidate
             #endif
             error = nil
             needsMigration = false
