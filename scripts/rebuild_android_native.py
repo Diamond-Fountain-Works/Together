@@ -87,9 +87,12 @@ def verify_android_elf(data, abi, max_api=None):
     spec = ABI_TARGETS[abi]
     require(data[4] == spec["elfClass"] and struct.unpack_from("<H", data, 18)[0] == spec["machine"],
             "ELF architecture does not match " + abi)
+    try:
+        segments = elf_load_segments(data)
+    except ValueError as error:
+        raise RuntimeError("Rebuilt Android ELF is malformed: " + str(error)) from error
     if max_api is not None:
         require(android_api_note(data) <= max_api, "ELF was linked for a newer Android API than the application floor")
-    segments = elf_load_segments(data)
     require(aligned(segments), "Rebuilt ELF LOAD segments fail 16KiB alignment/congruence")
     return segments
 UPSTREAM_FIX = "https://github.com/n0-computer/iroh-ffi/commit/c948937663ffe58df1a0a1bfda2def64e5bcdaa4"

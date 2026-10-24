@@ -5,23 +5,23 @@ import unittest
 import rebuild_android_native as build
 
 
-def elf(abi, api=24, alignment=16384):
+def elf(abi, api=24, alignment=16384, order="<"):
     wide = abi == "arm64-v8a"
     data = bytearray(512)
-    data[:7] = b"\x7fELF" + bytes((2 if wide else 1, 1, 1))
-    struct.pack_into("<H", data, 18, 183 if wide else 40)
-    struct.pack_into("<" + ("Q" if wide else "I"), data, 32 if wide else 28, 64)
+    data[:7] = b"\x7fELF" + bytes((2 if wide else 1, 1 if order == "<" else 2, 1))
+    struct.pack_into(order + "H", data, 18, 183 if wide else 40)
+    struct.pack_into(order + ("Q" if wide else "I"), data, 32 if wide else 28, 64)
     size = 56 if wide else 32
-    struct.pack_into("<HH", data, 54 if wide else 42, size, 2)
+    struct.pack_into(order + "HH", data, 54 if wide else 42, size, 2)
     if wide:
-        struct.pack_into("<IIQQQQQQ", data, 64, 1, 4, 0, 0, 0, 512, 512, alignment)
-        struct.pack_into("<IIQQQQQQ", data, 64 + size, 4, 4, 256, 0, 0, 24, 24, 4)
+        struct.pack_into(order + "IIQQQQQQ", data, 64, 1, 4, 0, 0, 0, 512, 512, alignment)
+        struct.pack_into(order + "IIQQQQQQ", data, 64 + size, 4, 4, 256, 0, 0, 24, 24, 4)
     else:
-        struct.pack_into("<IIIIIIII", data, 64, 1, 0, 0, 0, 512, 512, 4, alignment)
-        struct.pack_into("<IIIIIIII", data, 64 + size, 4, 256, 0, 0, 24, 24, 4, 4)
-    struct.pack_into("<III", data, 256, 8, 4, 1)
+        struct.pack_into(order + "IIIIIIII", data, 64, 1, 0, 0, 0, 512, 512, 4, alignment)
+        struct.pack_into(order + "IIIIIIII", data, 64 + size, 4, 256, 0, 0, 24, 24, 4, 4)
+    struct.pack_into(order + "III", data, 256, 8, 4, 1)
     data[268:276] = b"Android\0"
-    struct.pack_into("<I", data, 276, api)
+    struct.pack_into(order + "I", data, 276, api)
     return bytes(data)
 
 
@@ -64,6 +64,50 @@ class AndroidNativeCompatibilityTests(unittest.TestCase):
         for abi in build.ABI_TARGETS:
             with self.subTest(abi=abi), self.assertRaises(RuntimeError):
                 build.android_api_note(elf(abi)[:275])
+
+    def test_big_endian_elf_is_rejected_even_with_matching_machine_and_alignment(self):
+        for abi in build.ABI_TARGETS:
+            data = elf(abi, order=">")
+            with self.subTest(abi=abi):
+                with self.assertRaises(ValueError): build.elf_load_segments(data)
+                with self.assertRaises(RuntimeError): build.verify_android_elf(data, abi, max_api=24)
+                with self.assertRaises(RuntimeError): build.android_api_note(data)
+
+    def test_load_file_extent_and_memory_size_are_checked_for_both_classes(self):
+        for abi in build.ABI_TARGETS:
+            wide = abi == "arm64-v8a"
+            value_format = "<Q" if wide else "<I"
+            for offset, files, memory in [(16384, 4, 4), (513, 0, 0),
+                                           (0, 513, 513), (0, 512, 511),
+                                           ((1 << (64 if wide else 32)) - 1, 4, 4)]:
+                data = bytearray(elf(abi))
+                for field, value in [((8 if wide else 4), offset),
+                                     ((32 if wide else 16), files),
+                                     ((40 if wide else 20), memory)]:
+                    struct.pack_into(value_format, data, 64 + field, value)
+                with self.subTest(abi=abi, offset=offset, files=files, memory=memory):
+                    with self.assertRaises(ValueError): build.elf_load_segments(data)
+                    with self.assertRaises(RuntimeError): build.verify_android_elf(data, abi, max_api=24)
+
+    def test_program_headers_cannot_start_inside_elf_header_or_outside_file(self):
+        for abi in build.ABI_TARGETS:
+            wide = abi == "arm64-v8a"
+            for offset in [0, 51, (63 if wide else 51), 500]:
+                data = bytearray(elf(abi))
+                struct.pack_into("<Q" if wide else "<I", data, 32 if wide else 28, offset)
+                with self.subTest(abi=abi, offset=offset), self.assertRaises(ValueError):
+                    build.elf_load_segments(data)
+
+    def test_load_segment_at_end_of_file_may_have_zero_file_bytes(self):
+        for abi in build.ABI_TARGETS:
+            wide = abi == "arm64-v8a"
+            data = bytearray(elf(abi))
+            for field, value in [((8 if wide else 4), len(data)),
+                                 ((32 if wide else 16), 0),
+                                 ((40 if wide else 20), 4096)]:
+                struct.pack_into("<Q" if wide else "<I", data, 64 + field, value)
+            with self.subTest(abi=abi):
+                self.assertEqual(len(build.elf_load_segments(data)), 1)
 
 
 if __name__ == "__main__":

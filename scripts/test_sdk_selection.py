@@ -15,6 +15,21 @@ class SDKSelectionTests(unittest.TestCase):
         self.assertIsNone(minimum_android_api("targetSdkVersion:'36'"))
         self.assertIsNone(minimum_android_api("minSdkVersion:'invalid'"))
 
+    def test_android_minimum_aliases_must_agree(self):
+        self.assertEqual(minimum_android_api("sdkVersion:'24'\nminSdkVersion: '24'\n"), 24)
+        for rows in ["sdkVersion:'24'\nminSdkVersion:'28'\n",
+                     "minSdkVersion:'28'\nsdkVersion:'24'\n",
+                     "sdkVersion:'24'\nsdkVersion:'28'\n"]:
+            with self.subTest(rows=rows), self.assertRaises(ValueError):
+                minimum_android_api(rows)
+
+    def test_android_malformed_minimum_cannot_be_hidden_by_another_row(self):
+        for rows in ["minSdkVersion:'invalid'\nsdkVersion:'24'\n",
+                     "sdkVersion:'24'\nminSdkVersion:'24' trailing-garbage\n",
+                     "sdkVersion:'24' trailing-garbage\n"]:
+            with self.subTest(rows=rows):
+                self.assertIsNone(minimum_android_api(rows))
+
     def setUp(self):
         self.root = sdk.ROOT / "qa/results/sdk-selection-tests"
         self.root.mkdir(parents=True, exist_ok=True)

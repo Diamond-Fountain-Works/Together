@@ -38,8 +38,14 @@ def run(*args):
 
 def minimum_android_api(badging):
     # aapt/aapt2 releases use both spellings. Never infer a minimum from target.
-    value = re.search(r"^\s*(?:sdkVersion|minSdkVersion):\s*'(\d+)'", badging, re.M)
-    return int(value[1]) if value else None
+    rows = re.findall(r"^\s*(?:sdkVersion|minSdkVersion):([^\n]*)$", badging, re.M)
+    values = [re.fullmatch(r"\s*'(\d+)'\s*", row) for row in rows]
+    if not rows or not all(values):
+        return None
+    levels = {int(value[1]) for value in values}
+    if len(levels) != 1:
+        raise ValueError("Conflicting Android minimum SDK declarations")
+    return next(iter(levels))
 
 
 def sdk_tool(name):
@@ -57,23 +63,28 @@ def sdk_tool(name):
 
 
 def elf_load_segments(data):
-    """Parse ELF program headers; inspect real p_align, not a filename/ZIP claim."""
-    if len(data) < 64 or data[:4] != b"\x7fELF" or data[4] not in (1, 2) or data[5] not in (1, 2):
-        raise ValueError("Invalid ELF header")
-    order = "<" if data[5] == 1 else ">"
+    """Parse Android little-endian ELF LOAD metadata and validate its file ranges."""
+    if len(data) < 64 or data[:4] != b"\x7fELF" or data[4] not in (1, 2) or data[5] != 1:
+        raise ValueError("Invalid Android little-endian ELF header")
+    order = "<"
     wide = data[4] == 2
     offset = struct.unpack_from(order + ("Q" if wide else "I"), data, 32 if wide else 28)[0]
     entry_size, count = struct.unpack_from(order + "HH", data, 54 if wide else 42)
     minimum = 56 if wide else 32
-    if not 0 < count < 65535 or entry_size < minimum or offset + count * entry_size > len(data):
+    if not 0 < count < 65535 or entry_size < minimum or offset < (64 if wide else 52) or offset + count * entry_size > len(data):
         raise ValueError("Invalid ELF program-header bounds")
     result = []
     for index in range(count):
         start = offset + index * entry_size
         if struct.unpack_from(order + "I", data, start)[0] == 1:
             value_format = "Q" if wide else "I"
+            file_offset = struct.unpack_from(order + value_format, data, start + (8 if wide else 4))[0]
+            file_size = struct.unpack_from(order + value_format, data, start + (32 if wide else 16))[0]
+            memory_size = struct.unpack_from(order + value_format, data, start + (40 if wide else 20))[0]
+            if file_offset > len(data) or file_size > len(data) - file_offset or file_size > memory_size:
+                raise ValueError("Invalid ELF LOAD file or memory bounds")
             result.append({
-                "offset": struct.unpack_from(order + value_format, data, start + (8 if wide else 4))[0],
+                "offset": file_offset,
                 "virtualAddress": struct.unpack_from(order + value_format, data, start + (16 if wide else 8))[0],
                 "alignment": struct.unpack_from(order + value_format, data, start + (48 if wide else 28))[0],
             })
