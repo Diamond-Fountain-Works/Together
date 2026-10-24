@@ -25,11 +25,27 @@ Existing files must be regular, non-linked leaves owned by the current UID.
 Unknown formats and newer legacy SQLite schema versions fail closed. Before an
 existing modern store can be opened writable, public CoreData metadata must
 identify the three Together entities, then a SwiftData configuration with
-`allowsSave: false` must open it successfully. This genuinely sets
-`NSReadOnlyPersistentStoreOption`; an unknown same-named future model cannot
-silently shed fields through an inferred lightweight downgrade. A migration plan
-alone did not provide that protection in the regression fixture. No static,
-macOS-only model hash allowlist or private business-table parsing is used.
+`allowsSave: false` must open it successfully. Both speculative native checks
+operate on a private snapshot: CI on macOS 26 demonstrated that even the metadata
+API's read-only option can change a foreign database's journaling. SQLite opens
+the original with `READONLY` and `NOFOLLOW`, pins a read transaction and copies
+128 pages per batch into an exclusively reserved 0600 file in a 0700 directory.
+The snapshot alone is normalized to DELETE journaling and removed after inspection.
+For a checkpointed WAL database without sidecars, the system read-only VFS can
+refuse opening; a read-only FD fallback copies 64 KiB at a time, requires WAL and
+rollback journals to remain absent, and compares inode, size, mode, UID and
+nanosecond mtime/ctime before/after. Changing inputs fail closed; this does not
+claim resistance to a malicious process with the same UID. BUSY waits and total
+copy duration are bounded. The database and WAL bytes remain protected; SQLite
+shared-memory read marks are volatile synchronization state. Snapshot validation
+and the subsequent writable open are not an interprocess schema-migration lock;
+a different App version changing the schema between those steps remains a
+concurrent-migration boundary, not a proven same-UID adversary defense.
+The read-only model preflight genuinely sets `NSReadOnlyPersistentStoreOption`;
+an unknown same-named future model cannot silently shed fields through an inferred
+lightweight downgrade. A migration plan alone did not provide that protection in
+the regression fixture. No static, macOS-only model hash allowlist or private
+business-table parsing is used.
 The original unversioned schema and a store generated from the actual pinned
 0.0.1 source are separate preservation tests. An unsupported store remains in
 place with an actionable error rather than an empty replacement or a new key.

@@ -44,29 +44,28 @@ enum TogetherStoreMigrationPlan: SchemaMigrationPlan {
         if let url { config = ModelConfiguration(schema: schema, url: url, cloudKitDatabase: .none) }
         else { config = ModelConfiguration(schema: schema, isStoredInMemoryOnly: inMemory, cloudKitDatabase: .none) }
         if !config.isStoredInMemoryOnly, try SQLiteRepositoryBackend.ownedStoreExists(at: config.url) {
-            try Self.validateExistingMetadata(at: config.url)
-            // A migration plan alone can still infer a lightweight downgrade.
-            // Require a read-only open first: a store that needs schema writes
-            // cannot be silently accepted as an existing compatible database.
-            let readonly = ModelConfiguration(schema: schema, url: config.url, allowsSave: false, cloudKitDatabase: .none)
-            do {
-                try autoreleasepool {
-                    _ = try ModelContainer(for: schema, migrationPlan: TogetherStoreMigrationPlan.self, configurations: [readonly])
-                }
-            } catch { throw RepositoryError.unsupportedStorage }
+            try Self.validateExistingStore(schema: schema, at: config.url)
         }
         container = try ModelContainer(for: schema, migrationPlan: TogetherStoreMigrationPlan.self, configurations: [config])
     }
-    private static func validateExistingMetadata(at url: URL) throws {
-        // This public metadata API reads the model description, not user rows.
-        // Reject unrelated CoreData/SQLite files before SwiftData can infer a
-        // migration or initialize a model into a foreign database.
-        let metadata: [String: Any]
+    private static func validateExistingStore(schema: Schema, at url: URL) throws {
+        // Native metadata readers can alter journaling even with read-only
+        // options. All speculative metadata/schema opens use a private copy;
+        // the original is opened writable only after the known model passes.
         do {
-            metadata = try NSPersistentStoreCoordinator.metadataForPersistentStore(ofType: NSSQLiteStoreType, at: url, options: [NSReadOnlyPersistentStoreOption: true])
+            try ReadOnlyStoreSnapshot.withSnapshot(of: url) { snapshot in
+                try autoreleasepool {
+                    let metadata = try NSPersistentStoreCoordinator.metadataForPersistentStore(ofType: NSSQLiteStoreType, at: snapshot, options: [NSReadOnlyPersistentStoreOption: true])
+                    guard let hashes = metadata[NSStoreModelVersionHashesKey] as? [String: Data],
+                          Set(hashes.keys) == Set(["OperationRecord", "LocalRecord", "EntityRecord"]) else { throw RepositoryError.unsupportedStorage }
+                    // A migration plan alone can infer a lightweight downgrade.
+                    // Keep the genuine read-only model preflight; unknown future
+                    // fields must never be discarded to fit the current model.
+                    let readonly = ModelConfiguration(schema: schema, url: snapshot, allowsSave: false, cloudKitDatabase: .none)
+                    _ = try ModelContainer(for: schema, migrationPlan: TogetherStoreMigrationPlan.self, configurations: [readonly])
+                }
+            }
         } catch { throw RepositoryError.unsupportedStorage }
-        guard let hashes = metadata[NSStoreModelVersionHashesKey] as? [String: Data],
-              Set(hashes.keys) == Set(["OperationRecord", "LocalRecord", "EntityRecord"]) else { throw RepositoryError.unsupportedStorage }
     }
     private func makeContext() -> ModelContext { let value = ModelContext(container); value.autosaveEnabled = false; return value }
     public func allOperations() throws -> [SignedOperation] { let context = makeContext(); return try context.fetch(FetchDescriptor<OperationRecord>()).map { try CanonicalJSON.decode(SignedOperation.self, from: $0.body) } }

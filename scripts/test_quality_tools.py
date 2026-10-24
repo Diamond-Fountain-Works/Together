@@ -4,9 +4,18 @@ from PIL import Image
 sys.path.insert(0,str(Path(__file__).parent))
 import audit_ui_copy as audit
 import compare_visuals as visuals
-from qa_evidence import swift_test_evidence
+from qa_evidence import swift_test_evidence, swift_suite_counts
 from compare_visuals import compare, expected_cases
 class QualityToolTests(unittest.TestCase):
+    def test_swift_suite_counts_exclude_recorded_issues(self):
+        log=("✘ Test rejectedStore() recorded an issue at Test.swift:37: Expectation failed: bytes changed\n"
+             "✘ Test rejectedStore() recorded an issue at Test.swift:37: Expectation failed: bytes changed\n"
+             "✘ Test rejectedStore() failed after 0.2 seconds with 2 issues.\n"
+             "✔ Test ordinary() passed after 0.1 seconds.\n"
+             "✔ Test localized(_:) with 2 test cases passed after 0.1 seconds.\n"
+             "➜ Test deferredCase() skipped.\n"
+             "✘ Test run with 4 tests in 1 suite failed after 0.2 seconds with 2 issues.\n")
+        self.assertEqual(swift_suite_counts(log), {'passedCount':2,'failedCount':1,'skippedCount':1})
     def test_swift_evidence_requires_actual_exact_execution(self):
         result=swift_test_evidence('✔ Test realCase() passed after 0.2 seconds.\n', 'realCase()')
         self.assertEqual(result, {'status':'PASS','passedCount':1,'failedCount':0,'skippedCount':0,'requiredExecutedCount':1})

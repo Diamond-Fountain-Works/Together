@@ -62,7 +62,7 @@
   },
   "appDelivery": {
     "marketingVersion": "0.2.4",
-    "macBuild": "23",
+    "macBuild": "24",
     "androidCode": 17,
     "freshInstall": "persistent native peer transport; no QA identity/data import",
     "legacyMacC1": "existing bindings retain C1",

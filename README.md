@@ -5,7 +5,7 @@ Native Apple and Android clients, Local-first shared space for two people. Tasks
 ## 0.2.4 — platform compatibility candidate
 
 The configured floors are **Apple Silicon macOS 11**, **iOS/iPadOS 15**, and
-**Android 7 / API 24** (ARM64 and ARMv7). Mac Build 23 and Android code 17 are
+**Android 7 / API 24** (ARM64 and ARMv7). Mac Build 24 and Android code 17 are
 local compatibility candidates, not a replacement for the published 0.2.3 RC.
 The iPhone/iPad target reuses the existing core and feature views; old Apple
 systems use transactional SQLite, while existing SwiftData stores and identities

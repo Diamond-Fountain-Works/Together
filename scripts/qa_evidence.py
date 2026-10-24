@@ -11,3 +11,12 @@ def swift_test_evidence(text, name, *, endpoint_ready=True):
     status = "PASS" if endpoint_ready and passed == 1 and failed == skipped == 0 else "FAIL" if failed or passed > 1 else "NOT RUN"
     return {"status": status, "passedCount": passed, "failedCount": failed,
             "skippedCount": skipped, "requiredExecutedCount": 1}
+
+
+def swift_suite_counts(text):
+    """Count completed tests, excluding recorded issues and the run summary."""
+    return {
+        "passedCount": len(re.findall(r"^✔ Test (?!run )(?:\S+)(?: with \d+ test cases)? passed after ", text, re.M)),
+        "failedCount": len(re.findall(r"^✘ Test (?!run )(?:\S+)(?: with \d+ test cases)? failed after ", text, re.M)),
+        "skippedCount": len(re.findall(r"^➜ Test \S+ skipped\.", text, re.M)),
+    }

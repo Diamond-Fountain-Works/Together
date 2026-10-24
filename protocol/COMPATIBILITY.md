@@ -17,7 +17,10 @@ system-SQLite backend with the same canonical operations, local records,
 transactional quota/head/ACK semantics and bounded inventory pages. A legacy
 SQLite store stays readable after an OS upgrade; an existing modern/unknown store
 is never reset or silently downgraded to make an old OS accept it. Owned-file and
-read-only modern-schema checks precede writable opening. The legacy SQLite marker
+read-only modern-schema checks on an owned private snapshot precede writable
+opening. SQLite backups/stable read-only FD copies protect the original from
+native metadata-reader journaling changes; temporary files are not a wire fact
+or a replacement for signed history. The legacy SQLite marker
 and schema version are local implementation metadata, not changes to signed DTOs
 or the database-generation number assigned to the existing SwiftData models.
 

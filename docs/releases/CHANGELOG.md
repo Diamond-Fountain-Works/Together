@@ -10,7 +10,7 @@
 - Rebuild reviewed native dependencies for each platform/ABI. Update Android JNA
   and desugaring; retain original HEIC content when the old OS cannot preview it.
 - Fix immediate Chinese resource propagation in Compose menus/dialogs.
-- Mac Build23 / Android code17. No new public release, production installation,
+- Mac Build24 / Android code17. No new public release, production installation,
   identity reset, Relay deployment or independent security approval is implied.
 
 [Builds, runtime scope and remaining gates](../qa/reports/PLATFORM_COMPATIBILITY_QA.md).
