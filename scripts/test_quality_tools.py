@@ -4,8 +4,23 @@ from PIL import Image
 sys.path.insert(0,str(Path(__file__).parent))
 import audit_ui_copy as audit
 import compare_visuals as visuals
+from qa_evidence import swift_test_evidence
 from compare_visuals import compare, expected_cases
 class QualityToolTests(unittest.TestCase):
+    def test_swift_evidence_requires_actual_exact_execution(self):
+        result=swift_test_evidence('✔ Test realCase() passed after 0.2 seconds.\n', 'realCase()')
+        self.assertEqual(result, {'status':'PASS','passedCount':1,'failedCount':0,'skippedCount':0,'requiredExecutedCount':1})
+        self.assertEqual(swift_test_evidence('test fixture: realCase() passed', 'realCase()')['status'], 'NOT RUN')
+        self.assertEqual(swift_test_evidence('✔ Test otherCase() passed after 0.1 seconds.', 'realCase()')['status'], 'NOT RUN')
+    def test_swift_evidence_rejects_skip_failure_and_unhealthy_endpoint(self):
+        self.assertEqual(swift_test_evidence('➜ Test realCase() skipped.\n', 'realCase()')['skippedCount'], 1)
+        self.assertEqual(swift_test_evidence('➜ Test realCase() skipped.\n', 'realCase()')['status'], 'NOT RUN')
+        self.assertEqual(swift_test_evidence('✘ Test realCase() failed after 0.1 seconds.', 'realCase()')['status'], 'FAIL')
+        self.assertEqual(swift_test_evidence('✔ Test realCase() passed after 0.1 seconds.', 'realCase()', endpoint_ready=False)['status'], 'NOT RUN')
+    def test_swift_evidence_rejects_ambiguous_repeated_outcomes(self):
+        passed='✔ Test realCase() passed after 0.1 seconds.\n'
+        self.assertEqual(swift_test_evidence(passed*2, 'realCase()')['status'], 'FAIL')
+        self.assertEqual(swift_test_evidence(passed+'➜ Test realCase() skipped.\n', 'realCase()')['status'], 'NOT RUN')
     def test_capture_run_rejects_replaced_or_escaped_images(self):
         with tempfile.TemporaryDirectory() as folder:
             root=Path(folder);directory=root/'qa/visual/candidates/run-a';directory.mkdir(parents=True)
