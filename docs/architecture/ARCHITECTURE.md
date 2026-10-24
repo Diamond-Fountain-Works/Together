@@ -1,6 +1,74 @@
-# Together 0.2.2 Architecture
+# Together Architecture
 
-## Current normal-launch delivery boundary
+## Apple compatibility boundary — 0.2.4 candidate
+
+The current source prepares one Apple Silicon macOS client with a macOS 11
+deployment floor and a native iPhone/iPad frontend with an iOS/iPadOS 15 floor.
+These are build targets, not a claim that every OS release or device has passed
+runtime acceptance. The actual minimum of every embedded native library is
+verified independently. The available older macOS SDK and explicit Swift
+frontend target are required for a genuine macOS 11 artifact; a SwiftPM command
+whose label says 11 can otherwise emit objects targeting 12. The iOS simulator
+and physical-device checks remain NOT RUN unless their evidence explicitly says
+otherwise. WatchOS is not implemented.
+
+`TogetherRepository` remains the shared persistence boundary. On macOS 14 /
+iOS 17 and later, new stores use SwiftData with the same global `OperationRecord`,
+`LocalRecord` and `EntityRecord` types and fields. Earlier systems use the bundled
+system SQLite implementation. Its marked, versioned database contains the same
+canonical signed-operation bytes and local/projection records; it is not another
+business ledger. A recognized legacy SQLite store remains on that backend after
+the OS is upgraded. Existing SwiftData stores are not silently converted, renamed
+or reset so that an older system can open them.
+
+Existing files must be regular, non-linked leaves owned by the current UID.
+Unknown formats and newer legacy SQLite schema versions fail closed. Before an
+existing modern store can be opened writable, public CoreData metadata must
+identify the three Together entities, then a SwiftData configuration with
+`allowsSave: false` must open it successfully. This genuinely sets
+`NSReadOnlyPersistentStoreOption`; an unknown same-named future model cannot
+silently shed fields through an inferred lightweight downgrade. A migration plan
+alone did not provide that protection in the regression fixture. No static,
+macOS-only model hash allowlist or private business-table parsing is used.
+The original unversioned schema and a store generated from the actual pinned
+0.0.1 source are separate preservation tests. An unsupported store remains in
+place with an actionable error rather than an empty replacement or a new key.
+
+The SQLite implementation preserves the repository's atomic boundaries: immutable
+operation-ID/content checks, daily gift slot claims, facts plus replication
+witnesses, authorization/head comparison, ACK/local records and projection cache
+updates. It uses bounded indexed pages and prepared bindings. New files are
+reserved exclusively with owner-only permissions before SQLite creates sidecars.
+The backend marker/schema is local storage metadata and never appears in a wire
+envelope. SwiftData's physical schema generation and the existing identity,
+SharedSpace, pairing and signed historical bytes remain unchanged.
+
+The core uses Combine `ObservableObject`/`@Published` and explicit nested
+publisher forwarding on the older deployment targets. Presentation dates use
+the selected locale without changing civil-date components or encoded timestamps.
+Back-deployed callback WebSocket APIs and a bounded HTTP data delegate retain
+redirect rejection and response limits on macOS 11. Pacing/timeouts use a
+`mach_continuous_time` clock; it does not replace the Lamport clock or the shared
+calendar used for daily gift allowances.
+
+The macOS and iPhone/iPad native frontends reuse `ReplicaEngine`, the existing
+native partner adapter, authenticated content/media channel, paged operation-log
+sync and verified ACKs. Platform work supplies navigation, panels, media controls
+and lifecycle adapters, not a second sync engine. iOS resumes networking while
+active and suspends its session in the background; it does not promise an
+always-online background socket or add an offline mailbox. QA hosts have distinct
+bundle IDs and explicit synthetic storage. The production factory rejects both
+the macOS and iOS QA bundle IDs instead of retrying into live storage.
+
+SwiftPM resources in a signed standalone app live under the platform's resource
+directory. `TogetherResources.bundle` selects that nested bundle before the raw
+SwiftPM test accessor, retaining bilingual UI and the currency reference without
+requiring an absolute build-directory fallback. These platform changes do not
+alter Protocol 3 history, Protocol 4 certificates, enrollment consent or any C1
+Relay API/frame. Build, isolated integration, physical-network and independent
+security acceptance remain distinct gates.
+
+## Published 0.2.2/0.2.3 normal-launch boundary — historical
 
 The macOS 0.2.2 Build 20 package is an ordinary `com.together.app` application:
 double-click uses `NativeProduction`, the existing `ReplicaEngine.production`
@@ -51,13 +119,13 @@ assessment rejects it, so manual user approval may be necessary. No system trust
 settings are changed by the package.
 
 The sections below retain the finance architecture and earlier transport
-history. This current delivery boundary takes precedence for normal 0.2.2
+history. This historical delivery boundary describes normal 0.2.2/0.2.3
 launch/packaging; historical C1 deployment and QA results do not certify the new
 normal package's physical-device/network acceptance.
 
 ## Monorepo foundation
 
-Source ownership and rollback are defined in [MONOREPO_MIGRATION.md](MONOREPO_MIGRATION.md). SwiftUI/Xcode resides in `apps/apple/macOS`, the TogetherCore package in `packages/together-core-swift`, C1 Worker in `services/relay`. Shared core remains macOS-tested and contains SwiftData/Network/AppKit adapters; this is not an iOS/watchOS compatibility claim. [Platform contracts](../../protocol/COMPATIBILITY.md) are Codable DTOs and operation envelopes, never SwiftData classes. App, device-sync and storage generations are separately recorded in `protocol/versions.json`. No runtime protocol/schema/identity/production service change accompanies directory movement.
+Source ownership and rollback are defined in [MONOREPO_MIGRATION.md](MONOREPO_MIGRATION.md). SwiftUI/Xcode resides in `apps/apple/macOS` and the additive `apps/apple/iOS` frontend; the TogetherCore package is in `packages/together-core-swift`, C1 Worker in `services/relay`. The original extraction alone did not establish mobile compatibility; the current branch's platform adapters and limits are described above. WatchOS is not implemented. [Platform contracts](../../protocol/COMPATIBILITY.md) are Codable DTOs and operation envelopes, never SwiftData or SQLite classes. App, device-sync and storage generations are separately recorded in `protocol/versions.json`. No runtime protocol/identity/production service change accompanies directory movement or the platform backport.
 
 ## Finance boundary and storage
 

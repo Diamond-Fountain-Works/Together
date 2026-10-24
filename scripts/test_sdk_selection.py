@@ -5,7 +5,7 @@ from pathlib import Path
 import tempfile
 import unittest
 import select_apple_sdk as sdk
-from test_release_delivery import minimum_android_api
+from test_release_delivery import apple_build_targets, contains_file_markers, minimum_android_api, modern_weak_imports
 
 
 class SDKSelectionTests(unittest.TestCase):
@@ -29,6 +29,39 @@ class SDKSelectionTests(unittest.TestCase):
                      "sdkVersion:'24' trailing-garbage\n"]:
             with self.subTest(rows=rows):
                 self.assertIsNone(minimum_android_api(rows))
+
+    def test_ios_macho_target_does_not_accept_simulator_mac_or_duplicate_records(self):
+        record = "Load command 11\n cmd LC_BUILD_VERSION\n platform IOS\n minos 15.0\n sdk 27.1\n"
+        expected = [{"platform": "IOS", "minos": "15.0"}]
+        self.assertEqual(apple_build_targets(record), expected)
+        for text in [record.replace("IOS", "IOSSIMULATOR"), record.replace("IOS", "MACOS"),
+                     record.replace("15.0", "17.0"), record + record, ""]:
+            with self.subTest(text=text):
+                self.assertNotEqual(apple_build_targets(text), expected)
+
+    def test_macho_target_with_missing_or_contradictory_fields_fails_closed(self):
+        for body in ["platform IOS", "platform IOS\n minos 15.0\n minos 17.0",
+                     "platform IOS\n platform MACOS\n minos 15.0"]:
+            with self.subTest(body=body), self.assertRaises(ValueError):
+                apple_build_targets("Load command 1\n cmd LC_BUILD_VERSION\n " + body + "\n")
+
+    def test_modern_frameworks_require_actual_weak_commands(self):
+        swiftdata = "Load command 31\n cmd LC_LOAD_WEAK_DYLIB\n name /System/Library/Frameworks/SwiftData.framework/SwiftData (offset 24)\n"
+        observation = "Load command 49\n cmd LC_LOAD_WEAK_DYLIB\n name /usr/lib/swift/libswiftObservation.dylib (offset 24)\n"
+        self.assertTrue(all(modern_weak_imports(swiftdata + observation).values()))
+        for text in ["", swiftdata, observation, (swiftdata + observation).replace("LC_LOAD_WEAK_DYLIB", "LC_LOAD_DYLIB"),
+                     swiftdata + observation + swiftdata.replace("LC_LOAD_WEAK_DYLIB", "LC_LOAD_DYLIB")]:
+            with self.subTest(text=text):
+                self.assertFalse(all(modern_weak_imports(text).values()))
+
+    def test_qa_binary_marker_across_stream_boundary_is_not_missed(self):
+        marker = b"together-native-app-ios-qa-"
+        with tempfile.TemporaryDirectory(dir=self.root) as temporary:
+            binary = Path(temporary) / "synthetic-executable"
+            binary.write_bytes(b"x" * (1024 * 1024 - 3) + marker + b"x")
+            self.assertTrue(contains_file_markers(binary, (marker, b"TOGETHER_IOS_QA")))
+            binary.write_bytes(b"clean synthetic executable")
+            self.assertFalse(contains_file_markers(binary, (marker, b"TOGETHER_IOS_QA")))
 
     def setUp(self):
         self.root = sdk.ROOT / "qa/results/sdk-selection-tests"

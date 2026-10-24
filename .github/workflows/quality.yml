@@ -1,14 +1,14 @@
 name: Monorepo quality
 on:
   push:
-    branches: [main, 'feature/**', 'fix/**', 'refactor/**', 'release/**']
+    branches: [main, 'feature/localization-0.2.3', 'feature/**', 'fix/**', 'refactor/**', 'release/**']
   pull_request:
     branches: [main, 'refactor/monorepo-foundation']
   workflow_dispatch:
 permissions:
   contents: read
 concurrency:
-  group: quality-${{ github.workflow }}-${{ github.ref }}
+  group: quality-${{ github.workflow }}-${{ github.head_ref || github.ref_name }}
   cancel-in-progress: true
 jobs:
   p2p:
@@ -33,7 +33,9 @@ jobs:
           rustup toolchain install 1.96.0 --profile minimal
           python3 scripts/rebuild_apple_native.py --jobs 2
       - name: Reject invalid native source and artifact inputs
-        run: python3 scripts/test_apple_native_build.py
+        run: |
+          python3 scripts/test_apple_native_build.py
+          python3 scripts/test_sdk_selection.py
       - name: Compile isolated normal native QA App (never launch)
         env:
           TOGETHER_NATIVE_ACCEPTANCE: '1'
@@ -92,6 +94,33 @@ jobs:
             qa/results/copy.json
             qa/results/*.log
           retention-days: 7
+  ios:
+    name: iPhone and iPad generic-device build (no simulator acceptance)
+    runs-on: macos-26
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: '3.12'
+      - name: Source-build native Mac and iOS device slices
+        env:
+          RUSTUP_TOOLCHAIN: '1.96.0'
+        run: |
+          rustup toolchain install 1.96.0 --profile minimal
+          rustup target add --toolchain 1.96.0 aarch64-apple-ios
+          python3 scripts/rebuild_apple_native.py --platform macos --platform ios --jobs 2
+          python3 scripts/test_apple_native_build.py
+      - name: Compile and link normal and isolated QA iPhone/iPad targets
+        run: |
+          python3 apps/apple/iOS/script/generate_project.py
+          xcodebuild -project apps/apple/iOS/Together.xcodeproj -scheme TogetheriOS -configuration Release -destination 'generic/platform=iOS' -derivedDataPath "$RUNNER_TEMP/ios-build" CODE_SIGNING_ALLOWED=NO build
+          xcodebuild -project apps/apple/iOS/Together.xcodeproj -scheme TogetheriOSQA -configuration Debug -destination 'generic/platform=iOS' -derivedDataPath "$RUNNER_TEMP/ios-build" CODE_SIGNING_ALLOWED=NO build
+          python3 scripts/test_release_delivery.py --ios-app "$RUNNER_TEMP/ios-build/Build/Products/Release-iphoneos/Together.app" --json qa/results/ios-artifact.json
+      - name: State runtime coverage explicitly
+        run: echo 'NOT RUN - iPhone/iPad simulator and physical runtime, signing/provisioning and visual approval are separate gates.'
   portable:
     name: Relay, protocol, copy and source safety
     runs-on: ubuntu-24.04

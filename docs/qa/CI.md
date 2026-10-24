@@ -6,9 +6,9 @@
 - `ubuntu-24.04`: relay typecheck and local Workers runtime tests; JSON Schema/conformance, QA tool tests, copy and tracked/history safety audit.
 - Copy warnings remain visible. `check_ci_report.py` requires each headless gate to pass and UI/visual to be honestly NOT RUN; review-required independent cryptographic review cannot become a CI PASS.
 - XCUITest/screenshots run locally with a usable logged-in macOS desktop via `make qa`. Hosted CI is not configured to provide the approved input-method/screen/environment baseline. No hosted UI/visual PASS is claimed.
-- Real two-Mac/different-Wi-Fi tests and independent protocol review are manual gates. Android CI will be added only when a real Android project exists.
+- Real two-Mac/different-Wi-Fi tests and independent protocol review are manual gates. Android build/JVM/lint, native Release verification and Swift–Kotlin integration are configured in `.github/workflows/android.yml`; instrumentation there is compilation-only, not hosted device acceptance.
 
-Runner choice follows [GitHub hosted runner documentation](https://docs.github.com/en/actions/reference/runners/github-hosted-runners); `macos-26` is used instead of the Xcode 27 preview label. Native package minimum is Swift 6, deployment macOS 14. Reproducible UI baselines remain tied to their recorded local macOS/Xcode environment, not the runner image.
+Runner choice follows [GitHub hosted runner documentation](https://docs.github.com/en/actions/reference/runners/github-hosted-runners); `macos-26` is used instead of the Xcode 27 preview label. Native package development uses Swift 6; runtime floors are defined in `packages/together-native-source/platform-support.json` and verified against actual binaries. Reproducible UI baselines remain tied to their recorded local macOS/Xcode environment, not the runner image.
 
 Local logs live under ignored `qa/results/`. Approved images and metadata live under `qa/visual/approved/`, reviewed synthetic snapshots under `qa/visual/reviews/`; scripts never automatically overwrite them.
 
@@ -19,3 +19,17 @@ The Xcode 26 CI run exposed a fixture-only SwiftPM compatibility issue: `main.sw
 ## Replication 4 headless additions
 
 Stacked PRs targeting refactor/monorepo-foundation now trigger the same workflow. The macOS job additionally requires four actual native Swift clients against a fresh loopback Worker and synthetic SIGKILL recovery. Both V1 and V2 integrations have distinct gates. Portable tests include the signed V4 DTO vectors in Swift/WebCrypto/Python; no deployment credentials are required. The optional 100,000-operation benchmark runs locally and is not a CI throughput SLA. The dedicated QA-host bundle isolates UI startup from production storage; hosted screenshots remain NOT RUN.
+
+## 0.2.4 compatibility gates
+
+The Apple native job rejects incorrect policy, source provenance, slice layout,
+Mach-O minimum/platform and malformed SDK metadata. The device-only iOS job
+source-builds Mac+iOS slices and compiles both normal and QA iPhone/iPad targets
+with minimum15. It does not initialize, boot or screenshot a simulator, provide
+provisioning, install an IPA or claim runtime coverage.
+
+Android Release CI source-builds API24 ARM64 and ARMv7 and verifies actual ELF
+architecture, NDK minimum and16KiB segments/ZIP alignment. The ephemeral CI signing
+key and APK are never published as distribution artifacts. Unit tests cover
+malformed/conflicting metadata rather than trusting declarations. Hosted results
+and the local API35 emulator run remain separate.

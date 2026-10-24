@@ -1,3 +1,20 @@
+# 0.2.4 — compatibility candidate (unreleased)
+
+- Target Apple Silicon/macOS11, iPhone/iPad15 and Android/API24 ARM64+ARMv7.
+- Share existing Apple feature views and signed business core; add UIKit file,
+  media and lifecycle adapters and native phone/tablet navigation fallbacks.
+- Preserve existing modern SwiftData records. Add transactional SQLite for older
+  Apple systems, readonly incompatible-store guards and isolated migration tests.
+- Backport observation, clocks, networking and native control availability;
+  verify actual linked minimums and bundled concurrency runtime on Mac.
+- Rebuild reviewed native dependencies for each platform/ABI. Update Android JNA
+  and desugaring; retain original HEIC content when the old OS cannot preview it.
+- Fix immediate Chinese resource propagation in Compose menus/dialogs.
+- Mac Build23 / Android code17. No new public release, production installation,
+  identity reset, Relay deployment or independent security approval is implied.
+
+[Builds, runtime scope and remaining gates](../qa/reports/PLATFORM_COMPATIBILITY_QA.md).
+
 # 0.2.3 — Chinese and English
 
 - Add an icon-only globe menu in Settings on macOS and Android, with device-local

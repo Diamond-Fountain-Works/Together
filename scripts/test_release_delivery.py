@@ -111,6 +111,49 @@ def signed_entitlements(result):
     return {}
 
 
+def apple_build_targets(text):
+    """Read complete LC_BUILD_VERSION records; do not confuse iOS and Simulator."""
+    targets = []
+    for block in re.split(r"(?m)^\s*Load command\s+\d+\s*$", text):
+        if not re.search(r"(?m)^\s*cmd\s+LC_BUILD_VERSION\s*$", block):
+            continue
+        fields = {}
+        for key in ("platform", "minos"):
+            values = re.findall(r"(?m)^\s*" + key + r"\s+(\S+)\s*$", block)
+            if len(values) != 1:
+                raise ValueError("Missing or contradictory Mach-O " + key)
+            fields[key] = values[0]
+        targets.append(fields)
+    return targets
+
+
+def modern_weak_imports(text):
+    """Prove each used modern module is weak, including Swift runtime overlays."""
+    imports = {"SwiftData": [], "Observation": []}
+    for block in text.split("Load command"):
+        name = re.search(r"(?m)^\s*name\s+(\S+)\s+\(offset\s+\d+\)", block)
+        command = re.search(r"(?m)^\s*cmd\s+(\S+)\s*$", block)
+        if not (name and command):
+            continue
+        for module in imports:
+            if module + ".framework/" in name[1] or "/libswift" + module + ".dylib" in name[1]:
+                imports[module].append(command[1] == "LC_LOAD_WEAK_DYLIB")
+    return {name: bool(values) and all(values) for name, values in imports.items()}
+
+
+def contains_file_markers(path, markers):
+    # Scan arbitrary-size executables without reading a whole binary into memory.
+    overlap = max(len(value) for value in markers) - 1
+    tail = b""
+    with path.open("rb") as stream:
+        for block in iter(lambda: stream.read(1024 * 1024), b""):
+            data = tail + block
+            if any(value in data for value in markers):
+                return True
+            tail = data[-overlap:] if overlap else b""
+    return False
+
+
 def mac_native_symbols(bundle, binary):
     candidates = [binary]
     for file in (bundle / "Contents/Frameworks").rglob("*"):
@@ -270,6 +313,79 @@ def mac_report(bundle):
             "nativeSymbolEvidence": native, "packagedPrivatePaths": private}
 
 
+def ios_report(bundle):
+    info = plistlib.loads((bundle / "Info.plist").read_bytes())
+    executable = info.get("CFBundleExecutable")
+    if not isinstance(executable, str) or Path(executable).name != executable or executable in (".", ".."):
+        raise ValueError("iOS executable must be a bundle-local filename")
+    binary = bundle / executable
+    config = json.loads((ROOT / "apps/apple/macOS/Configuration/ReleaseVersion.json").read_text())
+    policy = json.loads(PLATFORM_SUPPORT.read_text())
+    support = policy["iOS"]
+    checks, warnings = {}, []
+    checks["normalIdentity"] = info.get("CFBundleIdentifier") == "com.together.app"
+    checks["version"] = info.get("CFBundleShortVersionString") == config["marketingVersion"]
+    checks["configuredBuild"] = info.get("CFBundleVersion") == config["buildNumber"]
+    checks["phoneAndTabletFamilies"] = info.get("UIDeviceFamily") == [1, 2]
+    checks["devicePlatform"] = info.get("CFBundleSupportedPlatforms") == ["iPhoneOS"] and info.get("DTPlatformName") == "iphoneos"
+    checks["minimumOSMatchesPolicy"] = info.get("MinimumOSVersion") == support["minimumVersion"] == policy["iPadOS"]["minimumVersion"]
+    checks["nativeTransport"] = info.get("TogetherTransport") == "native" and info.get("TogetherDeviceProtocolVersion") == config["deviceProtocolVersion"]
+    arch = run("lipo", "-archs", binary)
+    architectures = arch.stdout.decode().split() if arch.returncode == 0 else []
+    checks["nativeArchitecture"] = architectures == support["architectures"] == policy["iPadOS"]["architectures"]
+    build_version = run("xcrun", "vtool", "-arch", "arm64", "-show-build", binary)
+    targets = apple_build_targets(build_version.stdout.decode()) if build_version.returncode == 0 else []
+    checks["actualMachOMinimum"] = targets == [{"platform": "IOS", "minos": support["minimumVersion"]}]
+    commands = run("otool", "-l", binary)
+    weak = modern_weak_imports(commands.stdout.decode()) if commands.returncode == 0 else {}
+    checks["newerFrameworksWeakLinked"] = bool(weak) and all(weak.values())
+    paths = [p for p in bundle.rglob("*") if p.is_file()]
+    private = [str(p.relative_to(bundle)) for p in paths if PRIVATE.search(str(p.relative_to(bundle)))]
+    checks["noPackagedUserStoresOrKeys"] = not private
+    checks["noDebugSupportBinaries"] = not any(p.name.endswith(".debug.dylib") or p.name == "__preview.dylib" for p in paths)
+    markers = (b"together-native-app-ios-qa-", b"TOGETHER_IOS_QA")
+    checks["noQAStartupMarkers"] = not any(contains_file_markers(p, markers) for p in [binary] + [p for p in paths if p.suffix == ".dylib"])
+    catalog = json.loads((ROOT / "packages/together-core-swift/Sources/TogetherCore/Resources/UI.xcstrings").read_text())["strings"]
+    resources = {locale: plistlib.loads((bundle / "TogetherCore_TogetherCore.bundle" / (locale + ".lproj/UI.strings")).read_bytes()) for locale in ("en", "zh-Hans")}
+    checks["completeBilingualUIKeys"] = bool(catalog) and all(set(value) == set(catalog) and all(isinstance(text, str) and text for text in value.values()) for value in resources.values())
+    purposes = json.loads((ROOT / "apps/apple/macOS/Sources/TogetherApp/Resources/InfoPlist.xcstrings").read_text())["strings"]
+    permission_keys = ("NSLocalNetworkUsageDescription", "NSMicrophoneUsageDescription")
+    localized = {locale: plistlib.loads((bundle / (locale + ".lproj/InfoPlist.strings")).read_bytes()) for locale in ("en", "zh-Hans")}
+    checks["localizedPermissionPurposes"] = all(localized[locale].get(key) == purposes[key]["localizations"][locale]["stringUnit"]["value"] for locale in localized for key in permission_keys)
+    checks["basePermissionPurposes"] = all(info.get(key) == localized["zh-Hans"][key] for key in permission_keys)
+    notes = json.loads((bundle / "ReleaseNotes.json").read_text())
+    source_notes = json.loads((ROOT / "apps/apple/macOS/Sources/TogetherApp/Resources/ReleaseNotes.json").read_text())
+    valid_notes = isinstance(notes, list) and bool(notes) and all(
+        isinstance(note, dict) and isinstance(note.get("version"), str) and
+        isinstance(note.get("highlights"), list) and all(
+            isinstance(highlight, dict) and all(isinstance(highlight.get(key), str) and
+                highlight[key] in catalog for key in ("titleKey", "detailsKey"))
+            for highlight in note["highlights"]) for note in notes)
+    checks["releaseNotesResource"] = valid_notes and notes == source_notes
+    current_notes = any(isinstance(note, dict) and note.get("version") == config["marketingVersion"] for note in notes) if isinstance(notes, list) else False
+    if not current_notes:
+        warnings.append("currentVersionReleaseNotesMissing: add approved What's New content before a public release")
+    checks["appAssetsIncluded"] = (bundle / "Assets.car").is_file() and bool(info.get("CFBundleIcons")) and bool(info.get("CFBundleIcons~ipad"))
+    verification = run("codesign", "--verify", "--deep", "--strict", bundle)
+    signing = run("codesign", "-dvv", bundle)
+    unsigned = signing.returncode != 0 and "not signed at all" in signing.stderr.decode(errors="replace")
+    checks["signatureValidOrExplicitlyUnsigned"] = verification.returncode == 0 or unsigned
+    entitlements = signed_entitlements(run("codesign", "-d", "--entitlements", ":-", bundle)) if not unsigned else {}
+    checks["releaseDebuggerDisabled"] = not entitlements.get("get-task-allow", False)
+    signature_state = "UNSIGNED" if unsigned else "VERIFIED" if verification.returncode == 0 else "INVALID"
+    if unsigned:
+        warnings.append("Unsigned generic iOS bundle; not an installable/signed IPA. Provisioning, signing and physical-device acceptance remain required")
+    else:
+        warnings.append("Signature inspection does not verify a distribution provisioning profile or App Store acceptance")
+    return {"platform": "iOS/iPadOS", "path": str(bundle), "checks": checks, "warnings": warnings,
+            "architectures": architectures, "version": info.get("CFBundleShortVersionString"), "build": info.get("CFBundleVersion"),
+            "bundleIdentifier": info.get("CFBundleIdentifier"), "minimumOS": info.get("MinimumOSVersion"),
+            "actualMachOTargets": targets, "modernWeakImports": weak, "signature": signature_state,
+            "executableSHA256": digest(binary), "resourceKeyCounts": {key: len(value) for key, value in resources.items()},
+            "currentVersionReleaseNotesIncluded": current_notes, "packagedPrivatePaths": private,
+            "runtimeAcceptance": "NOT RUN", "provisioningAndInstallation": "NOT RUN"}
+
+
 def android_report(apk):
     aapt, apksigner, zipalign = (sdk_tool(n) for n in ("aapt2", "apksigner", "zipalign"))
     badging = run(aapt, "dump", "badging", apk)
@@ -340,13 +456,14 @@ def android_report(apk):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--mac-app", type=Path)
+    parser.add_argument("--ios-app", type=Path)
     parser.add_argument("--android-apk", type=Path)
     parser.add_argument("--json", type=Path)
     args = parser.parse_args()
-    if not (args.mac_app or args.android_apk):
+    if not (args.mac_app or args.ios_app or args.android_apk):
         parser.error("Provide at least one explicit artifact path; this tool never builds or installs")
     reports = []
-    for path, inspect in ((args.mac_app, mac_report), (args.android_apk, android_report)):
+    for path, inspect in ((args.mac_app, mac_report), (args.ios_app, ios_report), (args.android_apk, android_report)):
         if path:
             try:
                 report = inspect(path.resolve(strict=True))

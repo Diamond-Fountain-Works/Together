@@ -3,7 +3,7 @@
   "syncProtocolVersion": 4,
   "relayServiceProtocolVersion": 1,
   "databaseSchemaVersion": 1,
-  "storageSchemaMeaning": "Existing OperationRecord/LocalRecord/EntityRecord physical SwiftData storage generation; additive replication metadata uses LocalRecord",
+  "storageSchemaMeaning": "Existing SwiftData OperationRecord/LocalRecord/EntityRecord generation1 unchanged; optional marked legacy SQLite format1 stores identical canonical facts/local records and is not a wire schema.",
   "invitation": {
     "requiredPartnerLifetimeMilliseconds": 28800000,
     "activeForFreshNormalApps": "nativePeer",
@@ -61,13 +61,14 @@
     "status": "development-device-acceptance-client; physical Samsung/local native C1 evidence in ANDROID_PHASE_C; public-network, visual-baseline and independent-security acceptance pending"
   },
   "appDelivery": {
-    "marketingVersion": "0.2.2",
-    "macBuild": "20",
-    "androidCode": 15,
+    "marketingVersion": "0.2.4",
+    "macBuild": "23",
+    "androidCode": 17,
     "freshInstall": "persistent native peer transport; no QA identity/data import",
     "legacyMacC1": "existing bindings retain C1",
-    "releaseStatus": "security rebuild and validation in progress; not published"
+    "releaseStatus": "platform compatibility candidate; not published or installed; old-device/runtime and independent-review gates remain open"
   },
   "relayServiceProtocolVersionMeaning": "Existing optional deployed legacy C1 service; normal native pairing does not use Relay API",
-  "nativeSourceManifest": "packages/together-native-source/source-manifest.json"
+  "nativeSourceManifest": "packages/together-native-source/source-manifest.json",
+  "platformSupportSource": "packages/together-native-source/platform-support.json"
 }

@@ -1,3 +1,27 @@
+# 0.2.4 compatibility checks
+
+- Assert the policy floor against actual arm64 Mach-O, Android NDK ELF notes,
+  both packaged ARM ABIs, 16KiB alignment and bundle/manifest metadata.
+- Compile normal/QA iPhone+iPad device targets, min 15, separate bundle IDs;
+  no simulator launch is implied. iOS simulator tests are deferred by the user.
+- Run the SQLite backend's transactional history/ACK tests, restart and identity
+  checks. Generate an old SwiftData store from pinned source and upgrade it in
+  isolation; reject unknown/future stores before writable opening. Verify
+  database/WAL bytes and future fields remain unchanged on rejection.
+- Run Combine notification/session replacement checks and ordinary QA UI through
+  a forced-SQLite synthetic workspace. The desktop QA harness targets the current
+  host SDK floor (12 on this machine), independently of the real Release floor (11).
+- Android JVM, lint and owned API35 emulator instrumentation cover persistence,
+  Keystore, JDK backports, original media and bilingual navigation; report API24,
+  ARMv7 and physical-device runs separately. Run the optimized native invitation
+  action, cancel and process-restart UI rather than inferring JNI success.
+- Keep exact image candidates local until human review. Copy warnings stay
+  visible. Local Relay/Swift–Kotlin checks are not public network acceptance.
+- After recording deliverables and evidence, remove task-owned caches, temporary
+  fixtures and runtimes; leave installed applications and real user data alone.
+
+Actual counts and remaining gates: [compatibility QA](reports/PLATFORM_COMPATIBILITY_QA.md).
+
 # Together acceptance and regression plan
 
 ## Completed pre-migration gate — 0.2.1 Build 4

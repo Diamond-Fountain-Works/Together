@@ -4,7 +4,7 @@ import json
 from project_paths import ROOT
 report=json.loads((ROOT/'qa/results/summary.json').read_text())
 required=['quality-tools','visual-review-tools','repository-safety-tools','repository-safety','protocol-conformance',
-          'server-check','server-tests','business','dataMigration','relayIntegration','multiDeviceIntegration','crashRecovery','build']
+          'localization-tools','localization','server-check','server-tests','business','dataMigration','relayIntegration','multiDeviceIntegration','crashRecovery','build']
 failed=[name for name in required if report.get(name,{}).get('status')!='PASS']
 for name in ('dataMigration','relayIntegration','multiDeviceIntegration','crashRecovery'):
     result=report.get(name,{})
