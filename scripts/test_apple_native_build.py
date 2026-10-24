@@ -4,11 +4,46 @@ import json
 from pathlib import Path
 import tempfile
 import unittest
+from unittest.mock import patch
 
 import rebuild_apple_native as build
 
 
 class AppleNativeGateTests(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        (build.ROOT / ".native-build").mkdir(exist_ok=True)
+
+    def test_policy_matches_shared_apple_minima(self):
+        self.assertEqual(build.platform_gate()["macOS"]["minimumVersion"], "11.0")
+        self.assertEqual(build.platform_gate()["iOS"]["minimumVersion"], "15.0")
+
+    def test_reviewed_slice_layout_is_bounded(self):
+        files = build.package_files(["macos", "ios", "ios-simulator"])
+        self.assertEqual(len(files), 15)
+        self.assertIn("Iroh.xcframework/ios-arm64/libiroh_ffi.a", files)
+        self.assertNotIn("Iroh.xcframework/ios-x86_64/libiroh_ffi.a", files)
+
+    def test_native_object_cannot_raise_declared_minimum(self):
+        with tempfile.TemporaryDirectory(dir=build.ROOT / ".native-build") as temporary:
+            library = Path(temporary) / "lib.a"
+            library.write_bytes(b"!<arch>\n")
+            def checked(*args):
+                return "iroh_ffi.test.rcgu.o" if args[0] == "ar" else "platform MACOS\nminos 14.5"
+            with patch.object(build, "checked", side_effect=checked), patch.object(build.subprocess, "check_output", return_value=b"object"):
+                with self.assertRaisesRegex(RuntimeError, "raises"):
+                    build.verify_native_platform(library, "macos")
+
+    def test_wrong_native_platform_is_rejected(self):
+        with tempfile.TemporaryDirectory(dir=build.ROOT / ".native-build") as temporary:
+            library = Path(temporary) / "lib.a"
+            library.write_bytes(b"!<arch>\n")
+            def checked(*args):
+                return "iroh_ffi.test.rcgu.o" if args[0] == "ar" else "platform MACOS\nminos 11.0"
+            with patch.object(build, "checked", side_effect=checked), patch.object(build.subprocess, "check_output", return_value=b"object"):
+                with self.assertRaisesRegex(RuntimeError, "platform mismatch"):
+                    build.verify_native_platform(library, "ios")
+
     def test_reviewed_secure_lock_and_unchanged_abi_inputs(self):
         self.assertEqual(build.source_manifest()["dependencyVersions"]["iroh"], "1.1.0")
         self.assertEqual(len(build.binding_gate()["files"]), 4)

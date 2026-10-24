@@ -1,5 +1,5 @@
 import Foundation
-import Observation
+import Combine
 import Darwin
 import TogetherCore
 
@@ -12,10 +12,10 @@ private struct NativeAppBinding: Codable {
 /// bootstrap, inventory, projector and receipt ledger are the existing core.
 /// The App supplies either a bounded QA workspace or an explicit persistent
 /// workspace; neither path falls back to another store.
-@MainActor @Observable public final class NativeAppPeerService {
-    public private(set) var state: PairingConnectionState = .unpaired
-    public private(set) var errorMessage: String?
-    @ObservationIgnored private var displayError: (any Error)?
+@MainActor public final class NativeAppPeerService: ObservableObject {
+    @Published public private(set) var state: PairingConnectionState = .unpaired
+    @Published public private(set) var errorMessage: String?
+    private var displayError: (any Error)?
     public var localizedErrorMessage: String? {
         guard errorMessage != nil else { return nil }
         if needsRecovery { return Copy.text("native.error.pairingRecovery") }
@@ -34,42 +34,42 @@ private struct NativeAppBinding: Codable {
         if let error = displayError as? URLError, error.code == .timedOut { return Copy.text("connection.error.timeout") }
         return Copy.text("connection.error.retry")
     }
-    public private(set) var invitationCode: String?
-    public private(set) var invitationExpiresAt: Date?
-    public private(set) var verificationCode: String?
-    public private(set) var remoteName = ""
-    public private(set) var remoteFingerprint = ""
-    public private(set) var paths: [P2PPath] = []
-    public private(set) var completedSyncCount = 0
-    public private(set) var latestOperationProgress: OperationDeliveryProgress?
-    public private(set) var needsRecovery = false
-    public private(set) var rejectedUnverifiedIncoming = 0
-    public private(set) var lastUnverifiedIncomingError: String?
-    public private(set) var stage = "idle"
+    @Published public private(set) var invitationCode: String?
+    @Published public private(set) var invitationExpiresAt: Date?
+    @Published public private(set) var verificationCode: String?
+    @Published public private(set) var remoteName = ""
+    @Published public private(set) var remoteFingerprint = ""
+    @Published public private(set) var paths: [P2PPath] = []
+    @Published public private(set) var completedSyncCount = 0
+    @Published public private(set) var latestOperationProgress: OperationDeliveryProgress?
+    @Published public private(set) var needsRecovery = false
+    @Published public private(set) var rejectedUnverifiedIncoming = 0
+    @Published public private(set) var lastUnverifiedIncomingError: String?
+    @Published public private(set) var stage = "idle"
     public var isOnline: Bool { state == .connected || state == .syncing }
     public var busy: Bool { state == .waiting && verificationCode == nil }
-    @ObservationIgnored private let engine: ReplicaEngine
-    @ObservationIgnored private let root: URL
-    @ObservationIgnored private var endpoint: IrohEndpoint?
-    @ObservationIgnored private var link: IrohFrameConnection?
-    @ObservationIgnored private var worker: Task<Void, Never>?
-    @ObservationIgnored private var reader: Task<Void, Never>?
-    @ObservationIgnored private var retry: Task<Void, Never>?
-    @ObservationIgnored private var bootstrap: NativePartnerBootstrapChannel?
-    @ObservationIgnored private var cipher: AuthorizedPeerCipher?
-    @ObservationIgnored private var store: AuthorizedReplicationStore?
-    @ObservationIgnored private var ledger: DeviceAcknowledgementLedger?
-    @ObservationIgnored private var session: PagedReplicationSession?
-    @ObservationIgnored private var media: AuthenticatedPeerMediaChannel?
-    @ObservationIgnored private var contentWriter: OrderedEncryptedContentWriter?
-    @ObservationIgnored private var remoteContact: NativePartnerContact?
-    @ObservationIgnored private var localContact: NativePartnerContact?
-    @ObservationIgnored private var pendingBinding: PeerTransportBinding?
-    @ObservationIgnored private var binding: NativeAppBinding?
-    @ObservationIgnored private var generation = UUID()
-    @ObservationIgnored private var enabled = false
-    @ObservationIgnored private var attempt = 0
-    @ObservationIgnored private var phase = "idle"
+    private let engine: ReplicaEngine
+    private let root: URL
+    private var endpoint: IrohEndpoint?
+    private var link: IrohFrameConnection?
+    private var worker: Task<Void, Never>?
+    private var reader: Task<Void, Never>?
+    private var retry: Task<Void, Never>?
+    private var bootstrap: NativePartnerBootstrapChannel?
+    private var cipher: AuthorizedPeerCipher?
+    private var store: AuthorizedReplicationStore?
+    private var ledger: DeviceAcknowledgementLedger?
+    private var session: PagedReplicationSession?
+    private var media: AuthenticatedPeerMediaChannel?
+    private var contentWriter: OrderedEncryptedContentWriter?
+    private var remoteContact: NativePartnerContact?
+    private var localContact: NativePartnerContact?
+    private var pendingBinding: PeerTransportBinding?
+    private var binding: NativeAppBinding?
+    private var generation = UUID()
+    private var enabled = false
+    private var attempt = 0
+    private var phase = "idle"
 
     public convenience init(engine: ReplicaEngine, root: URL) throws {
         let canonical = root.standardizedFileURL.resolvingSymlinksInPath()
@@ -84,7 +84,12 @@ private struct NativeAppBinding: Codable {
     /// Explicit normal-App entry point. Never permits a temporary QA root or
     /// redirects a repository into the default workspace.
     public convenience init(engine: ReplicaEngine, persistentRoot: URL) throws {
-        let support = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)[0]
+        let systemSupport = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)[0]
+        #if os(iOS)
+        let support = systemSupport.resolvingSymlinksInPath()
+        #else
+        let support = systemSupport
+        #endif
         let canonical = try Self.validatePersistentRoot(persistentRoot, applicationSupportDirectory: support,
                                                       storageURL: engine.repository.storageURL)
         try FileManager.default.setAttributes([.posixPermissions: 0o700], ofItemAtPath: canonical.path)
@@ -119,7 +124,7 @@ private struct NativeAppBinding: Codable {
         return canonical
     }
 
-    @ObservationIgnored private let diagnosticsEnabled: Bool
+    private let diagnosticsEnabled: Bool
     private init(engine: ReplicaEngine, validatedRoot canonical: URL, diagnostics: Bool) throws {
         diagnosticsEnabled = diagnostics
         self.engine = engine; self.root = canonical
@@ -272,7 +277,7 @@ private struct NativeAppBinding: Codable {
                 rejectedUnverifiedIncoming += 1
                 lastUnverifiedIncomingError = String(describing: error)
                 recordStage("waiting-after-rejected-unverified-incoming")
-                try await Task.sleep(for: .milliseconds(100))
+                try await CompatibilityClock.sleep(for: .milliseconds(100))
             }
         }
         throw ReplicationError.bounds
@@ -309,6 +314,12 @@ private struct NativeAppBinding: Codable {
             key = IrohEndpoint.generateTransportKey(); try key.write(to: keyURL, options: .withoutOverwriting)
             try FileManager.default.setAttributes([.posixPermissions: 0o600], ofItemAtPath: keyURL.path)
         }
+        #if os(iOS)
+        var protectedKey = keyURL
+        var protection = URLResourceValues(); protection.isExcludedFromBackup = true
+        try protectedKey.setResourceValues(protection)
+        try FileManager.default.setAttributes([.protectionKey: FileProtectionType.completeUntilFirstUserAuthentication], ofItemAtPath: keyURL.path)
+        #endif
         let endpoint = try await IrohEndpoint.bind(secretKey: key, connectivity: .automatic,
             applicationProtocol: P2PTransportLimits.nativeAppALPN)
         do { try requireGeneration(token) }
@@ -494,7 +505,7 @@ private struct NativeAppBinding: Codable {
         guard enabled, binding != nil, retry == nil else { return }
         let delay = min(60, pow(2, Double(min(attempt, 6)))); attempt += 1
         retry = Task { @MainActor [weak self] in
-            try? await Task.sleep(for: .seconds(delay))
+            try? await CompatibilityClock.sleep(for: .seconds(delay))
             guard !Task.isCancelled, let self else { return }; self.retry = nil; self.reconnect()
         }
     }

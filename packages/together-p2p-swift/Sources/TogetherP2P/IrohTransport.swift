@@ -1,5 +1,6 @@
 import Foundation
 import IrohLib
+import TogetherCore
 
 public enum P2PTransportError: Error { case invalidAddress, frameBounds, busy, closed, unexpectedPeer, relayReadiness }
 /// Only failures before any application device identity/pin is available.
@@ -128,9 +129,9 @@ public actor IrohEndpoint {
     /// The pinned Swift online() bridge ignores cancellation, so this bounded
     /// public-API poll never starts that native future. Actual QUIC + signed
     /// Protocol 4 authentication must separately establish reachability.
-    public func waitForRelayAddress(timeout: Duration = .seconds(15)) async throws -> Bool {
-        guard timeout > .zero, timeout <= .seconds(60) else { throw P2PTransportError.relayReadiness }
-        let clock = ContinuousClock()
+    public func waitForRelayAddress(timeout: CompatibilityDuration = .seconds(15)) async throws -> Bool {
+        guard timeout > CompatibilityDuration.seconds(0), timeout <= .seconds(60) else { throw P2PTransportError.relayReadiness }
+        let clock = CompatibilityClock()
         let deadline = clock.now.advanced(by: timeout)
         while true {
             try Task.checkCancellation()

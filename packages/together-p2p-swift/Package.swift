@@ -35,7 +35,8 @@ let receipt = json(nativePackage.appendingPathComponent("secure-build.json"))
 let secureLock = "0904d9b3cc5c1b5c3384f2a8fc8881da91bcee6231ad1c8813a1ae6eaae268e5"
 let sourceManifest = secureSources.appendingPathComponent("source-manifest.json")
 let bindingManifest = secureSources.appendingPathComponent("apple-bindings-manifest.json")
-guard receipt["format"] as? String == "together-secure-apple-iroh-source-build-v1",
+let platformPolicy = secureSources.appendingPathComponent("platform-support.json")
+guard receipt["format"] as? String == "together-secure-apple-iroh-source-build-v2",
       receipt["sourceCommit"] as? String == "5e451092dba0c1a09ee83ff6e5be37b1152a5c58",
       receipt["secureCargoLockSHA256"] as? String == secureLock,
       checksum(secureSources.appendingPathComponent("Cargo.lock")) == secureLock,
@@ -44,13 +45,21 @@ guard receipt["format"] as? String == "together-secure-apple-iroh-source-build-v
       receipt["ffiExportCount"] as? Int == 413,
       receipt["ffiExportsEqual"] as? Bool == true,
       receipt["architecture"] as? String == "arm64",
-      receipt["minimumMacOS"] as? String == "14.5",
+      receipt["minimumMacOS"] as? String == "11.0",
+      receipt["minimumIOS"] as? String == "15.0",
+      receipt["platformPolicySHA256"] as? String == checksum(platformPolicy),
       let versions = receipt["dependencyVersions"] as? [String: String],
       ["iroh", "iroh-base", "iroh-relay"].allSatisfy({ versions[$0] == "1.1.0" }),
       let files = receipt["files"] as? [String: String], !files.isEmpty else { fail("stale or unreviewed provenance") }
-let requiredFiles: Set<String> = ["Package.swift", "IrohLib/Sources/IrohLib/IrohLib.swift", "Iroh.xcframework/Info.plist",
-    "Iroh.xcframework/macos-arm64/libiroh_ffi.a", "Iroh.xcframework/macos-arm64/Headers/Export.h",
-    "Iroh.xcframework/macos-arm64/Headers/iroh_ffiFFI.h", "Iroh.xcframework/macos-arm64/Headers/module.modulemap"]
+let identifiers = ["macos": "macos-arm64", "ios": "ios-arm64", "ios-simulator": "ios-arm64-simulator"]
+guard let platforms = receipt["platforms"] as? [String], !platforms.isEmpty,
+      Set(platforms).count == platforms.count, platforms.allSatisfy({ identifiers[$0] != nil }) else { fail("unreviewed platform slices") }
+var requiredFiles: Set<String> = ["Package.swift", "IrohLib/Sources/IrohLib/IrohLib.swift", "Iroh.xcframework/Info.plist"]
+for platform in platforms {
+    let prefix = "Iroh.xcframework/" + identifiers[platform]!
+    requiredFiles.insert(prefix + "/libiroh_ffi.a")
+    for name in ["Export.h", "iroh_ffiFFI.h", "module.modulemap"] { requiredFiles.insert(prefix + "/Headers/" + name) }
+}
 guard Set(files.keys) == requiredFiles else { fail("incomplete native artifact layout") }
 for (name, expected) in files {
     guard !name.hasPrefix("/"), !name.split(separator: "/").contains(".."),
@@ -58,15 +67,17 @@ for (name, expected) in files {
 }
 let bindings = json(bindingManifest)["files"] as? [String: String] ?? [:]
 guard bindings.count == 4 else { fail("missing tracked ABI files") }
-for (name, expected) in bindings {
-    let generated = name.hasPrefix("IrohLib/") ? name : "Iroh.xcframework/macos-arm64/" + name
-    guard checksum(secureSources.appendingPathComponent("apple-bindings/" + name)) == expected,
-          files[generated] == expected else { fail("tracked/generated ABI integrity") }
+for platform in platforms {
+    for (name, expected) in bindings {
+        let generated = name.hasPrefix("IrohLib/") ? name : "Iroh.xcframework/" + identifiers[platform]! + "/" + name
+        guard checksum(secureSources.appendingPathComponent("apple-bindings/" + name)) == expected,
+              files[generated] == expected else { fail("tracked/generated ABI integrity") }
+    }
 }
 
 let package = Package(
     name: "TogetherP2P",
-    platforms: [.macOS("14.5")],
+    platforms: [.macOS("11.0"), .iOS("15.0")],
     products: [
         .library(name: "TogetherP2P", targets: ["TogetherP2P"]),
         // Explicit QA executable: never opens an application/default store.

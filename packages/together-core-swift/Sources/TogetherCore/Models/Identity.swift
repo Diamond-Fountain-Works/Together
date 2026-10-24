@@ -40,7 +40,7 @@ public struct PairedPeer: Codable, Equatable, Sendable {
     public var host: String
     public var port: UInt16
     public var approvedAt: Date
-    public init(descriptor: DeviceDescriptor, host: String, port: UInt16, approvedAt: Date = .now) {
+    public init(descriptor: DeviceDescriptor, host: String, port: UInt16, approvedAt: Date = Date()) {
         self.descriptor = descriptor; self.host = host; self.port = port; self.approvedAt = approvedAt
     }
 }

@@ -1,52 +1,59 @@
 import Foundation
-import Observation
+import Combine
 import CryptoKit
 private struct NativeJoinIntent: Codable { var codeDigest: String; var requestId: UUID }
 @preconcurrency import Network
 
 public enum PairingConnectionState: String, Sendable { case unpaired = "Unpaired", waiting = "Waiting for Partner", connected = "Connected", syncing = "Syncing", offline = "Offline", error = "Error" }
-@MainActor @Observable public final class PairingService {
-    public private(set) var state: PairingConnectionState = .unpaired
-    public private(set) var proposal: PairingProposal?
-    public private(set) var invitationCode: String?
-    public private(set) var invitationExpiresAt: Date?
-    public private(set) var errorMessage: String?
-    public private(set) var lastSynchronizedAt: Date?
-    public private(set) var completedSyncCount = 0
-    public private(set) var retryDelay: Double = 0
-    public private(set) var busy = false
-    public private(set) var pairedFeedback = 0
+@MainActor public final class PairingService: ObservableObject {
+    @Published public private(set) var state: PairingConnectionState = .unpaired
+    @Published public private(set) var proposal: PairingProposal?
+    @Published public private(set) var invitationCode: String?
+    @Published public private(set) var invitationExpiresAt: Date?
+    @Published public private(set) var errorMessage: String?
+    @Published public private(set) var lastSynchronizedAt: Date?
+    @Published public private(set) var completedSyncCount = 0
+    @Published public private(set) var retryDelay: Double = 0
+    @Published public private(set) var busy = false
+    @Published public private(set) var pairedFeedback = 0
     public var isOnline: Bool { state == .connected || state == .syncing }
     public var partnerIsOnline:Bool {if let multiDeviceService{return multiDeviceService.connectedDevices.contains{engine.context.devices[$0]?.userId==engine.context.peer?.userId}};return isOnline}
     public var isConfigured: Bool { api != nil }
     public var needsMigration: Bool { engine.peer != nil && binding == nil }
-    @ObservationIgnored private let engine: ReplicaEngine
-    @ObservationIgnored private let transport: any SyncTransport
-    public private(set) var multiDeviceService:C1ReplicationService?
-    @ObservationIgnored private var api: RelayAPI?
-    @ObservationIgnored private var binding: RelayBinding?
-    @ObservationIgnored private var pendingRoute: RelayRoute?
-    @ObservationIgnored private var routeId: UUID?
-    @ObservationIgnored private var ephemeral = Curve25519.KeyAgreement.PrivateKey()
-    @ObservationIgnored private var hello: RelaySignedHello?
-    @ObservationIgnored private var secure: RelaySecureSession?
-    @ObservationIgnored private var handshakeHistory=RelayHandshakeHistory()
-    @ObservationIgnored private var localApproved = false
-    @ObservationIgnored private var remoteApproved = false
-    @ObservationIgnored private var serverPaired = false
-    @ObservationIgnored private var logSession: OperationLogSyncSession?
-    @ObservationIgnored private var partnerBootstrap: PartnerBootstrapSession?
-    @ObservationIgnored private var poll: Task<Void, Never>?
-    @ObservationIgnored private var retry: Task<Void, Never>?
-    @ObservationIgnored private var sender: Task<Void, Never>?
-    @ObservationIgnored private var queue: [Data] = []
-    @ObservationIgnored private var queuedBytes = 0
-    @ObservationIgnored private var attempt = 0
-    @ObservationIgnored private var enabled = false
-    @ObservationIgnored private var helloSentForPeer = false
-    @ObservationIgnored private var peerPresent = false
-    @ObservationIgnored private var openingRoute = false
-    @ObservationIgnored private var monitor = NWPathMonitor()
+    private let engine: ReplicaEngine
+    private let transport: any SyncTransport
+    @Published public private(set) var multiDeviceService:C1ReplicationService? {
+        didSet {
+            multiDeviceObservation = multiDeviceService?.objectWillChange.sink { [weak self] in
+                self?.objectWillChange.send()
+            }
+        }
+    }
+    private var multiDeviceObservation: AnyCancellable?
+    private var api: RelayAPI?
+    private var binding: RelayBinding?
+    private var pendingRoute: RelayRoute?
+    private var routeId: UUID?
+    private var ephemeral = Curve25519.KeyAgreement.PrivateKey()
+    private var hello: RelaySignedHello?
+    private var secure: RelaySecureSession?
+    private var handshakeHistory=RelayHandshakeHistory()
+    private var localApproved = false
+    private var remoteApproved = false
+    private var serverPaired = false
+    private var logSession: OperationLogSyncSession?
+    private var partnerBootstrap: PartnerBootstrapSession?
+    private var poll: Task<Void, Never>?
+    private var retry: Task<Void, Never>?
+    private var sender: Task<Void, Never>?
+    private var queue: [Data] = []
+    private var queuedBytes = 0
+    private var attempt = 0
+    private var enabled = false
+    private var helloSentForPeer = false
+    private var peerPresent = false
+    private var openingRoute = false
+    private var monitor = NWPathMonitor()
     public init(engine: ReplicaEngine, serviceURL: URL?, transport: (any SyncTransport)? = nil) {
         self.engine = engine; self.transport = transport ?? RelayWebSocketTransport()
         binding = try? engine.repository.load(RelayBinding.self, key: "relay-binding")
@@ -89,7 +96,7 @@ public enum PairingConnectionState: String, Sendable { case unpaired = "Unpaired
                     guard let self, self.enabled, let api = self.api, let id = self.routeId else { return }
                     do { let route = try await api.route(id); if route.members.count == 2 { self.pendingRoute = route; try await self.openRoute(route); return } }
                     catch { self.failed(error); return }
-                    try? await Task.sleep(for: .seconds(2))
+                    try? await CompatibilityClock.sleep(for: .seconds(2))
                 }
             }
         } catch { failed(error) }
@@ -138,7 +145,7 @@ public enum PairingConnectionState: String, Sendable { case unpaired = "Unpaired
             try await store.restore()
             let service=try C1ReplicationService(engine:engine,binding:binding,store:store)
             service.onStateChanged={ [weak self] state in self?.state=state;self?.errorMessage=self?.multiDeviceService?.errorMessage }
-            service.onConverged={ [weak self] in self?.lastSynchronizedAt = .now;self?.completedSyncCount+=1;self?.errorMessage=nil }
+            service.onConverged={ [weak self] in self?.lastSynchronizedAt = Date();self?.completedSyncCount+=1;self?.errorMessage=nil }
             multiDeviceService=service
             await service.start()
         }catch{errorMessage=error.localizedDescription;state = .error}
@@ -153,7 +160,7 @@ public enum PairingConnectionState: String, Sendable { case unpaired = "Unpaired
         retry?.cancel(); poll?.cancel(); resetSession(); transport.disconnect()
         multiDeviceService = service; enabled = true
         service.onStateChanged = { [weak self] value in self?.state = value; self?.errorMessage = self?.multiDeviceService?.errorMessage }
-        service.onConverged = { [weak self] in self?.lastSynchronizedAt = .now; self?.completedSyncCount += 1 }
+        service.onConverged = { [weak self] in self?.lastSynchronizedAt = Date(); self?.completedSyncCount += 1 }
         await service.start()
     }
     private func validateRoute(_ route: RelayRoute) throws {
@@ -264,7 +271,7 @@ public enum PairingConnectionState: String, Sendable { case unpaired = "Unpaired
     private func activateIfReady() throws {
         guard peerPresent, localApproved, remoteApproved, serverPaired, let secure, let routeId, let api, logSession == nil, partnerBootstrap == nil else { return }
         let remote = secure.remoteHello.body.descriptor
-        let proposed = PairedPeer(descriptor: remote, host: engine.peer?.host ?? "127.0.0.1", port: engine.peer?.port ?? 0, approvedAt: engine.peer?.approvedAt ?? .now)
+        let proposed = PairedPeer(descriptor: remote, host: engine.peer?.host ?? "127.0.0.1", port: engine.peer?.port ?? 0, approvedAt: engine.peer?.approvedAt ?? Date())
         let newBinding = RelayBinding(serviceURL: api.base, routeId: routeId, peerDeviceId: remote.deviceId, peerPublicKey: remote.publicKey, localDeviceId: engine.identity.descriptor.deviceId)
         let first = binding == nil
         if pendingRoute?.pairingProtocol == 4 {
@@ -272,9 +279,9 @@ public enum PairingConnectionState: String, Sendable { case unpaired = "Unpaired
             binding = newBinding; invitationCode = nil; invitationExpiresAt = nil; proposal = nil; state = .syncing
             let session = PartnerBootstrapSession(engine: engine, remote: remote, send: { [weak self, weak secure] frame in
                 guard let self, let secure, self.secure === secure else { throw CancellationError() }
-                while self.queuedBytes > 524_288 { try await Task.sleep(for: .milliseconds(2)); try Task.checkCancellation() }
+                while self.queuedBytes > 524_288 { try await CompatibilityClock.sleep(for: .milliseconds(2)); try Task.checkCancellation() }
                 self.enqueue(try CanonicalJSON.encode(secure.seal(CanonicalJSON.encode(frame))))
-                while self.sender != nil { try await Task.sleep(for: .milliseconds(2)); try Task.checkCancellation() }
+                while self.sender != nil { try await CompatibilityClock.sleep(for: .milliseconds(2)); try Task.checkCancellation() }
                 guard self.secure === secure else { throw CancellationError() }
             }, complete: { [weak self] genesis in
                 guard let self else { throw CancellationError() }
@@ -290,7 +297,7 @@ public enum PairingConnectionState: String, Sendable { case unpaired = "Unpaired
             do { self.enqueue(try CanonicalJSON.encode(secure.seal(CanonicalJSON.encode(payload)))) } catch { self.failed(error) }
         }
         sync.onSyncing = { [weak self] in self?.state = .syncing }
-        sync.onConverged = { [weak self] in self?.state = .connected; self?.lastSynchronizedAt = .now; self?.completedSyncCount += 1; self?.errorMessage = nil; self?.attempt = 0; self?.retryDelay = 0 }
+        sync.onConverged = { [weak self] in self?.state = .connected; self?.lastSynchronizedAt = Date(); self?.completedSyncCount += 1; self?.errorMessage = nil; self?.attempt = 0; self?.retryDelay = 0 }
         sync.onError = { [weak self] error in self?.errorMessage = error.localizedDescription }
         logSession = sync; state = .syncing; if first { pairedFeedback += 1 }; sync.synchronize()
     }
@@ -301,7 +308,7 @@ public enum PairingConnectionState: String, Sendable { case unpaired = "Unpaired
         multiDeviceService = service; enabled = true
         try engine.repository.save(false, key: "partner4/pending")
         service.onStateChanged = { [weak self] value in self?.state = value; self?.errorMessage = self?.multiDeviceService?.errorMessage }
-        service.onConverged = { [weak self] in self?.lastSynchronizedAt = .now; self?.completedSyncCount += 1 }
+        service.onConverged = { [weak self] in self?.lastSynchronizedAt = Date(); self?.completedSyncCount += 1 }
         await service.start()
     }
     private func enqueue(_ data: Data) {
@@ -326,7 +333,7 @@ public enum PairingConnectionState: String, Sendable { case unpaired = "Unpaired
         guard enabled, binding != nil, retry == nil else { return }
         retryDelay = min(60, pow(2, Double(min(attempt, 6)))); attempt += 1; let delay = retryDelay
         retry = Task { @MainActor [weak self] in
-            try? await Task.sleep(for: .seconds(delay)); guard !Task.isCancelled, let self else { return }
+            try? await CompatibilityClock.sleep(for: .seconds(delay)); guard !Task.isCancelled, let self else { return }
             self.retry = nil; await self.resumeRoute()
         }
     }

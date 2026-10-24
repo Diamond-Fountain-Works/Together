@@ -35,11 +35,11 @@ struct NativeAppRecoveryTests {
         for bytes in aOut { try right.receive(bytes) }; aOut.removeAll()
         for bytes in bOut { try left.receive(bytes) }; bOut.removeAll()
         try await left.confirm(verified: true); try await right.confirm(verified: true)
-        let deadline = ContinuousClock.now.advanced(by: .seconds(10))
-        while completed != 2, errors.isEmpty, ContinuousClock.now < deadline {
+        let deadline = CompatibilityClock.now.advanced(by: .seconds(10))
+        while completed != 2, errors.isEmpty, CompatibilityClock.now < deadline {
             let fromA = aOut; aOut.removeAll(); for bytes in fromA { try right.receive(bytes) }
             let fromB = bOut; bOut.removeAll(); for bytes in fromB { try left.receive(bytes) }
-            try await Task.sleep(for: .milliseconds(5))
+            try await CompatibilityClock.sleep(for: .milliseconds(5))
         }
         #expect(errors.isEmpty)
         #expect(completed == 2)

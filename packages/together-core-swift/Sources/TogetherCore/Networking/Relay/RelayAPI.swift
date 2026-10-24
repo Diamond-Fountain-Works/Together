@@ -65,7 +65,7 @@ struct RelayAPI {
             do { return try await request("POST", path: "/v2/partner-invitations/join", body: body, as: RelayRoute.self) }
             catch let error as URLError where [.timedOut, .networkConnectionLost, .cannotConnectToHost, .cannotFindHost, .notConnectedToInternet].contains(error.code) {
                 if attempt == 2 { throw error }
-                try await Task.sleep(for: .seconds(1 << attempt))
+                try await CompatibilityClock.sleep(for: .seconds(1 << attempt))
             }
         }
         throw URLError(.cannotConnectToHost)
@@ -102,14 +102,18 @@ struct RelayAPI {
         return try CanonicalJSON.decode(type, from: bytes)
     }
     private func boundedResponse(_ request: URLRequest, maximum: Int = 16_384) async throws -> (Data, URLResponse) {
-        let (stream, response) = try await session.bytes(for: request)
-        var bytes = Data()
-        for try await byte in stream {
-            guard bytes.count < maximum else { throw TogetherError.invalid(Copy.text("copy.error.6ec90dcd380a")) }
-            bytes.append(byte)
+        if #available(macOS 12, iOS 15, *) {
+            let (stream, response) = try await session.bytes(for: request)
+            var bytes = Data()
+            for try await byte in stream {
+                guard bytes.count < maximum else { throw TogetherError.invalid(Copy.text("copy.error.6ec90dcd380a")) }
+                bytes.append(byte)
+            }
+            return (bytes, response)
         }
-        return (bytes, response)
+        return try await CompatibilityURLSession.boundedData(for: request, session: session, maximum: maximum)
     }
+
     private func check(_ response: URLResponse, bytes: Data, maximum: Int = 16_384) throws {
         guard let response = response as? HTTPURLResponse, (200..<300).contains(response.statusCode), bytes.count <= maximum else {
             let code = (try? JSONSerialization.jsonObject(with: bytes) as? [String: String])?["error"] ?? "SERVICE_UNAVAILABLE"

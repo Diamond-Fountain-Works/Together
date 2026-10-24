@@ -1,5 +1,6 @@
 import Foundation
 import Testing
+import TogetherCore
 @testable import TogetherP2P
 
 @Suite("Ordered encrypted log and media writer", .timeLimit(.minutes(1))) @MainActor
@@ -12,7 +13,7 @@ struct OrderedEncryptedContentWriterTests {
             active += 1; maximumActive = max(maximumActive, active)
             // Deliberately suspend after sequence assignment. Separate producer
             // tasks must not be allowed to write the next cipher sequence first.
-            if assigned % 2 == 1 { try await Task.sleep(for: .milliseconds(2)) }
+            if assigned % 2 == 1 { try await CompatibilityClock.sleep(for: .milliseconds(2)) }
             else { await Task.yield() }
             written.append((assigned, bytes)); active -= 1
         }, failed: { errors.append($0) })
@@ -27,8 +28,8 @@ struct OrderedEncryptedContentWriterTests {
             }
             try await group.waitForAll()
         }
-        let deadline = ContinuousClock.now.advanced(by: .seconds(2))
-        while written.count != 40, ContinuousClock.now < deadline { try await Task.sleep(for: .milliseconds(1)) }
+        let deadline = CompatibilityClock.now.advanced(by: .seconds(2))
+        while written.count != 40, CompatibilityClock.now < deadline { try await CompatibilityClock.sleep(for: .milliseconds(1)) }
         #expect(written.count == 40 && errors.isEmpty)
         #expect(maximumActive == 1)
         #expect(written.map(\.0) == Array(1...40))
@@ -41,8 +42,8 @@ struct OrderedEncryptedContentWriterTests {
             await withCheckedContinuation { held = $0 }
         }, failed: { errors.append($0) })
         let active = Task { try await writer.send(Data("synthetic-active".utf8)) }
-        let deadline = ContinuousClock.now.advanced(by: .seconds(2))
-        while held == nil, ContinuousClock.now < deadline { try await Task.sleep(for: .milliseconds(1)) }
+        let deadline = CompatibilityClock.now.advanced(by: .seconds(2))
+        while held == nil, CompatibilityClock.now < deadline { try await CompatibilityClock.sleep(for: .milliseconds(1)) }
         #expect(held != nil)
         let queued = Task { try await writer.send(Data("synthetic-queued".utf8)) }
         await Task.yield()

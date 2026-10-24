@@ -21,7 +21,7 @@ public struct NativePartnerContact: Codable, Equatable, Sendable {
     public static let validityMilliseconds: Int64 = 28_800_000
 
     public static func issue(identity: DeviceIdentity, invitationId: UUID, endpointId: String,
-                             relayURL: String?, directAddresses: [String], now: Date = .now) throws -> Self {
+                             relayURL: String?, directAddresses: [String], now: Date = Date()) throws -> Self {
         let milliseconds = now.timeIntervalSince1970 * 1_000
         guard milliseconds.isFinite, milliseconds >= 0, milliseconds < 8_000_000_000_000_000 else {
             throw ReplicationError.bounds
@@ -36,7 +36,7 @@ public struct NativePartnerContact: Codable, Equatable, Sendable {
     }
 
     /// Expiry applies to initial invitation use, never to an already pinned pair.
-    public func verify(now: Date = .now, expectedInvitationId: UUID? = nil,
+    public func verify(now: Date = Date(), expectedInvitationId: UUID? = nil,
                        connectedEndpointId: String? = nil) throws {
         try verifySignature(expectedInvitationId: expectedInvitationId, connectedEndpointId: connectedEndpointId)
         let milliseconds = now.timeIntervalSince1970 * 1_000

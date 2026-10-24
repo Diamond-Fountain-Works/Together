@@ -20,6 +20,7 @@ import tempfile
 import zipfile
 
 ROOT = Path(__file__).resolve().parents[1]
+PLATFORM_SUPPORT = ROOT / "packages/together-native-source/platform-support.json"
 PRIVATE = re.compile(r"(?i)(?:^|/)(?:[^/]+\.(?:sqlite3?|db|store)(?:-wal|-shm)?|[^/]+\.(?:key|p12|pfx|jks|keystore)|\.env(?:\.[^/]+)?|\.dev\.vars(?:\.[^/]+)?|native-app-state\.json)$")
 
 
@@ -33,6 +34,12 @@ def digest(path):
 
 def run(*args):
     return subprocess.run([str(a) for a in args], capture_output=True, timeout=120)
+
+
+def minimum_android_api(badging):
+    # aapt/aapt2 releases use both spellings. Never infer a minimum from target.
+    value = re.search(r"^\s*(?:sdkVersion|minSdkVersion):\s*'(\d+)'", badging, re.M)
+    return int(value[1]) if value else None
 
 
 def sdk_tool(name):
@@ -213,8 +220,19 @@ def mac_report(bundle):
     checks["incrementedBuild"] = info.get("CFBundleVersion") == config["buildNumber"] and int(info["CFBundleVersion"]) > 18
     arch = run("lipo", "-archs", binary)
     architectures = arch.stdout.decode().split() if arch.returncode == 0 else []
-    checks["nativeArchitecture"] = architectures in (["arm64"], ["arm64", "x86_64"], ["x86_64", "arm64"])
-    checks["minimumOS"] = tuple(map(int, info.get("LSMinimumSystemVersion", "0").split("."))) >= (14, 5)
+    support = json.loads(PLATFORM_SUPPORT.read_text())["macOS"]
+    checks["nativeArchitecture"] = architectures == support["architectures"]
+    checks["minimumOS"] = info.get("LSMinimumSystemVersion") == support["minimumVersion"]
+    build_version = run("xcrun", "vtool", "-arch", "arm64", "-show-build", binary)
+    minimum = re.search(r"platform\s+MACOS.*?minos\s+([0-9.]+)", build_version.stdout.decode(), re.S)
+    checks["actualMachOMinimum"] = minimum is not None and minimum[1] == support["minimumVersion"]
+    load_commands = run("otool", "-l", binary).stdout.decode()
+    modern_frameworks = [entry for entry in load_commands.split("Load command") if
+                         any(name in entry for name in ["SwiftData.framework/", "Observation.framework/"])]
+    checks["newerFrameworksWeakLinked"] = all("LC_LOAD_WEAK_DYLIB" in entry for entry in modern_frameworks)
+    dependencies = run("otool", "-L", binary).stdout.decode()
+    concurrency_needed = "@rpath/libswift_Concurrency.dylib" in dependencies
+    checks["oldSystemConcurrencyRuntimeIncluded"] = not concurrency_needed or (bundle / "Contents/Frameworks/libswift_Concurrency.dylib").is_file()
     checks["signature"] = run("codesign", "--verify", "--deep", "--strict", bundle).returncode == 0
     signed = run("codesign", "-d", "--entitlements", ":-", bundle)
     entitlements = signed_entitlements(signed) if signed.returncode == 0 else {}
@@ -251,6 +269,8 @@ def android_report(apk):
     if package is None:
         raise RuntimeError("APK package metadata missing")
     name, code, version = package.groups()
+    support = json.loads(PLATFORM_SUPPORT.read_text())["android"]
+    sdk = minimum_android_api(text)
     configured = re.search(r"^\s*versionCode\s*=\s*(\d+)\s*$",
         (ROOT / "apps/android/app/build.gradle.kts").read_text(), re.M)
     if configured is None:
@@ -263,7 +283,10 @@ def android_report(apk):
               "notDebuggable": "application-debuggable" not in text,
               "notTestOnly": "application-testOnly" not in text,
               "signature": signature.returncode == 0 and bool(certs)}
+    checks["minimumAPIMatchesPolicy"] = sdk == support["minimumAPI"]
+    checks["noMaximumAPIFilter"] = "maxSdkVersion:" not in text
     segments, private, warnings = {}, [], []
+    native_headers, native_levels = {}, {}
     with zipfile.ZipFile(apk) as archive:
         names = archive.namelist()
         checks["safeArchivePaths"] = all(not p.startswith("/") and ".." not in PurePosixPath(p).parts for p in names)
@@ -271,9 +294,19 @@ def android_report(apk):
         checks["noPackagedUserStoresOrKeys"] = not private
         for path in names:
             if path.startswith("lib/") and path.endswith(".so"):
-                segments[path] = elf_load_segments(archive.read(path))
+                data = archive.read(path)
+                segments[path] = elf_load_segments(data)
+                abi = path.split("/")[1]
+                expected = {"arm64-v8a": (2, 183), "armeabi-v7a": (1, 40)}.get(abi)
+                native_headers[path] = expected is not None and (data[4], struct.unpack_from("<H", data, 18)[0]) == expected
+                if path.endswith("/libiroh_ffi.so"):
+                    from rebuild_android_native import android_api_note
+                    native_levels[path] = android_api_note(data)
         checks["nativeLibraryIncluded"] = any(p.endswith("/libiroh_ffi.so") for p in segments)
         checks["samsungARM64Included"] = "lib/arm64-v8a/libiroh_ffi.so" in segments
+        checks["allSupportedNativeABIsIncluded"] = all("lib/" + abi + "/libiroh_ffi.so" in segments for abi in support["architectures"])
+        checks["nativeABIHeaders"] = bool(native_headers) and all(native_headers.values())
+        checks["nativeMinimumAPI"] = bool(native_levels) and all(level is not None and level <= support["minimumAPI"] for level in native_levels.values())
         checks["nativeELF16KiB"] = bool(segments) and all(
             all(s["alignment"] >= 16384 and s["alignment"] & (s["alignment"] - 1) == 0 and
                 s["offset"] % s["alignment"] == s["virtualAddress"] % s["alignment"] and
@@ -289,6 +322,7 @@ def android_report(apk):
             "expectedVersionCode": expected_code, "sha256": digest(apk),
             "bytes": apk.stat().st_size, "signerSHA256": certs,
             "abis": sorted({p.split("/")[1] for p in segments}), "elfLoadSegments": segments,
+            "minimumAPI": sdk, "nativeAPILevels": native_levels,
             "jnaJNIABI": jna, "packagedPrivatePaths": private}
 
 

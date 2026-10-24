@@ -120,11 +120,11 @@ struct PartnerBootstrapFrame: Codable, Sendable {
         let checkpoint = InventoryCheckpoint(count: operations.count, digest: ReplicationHash.digest(try CanonicalJSON.encode(operations)))
         expectedBatchAck = checkpoint; receivedBatchAck = nil
         try await send(PartnerBootstrapFrame(kind: "partner-history", operations: operations))
-        let deadline = ContinuousClock.now.advanced(by: .seconds(20))
+        let deadline = CompatibilityClock.now.advanced(by: .seconds(20))
         while receivedBatchAck != checkpoint {
             try Task.checkCancellation()
-            guard valid, ContinuousClock.now < deadline else { throw ReplicationError.invalidReceipt }
-            try await Task.sleep(for: .milliseconds(5))
+            guard valid, CompatibilityClock.now < deadline else { throw ReplicationError.invalidReceipt }
+            try await CompatibilityClock.sleep(for: .milliseconds(5))
         }
     }
     private func prepareGenesisIfReady() {

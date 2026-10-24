@@ -12,15 +12,23 @@ public extension Copy {
     }
     static func time(_ value: Date, language: AppLanguage? = nil) -> String {
         let language = language ?? LanguageSettings.shared.language
-        return value.formatted(Date.FormatStyle(date: .omitted, time: .shortened,
-            locale: language.locale, calendar: Calendar(identifier: .gregorian), timeZone: .current))
+        return formattedDate(value, dateStyle: .none, timeStyle: .short, language: language)
     }
 
     static func date(_ value: Date, includeTime: Bool = false, language: AppLanguage? = nil) -> String {
         let language = language ?? LanguageSettings.shared.language
-        return value.formatted(Date.FormatStyle(
-            date: .abbreviated, time: includeTime ? .shortened : .omitted,
-            locale: language.locale, calendar: Calendar(identifier: .gregorian), timeZone: .current))
+        return formattedDate(value, dateStyle: .medium, timeStyle: includeTime ? .short : .none, language: language)
+    }
+
+    static func formattedDate(_ value: Date, dateStyle: DateFormatter.Style, timeStyle: DateFormatter.Style,
+                              language: AppLanguage, timeZone: TimeZone = .current) -> String {
+        let formatter = DateFormatter()
+        formatter.locale = language.locale
+        formatter.calendar = Calendar(identifier: .gregorian)
+        formatter.timeZone = timeZone
+        formatter.dateStyle = dateStyle
+        formatter.timeStyle = timeStyle
+        return formatter.string(from: value)
     }
 
     /// For domain diagnostics only, never for user-authored titles or messages.
@@ -59,7 +67,14 @@ public extension Copy {
         if let error = error as? ReplicationError {
             return message(error == .incompatibleProtocol ? "copy.error.eb6f75e7a5e4" : "copy.error.76ef9b5cd8a8")
         }
-        if error is RepositoryError { return message("copy.status.492c7e8b42f9") }
+        if let error = error as? RepositoryError {
+            switch error {
+            case .reusedOperationId: return message("copy.status.492c7e8b42f9")
+            case .unsupportedStorage: return message("storage.error.unsupported")
+            case .invalidStorage: return message("presentation.error.fileDamaged")
+            case .sqliteFailure: return message("presentation.error.retry")
+            }
+        }
         if case let TogetherError.invalid(value) = error {
             // Only exact catalog entries are translated. A domain message that
             // contains user-authored content is preserved as supplied.

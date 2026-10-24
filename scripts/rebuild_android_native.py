@@ -13,6 +13,7 @@ from pathlib import Path
 import platform
 import re
 import shutil
+import struct
 import subprocess
 import sys
 import tempfile
@@ -28,6 +29,69 @@ SOURCE_FILES = ROOT / "packages/together-native-source"
 AAR_SHA256 = "ed747f627da6dad314b25b9ff17d38232d8d75cb31e663af348368e6be845ab8"
 TARGET = "aarch64-linux-android"
 NATIVE_PATH = "jni/arm64-v8a/libiroh_ffi.so"
+# Keep TARGET/NATIVE_PATH and default API 28 for reproducible historical builds.
+# A broader app must explicitly rebuild every advertised ABI at its own API floor.
+ABI_TARGETS = {
+    "arm64-v8a": {"target": "aarch64-linux-android", "clang": "aarch64-linux-android",
+                  "elfClass": 2, "machine": 183},
+    "armeabi-v7a": {"target": "armv7-linux-androideabi", "clang": "armv7a-linux-androideabi",
+                    "elfClass": 1, "machine": 40},
+}
+MIN_ANDROID_API = 24  # Pinned upstream AndroidManifest.xml; never tools:overrideLibrary.
+
+
+def android_build_plan(abis=None, api=28):
+    selected = tuple(abis or ("arm64-v8a",))
+    require(isinstance(api, int) and not isinstance(api, bool) and MIN_ANDROID_API <= api <= 35, "Android API must respect the pinned wrapper floor (24..35)")
+    require(len(selected) == len(set(selected)) and all(abi in ABI_TARGETS for abi in selected),
+            "Unsupported or repeated Android ABI")
+    return [{"abi": abi, "androidAPI": api, **ABI_TARGETS[abi],
+             "entry": "jni/" + abi + "/libiroh_ffi.so"} for abi in selected]
+
+
+def android_api_note(data):
+    """Read the NDK linker note from the actual ELF, not a caller-provided receipt."""
+    require(len(data) >= 64 and data[:4] == b"\x7fELF" and data[4] in (1, 2) and data[5] == 1,
+            "Invalid little-endian Android ELF note input")
+    wide = data[4] == 2
+    offset = struct.unpack_from("<" + ("Q" if wide else "I"), data, 32 if wide else 28)[0]
+    entry_size, count = struct.unpack_from("<HH", data, 54 if wide else 42)
+    require(count > 0 and entry_size >= (56 if wide else 32) and
+            offset + entry_size * count <= len(data), "Invalid Android note program headers")
+    levels = []
+    for index in range(count):
+        at = offset + index * entry_size
+        if struct.unpack_from("<I", data, at)[0] != 4:  # PT_NOTE
+            continue
+        start = struct.unpack_from("<" + ("Q" if wide else "I"), data, at + (8 if wide else 4))[0]
+        length = struct.unpack_from("<" + ("Q" if wide else "I"), data, at + (32 if wide else 16))[0]
+        end = start + length
+        require(end <= len(data), "Android note lies outside ELF")
+        while start + 12 <= end:
+            names, desc, kind = struct.unpack_from("<III", data, start)
+            name_at = start + 12
+            desc_at = name_at + ((names + 3) & ~3)
+            next_at = desc_at + ((desc + 3) & ~3)
+            require(next_at <= end and next_at > start, "Malformed Android note")
+            if data[name_at:name_at + names].rstrip(b"\0") == b"Android" and kind == 1:
+                require(desc >= 4, "Android note has no API level")
+                levels.append(struct.unpack_from("<I", data, desc_at)[0])
+            start = next_at
+    require(len(levels) == 1 and 1 <= levels[0] <= 100, "Missing or conflicting NDK Android API note")
+    return levels[0]
+
+
+def verify_android_elf(data, abi, max_api=None):
+    require(abi in ABI_TARGETS and len(data) >= 64 and data[:4] == b"\x7fELF" and data[5] == 1,
+            "Invalid Android little-endian ELF")
+    spec = ABI_TARGETS[abi]
+    require(data[4] == spec["elfClass"] and struct.unpack_from("<H", data, 18)[0] == spec["machine"],
+            "ELF architecture does not match " + abi)
+    if max_api is not None:
+        require(android_api_note(data) <= max_api, "ELF was linked for a newer Android API than the application floor")
+    segments = elf_load_segments(data)
+    require(aligned(segments), "Rebuilt ELF LOAD segments fail 16KiB alignment/congruence")
+    return segments
 UPSTREAM_FIX = "https://github.com/n0-computer/iroh-ffi/commit/c948937663ffe58df1a0a1bfda2def64e5bcdaa4"
 
 
@@ -153,7 +217,10 @@ def main():
     parser.add_argument("--original-aar", required=True, type=Path)
     parser.add_argument("--output", required=True, type=Path)
     parser.add_argument("--jobs", type=int, default=2)
+    parser.add_argument("--android-api", type=int, default=28)
+    parser.add_argument("--abi", action="append", choices=tuple(ABI_TARGETS))
     args = parser.parse_args()
+    plan = android_build_plan(args.abi, args.android_api)
     source, ndk, original = (p.resolve(strict=True) for p in (args.source, args.ndk, args.original_aar))
     output = local_output_path(args.output)
     local = (ROOT / "qa/results").resolve()
@@ -166,9 +233,8 @@ def main():
     host = {"Darwin": "darwin-x86_64", "Linux": "linux-x86_64"}.get(platform.system())
     require(host is not None, "Unsupported NDK host")
     tools = ndk / "toolchains/llvm/prebuilt" / host / "bin"
-    clang, ar, nm = (tools / name for name in ("aarch64-linux-android28-clang", "llvm-ar", "llvm-nm"))
-    require(all(p.is_file() and os.access(p, os.X_OK) for p in (clang, ar, nm)),
-            "NDK toolchain is not fully installed; this script never installs SDK components")
+    ar, nm = tools / "llvm-ar", tools / "llvm-nm"
+    require(all(p.is_file() and os.access(p, os.X_OK) for p in (ar, nm)), "Existing NDK tools required")
     require(shutil.which("cargo") is not None and shutil.which("rustc") is not None,
             "Existing Cargo/Rust toolchain required")
     output.parent.mkdir(parents=True, exist_ok=True)
@@ -176,69 +242,92 @@ def main():
     log = local_output_path(output.with_suffix(".build.log"))
     local_output_path(output.with_suffix(".json"))
     local_output_path(output.with_suffix(".aar.sha256"))
-    env = os.environ.copy()
-    # Generic RUSTFLAGS take priority over target flags. Do not inherit them and
-    # accidentally omit the one reviewed upstream link change.
-    env.pop("RUSTFLAGS", None)
-    env.pop("CARGO_ENCODED_RUSTFLAGS", None)
-    env.update({"LC_ALL": "C", "CARGO_TARGET_DIR": str(target_dir),
-                "CARGO_TARGET_AARCH64_LINUX_ANDROID_LINKER": str(clang),
-                "CARGO_TARGET_AARCH64_LINUX_ANDROID_RUSTFLAGS": "-C link-arg=-Wl,-z,max-page-size=16384",
-                "CC_aarch64_linux_android": str(clang), "AR_aarch64_linux_android": str(ar)})
-    command = ["cargo", "build", "--locked", "--release", "--lib", "-p", "iroh-ffi",
-               "--target", TARGET, "--jobs", str(args.jobs)]
-    print("Building pinned FFI + secure Rust core arm64; output remains local. Log:", log, flush=True)
-    with log.open("w") as stream:
-        completed = subprocess.run(command, cwd=source, env=env, stdout=stream, stderr=subprocess.STDOUT)
-    require(completed.returncode == 0, "Cargo build failed; original artifact unchanged; inspect local build log")
-    input_gate(source, original)
-    rebuilt = target_dir / TARGET / "release/libiroh_ffi.so"
-    segments = elf_load_segments(rebuilt.read_bytes())
-    require(aligned(segments), "Rebuilt ELF LOAD segments fail 16KiB alignment/congruence")
-    with zipfile.ZipFile(original) as archive:
+    libraries = {}
+    with log.open("w") as stream, zipfile.ZipFile(original) as archive:
         names = archive.namelist()
-        require(len(names) == len(set(names)) and NATIVE_PATH in names and "classes.jar" in names,
-                "Unexpected original AAR entries")
+        require(len(names) == len(set(names)) and "classes.jar" in names and
+                all(spec["entry"] in names for spec in plan), "Unexpected original AAR entries")
         original_entries = {name: hashlib.sha256(archive.read(name)).hexdigest() for name in names}
+        for spec in plan:
+            target = spec["target"]
+            clang = tools / (spec["clang"] + str(spec["androidAPI"]) + "-clang")
+            require(clang.is_file() and os.access(clang, os.X_OK), "Existing NDK compiler missing: " + str(clang))
+            env = os.environ.copy()
+            env.pop("RUSTFLAGS", None)
+            env.pop("CARGO_ENCODED_RUSTFLAGS", None)
+            suffix = target.upper().replace("-", "_")
+            cc_suffix = target.replace("-", "_")
+            flags = "-C link-arg=-Wl,-z,max-page-size=16384"
+            env.update({"LC_ALL": "C", "CARGO_TARGET_DIR": str(target_dir),
+                        "CARGO_TARGET_" + suffix + "_LINKER": str(clang),
+                        "CARGO_TARGET_" + suffix + "_RUSTFLAGS": flags,
+                        "CC_" + cc_suffix: str(clang), "AR_" + cc_suffix: str(ar)})
+            command = ["cargo", "build", "--locked", "--release", "--lib", "-p", "iroh-ffi",
+                       "--target", target, "--jobs", str(args.jobs)]
+            print("Building pinned secure FFI:", spec["abi"], "API", spec["androidAPI"], "Log:", log, flush=True)
+            stream.write("\n" + spec["abi"] + " / API " + str(spec["androidAPI"]) + "\n"); stream.flush()
+            completed = subprocess.run(command, cwd=source, env=env, stdout=stream, stderr=subprocess.STDOUT)
+            require(completed.returncode == 0, "Cargo build failed; original artifact unchanged; inspect local build log")
+            input_gate(source, original)
+            rebuilt = target_dir / target / "release/libiroh_ffi.so"
+            segments = verify_android_elf(rebuilt.read_bytes(), spec["abi"], max_api=spec["androidAPI"])
+            with tempfile.TemporaryDirectory(prefix="iroh-exports-", dir=output.parent) as temporary:
+                old_so = Path(temporary) / "original.so"
+                old_so.write_bytes(archive.read(spec["entry"]))
+                old_all, old_api = exports(nm, old_so)
+                new_all, new_api = exports(nm, rebuilt)
+            require(old_api == new_api, "Exported FFI/UniFFI/JNI names changed for " + spec["abi"])
+            libraries[spec["abi"]] = {**spec, "sha256": digest(rebuilt), "path": rebuilt,
+                "loadSegments": segments, "ndkAndroidAPI": android_api_note(rebuilt.read_bytes()),
+                "ffiExportsEqual": True, "ffiExportCount": len(old_api),
+                "otherExportNameCounts": {"original": len(old_all - old_api), "rebuilt": len(new_all - new_api)},
+                "command": command, "targetRustFlags": flags,
+                "clang": checked(clang, "--version").splitlines()[0]}
+        modified = {spec["entry"]: libraries[spec["abi"]]["path"] for spec in plan}
         with tempfile.TemporaryDirectory(prefix="iroh-native-verify-", dir=output.parent) as temporary:
-            old_so = Path(temporary) / "original.so"
-            old_so.write_bytes(archive.read(NATIVE_PATH))
-            old_all, old_api = exports(nm, old_so)
-            new_all, new_api = exports(nm, rebuilt)
-            require(old_api == new_api, "Exported FFI/UniFFI/JNI names changed; original AAR remains unchanged")
             candidate = Path(temporary) / "candidate.aar"
             with zipfile.ZipFile(candidate, "w") as destination:
                 for item in archive.infolist():
-                    destination.writestr(item, rebuilt.read_bytes() if item.filename == NATIVE_PATH else archive.read(item.filename))
+                    value = modified[item.filename].read_bytes() if item.filename in modified else archive.read(item.filename)
+                    destination.writestr(item, value)
             with zipfile.ZipFile(candidate) as verification:
                 require(verification.namelist() == names, "AAR entry list/order changed")
                 require(all(hashlib.sha256(verification.read(name)).hexdigest() == sha
-                            for name, sha in original_entries.items() if name != NATIVE_PATH),
-                        "AAR changed outside the single arm64 shared library")
-                require(verification.read(NATIVE_PATH) == rebuilt.read_bytes(), "Rebuilt native copy mismatch")
+                            for name, sha in original_entries.items() if name not in modified),
+                        "AAR changed outside the explicitly rebuilt native libraries")
+                for name, file in modified.items():
+                    require(verification.read(name) == file.read_bytes(), "Rebuilt native copy mismatch: " + name)
             candidate.replace(output)
     input_gate(source, original)
+    primary = libraries.get("arm64-v8a", next(iter(libraries.values())))
+    serializable_libraries = {abi: {key: value for key, value in info.items() if key != "path"}
+                              for abi, info in libraries.items()}
     report = {"status": "PASS", "scope": "Build/link repair only; not protocol or device acceptance",
               "sourceRepository": "https://github.com/n0-computer/iroh-ffi", "sourceCommit": REF,
               "cargoLockSHA256": SECURE_LOCK_SHA256, "secureCargoLockSHA256": SECURE_LOCK_SHA256,
               "upstreamCargoLockSHA256": UPSTREAM_LOCK_SHA256, "upstreamLinkFix": UPSTREAM_FIX,
               "sourceManifestSHA256": digest(SOURCE_FILES / "source-manifest.json"),
+              "platformSupportSHA256": digest(SOURCE_FILES / "platform-support.json"),
               "sourceChanges": ["Cargo.lock"], "dependencyVersions": manifest["dependencyVersions"],
               "originalAARSHA256": AAR_SHA256, "outputAARSHA256": digest(output),
-              "arm64LibrarySHA256": digest(rebuilt), "classesJarSHA256": original_entries["classes.jar"],
+              "arm64LibrarySHA256": libraries.get("arm64-v8a", {}).get("sha256"),
+              "classesJarSHA256": original_entries["classes.jar"],
               "classesJarPreserved": True, "otherEntriesPreserved": True,
-              "modifiedEntry": NATIVE_PATH, "rebuiltABI": "arm64-v8a", "androidAPI": 28,
-              "loadSegments": segments, "ffiExportsEqual": True, "ffiExportCount": len(old_api),
-              "otherExportNameCounts": {"original": len(old_all - old_api), "rebuilt": len(new_all - new_api)},
+              "modifiedEntry": primary["entry"], "modifiedEntries": list(modified),
+              "rebuiltABI": primary["abi"], "rebuiltABIs": list(libraries), "androidAPI": args.android_api,
+              "libraries": serializable_libraries,
+              "loadSegments": primary["loadSegments"], "ffiExportsEqual": True,
+              "ffiExportCount": primary["ffiExportCount"],
+              "otherExportNameCounts": primary["otherExportNameCounts"],
               "tools": {"rustc": checked("rustc", "--version"), "cargo": checked("cargo", "--version"),
                         "ndkRevision": next((line.partition("=")[2].strip() for line in
                             (ndk / "source.properties").read_text().splitlines() if line.startswith("Pkg.Revision")), "unknown"),
-                        "clang": checked(clang, "--version").splitlines()[0]},
-              "command": command, "targetRustFlags": env["CARGO_TARGET_AARCH64_LINUX_ANDROID_RUSTFLAGS"],
+                        "clang": primary["clang"]},
+              "command": primary["command"], "targetRustFlags": primary["targetRustFlags"],
               "runtimeFFIValidation": "NOT RUN", "physicalDevice": "NOT RUN",
               "apkZipAlignment": "NOT RUN", "ffiWrapperSourceChanged": False,
-              "limitations": ["Only arm64 was rebuilt; other original AAR ABI entries remain unchanged",
-                              "Use an arm64-only APK ABI filter; do not claim all AAR ABIs were repaired",
+              "limitations": ["Only receipt-listed ABIs have reviewed rebuilt native libraries",
+                              "APK ABI filters must exactly match the receipt; original other ABIs are not approved",
                               "Export names and unchanged generated classes do not replace runtime FFI validation"]}
     output.with_suffix(".json").write_text(json.dumps(report, indent=2) + "\n")
     output.with_suffix(".aar.sha256").write_text(digest(output) + "  " + output.name + "\n")
