@@ -1,9 +1,9 @@
 name: Monorepo quality
 on:
   push:
-    branches: [main, 'feature/localization-0.2.3', 'feature/**', 'fix/**', 'refactor/**', 'release/**']
+    branches: [main, 'feature/**', 'fix/**', 'refactor/**', 'release/**']
   pull_request:
-    branches: [main, 'refactor/monorepo-foundation']
+    branches: [main, 'feature/localization-0.2.3', 'refactor/monorepo-foundation']
   workflow_dispatch:
 permissions:
   contents: read
