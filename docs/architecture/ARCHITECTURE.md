@@ -274,7 +274,7 @@ Activation and rollback, outstanding control-history/root-recovery/indexing limi
 
 [Android architecture](ANDROID_FOUNDATION.md) defines pure Kotlin Protocol 4/domain modules and Android-specific Compose, Room and Keystore adapters. Shared wire semantics, existing SwiftData models, space/user/device identities and the Relay are unchanged. Local-only unpaired facts are not advertised as certified Protocol 4; enrollment activates a separate authorized workspace, preserving the previous one. Room schema generation 1 is independent from SwiftData generation 1 and device protocol 4. Phase A remains recorded in its historical report. [Phase B](ANDROID_BUSINESS_PHASE_B.md) adds native business UI, original-file media transfer and content-bound gift receipts. [Phase C device acceptance](ANDROID_DEVICE_ACCEPTANCE.md) adds opt-in physical Samsung instrumentation and an isolated native Swift test host over a USB-reversed local Worker. It changes neither wire semantics nor production persistence. Public cross-network/physical Mac GUI acceptance and independent security review remain unfinished.
 
-## iPhone presentation (0.2.4 Build26 candidate)
+## iPhone presentation (0.2.4 Build27 candidate)
 
 `apps/apple/iOS` remains a target wrapper around the existing shared feature
 views and TogetherCore. The phone drawer/tablet split and adaptive editors read

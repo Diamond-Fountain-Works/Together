@@ -1,3 +1,13 @@
+# 0.2.4 Build27 / Android18 — concise UI copy candidate (unreleased)
+
+- Remove repeated wish/grant, reminder, crop, split-allocation and offline explanations.
+- Remove the unconditional draft-saved status and unused disclosure/prose resources.
+- Keep short factual fields and show short-month/card-history guidance only in its relevant state.
+- Keep user-authored content, errors, consent, actual synchronization states and approved gift copy.
+- Reuse the Build26 iPhone layout; retain unsigned/source-only delivery and separate runtime acceptance.
+
+[Copy cleanup and verification](../qa/reports/UI_COPY_TRIM_0_2_4.md).
+
 # 0.2.4 Build 26 — iPhone client candidate (unreleased)
 
 - Follow Android's six-destination navigation on iPhone, with an iPad split layout.

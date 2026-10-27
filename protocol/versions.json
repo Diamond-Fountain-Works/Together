@@ -62,11 +62,11 @@
   },
   "appDelivery": {
     "marketingVersion": "0.2.4",
-    "macBuild": "26",
-    "androidCode": 17,
+    "macBuild": "27",
+    "androidCode": 18,
     "freshInstall": "persistent native peer transport; no QA identity/data import",
     "legacyMacC1": "existing bindings retain C1",
-    "releaseStatus": "iPhone client candidate; unsigned device builds and runtime acceptance tracked separately; not installed or published"
+    "releaseStatus": "iPhone and concise shared UI copy candidate; build/source delivery only, runtime and signing acceptance pending"
   },
   "relayServiceProtocolVersionMeaning": "Existing optional deployed legacy C1 service; normal native pairing does not use Relay API",
   "nativeSourceManifest": "packages/together-native-source/source-manifest.json",

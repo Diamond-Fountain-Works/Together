@@ -45,7 +45,6 @@ struct InitialSetupView: View {
             }.frame(maxWidth: .infinity).padding(.vertical, 55)
         case 1:
             Text(titles[step]).font(.title.weight(.semibold))
-            Text(Copy.text("copy.status.1bb474fad984")).foregroundColor(.secondary)
             ForEach([RelationshipLabel.boyfriend, .girlfriend], id: \.self) { choice in
                 Button { withAnimation(TogetherTheme.motion(reduceMotion)) { role = choice } } label: {
                     HStack { Text(choice.displayName).font(.headline); Spacer(); Image(systemName: TogetherSymbols.name(role == choice ? "checkmark.circle.fill" : "circle")) }
@@ -58,7 +57,6 @@ struct InitialSetupView: View {
                 AvatarView(profile: model.engine.ownProfile, size: 82, engine: model.engine)
                 VStack(alignment: .leading, spacing: 10) {
                     Text(LoveCopy.avatarPrompt(partner: model.engine.partnerProfile?.role ?? .unknown)).font(.headline)
-                    Text(Copy.text("copy.status.dbfd5d14c799")).foregroundColor(.secondary)
                     Button(Copy.text("copy.action.7a7ceed76b69")) { model.importAvatar(showCrop: false) }.disabled(model.importingMedia)
                     if model.engine.ownProfile?.avatarAssetId != nil {
                         Button(Copy.text("copy.action.c33392c5ea4a")) { if let id = model.engine.ownProfile?.avatarAssetId { model.cropAsset = model.engine.snapshot.mediaAssets[id]; cropShown = true } }

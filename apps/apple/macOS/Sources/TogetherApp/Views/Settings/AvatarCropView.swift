@@ -15,7 +15,6 @@ struct AvatarCropView: View {
         VStack(spacing: 20) {
             Text(Copy.text("copy.status.6cd7c4f0f4c3")).font(.title2.weight(.semibold))
             if let preview { Image(togetherImage: preview).resizable().scaledToFill().frame(width: 220, height: 220).clipShape(Circle()) }
-            Text(Copy.text("copy.status.e23f8f7eb807")).font(.caption).foregroundColor(.secondary)
             VStack(spacing: 12) {
                 HStack { Text(Copy.text("copy.status.b762aec769a3")).frame(width: 46); Slider(value: $crop.zoom, in: 1...4) }
                 HStack { Text(Copy.text("copy.status.191e26b5d741")).frame(width: 46); Slider(value: $crop.horizontal, in: 0...1) }

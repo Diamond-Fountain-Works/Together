@@ -2,7 +2,7 @@
 
 Native Apple and Android clients, Local-first shared space for two people. Tasks, Wishes and Daily Love Gifts use a signed operation log; Our Finances uses one Expenses ledger and derived reserve balances. SwiftUI, SwiftData and the existing signed-log engine remain the architecture. Normal 0.2.2 clients use the native peer adapter; established legacy C1 Mac bindings retain their WebSocket route. No central business database, offline mailbox or banking connection is included. Android Phase B adds native Tasks, Wishes, Finances, event-driven Gifts and change review on the existing Kotlin Protocol 4 core. Phase C records physical Samsung and native Swift interoperability over a USB-reversed local Relay. Public cross-network acceptance and independent security review remain release gates.
 
-## iPhone client — 0.2.4 Build 26 candidate
+## iPhone client — 0.2.4 Build 27 candidate
 
 The iPhone client follows the Android workspace structure: a six-destination
 navigation drawer, Pending/Completed Plans, independent Wishes, and the three
@@ -15,9 +15,10 @@ cellular, biometric or model requirements. This includes the iPhone 6s/first SE
 hardware generation when running iOS 15, plus subsequent compatible devices.
 Generic-device builds are separate from actual-device acceptance. The retained
 unsigned `.app.zip` is **not an installable IPA**; signing/provisioning and runtime
-QA remain open. Android code 17 and the published Release are unchanged.
+QA remain open. Android code 18 includes the shared UI copy cleanup; the published Release is unchanged.
 [Client/build instructions](apps/apple/iOS/README.md) ·
-[Scope, evidence and unrun checks](docs/qa/reports/IPHONE_CLIENT_QA.md).
+[Build26 checkpoint](docs/qa/reports/IPHONE_CLIENT_QA.md) ·
+[Current copy cleanup](docs/qa/reports/UI_COPY_TRIM_0_2_4.md).
 
 ## 0.2.4 — platform compatibility candidate
 

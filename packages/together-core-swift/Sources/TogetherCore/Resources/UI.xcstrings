@@ -529,40 +529,6 @@
         }
       }
     },
-    "copy.empty_state.6b4beaf7f321": {
-      "comment": "Empty State; 0.0.1/Sources/TogetherApp/Views/Settings/SettingsView.swift",
-      "localizations": {
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "照片和语音保存在本机；本机文件未加密"
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Photos and audio are stored locally without file encryption"
-          }
-        }
-      }
-    },
-    "copy.guidance.9dd62bb75ce0": {
-      "comment": "Guidance; 0.0.1/Sources/TogetherApp/Views/Settings/SettingsView.swift",
-      "localizations": {
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "设备同时在线时同步本地记录"
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Local records sync while both devices are online"
-          }
-        }
-      }
-    },
     "copy.status.610b105f07da": {
       "comment": "Status; 0.0.1/Sources/TogetherApp/Views/Settings/SettingsView.swift",
       "localizations": {
@@ -576,23 +542,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "Local-first"
-          }
-        }
-      }
-    },
-    "copy.guidance.e2ee62dfbb66": {
-      "comment": "Guidance; 0.0.1/Sources/TogetherApp/Views/Settings/SettingsView.swift",
-      "localizations": {
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "动画跟随系统的减弱动态效果设置"
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Animations follow the system’s Reduce Motion setting"
           }
         }
       }
@@ -682,23 +631,6 @@
         }
       }
     },
-    "copy.status.bffe51e12e5e": {
-      "comment": "Status; 0.0.1/Sources/TogetherApp/Views/Settings/SettingsView.swift",
-      "localizations": {
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "伴侣资料"
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Partner profile"
-          }
-        }
-      }
-    },
     "copy.action.c0a70fcb56f0": {
       "comment": "Action; 0.0.1/Sources/TogetherApp/Views/Settings/SettingsView.swift",
       "localizations": {
@@ -763,23 +695,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "Display name"
-          }
-        }
-      }
-    },
-    "copy.status.af495a06b2de": {
-      "comment": "Status; 0.0.1/Sources/TogetherApp/Views/Settings/SettingsView.swift",
-      "localizations": {
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "裁剪头像显示区域"
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Crop the avatar display area"
           }
         }
       }
@@ -920,23 +835,6 @@
         }
       }
     },
-    "copy.status.e23f8f7eb807": {
-      "comment": "Status; 0.0.1/Sources/TogetherApp/Views/Settings/AvatarCropView.swift",
-      "localizations": {
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "调整头像显示区域"
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Adjust the avatar display area"
-          }
-        }
-      }
-    },
     "copy.status.6cd7c4f0f4c3": {
       "comment": "Status; 0.0.1/Sources/TogetherApp/Views/Settings/AvatarCropView.swift",
       "localizations": {
@@ -984,23 +882,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "Set Later"
-          }
-        }
-      }
-    },
-    "copy.guidance.08a8bfd082bf": {
-      "comment": "Guidance; 0.0.1/Sources/TogetherApp/Views/Tasks/TaskEditorView.swift",
-      "localizations": {
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "选择下次时间，或稍后设置"
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Choose the next date, or set it later"
           }
         }
       }
@@ -2008,23 +1889,6 @@
         }
       }
     },
-    "copy.status.01b6f9e2d127": {
-      "comment": "Status; 0.0.1/Sources/TogetherApp/Views/Wishes/WishEditors.swift",
-      "localizations": {
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "调整将记入历史"
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "This adjustment will be added to the history"
-          }
-        }
-      }
-    },
     "copy.action.2b072511a379": {
       "comment": "Action; 0.0.1/Sources/TogetherApp/Views/Wishes/WishEditors.swift",
       "localizations": {
@@ -2072,23 +1936,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "Wish title"
-          }
-        }
-      }
-    },
-    "copy.status.3cfd61f73f08": {
-      "comment": "Status; 0.0.1/Sources/TogetherApp/Views/Wishes/WishEditors.swift",
-      "localizations": {
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "愿望占用本批额度，由你确认兑现"
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "This wish uses this grant’s allowance. You confirm when it’s fulfilled."
           }
         }
       }
@@ -2671,23 +2518,6 @@
         }
       }
     },
-    "copy.status.99d1094feca8": {
-      "comment": "Status; 0.0.1/Sources/TogetherApp/Views/Gifts/GiftRevealView.swift",
-      "localizations": {
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "一份只属于你的心意，准备好就打开吧"
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "A little something, just for you. Open it when you’re ready."
-          }
-        }
-      }
-    },
     "copy.emotional.c35685beea5a": {
       "comment": "Emotional; 0.0.1/Sources/TogetherApp/Views/Gifts/GiftRevealView.swift",
       "localizations": {
@@ -2745,13 +2575,13 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "每日额度按 %@ 计算，离线发送后等待同步"
+            "value": "共享时区：%@"
           }
         },
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Your daily gift follows %@. Gifts sent offline wait to sync."
+            "value": "Shared time zone: %@"
           }
         }
       }
@@ -2824,36 +2654,19 @@
         }
       }
     },
-    "copy.status.6a8ae976f27c": {
-      "comment": "Status; 0.0.1/Sources/TogetherApp/Views/Gifts/GiftEditorView.swift",
-      "localizations": {
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "草稿保存在本机"
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Draft saved on this Mac"
-          }
-        }
-      }
-    },
     "copy.emotional.3ceeec638ae6": {
       "comment": "Emotional; 0.0.1/Sources/TogetherApp/Views/Gifts/GiftEditorView.swift",
       "localizations": {
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "配对前先存为草稿，之后再确认发送"
+            "value": "配对后可发送"
           }
         },
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Keep this as a draft for now. Once you’re paired, you can send it."
+            "value": "Pair to send"
           }
         }
       }
@@ -3153,13 +2966,13 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "已配对，连接后同步资料与头像"
+            "value": "已配对"
           }
         },
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Paired. Profiles and photos sync when connected."
+            "value": "Paired"
           }
         }
       }
@@ -3170,13 +2983,13 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "双方确认后完成配对，也可稍后连接"
+            "value": "核对安全码后确认配对"
           }
         },
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Both partners confirm pairing. You can also connect later."
+            "value": "Compare the code with your partner, then confirm"
           }
         }
       }
@@ -3228,40 +3041,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "Choose Photo"
-          }
-        }
-      }
-    },
-    "copy.status.dbfd5d14c799": {
-      "comment": "Status; 0.0.1/Sources/TogetherApp/Onboarding/InitialSetupView.swift",
-      "localizations": {
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "选一张喜欢的照片作为头像"
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Choose a favorite photo for your profile"
-          }
-        }
-      }
-    },
-    "copy.status.1bb474fad984": {
-      "comment": "Status; 0.0.1/Sources/TogetherApp/Onboarding/InitialSetupView.swift",
-      "localizations": {
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "选择你的关系标签"
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Choose your relationship label"
           }
         }
       }
@@ -3612,13 +3391,13 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "小事、愿望和约定，保存在你们各自的设备上"
+            "value": "一起安排任务和愿望"
           }
         },
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Your tasks, wishes, and promises, saved on your own devices"
+            "value": "Plan tasks and wishes together"
           }
         }
       }
@@ -12497,57 +12276,6 @@
         }
       }
     },
-    "finance.balance.guidance": {
-      "comment": "Guidance; Together 0.2.1 Our Finances functional UI",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "A virtual ledger with a balance calculated from your records."
-          }
-        },
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "虚拟账本，余额按记录计算。"
-          }
-        }
-      }
-    },
-    "finance.reserves.openingGuidance": {
-      "comment": "Guidance; Together 0.2.1 Our Finances functional UI",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Set the ledger’s starting balance."
-          }
-        },
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "设置账面起始余额。"
-          }
-        }
-      }
-    },
-    "finance.amount.rateGuidance": {
-      "comment": "Guidance; Together 0.2.1 Our Finances functional UI",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Use the actual CNY amount when available; reference rates are estimates."
-          }
-        },
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "参考汇率用于估算，实际人民币金额优先。"
-          }
-        }
-      }
-    },
     "finance.expenses.occurrenceGuidance": {
       "comment": "Guidance; Together 0.2.1 Our Finances functional UI",
       "localizations": {
@@ -12616,36 +12344,19 @@
         }
       }
     },
-    "finance.cycle.planGuidance": {
-      "comment": "Guidance; Together 0.2.1 Our Finances functional UI",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Planned dates remind you to record a deposit."
-          }
-        },
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "计划日期用于存款提醒。"
-          }
-        }
-      }
-    },
     "finance.cards.privacy": {
       "comment": "Guidance; Together 0.2.1 Our Finances functional UI",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Only the last four digits are stored; private profiles stay on this device."
+            "value": "Previously shared records remain"
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "仅存卡号后四位；个人档案仅本机可见。"
+            "value": "历史共享记录仍保留"
           }
         }
       }
@@ -13251,30 +12962,13 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Keep your records and pairing when you upgrade."
+            "value": "Sync deposits, expenses, and bills"
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "升级后沿用现有记录和配对。"
-          }
-        }
-      }
-    },
-    "finance.aa.rounding": {
-      "comment": "Guidance; AA odd-minor-unit allocation",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Any remainder follows a fixed order, keeping the total exact."
-          }
-        },
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "余数按固定顺序分配，合计不变。"
+            "value": "同步存款、支出和账单"
           }
         }
       }
@@ -14129,23 +13823,6 @@
         }
       }
     },
-    "device.guidance.preserve": {
-      "comment": "Guidance; user-requested device enrollment, migration and recovery controls",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Joining uses a separate replica; existing data stays in its original store."
-          }
-        },
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "加入后使用独立副本，原有资料留在原存储。"
-          }
-        }
-      }
-    },
     "device.guidance.controller": {
       "comment": "Guidance; user-requested device enrollment, migration and recovery controls",
       "localizations": {
@@ -14786,40 +14463,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "Tap the globe in Settings to switch between Chinese and English."
-          }
-        }
-      }
-    },
-    "release.0.2.3.copy.title": {
-      "comment": "Navigation; Together 0.2.3 language and concise copy",
-      "localizations": {
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "文案精简"
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Clearer Copy"
-          }
-        }
-      }
-    },
-    "release.0.2.3.copy.detail": {
-      "comment": "Guidance; Together 0.2.3 language and concise copy",
-      "localizations": {
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "礼物保留亲昵，日常操作更简洁。"
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "The same warmth in your gifts, with simpler words for everyday things."
           }
         }
       }

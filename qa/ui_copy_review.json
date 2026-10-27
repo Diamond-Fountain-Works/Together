@@ -373,30 +373,6 @@
       },
       "localizationReview": "0.2.3 complete bilingual copy review; preserve emotional meaning, concise functional wording."
     },
-    "copy.empty_state.6b4beaf7f321": {
-      "category": "Guidance",
-      "context": "Settings privacy",
-      "review": "review_required",
-      "reason": "Security boundary needs independent review; do not promote protocol review as complete.",
-      "textSHA256": "f42f6126c972378cb18216dfa140994fc98fcbe660baeff427c67cbc3c181e01",
-      "translationSHA256": {
-        "zh-Hans": "f42f6126c972378cb18216dfa140994fc98fcbe660baeff427c67cbc3c181e01",
-        "en": "e8a55e2a9a5ca06a9fb41fa30524bbfc8567c78dee4244ee0a5fc7966e1a1f9c"
-      },
-      "localizationReview": "0.2.3 complete bilingual copy review; preserve emotional meaning, concise functional wording."
-    },
-    "copy.guidance.9dd62bb75ce0": {
-      "category": "Guidance",
-      "context": "0.2.1/Sources/TogetherApp/Views/Settings/SettingsView.swift",
-      "review": "approved",
-      "reason": "Settings explains storage and realtime-only delivery without implementation jargon.",
-      "textSHA256": "9f15ca764835dc2e67b2dce688cf278d001ee6d7b88aded1bbfb6caa2ef605a8",
-      "translationSHA256": {
-        "zh-Hans": "9f15ca764835dc2e67b2dce688cf278d001ee6d7b88aded1bbfb6caa2ef605a8",
-        "en": "43e46741160b0a813f01eee23d017b81cf669d8855f69e125182bd6d6b4ed084"
-      },
-      "localizationReview": "0.2.3 complete bilingual copy review; preserve emotional meaning, concise functional wording."
-    },
     "copy.status.610b105f07da": {
       "category": "Status",
       "context": "0.0.1/Sources/TogetherApp/Views/Settings/SettingsView.swift",
@@ -406,18 +382,6 @@
       "translationSHA256": {
         "zh-Hans": "085931b25c715beac34b5f65ca6275d259b46d34272a19bb11e7804cc09e8ac2",
         "en": "610b105f07da700bc79d63b87db47ee698303d88ccae9689cfdf0a929e8cb3b8"
-      },
-      "localizationReview": "0.2.3 complete bilingual copy review; preserve emotional meaning, concise functional wording."
-    },
-    "copy.guidance.e2ee62dfbb66": {
-      "category": "Guidance",
-      "context": "0.0.1/Sources/TogetherApp/Views/Settings/SettingsView.swift",
-      "review": "approved",
-      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
-      "textSHA256": "718e951bc9e1a8b4ac3d700e1990038f631cf3771a43153a8c235c337202a97b",
-      "translationSHA256": {
-        "zh-Hans": "718e951bc9e1a8b4ac3d700e1990038f631cf3771a43153a8c235c337202a97b",
-        "en": "7d70e433c999a033cfcae021c590be2a7eccb2f775a4553e9ce3fc8520b99f1a"
       },
       "localizationReview": "0.2.3 complete bilingual copy review; preserve emotional meaning, concise functional wording."
     },
@@ -481,18 +445,6 @@
       },
       "localizationReview": "0.2.3 complete bilingual copy review; preserve emotional meaning, concise functional wording."
     },
-    "copy.status.bffe51e12e5e": {
-      "category": "Status",
-      "context": "0.0.1/Sources/TogetherApp/Views/Settings/SettingsView.swift",
-      "review": "approved",
-      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
-      "textSHA256": "47beaef4b24256086b5641ab389824deb26a6810f13c2a0fb340b0091e94af4d",
-      "translationSHA256": {
-        "zh-Hans": "47beaef4b24256086b5641ab389824deb26a6810f13c2a0fb340b0091e94af4d",
-        "en": "cda220032a003ae3fcc437a92a5acfe53f080d63cf86cb595e65555f359667ff"
-      },
-      "localizationReview": "0.2.3 complete bilingual copy review; preserve emotional meaning, concise functional wording."
-    },
     "copy.action.c0a70fcb56f0": {
       "category": "Action",
       "context": "0.0.1/Sources/TogetherApp/Views/Settings/SettingsView.swift",
@@ -538,18 +490,6 @@
       "translationSHA256": {
         "zh-Hans": "7a1e2b964b67224c75ff57ffd9fc81f91042cde766bcabfe83cfc5c42d2988eb",
         "en": "2b7f6a84de917e387539dbe441ca22056e793d738e6c50db30c3f569e4448df3"
-      },
-      "localizationReview": "0.2.3 complete bilingual copy review; preserve emotional meaning, concise functional wording."
-    },
-    "copy.status.af495a06b2de": {
-      "category": "Status",
-      "context": "0.0.1/Sources/TogetherApp/Views/Settings/SettingsView.swift",
-      "review": "approved",
-      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
-      "textSHA256": "c5482d5f0d484c6555e7b63a509b4c3e22fc7aec6d50a852ec8f6cab00f26633",
-      "translationSHA256": {
-        "zh-Hans": "c5482d5f0d484c6555e7b63a509b4c3e22fc7aec6d50a852ec8f6cab00f26633",
-        "en": "0ea7b40c059138eb8d987a5b377fec4ec4747a2207a3d6d007bda4fc4d151421"
       },
       "localizationReview": "0.2.3 complete bilingual copy review; preserve emotional meaning, concise functional wording."
     },
@@ -649,18 +589,6 @@
       },
       "localizationReview": "0.2.3 complete bilingual copy review; preserve emotional meaning, concise functional wording."
     },
-    "copy.status.e23f8f7eb807": {
-      "category": "Status",
-      "context": "0.0.1/Sources/TogetherApp/Views/Settings/AvatarCropView.swift",
-      "review": "approved",
-      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
-      "textSHA256": "626cecf809dc6522ae8b47d12cc33679d146fe1556eb9eea7ff2393ea11977e0",
-      "translationSHA256": {
-        "zh-Hans": "626cecf809dc6522ae8b47d12cc33679d146fe1556eb9eea7ff2393ea11977e0",
-        "en": "2bb49145d46749c8e670c6d817632a00a06b278f4f2075a58c71c65d450a6497"
-      },
-      "localizationReview": "0.2.3 complete bilingual copy review; preserve emotional meaning, concise functional wording."
-    },
     "copy.status.6cd7c4f0f4c3": {
       "category": "Status",
       "context": "0.0.1/Sources/TogetherApp/Views/Settings/AvatarCropView.swift",
@@ -694,18 +622,6 @@
       "translationSHA256": {
         "zh-Hans": "882574c28ed5e0a6181ab8f427942db8b28de344fc705bd8da9f3f95d45084e9",
         "en": "bcc295116f1696b2354e340c40813fbfeff68bbffbfa7ff09f7be39c9bce94c0"
-      },
-      "localizationReview": "0.2.3 complete bilingual copy review; preserve emotional meaning, concise functional wording."
-    },
-    "copy.guidance.08a8bfd082bf": {
-      "category": "Guidance",
-      "context": "0.2.1/Sources/TogetherApp/Views/Tasks/TaskEditorView.swift",
-      "review": "approved",
-      "reason": "Flexible recurrence guidance accurately distinguishes deferral from scheduling.",
-      "textSHA256": "9278b7109c706e96a758e157692d5f0632b82d4e449fd5dd1b2a775861961fa2",
-      "translationSHA256": {
-        "zh-Hans": "9278b7109c706e96a758e157692d5f0632b82d4e449fd5dd1b2a775861961fa2",
-        "en": "652334c4c681d9eca0ec9fac91984e8d773b9626754ed44ffd4cdf7fd4bddb00"
       },
       "localizationReview": "0.2.3 complete bilingual copy review; preserve emotional meaning, concise functional wording."
     },
@@ -1417,18 +1333,6 @@
       },
       "localizationReview": "0.2.3 complete bilingual copy review; preserve emotional meaning, concise functional wording."
     },
-    "copy.status.01b6f9e2d127": {
-      "category": "Status",
-      "context": "0.0.1/Sources/TogetherApp/Views/Wishes/WishEditors.swift",
-      "review": "approved",
-      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
-      "textSHA256": "d10ea5964d748dd243e4c8e7dc136f2fc55b9f02d5c71c7b001c228dfaffccfd",
-      "translationSHA256": {
-        "zh-Hans": "d10ea5964d748dd243e4c8e7dc136f2fc55b9f02d5c71c7b001c228dfaffccfd",
-        "en": "90b2fd54af37feca2c1fe14d6bde152a8f2b605ac888bbe9340fcd382607a30f"
-      },
-      "localizationReview": "0.2.3 complete bilingual copy review; preserve emotional meaning, concise functional wording."
-    },
     "copy.action.2b072511a379": {
       "category": "Action",
       "context": "0.0.1/Sources/TogetherApp/Views/Wishes/WishEditors.swift",
@@ -1462,18 +1366,6 @@
       "translationSHA256": {
         "zh-Hans": "c28964cec0df6f3eee24ad8d87e4eb8c1630e265f042fde1f945d02d8e061b77",
         "en": "74025a05284ed92d2be38606021b11a964185f7b9b13cbd94da184864454014a"
-      },
-      "localizationReview": "0.2.3 complete bilingual copy review; preserve emotional meaning, concise functional wording."
-    },
-    "copy.status.3cfd61f73f08": {
-      "category": "Status",
-      "context": "0.0.1/Sources/TogetherApp/Views/Wishes/WishEditors.swift",
-      "review": "approved",
-      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
-      "textSHA256": "9f8c7073b98db0fb1c1c1b0fca4c0cafd6a3865d9046c6b3ae83391bb9419db8",
-      "translationSHA256": {
-        "zh-Hans": "9f8c7073b98db0fb1c1c1b0fca4c0cafd6a3865d9046c6b3ae83391bb9419db8",
-        "en": "c2922a5fea9884c871d5e8d59c8ffe1a6f8d01ea9ab541f8c2cc936affa5d7f6"
       },
       "localizationReview": "0.2.3 complete bilingual copy review; preserve emotional meaning, concise functional wording."
     },
@@ -1885,18 +1777,6 @@
       },
       "localizationReview": "0.2.3 complete bilingual copy review; preserve emotional meaning, concise functional wording."
     },
-    "copy.status.99d1094feca8": {
-      "category": "Status",
-      "context": "0.0.1/Sources/TogetherApp/Views/Gifts/GiftRevealView.swift",
-      "review": "approved",
-      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
-      "textSHA256": "d87f93c4e2b824cf18609671643de2cda6e162ba7dd6d45137f6758ada79c01c",
-      "translationSHA256": {
-        "zh-Hans": "d87f93c4e2b824cf18609671643de2cda6e162ba7dd6d45137f6758ada79c01c",
-        "en": "c418af24c3bf2880cb5b40498a71acf6112c869c7d7be71f874a116a5262a8c1"
-      },
-      "localizationReview": "0.2.3 complete bilingual copy review; preserve emotional meaning, concise functional wording."
-    },
     "copy.emotional.c35685beea5a": {
       "category": "Emotional",
       "context": "0.0.1/Sources/TogetherApp/Views/Gifts/GiftRevealView.swift",
@@ -1937,11 +1817,11 @@
       "category": "Guidance",
       "context": "0.0.1/Sources/TogetherApp/Views/Gifts/GiftEditorView.swift",
       "review": "approved",
-      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
-      "textSHA256": "ed67900f24c4f91c55572fbc2c2bf8c0cf0087209d3b4d4beecf76efc8655165",
+      "reason": "Current UI copy cleanup: concise factual state/field or conditional sharing consequence; no generic implementation assurance.",
+      "textSHA256": "d77ac1d0e2df3caf972d61b69f4f3d9e52b721a868fb5f5fbad3327d49fe02a1",
       "translationSHA256": {
-        "zh-Hans": "ed67900f24c4f91c55572fbc2c2bf8c0cf0087209d3b4d4beecf76efc8655165",
-        "en": "9804d04c53e4867bfd37d664cf51dd63a5f1860f9837c2a5b8f583894002ae16"
+        "zh-Hans": "d77ac1d0e2df3caf972d61b69f4f3d9e52b721a868fb5f5fbad3327d49fe02a1",
+        "en": "efc82d110555e8b22f18e3310952eafc57cac6fd147fb8f512cfe23c9a3cade9"
       },
       "localizationReview": "0.2.3 complete bilingual copy review; preserve emotional meaning, concise functional wording."
     },
@@ -1993,27 +1873,15 @@
       },
       "localizationReview": "0.2.3 complete bilingual copy review; preserve emotional meaning, concise functional wording."
     },
-    "copy.status.6a8ae976f27c": {
-      "category": "Status",
-      "context": "0.0.1/Sources/TogetherApp/Views/Gifts/GiftEditorView.swift",
-      "review": "approved",
-      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
-      "textSHA256": "d7f30a1cd60b6ca2f6d8bd77aa40e005561688effa59951b91ad37cf1082eff8",
-      "translationSHA256": {
-        "zh-Hans": "d7f30a1cd60b6ca2f6d8bd77aa40e005561688effa59951b91ad37cf1082eff8",
-        "en": "57651db45f6af1398356562aa61c5e4bd5d94a85364891b34a73c86281bda653"
-      },
-      "localizationReview": "0.2.3 complete bilingual copy review; preserve emotional meaning, concise functional wording."
-    },
     "copy.emotional.3ceeec638ae6": {
-      "category": "Emotional",
-      "context": "0.0.1/Sources/TogetherApp/Views/Gifts/GiftEditorView.swift",
+      "category": "Status",
+      "context": "GiftComposer unpaired send availability",
       "review": "approved",
-      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
-      "textSHA256": "3e806e537c932014db98c432d0073fba53335fba84a58ed14fd877d9b7c313d8",
+      "reason": "Current UI copy cleanup: concise factual state/field or conditional sharing consequence; no generic implementation assurance.",
+      "textSHA256": "525b127a9476666a4d60066e623e00e1f1e757e2cb44f81b977832e5900e3f3f",
       "translationSHA256": {
-        "zh-Hans": "3e806e537c932014db98c432d0073fba53335fba84a58ed14fd877d9b7c313d8",
-        "en": "da46b376f56bc2cc9448a6afcd0ee00012853e70228dcaf8973534c3797ee6c2"
+        "zh-Hans": "525b127a9476666a4d60066e623e00e1f1e757e2cb44f81b977832e5900e3f3f",
+        "en": "22a44e1f74e92d2f1286418ba1e052b0e1101342594cefb637c00083b364bb5c"
       },
       "localizationReview": "0.2.3 complete bilingual copy review; preserve emotional meaning, concise functional wording."
     },
@@ -2225,11 +2093,11 @@
       "category": "Status",
       "context": "0.0.1/Sources/TogetherApp/Onboarding/InitialSetupView.swift",
       "review": "approved",
-      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
-      "textSHA256": "ceb777b55909905b790590c489d8b84d1e4cf33c6b92a488f9e48642fd1d847a",
+      "reason": "Current UI copy cleanup: concise factual state/field or conditional sharing consequence; no generic implementation assurance.",
+      "textSHA256": "841d07f5d93fee94a13bd443286d9bb4bb4d4a6eea61845dba3cbb1d6fa0691d",
       "translationSHA256": {
-        "zh-Hans": "ceb777b55909905b790590c489d8b84d1e4cf33c6b92a488f9e48642fd1d847a",
-        "en": "67a9eafe1f9e08bdaecbf8ab18fc35f382231a157fd883b3318e0d5fd0aebf75"
+        "zh-Hans": "841d07f5d93fee94a13bd443286d9bb4bb4d4a6eea61845dba3cbb1d6fa0691d",
+        "en": "651db8587b40535e99027e6819a0e3ffdfee3205199eb6475607c22307fc1e56"
       },
       "localizationReview": "0.2.3 complete bilingual copy review; preserve emotional meaning, concise functional wording."
     },
@@ -2237,11 +2105,11 @@
       "category": "Guidance",
       "context": "0.2.1/Sources/TogetherApp/Onboarding/InitialSetupView.swift",
       "review": "approved",
-      "reason": "Initial Setup keeps mutual-confirmation and offline choices.",
-      "textSHA256": "5a584c6e4a5c98a2e67b29d3af7e250ecdbfa3817861e8d3bfab5b6d19b8fb68",
+      "reason": "Replace repeated implementation assurance or filler with the actual task/action.",
+      "textSHA256": "491cbf199d92b67494ef32e63c789ab9b44ee1aafe0f1a330de365d7c9ef61f6",
       "translationSHA256": {
-        "zh-Hans": "5a584c6e4a5c98a2e67b29d3af7e250ecdbfa3817861e8d3bfab5b6d19b8fb68",
-        "en": "a48b9f74b1d81f58726d5381bd8db935a48aa52210b049413284cec1f96bd187"
+        "zh-Hans": "491cbf199d92b67494ef32e63c789ab9b44ee1aafe0f1a330de365d7c9ef61f6",
+        "en": "291d8a9bb4b8c730ad51823812de7af119a25e2d39a1a3c7b665be60e9efa965"
       },
       "localizationReview": "0.2.3 complete bilingual copy review; preserve emotional meaning, concise functional wording."
     },
@@ -2278,30 +2146,6 @@
       "translationSHA256": {
         "zh-Hans": "cae3ab4bfdb211938655b290fcaff96592f68dbfe92d77fc9a3e7878c68a6918",
         "en": "ee729e0098021b3b1e1c5446a7ff7e57e3102ee46ee6e9049663756cb0ba7af4"
-      },
-      "localizationReview": "0.2.3 complete bilingual copy review; preserve emotional meaning, concise functional wording."
-    },
-    "copy.status.dbfd5d14c799": {
-      "category": "Status",
-      "context": "0.0.1/Sources/TogetherApp/Onboarding/InitialSetupView.swift",
-      "review": "approved",
-      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
-      "textSHA256": "d94ce3baf57cead7c7571f8fbfaeb94e67273b6e01c7e20eb4da18f237b0cf06",
-      "translationSHA256": {
-        "zh-Hans": "d94ce3baf57cead7c7571f8fbfaeb94e67273b6e01c7e20eb4da18f237b0cf06",
-        "en": "9833f242fcf0dceb7dba4201768f5ea8a0d872f975342680b7ba22028e9991ff"
-      },
-      "localizationReview": "0.2.3 complete bilingual copy review; preserve emotional meaning, concise functional wording."
-    },
-    "copy.status.1bb474fad984": {
-      "category": "Status",
-      "context": "0.0.1/Sources/TogetherApp/Onboarding/InitialSetupView.swift",
-      "review": "approved",
-      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
-      "textSHA256": "47424d32029d3b83b427da1c85c68fdfd97eac547bef06a5c26fdc5f2f7b87c9",
-      "translationSHA256": {
-        "zh-Hans": "47424d32029d3b83b427da1c85c68fdfd97eac547bef06a5c26fdc5f2f7b87c9",
-        "en": "2bc5e986f635a575ccf6c78f5411ef8d34ed1168a7aa7a228b0a57fd635738fa"
       },
       "localizationReview": "0.2.3 complete bilingual copy review; preserve emotional meaning, concise functional wording."
     },
@@ -2549,11 +2393,11 @@
       "category": "Guidance",
       "context": "0.0.1/Sources/TogetherApp/Onboarding/AdvisorView.swift",
       "review": "approved",
-      "reason": "Existing product/action copy or explicitly requested scope; no invented user data.",
-      "textSHA256": "a51a72265262bb68c6476a4e1d772da106ece147de7a4ebf4af5e37810a71812",
+      "reason": "Replace repeated implementation assurance or filler with the actual task/action.",
+      "textSHA256": "dbcb8806102b03e28fe3c7d2e4eccc5d3df57fc681ce0304daf596efef14dfd6",
       "translationSHA256": {
-        "zh-Hans": "a51a72265262bb68c6476a4e1d772da106ece147de7a4ebf4af5e37810a71812",
-        "en": "7553c9c667d4827abf08d1a1ae9b7c8398c0fc652ac521916325fb578000b5ef"
+        "zh-Hans": "dbcb8806102b03e28fe3c7d2e4eccc5d3df57fc681ce0304daf596efef14dfd6",
+        "en": "6135b6d98311b8a45fb811195728b5919a6db977fabd7c96e459d32972bc12c1"
       },
       "localizationReview": "0.2.3 complete bilingual copy review; preserve emotional meaning, concise functional wording."
     },
@@ -8833,42 +8677,6 @@
       },
       "localizationReview": "0.2.3 complete bilingual copy review; preserve emotional meaning, concise functional wording."
     },
-    "finance.balance.guidance": {
-      "category": "Guidance",
-      "context": "Together 0.2.1 Our Finances",
-      "review": "approved",
-      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
-      "textSHA256": "d470faa86c3f0bab5e37c94e50e565a5a549445aba44748596008210f9bccdec",
-      "translationSHA256": {
-        "en": "1fb91f473c5739af858d37fd380e510e689d74cdb467b2eee3934b13f97a39e4",
-        "zh-Hans": "d470faa86c3f0bab5e37c94e50e565a5a549445aba44748596008210f9bccdec"
-      },
-      "localizationReview": "0.2.3 complete bilingual copy review; preserve emotional meaning, concise functional wording."
-    },
-    "finance.reserves.openingGuidance": {
-      "category": "Guidance",
-      "context": "Together 0.2.1 Our Finances",
-      "review": "approved",
-      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
-      "textSHA256": "8eeec614dc1ad15983155ecaeb9b6d33c47d26db189a3f8f38ca645d1e0b2378",
-      "translationSHA256": {
-        "en": "8fd4de0a8f8ef95a1a08c219981476956a910eb0e8b92db2b430281889b61a64",
-        "zh-Hans": "8eeec614dc1ad15983155ecaeb9b6d33c47d26db189a3f8f38ca645d1e0b2378"
-      },
-      "localizationReview": "0.2.3 complete bilingual copy review; preserve emotional meaning, concise functional wording."
-    },
-    "finance.amount.rateGuidance": {
-      "category": "Guidance",
-      "context": "Together 0.2.1 Our Finances",
-      "review": "approved",
-      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
-      "textSHA256": "bae0ed6c2d84086c12c96f39f2d7a37ebe52817dba5466180edcf655ddcb6e2a",
-      "translationSHA256": {
-        "en": "e810aa657a26fa63ab57239cbb23dcf67074b5e32032e0ea4432771c5f87706f",
-        "zh-Hans": "bae0ed6c2d84086c12c96f39f2d7a37ebe52817dba5466180edcf655ddcb6e2a"
-      },
-      "localizationReview": "0.2.3 complete bilingual copy review; preserve emotional meaning, concise functional wording."
-    },
     "finance.expenses.occurrenceGuidance": {
       "category": "Guidance",
       "context": "Together 0.2.1 Our Finances",
@@ -8917,27 +8725,15 @@
       },
       "localizationReview": "0.2.3 complete bilingual copy review; preserve emotional meaning, concise functional wording."
     },
-    "finance.cycle.planGuidance": {
-      "category": "Guidance",
-      "context": "Together 0.2.1 Our Finances",
-      "review": "approved",
-      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
-      "textSHA256": "09c33f0dbc267c848b4bf464c015507d1a7f0f8f020df2bcdd2a35dd5ac95442",
-      "translationSHA256": {
-        "en": "b63840915b95f7819d54a174d1b09937ddae0e8644795b16bceea5b3bc5e685d",
-        "zh-Hans": "09c33f0dbc267c848b4bf464c015507d1a7f0f8f020df2bcdd2a35dd5ac95442"
-      },
-      "localizationReview": "0.2.3 complete bilingual copy review; preserve emotional meaning, concise functional wording."
-    },
     "finance.cards.privacy": {
       "category": "Guidance",
       "context": "Together 0.2.1 Our Finances",
       "review": "approved",
-      "reason": "Functional labels, states and recovery required by the approved Our Finances specification; no invented records or decorative copy.",
-      "textSHA256": "63fc62960ac7385caa3eb8822dcf3d257f29df95f77ce61e537e85416b101b13",
+      "reason": "Current UI copy cleanup: concise factual state/field or conditional sharing consequence; no generic implementation assurance.",
+      "textSHA256": "89917b4cb49c8e87309cf990f3dbd8ae107070a5bc84b21c5d399469d5ac2d87",
       "translationSHA256": {
-        "en": "7f99eeada42a1cbd1b37a0474e85dd0c2eff555ce0941e736ee9e89c3aebfe2f",
-        "zh-Hans": "63fc62960ac7385caa3eb8822dcf3d257f29df95f77ce61e537e85416b101b13"
+        "en": "e0b7867e421695912150e5296937e5bc3b6245220d004170da3fd6445b27e984",
+        "zh-Hans": "89917b4cb49c8e87309cf990f3dbd8ae107070a5bc84b21c5d399469d5ac2d87"
       },
       "localizationReview": "0.2.3 complete bilingual copy review; preserve emotional meaning, concise functional wording."
     },
@@ -9365,23 +9161,11 @@
       "category": "Guidance",
       "context": "0.2.1 release notes",
       "review": "approved",
-      "reason": "Factual features implemented and covered by finance tests; no network acceptance claim",
-      "textSHA256": "9cf03af1b828f5e343db96a81e6e57a134219dbb1fb70ff0f3a700efbaf82ec3",
+      "reason": "Replace repeated implementation assurance or filler with the actual task/action.",
+      "textSHA256": "39faf78fb4525bf43e9659058e9c424edddb089e9409bce1bddd5b806bed49fb",
       "translationSHA256": {
-        "en": "aea5f171b312f593182c5ca9b7b05a92f31e1d02bedc6ae4fa0d99d703f1f77f",
-        "zh-Hans": "9cf03af1b828f5e343db96a81e6e57a134219dbb1fb70ff0f3a700efbaf82ec3"
-      },
-      "localizationReview": "0.2.3 complete bilingual copy review; preserve emotional meaning, concise functional wording."
-    },
-    "finance.aa.rounding": {
-      "category": "Guidance",
-      "context": "AA odd-minor-unit allocation",
-      "review": "approved",
-      "reason": "Explains user-required deterministic exact totals",
-      "textSHA256": "470b776477965fa9ea5500437dd4de7405d6ba5720dd5b6e679e3cc219e6b27b",
-      "translationSHA256": {
-        "en": "55455103d46c74c7f10894a09f5d07c19088363d0a4616d896b1c3b88683be61",
-        "zh-Hans": "470b776477965fa9ea5500437dd4de7405d6ba5720dd5b6e679e3cc219e6b27b"
+        "en": "ecd7038efe973ea56508197d1230aa395a9d2462181ccee9d79ae348d45d9c01",
+        "zh-Hans": "39faf78fb4525bf43e9659058e9c424edddb089e9409bce1bddd5b806bed49fb"
       },
       "localizationReview": "0.2.3 complete bilingual copy review; preserve emotional meaning, concise functional wording."
     },
@@ -9985,18 +9769,6 @@
       },
       "localizationReview": "0.2.3 complete bilingual copy review; preserve emotional meaning, concise functional wording."
     },
-    "device.guidance.preserve": {
-      "category": "Guidance",
-      "context": "Device enrollment / management / explicit legacy migration",
-      "review": "approved",
-      "reason": "Functional control or factual security/recovery guidance required by the current user request; no invented records or decorative prose.",
-      "textSHA256": "13ccbfcae5c1f2410d016d05968c618db0287c0b971e8a27768159da0ed0cc52",
-      "translationSHA256": {
-        "en": "20543cc2ed2b151051e1ddcef44057a07dfc2469bf553d5741b9726db63bb88d",
-        "zh-Hans": "13ccbfcae5c1f2410d016d05968c618db0287c0b971e8a27768159da0ed0cc52"
-      },
-      "localizationReview": "0.2.3 complete bilingual copy review; preserve emotional meaning, concise functional wording."
-    },
     "device.guidance.controller": {
       "category": "Guidance",
       "context": "Device enrollment / management / explicit legacy migration",
@@ -10450,30 +10222,6 @@
       "translationSHA256": {
         "zh-Hans": "ba5fae236f8410cbaeb4903fc78fb1faec49a42494a69d885bfa08cdd121e870",
         "en": "63d94e63083ee61c4e5a075f03e4273722b15a428fc6c5aa8fd69328d8a56c07"
-      },
-      "localizationReview": "0.2.3 complete bilingual copy review; preserve emotional meaning, concise functional wording."
-    },
-    "release.0.2.3.copy.title": {
-      "category": "Navigation",
-      "context": "Together 0.2.3 language selection, truthful status and release notes",
-      "review": "approved",
-      "reason": "User-requested bilingual interface and direct functional wording; language names and actual state/actions only.",
-      "textSHA256": "7accc8135720da316b73f02719da67422cd70268f648fc8d7bde53a2037ae369",
-      "translationSHA256": {
-        "zh-Hans": "7accc8135720da316b73f02719da67422cd70268f648fc8d7bde53a2037ae369",
-        "en": "60f8922b54aeab649fe09ef3a155e275e7af3e12b6d9a66e0fb917fced7ae458"
-      },
-      "localizationReview": "0.2.3 complete bilingual copy review; preserve emotional meaning, concise functional wording."
-    },
-    "release.0.2.3.copy.detail": {
-      "category": "Guidance",
-      "context": "Together 0.2.3 language selection, truthful status and release notes",
-      "review": "approved",
-      "reason": "User-requested bilingual interface and direct functional wording; language names and actual state/actions only.",
-      "textSHA256": "7d50cf248cc66a78a34c03992a34e7faf1be41d67447e57ac159bd87921bd46e",
-      "translationSHA256": {
-        "zh-Hans": "7d50cf248cc66a78a34c03992a34e7faf1be41d67447e57ac159bd87921bd46e",
-        "en": "c0219245d0f13b1af53b9abe2670b11575bbbcdbeed560da901ffc5de360a1e0"
       },
       "localizationReview": "0.2.3 complete bilingual copy review; preserve emotional meaning, concise functional wording."
     },

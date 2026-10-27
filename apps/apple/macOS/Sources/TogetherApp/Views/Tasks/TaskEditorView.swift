@@ -63,12 +63,10 @@ struct NextTimeView: View {
         VStack(alignment: .leading, spacing: 20) {
             #if os(macOS)
             Text(Copy.text("copy.status.626ba31a7939")).font(.title2.weight(.semibold))
-            Text(Copy.text("copy.guidance.08a8bfd082bf")).foregroundColor(.secondary)
             DatePicker(Copy.text("copy.guidance.01b9bfedf5b1"), selection: $date, in: Date()...).datePickerStyle(.graphical)
             #else
             VStack(alignment: .leading, spacing: 20) {
                     Text(Copy.text("copy.status.626ba31a7939")).font(.title2.weight(.semibold))
-                    Text(Copy.text("copy.guidance.08a8bfd082bf")).foregroundColor(.secondary)
                     DatePicker(Copy.text("copy.guidance.01b9bfedf5b1"), selection: $date, in: Date()...).datePickerStyle(.compact)
             }.frame(maxWidth: .infinity, alignment: .leading).togetherScrollableOnPhone()
             #endif

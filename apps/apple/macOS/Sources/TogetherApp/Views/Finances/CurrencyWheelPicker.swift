@@ -67,7 +67,6 @@ struct FinanceAmountFields: View {
                     TextField(Copy.text("finance.amount.rate"), text: $draft.rate).togetherAmountKeyboard().textFieldStyle(.roundedBorder)
                     TextField(Copy.text("finance.amount.source"), text: $draft.rateSource).textFieldStyle(.roundedBorder)
                     DatePicker(Copy.text("finance.amount.rateDate"), selection: $draft.rateDate, displayedComponents: .date).environment(\.timeZone, TimeZone(secondsFromGMT: 0)!)
-                    Text(Copy.text("finance.amount.rateGuidance")).font(.caption).foregroundColor(.secondary)
                 }
             }
             if let amount = try? draft.amount() { Text(verbatim: FinanceMoney.display(amount.finalCNYMinor)).font(.title3.monospacedDigit()).accessibilityIdentifier("finance.amount.preview") }
@@ -94,7 +93,6 @@ struct FinancePaymentFields: View {
                 let half = NSDecimalNumber(decimal: Decimal(amount.finalCNYMinor) / 200).stringValue
                 Text(Copy.format("finance.aa.formula", FinanceMoney.display(amount.finalCNYMinor), half)).font(.callout.monospacedDigit())
                 ForEach(payment.allocations(amount: amount), id: \.userId) { share in HStack { Text(model.name(share.userId)); Spacer(); Text(verbatim: FinanceMoney.display(share.cnyMinor)) } }
-                Text(Copy.text("finance.aa.rounding")).font(.caption).foregroundColor(.secondary)
             }
         }
     }

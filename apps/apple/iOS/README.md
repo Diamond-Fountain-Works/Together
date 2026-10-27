@@ -56,13 +56,13 @@ QA is deferred at the user's request; no simulator result is claimed.
 
 ## Current candidate
 
-0.2.4 Build26 is an unsigned generic-device build for iOS/iPadOS15 and ARM64,
+0.2.4 Build27 is an unsigned generic-device build for iOS/iPadOS15 and ARM64,
 including phone/tablet families1/2 and portrait/landscape. No camera, modem,
 biometric or model capability is required. This floor includes the first iPhone
 SE and iPhone6s generation when upgraded to iOS15; older devices and every new
 physical model are not claimed tested.
 
-Local retained deliverable: `dist/Together-0.2.4-Build26-iOS-unsigned.app.zip`.
+Local retained deliverable: `dist/Together-0.2.4-Build27-iOS-unsigned.app.zip`.
 It is an inspection/re-signing `.app` archive, **not an installable IPA** or an
 App Store/TestFlight release. A signing team, valid provisioning and actual-device
 acceptance are still required. Simulator testing remains deferred by the user;

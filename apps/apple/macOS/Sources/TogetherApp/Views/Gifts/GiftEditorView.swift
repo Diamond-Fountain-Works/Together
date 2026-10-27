@@ -71,7 +71,6 @@ struct GiftComposerView: View {
             }
             if busy { ProgressView(Copy.text("status.media.savingOriginal")).controlSize(.small) }
             if model.engine.context.peer == nil { Text(Copy.text("copy.emotional.3ceeec638ae6")).font(.callout).foregroundColor(.secondary) }
-            Text(Copy.text("copy.status.6a8ae976f27c")).font(.caption).foregroundColor(.secondary)
             if let error = recorder.error ?? saveError { Text(error).font(.callout).foregroundColor(.orange).togetherTextSelection() }
             TogetherAdaptiveStack(spacing: 12, desktop: .init()) {
                 Button(setup ? Copy.text("copy.action.1e157fdf0388") : Copy.text("copy.action.5329e3f0ee46")) { saveAndFinish() }.disabled(busy || recorder.recording)

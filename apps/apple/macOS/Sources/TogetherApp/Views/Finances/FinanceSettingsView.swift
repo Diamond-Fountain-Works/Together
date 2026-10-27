@@ -33,13 +33,14 @@ struct FinanceSettingsView: View {
             Picker(Copy.text("finance.cycle.scope"), selection: $personal) { Text(Copy.text("finance.cycle.shared")).tag(false); Text(Copy.text("finance.cycle.personal")).tag(true) }.pickerStyle(.segmented).accessibilityIdentifier("finance.cycle.scope")
             HStack { Text(Copy.text("finance.cycle.startDay")); Spacer(); MonthDayWheelPicker(selection: personal ? $personalDay : $sharedDay).id(personal) }
             TextField(Copy.text("finance.field.timeZone"), text: personal ? $personalZone : $sharedZone).textFieldStyle(.roundedBorder)
-            Text(Copy.text("finance.cycle.guidance")).font(.caption).foregroundColor(.secondary)
+            if (personal ? personalDay : sharedDay) > 28 {
+                Text(Copy.text("finance.cycle.guidance")).font(.caption).foregroundColor(.secondary)
+            }
             if personal {
                 Toggle(Copy.text("finance.cycle.salaryDay"), isOn: $salaryEnabled)
                 if salaryEnabled { MonthDayWheelPicker(selection: $salaryDay) }
                 Toggle(Copy.text("finance.cycle.depositDay"), isOn: $planEnabled)
                 if planEnabled { MonthDayWheelPicker(selection: $planDay) }
-                Text(Copy.text("finance.cycle.planGuidance")).font(.caption).foregroundColor(.secondary)
             }
             Divider()
             Toggle(Copy.text("finance.notifications.enable"), isOn: $systemNotifications).onChange(of: systemNotifications) { enabled in
@@ -111,7 +112,9 @@ struct PaymentCardEditor: View {
             Toggle(Copy.text("finance.cards.optionalCurrency"), isOn: $hasCurrency)
             if hasCurrency { CurrencyWheelPicker(selection: $currency) }
             Toggle(Copy.text("finance.cards.shared"), isOn: $shared)
-            Text(Copy.text("finance.cards.privacy")).font(.caption).foregroundColor(.secondary)
+            if !shared, model.engine.visiblePaymentMethods.first(where: { $0.id == id })?.isShared == true {
+                Text(Copy.text("finance.cards.privacy")).font(.caption).foregroundColor(.secondary)
+            }
         }
     }
 }

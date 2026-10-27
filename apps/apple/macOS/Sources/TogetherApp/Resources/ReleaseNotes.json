@@ -16,11 +16,6 @@
         "icon": "globe",
         "titleKey": "release.0.2.3.language.title",
         "detailsKey": "release.0.2.3.language.detail"
-      },
-      {
-        "icon": "text.bubble",
-        "titleKey": "release.0.2.3.copy.title",
-        "detailsKey": "release.0.2.3.copy.detail"
       }
     ]
   },

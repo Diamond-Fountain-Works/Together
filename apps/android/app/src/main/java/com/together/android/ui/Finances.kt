@@ -793,10 +793,6 @@ internal fun FinanceSettings(
         if (owner.isNotBlank()) {
             Input(salary, { salary = it }, R.string.label_salary_day)
             Input(deposit, { deposit = it }, R.string.label_planned_deposit)
-            Text(
-                stringResource(R.string.guidance_planned_deposit),
-                style = MaterialTheme.typography.bodySmall,
-            )
         }
         TextButton(onClick = onCards, modifier = Modifier.testTag("cards.open")) {
             Text(stringResource(R.string.label_payment_methods))
@@ -876,10 +872,15 @@ internal fun CardsSheet(
                 Switch(checked = shared, onCheckedChange = { shared = it })
                 Text(stringResource(R.string.label_shared_visibility))
             }
-            Text(
-                stringResource(R.string.guidance_card_history),
-                style = MaterialTheme.typography.bodySmall,
-            )
+            if (!shared && visibleCards(state).any {
+                    it["id"]?.jsonPrimitive?.content == cardId &&
+                        it["isShared"]?.jsonPrimitive?.booleanOrNull == true
+                }) {
+                Text(
+                    stringResource(R.string.guidance_card_history),
+                    style = MaterialTheme.typography.bodySmall,
+                )
+            }
         } else {
             Button(
                 onClick = {

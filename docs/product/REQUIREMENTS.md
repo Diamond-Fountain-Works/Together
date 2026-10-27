@@ -249,7 +249,7 @@ Continue the Phase A stack and exact existing Protocol 4/API2. Phone/tablet shar
 
 Gift composition/reveal/history is event-driven. One shared-zone day per sender, immutable local send, no deletion refund, one original photo/one audio, 64KiB chunks, resumable files, SHA-256 and recipient content receipts are required. A sealed reveal exposes no private text/photo/player before Open. Verified original export is explicit via Android SAF; recording/playback use Android permissions/lifecycle and never autoplay. Existing space/user/device identity and signed history remain unchanged. Real device and independent security acceptance, production service deployment and human candidate approval are separate gates. [Current implementation boundary](../architecture/ANDROID_BUSINESS_PHASE_B.md).
 
-## iPhone client increment (0.2.4 Build26 candidate)
+## iPhone client increment (0.2.4 Build27 candidate)
 
 Native iPhone/iPad presentation follows the Android workspace structure while
 reusing Apple business services and storage. Minimum iOS/iPadOS15 ARM64, device

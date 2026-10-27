@@ -40,7 +40,6 @@ struct GiftRevealView: View {
                             #endif
                         } else {
                             Text(LoveCopy.introduction(sender: role(gift))).font(.title2.weight(.medium)).multilineTextAlignment(.center)
-                            Text(Copy.text("copy.status.99d1094feca8")).foregroundColor(.secondary)
                             Button(Copy.text("copy.emotional.0fe0176cc04d")) {
                                 model.perform { try model.engine.markGiftOpened(gift.id) }
                                 withAnimation(TogetherTheme.motion(reduceMotion)) { opened = true }

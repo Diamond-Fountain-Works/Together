@@ -26,7 +26,6 @@ struct SettingsView: View {
                                 if model.engine.ownProfile?.avatarData != nil || model.engine.ownProfile?.avatarAssetId != nil {
                                     Button(Copy.text("copy.action.a91feb645e62")) { model.perform { try model.engine.setAvatar(assetId: nil) } }.buttonStyle(.borderless)
                                 }
-                                Text(Copy.text("copy.status.af495a06b2de")).font(.caption).foregroundColor(.secondary)
                                 if model.importingMedia { ProgressView().controlSize(.small) }
                             }
                         }
@@ -38,7 +37,7 @@ struct SettingsView: View {
                 }
                 if let partner = model.engine.partnerProfile {
                     TogetherCard {
-                        HStack(spacing: 14) { AvatarView(profile: partner, size: 62, engine: model.engine); VStack(alignment: .leading, spacing: 5) { Text(partner.displayName).font(.headline); Text(partner.role.displayName).foregroundColor(.secondary); Text(Copy.text("copy.status.bffe51e12e5e")).font(.caption).foregroundColor(.secondary) }; Spacer() }
+                        HStack(spacing: 14) { AvatarView(profile: partner, size: 62, engine: model.engine); VStack(alignment: .leading, spacing: 5) { Text(partner.displayName).font(.headline); Text(partner.role.displayName).foregroundColor(.secondary) }; Spacer() }
                     }
                 }
                 TogetherCard {

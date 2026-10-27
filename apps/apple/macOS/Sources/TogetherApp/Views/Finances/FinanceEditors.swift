@@ -196,7 +196,7 @@ struct BillEditor: View {
             TextField(Copy.text("finance.field.category"), text: $category).textFieldStyle(.roundedBorder)
             if id == nil {
                 HStack { Text(Copy.text("finance.bill.day")); Spacer(); MonthDayWheelPicker(selection: $day) }
-                Text(Copy.text("finance.bill.shortMonth")).font(.caption).foregroundColor(.secondary)
+                if day > 28 { Text(Copy.text("finance.bill.shortMonth")).font(.caption).foregroundColor(.secondary) }
                 TextField(Copy.text("finance.field.timeZone"), text: $zone).textFieldStyle(.roundedBorder)
                 Toggle(Copy.text("finance.bill.customStart"), isOn: $customStart)
                 if customStart { DatePicker(Copy.text("finance.bill.startMonth"), selection: $start, displayedComponents: .date).environment(\.timeZone, TimeZone(identifier: zone) ?? .current) }

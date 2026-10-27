@@ -33,7 +33,6 @@ struct WishEditorView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 20) {
             Text(Copy.text("copy.action.2b5c98884cf4")).font(.title2.weight(.semibold))
-            Text(Copy.text("copy.status.3cfd61f73f08")).font(.callout).foregroundColor(.secondary)
             TextField(Copy.text("copy.guidance.c28964cec0df"), text: $title).textFieldStyle(.roundedBorder)
             TogetherMultilineField(Copy.text("copy.guidance.d4dfacae27fe"), text: $details).lineLimit(8).textFieldStyle(.roundedBorder)
             HStack { Button(Copy.text("copy.action.2cd0f3be8738")) { model.dismissSheet() }; Spacer(); Button(Copy.text("copy.action.2b072511a379")) { model.perform { try model.engine.createWish(grantId: grantId, title: title, description: details); model.dismissSheet() } }.togetherProminentButton().disabled(title.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty) }
@@ -48,7 +47,6 @@ struct GrantAdjustmentView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 20) {
             Text(Copy.text("copy.action.b1318a136ca8")).font(.title2.weight(.semibold))
-            Text(Copy.text("copy.status.01b6f9e2d127")).foregroundColor(.secondary)
             Stepper(Copy.format("copy.guidance.18308177f358", String(describing: delta > 0 ? Copy.text("copy.guidance.a318c24216de") : ""), String(describing: delta)), value: $delta, in: -1000...1000)
             TogetherMultilineField(Copy.text("copy.guidance.cb63ca2a4003"), text: $notes).textFieldStyle(.roundedBorder)
             HStack { Button(Copy.text("copy.action.2cd0f3be8738")) { model.dismissSheet() }; Spacer(); Button(Copy.text("copy.action.2388bd52fae3")) { model.perform { try model.engine.adjustGrant(grantId, delta: delta, notes: notes); model.dismissSheet() } }.togetherProminentButton().disabled(delta == 0 || notes.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty) }

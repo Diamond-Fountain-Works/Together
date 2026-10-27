@@ -86,3 +86,19 @@ without delivery or runtime-acceptance claims. All values have exact per-locale
 review hashes. Existing Android/Apple labels and approved emotional copy are
 reused. The Chinese release title is 手机和平板; mixed-language lint remains
 enabled. The 28 existing context/security warnings remain visible.
+
+## Current concise-copy cleanup
+
+The requested cleanup removes18 repeated visible text calls and24 resource
+entries (21 Apple,3 Android);8 entries use shorter factual wording. Wishes, AA,
+reminders, avatars and device pages lose repeated implementation explanations.
+The unconditional draft-saved caption is removed. Shared-card history and
+short-month guidance appear only in their relevant state. Existing real errors,
+consent, state/receipt labels and approved gift text remain. See
+[exact dispositions](../qa/reports/UI_COPY_TRIM_0_2_4.md).
+
+Apple Copy QA remains WARN with0 errors/26 independent translation-context
+warnings. The2 removed warnings belonged to a deleted partner-caption duplicate
+and an unused disclosure resource. Independent security review remains a release
+gate in SECURITY_REVIEW.md; removing an unused UI entry does not close it.
+No audit rule, budget, threshold or blanket exception changed.

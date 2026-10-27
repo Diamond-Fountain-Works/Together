@@ -58,7 +58,6 @@
     <string name="action_revoke">撤销设备</string>
     <string name="confirm_revoke">撤销此设备？</string>
     <string name="guidance_root_required">请在最初的受信任电脑授权或撤销设备。</string>
-    <string name="guidance_offline">双方同时在线时同步。</string>
     <string name="label_user">用户编号</string>
     <string name="label_device">设备编号</string>
     <string name="label_version">版本</string>
@@ -126,7 +125,6 @@
     <string name="action_search">搜索</string>
     <string name="label_original_amount">原币金额</string>
     <string name="label_final_cny">实际人民币金额</string>
-    <string name="guidance_actual_cny">实际人民币金额优先于参考汇率。</string>
     <string name="label_exchange_rate">每单位原币折合人民币（可选）</string>
     <string name="label_rate_source">汇率来源</string>
     <string name="label_rate_date">汇率日期</string>
@@ -192,7 +190,6 @@
     <string name="label_financial_cycle">财务周期</string>
     <string name="label_salary_day">发薪日（可选，1–31）</string>
     <string name="label_planned_deposit">计划存款日（可选，1–31）</string>
-    <string name="guidance_planned_deposit">选择存款提醒日期。</string>
     <string name="label_payment_methods">银行卡档案</string>
     <string name="label_bank">银行名称</string>
     <string name="label_card_name">卡片名称</string>
@@ -202,7 +199,7 @@
     <string name="label_debit">借记卡</string>
     <string name="label_credit">信用卡</string>
     <string name="label_shared_visibility">共享此卡片档案</string>
-    <string name="guidance_card_history">已共享的记录保留在历史中。</string>
+    <string name="guidance_card_history">历史共享记录仍保留</string>
     <string name="action_add_card">添加卡片</string>
     <string name="label_photo">照片</string>
     <string name="label_avatar">头像</string>
