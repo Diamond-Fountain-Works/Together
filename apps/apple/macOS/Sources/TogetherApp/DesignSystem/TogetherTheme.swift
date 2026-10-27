@@ -31,7 +31,7 @@ enum TogetherTheme {
 struct TogetherCard<Content: View>: View {
     @ViewBuilder var content: Content
     var body: some View {
-        content.padding(20).frame(maxWidth: .infinity, alignment: .leading)
+        content.togetherPadding(20).frame(maxWidth: .infinity, alignment: .leading)
             .togetherBackground(TogetherPlatform.surface, in: RoundedRectangle(cornerRadius: 16))
             .overlay(RoundedRectangle(cornerRadius: 16).stroke(Color.primary.opacity(0.055), lineWidth: 1))
     }

@@ -8,7 +8,9 @@ struct HomeView: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 24) {
+                #if os(macOS)
                 PageHeading(title: Copy.text("copy.status.330e6de0a0e3"), subtitle: "")
+                #endif
                 TogetherCard {
                     TogetherAdaptiveStack(spacing: 22) {
                         person(model.engine.ownProfile, fallback: Copy.text("status.profile.self"), online: true)
@@ -31,7 +33,14 @@ struct HomeView: View {
                         }.buttonStyle(.plain).accessibilityIdentifier("home.upcoming.open")
                         ForEach(model.upcomingTasks.prefix(3)) { task in
                             Button { model.show(.task(task.id)) } label: {
+                                #if os(macOS)
                                 HStack { Text(task.title); Spacer(); if let date = task.dueAt { Text(Copy.date(date)).foregroundColor(.secondary) } }
+                                #else
+                                TogetherAdaptiveStack(spacing: 6) {
+                                    Text(task.title).frame(maxWidth: .infinity, alignment: .leading)
+                                    if let date = task.dueAt { Text(Copy.date(date)).font(.caption).foregroundColor(.secondary) }
+                                }.padding(.vertical, 4)
+                                #endif
                             }.buttonStyle(.plain).accessibilityIdentifier("home.task.open." + task.id.uuidString)
                         }
                     }
@@ -42,12 +51,15 @@ struct HomeView: View {
                             HStack { Text(Copy.text("copy.status.a7363b44d657")).font(.headline); Spacer(); Image(systemName: TogetherSymbols.name("chevron.right")).font(.caption).foregroundColor(.secondary) }
                         }.buttonStyle(.plain).accessibilityIdentifier("home.recentGrant.open")
                         ForEach(recentGrants) { grant in
-                            HStack {
+                            TogetherAdaptiveStack(spacing: 10, desktop: .init()) {
                                 VStack(alignment: .leading, spacing: 4) {
                                     Text(Copy.format("copy.guidance.3e122095ba88", String(describing: model.name(grant.fulfillerId)), String(describing: model.name(grant.beneficiaryId))))
                                     Text(grant.grantedOn.display).font(.caption).foregroundColor(.secondary)
                                 }
-                                Spacer(); Text(Copy.format("copy.status.ce04cf69d965", String(describing: grant.quantity))).font(.title3.weight(.medium).monospacedDigit()).foregroundColor(TogetherTheme.rose)
+                                #if os(macOS)
+                                Spacer()
+                                #endif
+                                Text(Copy.format("copy.status.ce04cf69d965", String(describing: grant.quantity))).font(.title3.weight(.medium).monospacedDigit()).foregroundColor(TogetherTheme.rose)
                             }
                         }
                     }

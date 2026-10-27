@@ -10785,6 +10785,54 @@
         "en": "a3fa74ba1a127101efd190d1f46f28d18201ef492ae730643e4111c25495ad09"
       },
       "localizationReview": "Bilingual native permission purpose review."
+    },
+    "media.action.photoLibrary": {
+      "category": "Action",
+      "context": "apps/apple/macOS/Sources/TogetherApp/DesignSystem/PlatformFilePanels.swift: iPhone/iPad image source chooser",
+      "review": "approved",
+      "reason": "Functional native source choices for requested iPhone photo/avatar import; no decorative prose or invented content.",
+      "textSHA256": "c93d46275e99476f1496e5c8d48c6c2efb5add5b2a133bcff38d7813295ec134",
+      "translationSHA256": {
+        "zh-Hans": "c93d46275e99476f1496e5c8d48c6c2efb5add5b2a133bcff38d7813295ec134",
+        "en": "e0b2a392cf79edc2567ba63a9ccbcffc4e19941e63eeec9b2f19d9604e79b057"
+      },
+      "localizationReview": "iPhone client exact Chinese and English photo source labels reviewed together."
+    },
+    "media.action.files": {
+      "category": "Action",
+      "context": "apps/apple/macOS/Sources/TogetherApp/DesignSystem/PlatformFilePanels.swift: iPhone/iPad image source chooser",
+      "review": "approved",
+      "reason": "Functional native source choices for requested iPhone photo/avatar import; no decorative prose or invented content.",
+      "textSHA256": "3dfcc580c70090e427f6ea964779c9952c5a5e6d27b21771d2a7625219e55640",
+      "translationSHA256": {
+        "zh-Hans": "3dfcc580c70090e427f6ea964779c9952c5a5e6d27b21771d2a7625219e55640",
+        "en": "c05e97b1bd14c348e36cb38129c236bcc161100cff1a3119a65babfd8bb655f1"
+      },
+      "localizationReview": "iPhone client exact Chinese and English photo source labels reviewed together."
+    },
+    "release.0.2.4.mobile.title": {
+      "category": "Navigation",
+      "context": "apps/apple/macOS/Sources/TogetherApp/Resources/ReleaseNotes.json: 0.2.4 implemented native mobile layouts",
+      "review": "approved",
+      "reason": "Factual summary of requested iPhone/iPad UI work; does not claim runtime acceptance or public release.",
+      "textSHA256": "1d3511b351ac274b1e79a0845cfdf8a9427cb6c6a60cc4df52c12ee683c30434",
+      "translationSHA256": {
+        "zh-Hans": "1d3511b351ac274b1e79a0845cfdf8a9427cb6c6a60cc4df52c12ee683c30434",
+        "en": "0c567ac76e894b48753d1045c273c31c90f2e4843db622ef1a74680db86d4717"
+      },
+      "localizationReview": "Bilingual functional mobile layout release copy; no romantic filler."
+    },
+    "release.0.2.4.mobile.detail": {
+      "category": "Guidance",
+      "context": "apps/apple/macOS/Sources/TogetherApp/Resources/ReleaseNotes.json: 0.2.4 implemented native mobile layouts",
+      "review": "approved",
+      "reason": "Factual summary of requested iPhone/iPad UI work; does not claim runtime acceptance or public release.",
+      "textSHA256": "78111d9bab759ace99d637764cb0e232a3b1d5f28ce286101dda72930bb28f8f",
+      "translationSHA256": {
+        "zh-Hans": "78111d9bab759ace99d637764cb0e232a3b1d5f28ce286101dda72930bb28f8f",
+        "en": "b978f7b8f9e123a1940f6f6e689502a891799fa36cc173732ce667f40033dc30"
+      },
+      "localizationReview": "Bilingual functional mobile layout release copy; no romantic filler."
     }
   }
 }

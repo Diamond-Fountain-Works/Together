@@ -7,8 +7,10 @@ struct OurPlansView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 20) {
+            #if os(macOS)
             PageHeading(title: model.section.title, subtitle: "")
                 .togetherHorizontalPadding(30).padding(.top, 30)
+            #endif
             ZStack(alignment: .topLeading) {
                 TaskListView(model: model)
                     .opacity(model.plansMode == .tasks ? 1 : 0)

@@ -65,7 +65,7 @@ struct WishesView: View {
             VStack(alignment: .leading, spacing: 16) {
                 Text(Copy.format("copy.guidance.3e122095ba88", left?.role.displayName ?? model.name(fulfiller), right?.role.displayName ?? model.name(beneficiary))).font(.headline)
                 Text(Copy.format("copy.guidance.3e122095ba88", model.name(fulfiller), model.name(beneficiary))).font(.caption).foregroundColor(.secondary)
-                HStack(spacing: 12) {
+                TogetherAccessibleStack(spacing: 12) {
                     statistic(Copy.text("status.grant.total"), total)
                     statistic(Copy.text("status.grant.fulfilled"), fulfilled)
                     statistic(Copy.text("status.grant.remaining"), total - fulfilled)
@@ -77,14 +77,23 @@ struct WishesView: View {
         let balance = model.engine.snapshot.balance(for: grant.id)
         return Button { model.show(.grantDetail(grant.id)) } label: {
             TogetherCard {
-                HStack(spacing: 16) {
+                TogetherAdaptiveStack(spacing: 12, desktop: .init(spacing: 16)) {
                     VStack(alignment: .leading, spacing: 7) {
                         Text(Copy.format("plans.grant.quantity", String(grant.quantity))).font(.headline).foregroundColor(.primary)
                         Text(Copy.format("copy.guidance.3e122095ba88", model.name(grant.fulfillerId), model.name(grant.beneficiaryId))).font(.callout).foregroundColor(.secondary)
                     }
+                    #if os(macOS)
                     Spacer()
+                    #endif
+                    #if os(macOS)
                     Text(Copy.format("plans.grant.balance", String(balance.fulfilled), String(balance.remaining))).font(.caption).foregroundColor(.secondary)
                     Image(systemName: TogetherSymbols.name("chevron.right")).font(.caption).foregroundColor(Color.secondary.opacity(0.65))
+                    #else
+                    HStack {
+                        Text(Copy.format("plans.grant.balance", String(balance.fulfilled), String(balance.remaining))).font(.caption).foregroundColor(.secondary)
+                        Image(systemName: TogetherSymbols.name("chevron.right")).font(.caption).foregroundColor(Color.secondary.opacity(0.65))
+                    }
+                    #endif
                 }
             }
         }.buttonStyle(.plain).accessibilityIdentifier("wish.grant.open." + grant.id.uuidString)

@@ -9,16 +9,30 @@ struct CurrencyWheelPicker: View {
             expanded = true
         } label: {
             HStack { Text(verbatim: (FinanceCurrency.find(selection)?.symbol ?? "") + " " + selection); Image(systemName: TogetherSymbols.name("chevron.up.chevron.down")).font(.caption) }
-        }.accessibilityIdentifier("finance.currency.open")
+        }.togetherTouchTarget().accessibilityIdentifier("finance.currency.open")
+        #if os(iOS)
+        .sheet(isPresented: $expanded) {
+            CurrencyWheelContent(selection: $selection, isPresented: $expanded)
+        }
+        #else
         .popover(isPresented: $expanded) {
             CurrencyWheelContent(selection: $selection, isPresented: $expanded)
         }
+        #endif
     }
 }
 struct MonthDayWheelPicker: View {
     @Binding var selection: Int
     @State private var centered: Int?
     var body: some View {
+        #if os(iOS)
+        Picker(Copy.text("finance.bill.day"), selection: $selection) {
+            ForEach(1...31, id: \.self) { day in
+                Text(String(day)).tag(day).accessibilityIdentifier("finance.day.\(day)")
+            }
+        }.pickerStyle(.wheel).labelsHidden().frame(width: 120, height: 132)
+            .accessibilityIdentifier("finance.dayWheel")
+        #else
         ScrollViewReader { proxy in
             ScrollView(.vertical) {
                 LazyVStack(spacing: 0) {
@@ -38,6 +52,7 @@ struct MonthDayWheelPicker: View {
                 }
                 .onChange(of: centered) { value in if let value { selection = value } }
         }.accessibilityIdentifier("finance.dayWheel")
+        #endif
     }
 }
 struct FinanceAmountFields: View {
@@ -45,11 +60,11 @@ struct FinanceAmountFields: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
             HStack { Text(Copy.text("finance.amount.currency")); Spacer(); CurrencyWheelPicker(selection: Binding(get: { draft.currency }, set: { draft.changeCurrency($0) })) }
-            TextField(Copy.text("finance.amount.original"), text: $draft.original).textFieldStyle(.roundedBorder).accessibilityIdentifier("finance.amount.original")
+            TextField(Copy.text("finance.amount.original"), text: $draft.original).togetherAmountKeyboard().textFieldStyle(.roundedBorder).accessibilityIdentifier("finance.amount.original")
             if draft.currency != "CNY" {
-                TextField(Copy.text("finance.amount.actualCNY"), text: $draft.actualCNY).textFieldStyle(.roundedBorder).accessibilityIdentifier("finance.amount.cny")
+                TextField(Copy.text("finance.amount.actualCNY"), text: $draft.actualCNY).togetherAmountKeyboard().textFieldStyle(.roundedBorder).accessibilityIdentifier("finance.amount.cny")
                 DisclosureGroup(Copy.text("finance.amount.referenceRate")) {
-                    TextField(Copy.text("finance.amount.rate"), text: $draft.rate).textFieldStyle(.roundedBorder)
+                    TextField(Copy.text("finance.amount.rate"), text: $draft.rate).togetherAmountKeyboard().textFieldStyle(.roundedBorder)
                     TextField(Copy.text("finance.amount.source"), text: $draft.rateSource).textFieldStyle(.roundedBorder)
                     DatePicker(Copy.text("finance.amount.rateDate"), selection: $draft.rateDate, displayedComponents: .date).environment(\.timeZone, TimeZone(secondsFromGMT: 0)!)
                     Text(Copy.text("finance.amount.rateGuidance")).font(.caption).foregroundColor(.secondary)

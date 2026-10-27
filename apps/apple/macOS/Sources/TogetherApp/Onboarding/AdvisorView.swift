@@ -26,21 +26,30 @@ struct AdvisorView: View {
             HStack { Text(Copy.text("copy.action.58383b09e244")).font(.headline); Spacer(); Text(Copy.format("copy.guidance.f7fe73b265ee", String(describing: step + 1), String(describing: steps.count))).font(.caption.monospacedDigit()).foregroundColor(.secondary) }
             VStack(alignment: .leading, spacing: 20) {
                 Image(systemName: TogetherSymbols.name(steps[step].icon)).font(.system(size: 42, weight: .light)).foregroundColor(TogetherTheme.rose).matchedGeometryEffect(id: "advisor-icon", in: geometry)
-                Text(steps[step].title).font(.system(size: 28, weight: .semibold, design: .rounded))
+                stepTitle
                 Text(steps[step].text).font(.body).lineSpacing(5).foregroundColor(.secondary).frame(minHeight: 80, alignment: .top)
             }.id(step).transition(reduceMotion ? .identity : .opacity.combined(with: .move(edge: .trailing)))
             HStack(spacing: 5) { ForEach(steps.indices, id: \.self) { index in Capsule().fill(index <= step ? TogetherTheme.rose : .secondary.opacity(0.18)).frame(height: 3) } }
             Toggle(Copy.text("copy.guidance.59f48b3f4a8e"), isOn: $neverAgain).disabled(model.preferences.neverShowAdvisorAgain)
                 .onAppear { neverAgain = model.preferences.neverShowAdvisorAgain }
-            HStack {
+            TogetherAdaptiveStack(spacing: 12, desktop: .init()) {
                 Button(Copy.text("copy.action.a57b08a480b8")) { withAnimation(TogetherTheme.motion(reduceMotion)) { step -= 1 } }.disabled(step == 0)
                 Button(Copy.text("copy.action.28d03596d24e")) { finish() }
+                #if os(macOS)
                 Spacer()
+                #endif
                 Button(step == steps.count - 1 ? Copy.text("copy.action.a6c7a84baa67") : Copy.text("copy.action.1ff57a29d7c9")) {
                     if step == steps.count - 1 { finish() } else { withAnimation(TogetherTheme.motion(reduceMotion)) { step += 1 } }
                 }.togetherProminentButton().keyboardShortcut(.defaultAction)
             }
         }.togetherPadding(30).togetherSheetSize(width: 510).togetherScrollableOnPhone().togetherTint(TogetherTheme.rose)
+    }
+    private var stepTitle: Text {
+        #if os(iOS)
+        Text(steps[step].title).font(.title2.weight(.semibold))
+        #else
+        Text(steps[step].title).font(.system(size: 28, weight: .semibold, design: .rounded))
+        #endif
     }
     private func finish() { model.preferences.finishAdvisor(neverAgain: neverAgain); model.dismissSheet() }
 }

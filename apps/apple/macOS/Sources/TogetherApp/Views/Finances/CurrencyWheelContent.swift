@@ -8,10 +8,60 @@ struct CurrencyWheelContent: View {
     @Binding var isPresented: Bool
     @State private var search = ""
     @State private var centered: String?
+    #if os(iOS)
+    @State private var pendingSelection = "CNY"
+    @FocusState private var searchFocused: Bool
+    #endif
     private var currencies: [FinanceCurrency] {
         FinanceCurrency.supported.filter { search.isEmpty || $0.code.localizedCaseInsensitiveContains(search) || $0.name.localizedCaseInsensitiveContains(search) }
     }
-    var body: some View {
+    @ViewBuilder var body: some View {
+        #if os(iOS)
+        VStack(alignment: .leading, spacing: 16) {
+            ScrollView {
+                VStack(alignment: .leading, spacing: 20) {
+                    Text(Copy.text("finance.amount.currency")).font(.title2.weight(.semibold))
+                    TextField(Copy.text("finance.currency.search"), text: $search)
+                        .textFieldStyle(.roundedBorder).disableAutocorrection(true)
+                        .textInputAutocapitalization(.never).submitLabel(.search)
+                        .focused($searchFocused).onSubmit { searchFocused = false }
+                        .accessibilityIdentifier("finance.currency.search")
+                    Picker(Copy.text("finance.amount.currency"), selection: $pendingSelection) {
+                        ForEach(currencies) { currency in
+                            Text(verbatim: currency.symbol + " " + currency.code)
+                                .tag(currency.code).accessibilityLabel(currency.code + " " + currency.name)
+                                .accessibilityIdentifier("finance.currency." + currency.code)
+                        }
+                    }.pickerStyle(.wheel).labelsHidden().frame(height: 216)
+                        .accessibilityIdentifier("finance.currency.picker")
+                    if let currency = FinanceCurrency.find(pendingSelection) {
+                        Text(currency.name).font(.body).foregroundColor(.secondary)
+                            .fixedSize(horizontal: false, vertical: true)
+                    }
+                }.frame(maxWidth: .infinity, alignment: .leading)
+            }
+            TogetherAccessibleStack {
+                Button(Copy.text("copy.action.2cd0f3be8738")) { isPresented = false }
+                    .togetherTouchTarget().keyboardShortcut(.cancelAction)
+                    .accessibilityIdentifier("finance.currency.cancel")
+                Spacer(minLength: 0)
+                Button(Copy.text("copy.action.c0b3fbff51cc")) {
+                    selection = pendingSelection
+                    isPresented = false
+                }.togetherTouchTarget().togetherProminentButton()
+                    .disabled(!currencies.contains { $0.code == pendingSelection })
+                    .accessibilityIdentifier("finance.currency.done")
+            }
+        }.togetherPadding(24)
+            .onAppear { pendingSelection = selection }
+            .onChange(of: search) { _ in
+                // Searching is a draft interaction. Committing the currency once
+                // keeps the amount-reset rule from firing during every wheel tick.
+                if !currencies.contains(where: { $0.code == pendingSelection }), let first = currencies.first {
+                    pendingSelection = first.code
+                }
+            }
+        #else
         VStack(spacing: 12) {
             TextField(Copy.text("finance.currency.search"), text: $search).textFieldStyle(.roundedBorder).disableAutocorrection(true).accessibilityIdentifier("finance.currency.search")
             ScrollViewReader { proxy in
@@ -45,5 +95,6 @@ struct CurrencyWheelContent: View {
             }
             Button(Copy.text("copy.action.c0b3fbff51cc")) { isPresented = false }.keyboardShortcut(.defaultAction)
         }.padding(16).togetherSheetSize(width: 330)
+        #endif
     }
 }

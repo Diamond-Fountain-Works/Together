@@ -37,7 +37,7 @@ struct TaskEditorView: View {
                 }
             }.togetherGroupedForm()
             HStack {
-                Button(Copy.text("copy.action.2cd0f3be8738")) { model.dismissSheet() }.keyboardShortcut(.cancelAction).accessibilityIdentifier("sheet.cancel")
+                Button(Copy.text("copy.action.2cd0f3be8738")) { model.dismissSheet() }.togetherTouchTarget().keyboardShortcut(.cancelAction).accessibilityIdentifier("sheet.cancel")
                 Spacer()
                 Button(Copy.text("copy.action.a3030bf8f16d")) {
                     model.perform {
@@ -49,7 +49,7 @@ struct TaskEditorView: View {
                         else { try model.engine.createTask(title: draft.title, notes: draft.notes, assignedTo: draft.assignedTo, dueAt: draft.hasDue ? draft.due : nil, recurrence: recurring) }
                         model.dismissSheet()
                     }
-                }.togetherProminentButton().keyboardShortcut(.defaultAction).disabled(titleIsEmpty).accessibilityIdentifier("task.save")
+                }.togetherTouchTarget().togetherProminentButton().keyboardShortcut(.defaultAction).disabled(titleIsEmpty).accessibilityIdentifier("task.save")
             }
         }.togetherPadding(24).togetherSheetSize(width: 550)
     }
@@ -61,13 +61,21 @@ struct NextTimeView: View {
     @State private var date = Date().addingTimeInterval(86400)
     var body: some View {
         VStack(alignment: .leading, spacing: 20) {
+            #if os(macOS)
             Text(Copy.text("copy.status.626ba31a7939")).font(.title2.weight(.semibold))
             Text(Copy.text("copy.guidance.08a8bfd082bf")).foregroundColor(.secondary)
             DatePicker(Copy.text("copy.guidance.01b9bfedf5b1"), selection: $date, in: Date()...).datePickerStyle(.graphical)
+            #else
+            VStack(alignment: .leading, spacing: 20) {
+                    Text(Copy.text("copy.status.626ba31a7939")).font(.title2.weight(.semibold))
+                    Text(Copy.text("copy.guidance.08a8bfd082bf")).foregroundColor(.secondary)
+                    DatePicker(Copy.text("copy.guidance.01b9bfedf5b1"), selection: $date, in: Date()...).datePickerStyle(.compact)
+            }.frame(maxWidth: .infinity, alignment: .leading).togetherScrollableOnPhone()
+            #endif
             HStack {
-                Button(Copy.text("copy.action.882574c28ed5")) { model.dismissSheet() }.keyboardShortcut(.cancelAction).accessibilityIdentifier("sheet.cancel")
+                Button(Copy.text("copy.action.882574c28ed5")) { model.dismissSheet() }.togetherTouchTarget().keyboardShortcut(.cancelAction).accessibilityIdentifier("sheet.cancel")
                 Spacer()
-                Button(Copy.text("copy.action.36f33adaf094")) { model.perform { try model.engine.setNextTime(taskId, date: date); model.dismissSheet() } }.togetherProminentButton()
+                Button(Copy.text("copy.action.36f33adaf094")) { model.perform { try model.engine.setNextTime(taskId, date: date); model.dismissSheet() } }.togetherTouchTarget().togetherProminentButton()
             }
         }.togetherPadding(24).togetherSheetSize(width: 430)
     }

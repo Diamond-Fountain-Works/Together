@@ -1,5 +1,15 @@
 [
   {
+    "version": "0.2.4",
+    "highlights": [
+      {
+        "icon": "iphone",
+        "titleKey": "release.0.2.4.mobile.title",
+        "detailsKey": "release.0.2.4.mobile.detail"
+      }
+    ]
+  },
+  {
     "version": "0.2.3",
     "highlights": [
       {

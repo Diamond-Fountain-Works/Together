@@ -88,10 +88,19 @@ struct AudioPlayerView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             HStack(spacing: 12) {
-                TogetherIconButton(playback.playing ? Copy.text("copy.action.858e4ba7a29f") : Copy.text("copy.action.436e61016e26"), systemImage: TogetherSymbols.name(playback.playing ? "pause.fill" : "play.fill")) { playback.toggle() }.disabled(playback.error != nil).accessibilityIdentifier("audio.playPause")
+                TogetherIconButton(playback.playing ? Copy.text("copy.action.858e4ba7a29f") : Copy.text("copy.action.436e61016e26"), systemImage: TogetherSymbols.name(playback.playing ? "pause.fill" : "play.fill")) { playback.toggle() }
+                    #if os(iOS)
+                    .labelStyle(.iconOnly)
+                    #endif
+                    .togetherTouchTarget().disabled(playback.error != nil).accessibilityIdentifier("audio.playPause")
                 Slider(value: Binding(get: { min(playback.elapsed, playback.duration) }, set: { playback.seek($0) }), in: 0...max(0.1, playback.duration)).accessibilityLabel(Copy.text("copy.status.584fc5fc5dce"))
+                #if os(macOS)
                 Text(Copy.format("copy.guidance.f7fe73b265ee", String(describing: time(playback.elapsed)), String(describing: time(playback.duration)))).font(.caption.monospacedDigit()).foregroundColor(.secondary)
+                #endif
             }
+            #if os(iOS)
+            Text(Copy.format("copy.guidance.f7fe73b265ee", time(playback.elapsed), time(playback.duration))).font(.caption.monospacedDigit()).foregroundColor(.secondary)
+            #endif
             if let error = playback.error { Text(error).font(.caption).foregroundColor(.orange) }
         }.padding(14).togetherMaterialBackground(in: RoundedRectangle(cornerRadius: 12))
             .onAppear { playback.prepare(url) }.onChange(of: url) { url in playback.prepare(url) }.onDisappear { playback.stop() }

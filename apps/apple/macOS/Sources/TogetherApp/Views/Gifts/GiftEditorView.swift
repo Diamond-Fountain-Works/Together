@@ -37,18 +37,24 @@ struct GiftComposerView: View {
                 TextEditor(text: $draft.text).accessibilityIdentifier("gift.textInput").font(.body).togetherHideScrollBackground().padding(3).frame(minHeight: 100, maxHeight: 150)
                     .onChange(of: draft.text) { text in if text.count > LoveGiftDraft.maximumCharacters { draft.text = String(text.prefix(LoveGiftDraft.maximumCharacters)) } }
             }.togetherMaterialBackground(in: RoundedRectangle(cornerRadius: 12))
-            HStack {
+            TogetherAdaptiveStack(spacing: 12, desktop: .init()) {
                 Menu {
                     Button(Copy.text("copy.action.e37fc2d39902")) { Task { await recorder.start() } }.disabled(recorder.recording || recorder.starting || busy)
                     Button(Copy.text("copy.action.4b5e4c962305")) { importAttachment(.audio) }
                 } label: { Label(Copy.text("copy.status.43974b287b93"), systemImage: TogetherSymbols.name("mic")) }
                 TogetherIconButton(Copy.text("copy.action.5edc672292ef"), systemImage: TogetherSymbols.name("photo")) { importAttachment(.photo) }
-                Spacer(); Text(Copy.format("copy.status.2afb58834f9b", String(describing: draft.text.count))).font(.caption.monospacedDigit()).foregroundColor(Color.secondary.opacity(0.65))
+                #if os(macOS)
+                Spacer()
+                #endif
+                Text(Copy.format("copy.status.2afb58834f9b", String(describing: draft.text.count))).font(.caption.monospacedDigit()).foregroundColor(Color.secondary.opacity(0.65))
             }.disabled(busy)
             if recorder.recording {
-                HStack {
+                TogetherAdaptiveStack(spacing: 12, desktop: .init()) {
                     Label(recorder.paused ? Copy.text("copy.status.598133b569df") : Copy.text("copy.status.5254d30be60f"), systemImage: TogetherSymbols.name("mic.fill")).foregroundColor(TogetherTheme.rose)
-                    Spacer(); Button(recorder.paused ? Copy.text("copy.action.7c9691192f1b") : Copy.text("copy.action.8d12fc0d4eb2")) { recorder.togglePause() }
+                    #if os(macOS)
+                    Spacer()
+                    #endif
+                    Button(recorder.paused ? Copy.text("copy.action.7c9691192f1b") : Copy.text("copy.action.8d12fc0d4eb2")) { recorder.togglePause() }.togetherTouchTarget()
                     Button(Copy.text("copy.action.dcf59b082865")) { if let url = recorder.stop() { attach(url, type: .audio, temporary: true) } }
                     Button(Copy.text("copy.action.2cd0f3be8738")) { recorder.discard() }
                 }
@@ -67,9 +73,11 @@ struct GiftComposerView: View {
             if model.engine.context.peer == nil { Text(Copy.text("copy.emotional.3ceeec638ae6")).font(.callout).foregroundColor(.secondary) }
             Text(Copy.text("copy.status.6a8ae976f27c")).font(.caption).foregroundColor(.secondary)
             if let error = recorder.error ?? saveError { Text(error).font(.callout).foregroundColor(.orange).togetherTextSelection() }
-            HStack {
+            TogetherAdaptiveStack(spacing: 12, desktop: .init()) {
                 Button(setup ? Copy.text("copy.action.1e157fdf0388") : Copy.text("copy.action.5329e3f0ee46")) { saveAndFinish() }.disabled(busy || recorder.recording)
+                #if os(macOS)
                 Spacer()
+                #endif
                 Button(model.engine.context.peer == nil ? Copy.text("copy.action.14e50ef4f212") : Copy.text("copy.emotional.1a1a433b6d1e")) { send() }
                     .togetherProminentButton().keyboardShortcut(.defaultAction)
                     .disabled(busy || recorder.recording || recorder.starting || sent || !draft.hasContent || (used && model.engine.context.peer != nil)).accessibilityIdentifier("gift.send")
@@ -90,7 +98,7 @@ struct GiftComposerView: View {
         busy = true
         Task { @MainActor in
             let access = url.startAccessingSecurityScopedResource()
-            defer { if access { url.stopAccessingSecurityScopedResource() }; if temporary { try? FileManager.default.removeItem(at: url) }; busy = false }
+            defer { if access { url.stopAccessingSecurityScopedResource() }; TogetherFilePanels.releaseSelection(url); if temporary { try? FileManager.default.removeItem(at: url) }; busy = false }
             do {
                 let asset = try await model.engine.importMedia(from: url, type: type)
                 if type == .audio { draft.audioAssetId = asset.id } else { draft.photoAssetId = asset.id }
