@@ -93,6 +93,16 @@ expected; after correction, focused modern/legacy/lock tests17/17 and the exact
 identity-reopen test100 repetitions pass. Final full suite182/0/6 passes. No schema,
 SignedOperation or business merge changes are part of the fix.
 
+The first hosted Swift–Kotlin job on commit3996383 timed out waiting for
+`descriptors.json` before protocol exchange. It spawned a cold `swift test`
+inside the120s startup deadline, and a Swift compiler process was still alive
+at job cleanup. The old workflow did not retain the child compiler log, so an
+exact compiler-step duration is UNKNOWN. CI now builds the native test targets
+before the timed interop step and retains its synthetic native log. The120s
+startup/90s convergence deadlines and all business/media assertions are unchanged;
+this separates compilation from protocol timing, not a synchronization claim.
+The original failed job/XML remain retained; current acceptance uses latest Checks.
+
 ## Deliverable and evidence
 
 Local only: `apps/apple/iOS/dist/Together-0.2.4-Build26-iOS-unsigned.app.zip`
