@@ -3,7 +3,7 @@ on:
   push:
     branches: ['feature/**', 'fix/**', 'release/**']
   pull_request:
-    branches: [main, 'feature/localization-0.2.3', 'feature/gitlike-c1-multidevice', 'feature/android-foundation', 'feature/android-business-phase-b', 'feature/native-app-no-vpn-acceptance']
+    branches: [main, 'feature/localization-0.2.3', 'feature/platform-compatibility', 'feature/gitlike-c1-multidevice', 'feature/android-foundation', 'feature/android-business-phase-b', 'feature/native-app-no-vpn-acceptance']
   workflow_dispatch:
 permissions:
   contents: read

@@ -291,3 +291,24 @@ It never uninstalls, clears data, selects a production Relay or auto-grants a ph
 Results and remaining gates: [ANDROID_PHASE_C](reports/ANDROID_PHASE_C.md). Public staging remains
 [planned, undeployed and separately authorized](ANDROID_STAGING_ACCEPTANCE.md). No production
 database/key/media/Logcat/APK is committed. Original Apple QA dispositions are not changed.
+
+## iPhone client acceptance
+
+Automated: generate the project twice and compare outputs; check normal vs QA
+scheme/identity bootstrap; reject optional camera/cellular/biometric capability
+filters, orientation/fullscreen restrictions and stale compiled translations.
+The inherent arm64 capability is permitted because it matches iOS15/Mach-O.
+Build normal Release and isolated QA generic-device schemes, then run the actual
+`--ios-app` artifact gate. Run existing core/migration, protocol, copy and security
+checks. These gates do not exercise touch, focus or native presentation.
+
+Runtime matrix remains NOT RUN until authorized devices/simulator are available:
+320x568 (SE1), 375x667 (6s/SE2), modern safe-area phone sizes, landscape, English
+and Chinese, light/dark, largest accessibility text and Reduce Motion. Check
+drawer selection/close/VoiceOver, all six real pages, task CRUD and recurrence,
+wishes, three finance tabs, currency search/cancel/commit and visible save/close
+actions above keyboards. Use synthetic QA identities only. Check source prompt
+outside-cancel, photo picker iCloud load/cancel/reopen race, Files swipe-cancel,
+permission decline, selected-file hash/original export, gift privacy before open,
+manual audio and landscape gift actions. Verify process restart without replacing
+identity. Capture candidates only; preserve existing Mac/Android approvals.

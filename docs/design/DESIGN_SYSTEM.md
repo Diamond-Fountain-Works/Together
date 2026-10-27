@@ -80,3 +80,21 @@ of the fallback. Android keeps its common phone/tablet domain implementation.
 
 A successful generic device build is not visual approval. Old-system, phone,
 tablet, dark-mode and accessibility captures remain candidates until reviewed.
+
+## iPhone client layout
+
+iPhone follows Android's six destinations through a native SwiftUI drawer, with
+a single inline page title and context action plus overflow. Do not paint an
+Android imitation system bar or add more tabs. Regular iPads use a split view;
+landscape iPhones keep phone navigation. Compact forms reflow vertically, preserve
+44pt targets and scroll above the keyboard; their dismiss/save actions remain
+reachable. Currency/day controls use native wheels. Finances has exactly three
+horizontally scrollable full-label tabs so English labels need not truncate.
+System accessibility text size may replace dense segments with native menus.
+
+Settings alone owns its globe language control. Gift content stays absent from
+the sealed accessibility/pixel tree, and unread received history shows an unopened
+marker until explicit reveal. Gift buttons may join the scrolling content on a
+short landscape phone. Photos use a system source choice; originals are not
+re-encoded by the picker. New device screenshots remain candidates; a generic
+compile or source review cannot approve visual behavior.

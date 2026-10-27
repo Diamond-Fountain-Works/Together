@@ -273,3 +273,25 @@ Activation and rollback, outstanding control-history/root-recovery/indexing limi
 ## Android Phase A — additive client boundary
 
 [Android architecture](ANDROID_FOUNDATION.md) defines pure Kotlin Protocol 4/domain modules and Android-specific Compose, Room and Keystore adapters. Shared wire semantics, existing SwiftData models, space/user/device identities and the Relay are unchanged. Local-only unpaired facts are not advertised as certified Protocol 4; enrollment activates a separate authorized workspace, preserving the previous one. Room schema generation 1 is independent from SwiftData generation 1 and device protocol 4. Phase A remains recorded in its historical report. [Phase B](ANDROID_BUSINESS_PHASE_B.md) adds native business UI, original-file media transfer and content-bound gift receipts. [Phase C device acceptance](ANDROID_DEVICE_ACCEPTANCE.md) adds opt-in physical Samsung instrumentation and an isolated native Swift test host over a USB-reversed local Worker. It changes neither wire semantics nor production persistence. Public cross-network/physical Mac GUI acceptance and independent security review remain unfinished.
+
+## iPhone presentation (0.2.4 Build26 candidate)
+
+`apps/apple/iOS` remains a target wrapper around the existing shared feature
+views and TogetherCore. The phone drawer/tablet split and adaptive editors read
+the same ApplicationModel; navigation does not replace it or create stores.
+All sheets still pass through model.sheet and the existing startup priority.
+No signed Operation, identity, schema, pairing or transport format changes.
+
+PHPicker requests one current image representation and copies its file into an
+owner-only temporary directory inside the app sandbox without UIImage decoding
+or transcoding. Session IDs reject stale provider callbacks; prompt/document
+controllers resolve interactive dismissal once. Callers release selected-file
+staging after persistence or cancellation. Library-side edits can already be
+part of the selected representation; exact external original bytes use Files.
+Existing MediaStore validation/hashing/original export remains authoritative.
+
+The iPhone increment's inherited-store regression fix only covers SQLiteBUSY
+during the first read-only snapshot transaction. It reuses the existing bounded
+wait and resets the handler before backup retries. Private snapshots, strict
+future-store rejection, schema, operation bytes and projection remain unchanged.
+See IPHONE_CLIENT_QA for negative-control and source-byte evidence.

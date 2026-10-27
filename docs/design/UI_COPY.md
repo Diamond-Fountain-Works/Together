@@ -76,3 +76,13 @@ User-authored titles, messages, names and notes remain untouched. Every locale
 has its own reviewed text hash. `make localization-qa` checks both language sets;
 the original copy audit continues to report context-specific duplicate warnings.
 See [copy dispositions](../qa/reports/LOCALIZATION_COPY_0_2_3.md).
+
+## iPhone client copy
+
+`media.action.photoLibrary` and `media.action.files` are the only new source
+actions: 从照片选择 / Photo Library and 从文件选择 / Choose from Files. The two
+`release.0.2.4.mobile.*` entries describe implemented phone/tablet presentation,
+without delivery or runtime-acceptance claims. All values have exact per-locale
+review hashes. Existing Android/Apple labels and approved emotional copy are
+reused. The Chinese release title is 手机和平板; mixed-language lint remains
+enabled. The 28 existing context/security warnings remain visible.

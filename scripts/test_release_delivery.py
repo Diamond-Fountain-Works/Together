@@ -154,6 +154,47 @@ def contains_file_markers(path, markers):
     return False
 
 
+def ios_device_eligibility(info):
+    """Inspect installation/layout constraints in the *built* device Info.plist.
+
+    A correct deployment target alone can still exclude older phones, an iPad,
+    or Split View when a capability/full-screen setting is accidentally added.
+    These are package gates, not proof that a layout has run on those devices.
+    """
+    portrait = "UIInterfaceOrientationPortrait"
+    landscape = {"UIInterfaceOrientationLandscapeLeft", "UIInterfaceOrientationLandscapeRight"}
+    phone = info.get("UISupportedInterfaceOrientations", [])
+    tablet = info.get("UISupportedInterfaceOrientations~ipad", [])
+    def contains_orientations(values, expected):
+        return isinstance(values, list) and all(isinstance(value, str) for value in values) and expected <= set(values)
+    capabilities = info.get("UIRequiredDeviceCapabilities")
+    # Both a true requirement and a false hardware prohibition narrow eligible
+    # devices. The toolchain injects arm64, which all iOS15 devices support and
+    # which matches our binary policy. Optional microphone/camera features must
+    # never add hardware installation filters.
+    unrestricted = capabilities is None or capabilities == [] or capabilities == {} or capabilities == ["arm64"] or capabilities == {"arm64": True}
+    return {
+        "noRestrictiveDeviceCapabilities": unrestricted,
+        "phonePortraitAndLandscape": contains_orientations(phone, {portrait} | landscape),
+        "tabletAllOrientations": contains_orientations(tablet, {portrait, "UIInterfaceOrientationPortraitUpsideDown"} | landscape),
+        "tabletMultitaskingAllowed": info.get("UIRequiresFullScreen", False) is False,
+    }
+
+
+def ios_localized_resources_match(catalog, resources):
+    """A same-key stale translation is a stale build, not complete localization."""
+    if not isinstance(catalog, dict) or not catalog or set(resources) != {"en", "zh-Hans"}:
+        return False
+    try:
+        expected = {locale: {key: value["localizations"][locale]["stringUnit"]["value"]
+                             for key, value in catalog.items()} for locale in resources}
+    except (KeyError, TypeError):
+        return False
+    return all(resources[locale] == expected[locale] and
+               all(isinstance(text, str) and text for text in expected[locale].values())
+               for locale in resources)
+
+
 def mac_native_symbols(bundle, binary):
     candidates = [binary]
     for file in (bundle / "Contents/Frameworks").rglob("*"):
@@ -327,6 +368,7 @@ def ios_report(bundle):
     checks["version"] = info.get("CFBundleShortVersionString") == config["marketingVersion"]
     checks["configuredBuild"] = info.get("CFBundleVersion") == config["buildNumber"]
     checks["phoneAndTabletFamilies"] = info.get("UIDeviceFamily") == [1, 2]
+    checks.update(ios_device_eligibility(info))
     checks["devicePlatform"] = info.get("CFBundleSupportedPlatforms") == ["iPhoneOS"] and info.get("DTPlatformName") == "iphoneos"
     checks["minimumOSMatchesPolicy"] = info.get("MinimumOSVersion") == support["minimumVersion"] == policy["iPadOS"]["minimumVersion"]
     checks["nativeTransport"] = info.get("TogetherTransport") == "native" and info.get("TogetherDeviceProtocolVersion") == config["deviceProtocolVersion"]
@@ -347,7 +389,7 @@ def ios_report(bundle):
     checks["noQAStartupMarkers"] = not any(contains_file_markers(p, markers) for p in [binary] + [p for p in paths if p.suffix == ".dylib"])
     catalog = json.loads((ROOT / "packages/together-core-swift/Sources/TogetherCore/Resources/UI.xcstrings").read_text())["strings"]
     resources = {locale: plistlib.loads((bundle / "TogetherCore_TogetherCore.bundle" / (locale + ".lproj/UI.strings")).read_bytes()) for locale in ("en", "zh-Hans")}
-    checks["completeBilingualUIKeys"] = bool(catalog) and all(set(value) == set(catalog) and all(isinstance(text, str) and text for text in value.values()) for value in resources.values())
+    checks["completeBilingualUIKeys"] = ios_localized_resources_match(catalog, resources)
     purposes = json.loads((ROOT / "apps/apple/macOS/Sources/TogetherApp/Resources/InfoPlist.xcstrings").read_text())["strings"]
     permission_keys = ("NSLocalNetworkUsageDescription", "NSMicrophoneUsageDescription")
     localized = {locale: plistlib.loads((bundle / (locale + ".lproj/InfoPlist.strings")).read_bytes()) for locale in ("en", "zh-Hans")}

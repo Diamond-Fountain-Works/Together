@@ -1,4 +1,19 @@
-# 0.2.4 — compatibility candidate (unreleased)
+# 0.2.4 Build 26 — iPhone client candidate (unreleased)
+
+- Follow Android's six-destination navigation on iPhone, with an iPad split layout.
+- Adapt the shared Tasks, Wishes, Finances, Settings and Gift views for compact
+  screens, native wheels, system text sizing, keyboard and landscape scrolling.
+- Keep a single editor/modal queue and the existing daily gift and signed-log
+  rules; hide unopened received gift text in history until explicit opening.
+- Add selected-file Photos/Files import without application re-encoding; scope
+  asynchronous picker completion to its presentation and clean staging copies.
+- Check actual device-family, orientation, architecture and minimum-OS metadata.
+- Apply the existing bounded read-only snapshot wait during store reopen; keep source-byte protection and future-store rejection.
+- Apple Build26; Android remains code17. No public release, install or deployment.
+
+[QA and remaining signing/runtime gates](../qa/reports/IPHONE_CLIENT_QA.md).
+
+# 0.2.4 Build 24 — compatibility candidate (unreleased)
 
 - Target Apple Silicon/macOS11, iPhone/iPad15 and Android/API24 ARM64+ARMv7.
 - Share existing Apple feature views and signed business core; add UIKit file,
