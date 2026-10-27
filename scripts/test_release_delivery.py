@@ -227,10 +227,19 @@ JNA_NATIVE = "Lcom/sun/jna/Native;"
 
 
 def jna_dump_members(lines):
-    """Read actual class definitions, not DEX string-table occurrences."""
+    """Read actual ASCII JNI declarations, not DEX string-table occurrences.
+
+    dexdump can emit raw DEX Modified UTF-8 (including surrogate code units)
+    for unrelated values. Keep the process stream binary and escape non-ASCII
+    bytes rather than silently dropping them or repairing required identifiers.
+    All contract class/member/type names below are exact ASCII; a damaged byte
+    in one of those declarations therefore cannot satisfy its required check.
+    """
     result = {}
     current, name, signature = None, None, None
     for line in lines:
+        if isinstance(line, bytes):
+            line = line.decode("ascii", errors="backslashreplace")
         descriptor = re.match(r"\s*Class descriptor\s*:\s*'([^']+)'", line)
         if descriptor:
             current = descriptor[1] if descriptor[1] in {*JNA_FIELDS, JNA_NATIVE} else None
@@ -259,6 +268,19 @@ def jna_dump_members(lines):
     return result
 
 
+def jna_member_checks(members):
+    checks = {}
+    for descriptor, fields in JNA_FIELDS.items():
+        for name, signature in fields.items():
+            entry = members.get(descriptor, {})
+            checks[descriptor + "." + name + ":" + signature] = (
+                entry.get("definitions") == 1 and entry.get("fields", {}).get(name) == signature)
+    native = members.get(JNA_NATIVE, {})
+    checks[JNA_NATIVE + ".initIDs:()V native"] = (
+        native.get("definitions") == 1 and native.get("nativeMethods", {}).get("initIDs") == "()V")
+    return checks
+
+
 def android_jna_abi(apk):
     # Stream dexdump rather than retaining an unbounded disassembly in memory.
     # These temporary files contain application code only, never a device store.
@@ -275,9 +297,9 @@ def android_jna_abi(apk):
                 dex = Path(temporary) / name
                 with archive.open(name) as source, dex.open("wb") as destination:
                     shutil.copyfileobj(source, destination, length=1024 * 1024)
-                with tempfile.TemporaryFile() as errors:
+                with tempfile.TemporaryFile(dir=temporary) as errors:
                     process = subprocess.Popen([str(tool), str(dex)], stdout=subprocess.PIPE,
-                                               stderr=errors, text=True)
+                                               stderr=errors)
                     try:
                         parsed = jna_dump_members(process.stdout)
                         if process.wait(timeout=120):
@@ -292,15 +314,7 @@ def android_jna_abi(apk):
                     prior["definitions"] += entry["definitions"]
                     prior["fields"].update(entry["fields"])
                     prior["nativeMethods"].update(entry["nativeMethods"])
-    checks = {}
-    for descriptor, fields in JNA_FIELDS.items():
-        for name, signature in fields.items():
-            entry = members.get(descriptor, {})
-            checks[descriptor + "." + name + ":" + signature] = (
-                entry.get("definitions") == 1 and entry.get("fields", {}).get(name) == signature)
-    native = members.get(JNA_NATIVE, {})
-    checks[JNA_NATIVE + ".initIDs:()V native"] = (
-        native.get("definitions") == 1 and native.get("nativeMethods", {}).get("initIDs") == "()V")
+    checks = jna_member_checks(members)
     return {"status": "PASS" if all(checks.values()) else "FAIL", "checks": checks,
             "scope": "Shipped DEX JNI member ABI only; actual invitation/native startup is a separate runtime gate"}
 
