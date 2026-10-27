@@ -12,6 +12,35 @@ import QuickLook
 /// Presentation-only availability bridges. Business services and signed data do
 /// not depend on which branch renders a native control.
 extension View {
+    /// Interactive glyphs keep desktop metrics and offer the standard phone hit area.
+    @ViewBuilder func togetherTouchTarget() -> some View {
+        #if os(iOS)
+        frame(minWidth: 44, minHeight: 44).contentShape(Rectangle())
+        #else
+        self
+        #endif
+    }
+    @ViewBuilder func togetherAmountKeyboard() -> some View {
+        #if os(iOS)
+        keyboardType(.numbersAndPunctuation).textInputAutocapitalization(.never)
+        #else
+        self
+        #endif
+    }
+    @ViewBuilder func togetherPhoneFillWidth(desktopMaximum: CGFloat) -> some View {
+        #if os(iOS)
+        frame(maxWidth: .infinity)
+        #else
+        frame(maxWidth: desktopMaximum)
+        #endif
+    }
+    @ViewBuilder func togetherDigitsKeyboard() -> some View {
+        #if os(iOS)
+        keyboardType(.numberPad)
+        #else
+        self
+        #endif
+    }
     func togetherScrollableOnPhone() -> some View { modifier(TogetherPhoneScroll()) }
     func togetherPadding(_ value: CGFloat) -> some View { modifier(TogetherPagePadding(value: value, vertical: true)) }
     func togetherHorizontalPadding(_ value: CGFloat) -> some View { modifier(TogetherPagePadding(value: value, vertical: false)) }
@@ -98,7 +127,9 @@ extension View {
         #if os(macOS)
         frame(width: width, height: height)
         #else
-        frame(maxWidth: width, maxHeight: height)
+        // A desktop height is not a phone sheet height. Let the keyboard and
+        // safe area negotiate the available height; each editor pins its footer.
+        frame(maxWidth: width, maxHeight: .infinity, alignment: .top)
         #endif
     }
     @ViewBuilder func togetherFocusable() -> some View {
@@ -141,7 +172,9 @@ private struct TogetherPhoneScroll: ViewModifier {
     #endif
     @ViewBuilder func body(content: Content) -> some View {
         #if os(iOS)
-        if horizontalSizeClass == .compact { ScrollView { content.frame(maxWidth: .infinity) } }
+        if UIDevice.current.userInterfaceIdiom == .phone || horizontalSizeClass == .compact {
+            ScrollView { content.frame(maxWidth: .infinity) }
+        }
         else { content }
         #else
         content
@@ -156,7 +189,8 @@ private struct TogetherPagePadding: ViewModifier {
     #endif
     @ViewBuilder func body(content: Content) -> some View {
         #if os(iOS)
-        content.padding(.vertical, vertical ? value : 0).padding(.horizontal, horizontalSizeClass == .compact ? 16 : value)
+        content.padding(.vertical, vertical ? (horizontalSizeClass == .compact ? min(value, 20) : value) : 0)
+            .padding(.horizontal, horizontalSizeClass == .compact ? 16 : value)
         #else
         if vertical { content.padding(value) } else { content.padding(.horizontal, value) }
         #endif
@@ -272,20 +306,48 @@ struct TogetherEmptyState: View {
         }
     }
 }
+/// Preserve native desktop spacing/alignment when a row gains a phone layout.
+struct TogetherDesktopStackLayout {
+    var alignment: VerticalAlignment = .center
+    var spacing: CGFloat? = nil
+}
 struct TogetherAdaptiveStack<Content: View>: View {
     var spacing: CGFloat = 16
+    var desktop: TogetherDesktopStackLayout? = nil
     @ViewBuilder var content: Content
     #if os(iOS)
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
+    @Environment(\.sizeCategory) private var sizeCategory
     #endif
     @ViewBuilder var body: some View {
         #if os(iOS)
-        if horizontalSizeClass == .compact { VStack(alignment: .leading, spacing: spacing) { content } }
+        if horizontalSizeClass == .compact || sizeCategory.isAccessibilityCategory { VStack(alignment: .leading, spacing: spacing) { content } }
         else { HStack(spacing: spacing) { content } }
         #else
-        HStack(spacing: spacing) { content }
+        HStack(alignment: desktop?.alignment ?? .center, spacing: desktopGap) { content }
         #endif
     }
+    private var desktopGap: CGFloat? { if let desktop { return desktop.spacing }; return spacing }
+}
+
+/// Inline summary values may share a row on a small phone, but must reflow
+/// rather than truncate when the user chooses an accessibility text size.
+struct TogetherAccessibleStack<Content: View>: View {
+    var spacing: CGFloat = 12
+    var desktop: TogetherDesktopStackLayout? = nil
+    @ViewBuilder var content: Content
+    #if os(iOS)
+    @Environment(\.sizeCategory) private var sizeCategory
+    #endif
+    @ViewBuilder var body: some View {
+        #if os(iOS)
+        if sizeCategory.isAccessibilityCategory { VStack(alignment: .leading, spacing: spacing) { content } }
+        else { HStack(alignment: .top, spacing: spacing) { content } }
+        #else
+        HStack(alignment: desktop?.alignment ?? .center, spacing: desktopGap) { content }
+        #endif
+    }
+    private var desktopGap: CGFloat? { if let desktop { return desktop.spacing }; return spacing }
 }
 #if os(macOS)
 typealias TogetherPlatformImage = NSImage
@@ -302,6 +364,13 @@ extension Image {
     }
 }
 @MainActor enum TogetherPlatform {
+    static var summaryAlignment: HorizontalAlignment {
+        #if os(iOS)
+        .leading
+        #else
+        .trailing
+        #endif
+    }
     static var giftContentMinimumHeight: CGFloat {
         #if os(macOS)
         330

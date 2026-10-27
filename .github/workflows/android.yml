@@ -3,7 +3,7 @@ on:
   push:
     branches: ['feature/**', 'fix/**', 'release/**']
   pull_request:
-    branches: [main, 'feature/localization-0.2.3', 'feature/gitlike-c1-multidevice', 'feature/android-foundation', 'feature/android-business-phase-b', 'feature/native-app-no-vpn-acceptance']
+    branches: [main, 'feature/localization-0.2.3', 'feature/platform-compatibility', 'feature/gitlike-c1-multidevice', 'feature/android-foundation', 'feature/android-business-phase-b', 'feature/native-app-no-vpn-acceptance']
   workflow_dispatch:
 permissions:
   contents: read
@@ -89,6 +89,11 @@ jobs:
           node-version: '24'
           cache: npm
           cache-dependency-path: services/relay/package-lock.json
+      - name: Compile Swift bridge tests before the timed synchronization session
+        # A clean hosted runner can take longer than the interoperability
+        # startup deadline to compile. Keep compilation outside that deadline;
+        # all existing peer/ACK/media waits and assertions remain unchanged.
+        run: swift build --package-path packages/together-core-swift --build-tests
       - name: Local isolated Relay
         working-directory: services/relay
         run: |
@@ -111,6 +116,8 @@ jobs:
           path: |
             apps/android/core/domain/build/test-results/test/*.xml
             qa/results/android-phase-b/native-result.json
+            qa/results/android-phase-b/native-bridge.log
+            qa/results/android-phase-b/native-diagnostic.json
           retention-days: 7
       # This job is native/JVM interop; it does not claim a phone, emulator UI or independent security review.
 

@@ -16,7 +16,9 @@ struct NativeConnectionView: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 24) {
+                #if os(macOS)
                 PageHeading(title: Copy.text("nav.connection"), subtitle: "")
+                #endif
                 HStack {
                     Circle().fill(network.isOnline ? .green : .secondary).frame(width: 7, height: 7)
                     Text(network.state.displayName)
@@ -56,9 +58,11 @@ struct NativeConnectionView: View {
                 } else {
                     TogetherCard {
                         VStack(alignment: .leading, spacing: 16) {
-                            HStack {
+                            TogetherAdaptiveStack(spacing: 12, desktop: .init()) {
                                 Text(model.name(model.engine.context.peer!.userId))
+                                #if os(macOS)
                                 Spacer()
+                                #endif
                                 Button(Copy.text("copy.action.68891ab35cab")) { network.reconnect() }.disabled(network.needsRecovery).accessibilityIdentifier("connection.reconnect")
                                 Button(Copy.text("copy.action.dcfe516d1114")) { network.synchronize() }.disabled(!network.isOnline).accessibilityIdentifier("connection.sync")
                                 Button(Copy.text("native.connection.disconnect")) { network.disconnect() }.disabled(!network.isOnline).accessibilityIdentifier("connection.disconnect")

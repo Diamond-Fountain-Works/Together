@@ -14,7 +14,7 @@ struct LanguageMenu: View {
         } label: {
             Image(systemName: TogetherSymbols.name("globe")).font(.system(size: 18)).frame(width: 32, height: 30)
         }
-        .togetherBorderlessMenu().togetherHideMenuIndicator().fixedSize()
+        .togetherTouchTarget().togetherBorderlessMenu().togetherHideMenuIndicator().fixedSize()
         .accessibilityLabel(Copy.text("language.title"))
         .accessibilityIdentifier("settings.language")
         .help(Copy.text("language.title"))

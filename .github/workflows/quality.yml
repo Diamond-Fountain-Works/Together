@@ -3,7 +3,7 @@ on:
   push:
     branches: [main, 'feature/**', 'fix/**', 'refactor/**', 'release/**']
   pull_request:
-    branches: [main, 'feature/localization-0.2.3', 'refactor/monorepo-foundation']
+    branches: [main, 'feature/localization-0.2.3', 'feature/platform-compatibility', 'refactor/monorepo-foundation']
   workflow_dispatch:
 permissions:
   contents: read
@@ -113,6 +113,8 @@ jobs:
           rustup target add --toolchain 1.96.0 aarch64-apple-ios
           python3 scripts/rebuild_apple_native.py --platform macos --platform ios --jobs 2
           python3 scripts/test_apple_native_build.py
+      - name: Check iPhone and iPad eligibility and isolated QA launch policy
+        run: python3 -B scripts/test_ios_client.py -v
       - name: Compile and link normal and isolated QA iPhone/iPad targets
         run: |
           python3 apps/apple/iOS/script/generate_project.py

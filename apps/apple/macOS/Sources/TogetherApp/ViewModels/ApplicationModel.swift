@@ -312,9 +312,12 @@ enum AppSheet: Identifiable {
     }
     func chooseMedia(_ type: MediaType) async -> URL? {
         do {
-            guard let url = try await TogetherFilePanels.choose(types: type == .audio ? [.audio] : [.image], directory: filePanelDirectory) else { return nil }
+            let selection = type == .audio
+                ? try await TogetherFilePanels.choose(types: [.audio], directory: filePanelDirectory)
+                : try await TogetherFilePanels.chooseImage(directory: filePanelDirectory)
+            guard let url = selection else { return nil }
             if type != .audio {
-                guard await TogetherFilePanels.confirm(title: Copy.text("copy.status.aed97e682ab9"), message: Copy.text("copy.guidance.fdb33a105fcd"), action: Copy.text("copy.action.08ff51a8822a")) else { return nil }
+                guard await TogetherFilePanels.confirm(title: Copy.text("copy.status.aed97e682ab9"), message: Copy.text("copy.guidance.fdb33a105fcd"), action: Copy.text("copy.action.08ff51a8822a")) else { TogetherFilePanels.releaseSelection(url); return nil }
             }
             return url
         } catch { errorMessage = Copy.userError(error); return nil }
@@ -324,7 +327,7 @@ enum AppSheet: Identifiable {
         Task { @MainActor in
             defer { importingMedia = false }
             guard let url = await chooseMedia(.avatar) else { return }
-            let access = url.startAccessingSecurityScopedResource(); defer { if access { url.stopAccessingSecurityScopedResource() } }
+            let access = url.startAccessingSecurityScopedResource(); defer { if access { url.stopAccessingSecurityScopedResource() }; TogetherFilePanels.releaseSelection(url) }
             do {
                 cropAsset = try await engine.importMedia(from: url, type: .avatar)
                 if showCrop { show(.crop) } else if let cropAsset { try engine.setAvatar(assetId: cropAsset.id) }

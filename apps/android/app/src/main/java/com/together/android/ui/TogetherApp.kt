@@ -965,11 +965,6 @@ internal fun DevicePage(
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
         }
-        Text(
-            stringResource(R.string.guidance_offline),
-            style = MaterialTheme.typography.bodySmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-        )
     }
     if (revoke != null)
         AlertDialog(
@@ -1437,7 +1432,6 @@ internal fun EnrollmentSheet(
                 style = MaterialTheme.typography.headlineSmall,
             )
             if (offer == null) {
-                Text(stringResource(R.string.guidance_add_device))
                 Button(
                     onClick = {
                         importOffer.launch(arrayOf("application/json", "application/octet-stream"))

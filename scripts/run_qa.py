@@ -17,6 +17,7 @@ try:
     run('repository-safety',[sys.executable,'scripts/audit_repository_safety.py','--json','qa/results/repository-safety.json'])
     run('protocol-conformance',[sys.executable,'-m','unittest','discover','-s','tests/conformance','-v'])
     run('localization-tools',[sys.executable,'scripts/test_localizations.py'])
+    run('ios-configuration',[sys.executable,'-B','scripts/test_ios_client.py','-v'])
     run('localization',[sys.executable,'scripts/audit_localizations.py','--json','qa/results/localization.json'])
     run('copy',[sys.executable,'scripts/audit_ui_copy.py','--json','qa/results/copy.json'])
     if (out/'copy.json').exists():report['copy']=json.loads((out/'copy.json').read_text())

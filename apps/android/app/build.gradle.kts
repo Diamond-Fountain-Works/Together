@@ -64,7 +64,7 @@ android {
         // The pinned Iroh Android wrapper requires API 24; do not override its manifest.
         minSdk = minimumAndroidAPI
         targetSdk = 36
-        versionCode = 17
+        versionCode = 18
         versionName = "0.2.4"
         buildConfigField("String", "RELAY_URL", "\"https://together-connection.together-connection-service.workers.dev\"")
         buildConfigField("boolean", "NATIVE_QA", "false")
@@ -94,6 +94,9 @@ android {
             // This independent QA application must never fall back to the production Relay.
             buildConfigField("String", "RELAY_URL", "\"\"")
             manifestPlaceholders["togetherAppLabel"] = "@string/app_name_native_qa"
+            // Match the reviewed source-built slices; no upstream x86 native
+            // fallback is allowed in the independent native QA application.
+            ndk { abiFilters += releaseAndroidABIs }
         }
         release {
             isMinifyEnabled = true
@@ -275,7 +278,7 @@ androidComponents {
     }
     onVariants(selector().withBuildType("nativeQa")) { variant ->
         variant.outputs.forEach { output ->
-            output.versionCode.set(17)
+            output.versionCode.set(18)
             output.versionName.set("0.2.4-native-app-qa")
         }
     }

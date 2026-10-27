@@ -5,7 +5,7 @@ from pathlib import Path
 import tempfile
 import unittest
 import select_apple_sdk as sdk
-from test_release_delivery import apple_build_targets, contains_file_markers, minimum_android_api, modern_weak_imports
+from test_release_delivery import apple_build_targets, contains_file_markers, minimum_android_api, modern_weak_imports, jna_dump_members, jna_member_checks
 
 
 class SDKSelectionTests(unittest.TestCase):
@@ -90,6 +90,54 @@ class SDKSelectionTests(unittest.TestCase):
             self.assertFalse(sdk.supports(path, "macos", "11.0"))
             (path / "SDKSettings.json").write_text("not json")
             self.assertFalse(sdk.supports(path, "macos", "11.0"))
+
+
+class AndroidJNADumpTests(unittest.TestCase):
+    def dump(self):
+        declarations = [
+            ("Pointer", [("peer", "J")]),
+            ("Structure", [("memory", "Lcom/sun/jna/Pointer;"), ("typeInfo", "J")]),
+            ("IntegerType", [("value", "J")]),
+            ("PointerType", [("pointer", "Lcom/sun/jna/Pointer;")]),
+        ]
+        lines = []
+        for name, fields in declarations:
+            lines.append(f"  Class descriptor  : 'Lcom/sun/jna/{name};'\n")
+            for field, type in fields:
+                lines += [f"    name : '{field}'\n", f"    type : '{type}'\n", "    access : 0x0001 (PUBLIC)\n"]
+        lines += ["  Class descriptor : 'Lcom/sun/jna/Native;'\n", "    name : 'initIDs'\n", "    type : '()V'\n", "    access : 0x0109 (PUBLIC STATIC NATIVE)\n"]
+        return "".join(lines).encode("ascii")
+
+    def checks(self, data):
+        return jna_member_checks(jna_dump_members(data.splitlines(keepends=True)))
+
+    def test_raw_modified_utf8_value_does_not_crash_ascii_abi_inspection(self):
+        # Actual AndroidX PaintCompat value observed in the native QA APK's
+        # classes10.dex. These are two MUTF-8 UTF-16 surrogate code units.
+        unrelated = b"  Class descriptor : 'Landroidx/core/graphics/PaintCompat;'\n      value : \"\xed\xac\xbf\xed\xbf\xbd\"\n"
+        with self.assertRaises(UnicodeDecodeError):
+            unrelated.decode("utf-8")
+        self.assertTrue(all(self.checks(unrelated + self.dump()).values()))
+
+    def test_non_ascii_bytes_in_required_identifiers_are_never_repaired(self):
+        for old, new in [(b"'peer'", b"'pe\xeder'"), (b"'J'", b"'J\xed'"),
+                         (b"Lcom/sun/jna/Pointer;'", b"Lcom/sun/jna/P\xedointer;'")]:
+            with self.subTest(old=old):
+                self.assertFalse(all(self.checks(self.dump().replace(old, new, 1)).values()))
+
+    def test_wrong_missing_and_duplicate_jni_definitions_fail_closed(self):
+        valid = self.dump()
+        for invalid in [valid.replace(b"'peer'", b"'missing'", 1),
+                        valid.replace(b"'J'", b"'I'", 1),
+                        valid + b"  Class descriptor : 'Lcom/sun/jna/Pointer;'\n"]:
+            with self.subTest(invalid=invalid):
+                self.assertFalse(all(self.checks(invalid).values()))
+
+    def test_native_initializer_must_have_exact_descriptor_and_native_flag(self):
+        for invalid in [self.dump().replace(b"'()V'", b"'()I'"),
+                        self.dump().replace(b"(PUBLIC STATIC NATIVE)", b"(PUBLIC STATIC)")]:
+            with self.subTest(invalid=invalid):
+                self.assertFalse(all(self.checks(invalid).values()))
 
 
 if __name__ == "__main__":

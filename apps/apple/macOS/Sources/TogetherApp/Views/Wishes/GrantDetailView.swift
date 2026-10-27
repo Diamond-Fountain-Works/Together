@@ -48,14 +48,16 @@ private struct GrantContentView: View {
                 }
                 ForEach(wishes) { wish in
                     Divider()
-                    HStack(alignment: .top) {
+                    TogetherAdaptiveStack(spacing: 12, desktop: .init(alignment: .top)) {
                         VStack(alignment: .leading, spacing: 5) {
                             Text(wish.title).font(.headline)
                             if !wish.description.isEmpty { Text(wish.description).font(.callout).foregroundColor(.secondary) }
                             Text(status(wish)).font(.caption).foregroundColor(wish.status == .conflict ? .orange : .secondary)
                             if let date = wish.fulfilledAt { Text(Copy.date(date)).font(.caption).foregroundColor(.secondary) }
                         }
+                        #if os(macOS)
                         Spacer()
+                        #endif
                         if wish.status == .open && wish.fulfillerId == model.engine.identity.descriptor.userId {
                             Button(Copy.text("copy.action.484f849e7525")) { model.perform { try model.engine.requestFulfillment(wish.id) } }.togetherBorderedButton()
                         }

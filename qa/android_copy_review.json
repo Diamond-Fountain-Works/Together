@@ -314,13 +314,6 @@
     "reason": "Localization 0.2.3 editorial review: concise actionable state or recovery guidance; remove redundant defensive prose while retaining consent and privacy information.",
     "sha256": "0fd141481b179d5e30b0641cba47f3912d4098135f3bbb9e525a79414db6befd"
   },
-  "values-zh-rCN/guidance_offline": {
-    "category": "Guidance",
-    "context": "Android 0.2.3 / guidance_offline",
-    "state": "reviewed",
-    "reason": "Localization 0.2.3 editorial review: concise actionable state or recovery guidance; remove redundant defensive prose while retaining consent and privacy information.",
-    "sha256": "47f8d648f96894decb6b19dc4b81a95eba3ff9df7999ba5a8728d35b73b956fc"
-  },
   "values-zh-rCN/label_user": {
     "category": "Guidance",
     "context": "Android 0.2.3 / label_user",
@@ -824,13 +817,6 @@
     "state": "reviewed",
     "reason": "Functional copy for implemented native task, identity, enrollment and connection actions; long trust/recovery guidance retained for safe operation. No emotional filler or invented user content.",
     "sha256": "b540170c7365384acfc22b5ffb9af14653480059dd9daf113d6c5fec2bad1286"
-  },
-  "values/guidance_offline": {
-    "category": "Guidance",
-    "context": "Android 0.2.3 / guidance_offline",
-    "state": "reviewed",
-    "reason": "Localization 0.2.3 editorial review: concise actionable state or recovery guidance; remove redundant defensive prose while retaining consent and privacy information.",
-    "sha256": "41b5825d2971da1b7ed2d2a9c070b557996249d014d2858bf93cdddee725a6ef"
   },
   "values/label_user": {
     "category": "Guidance",
@@ -1406,13 +1392,6 @@
     "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
     "sha256": "0ebc3c92ab01e95d46302854ec6876348cbd2c222ab4d2b350bd489aaea2b3bc"
   },
-  "values/guidance_actual_cny": {
-    "category": "Guidance",
-    "context": "Android Phase B guidance_actual_cny",
-    "state": "reviewed",
-    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
-    "sha256": "6a3c1784b42e0310fd273bf43ecf2a27c5a320fab38f6710f268150a00d5f98d"
-  },
   "values/label_exchange_rate": {
     "category": "Guidance",
     "context": "Android Phase B label_exchange_rate",
@@ -1868,13 +1847,6 @@
     "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
     "sha256": "35271063ff216bcd0d18c3021a6c88281fb284298abac05ae7f208b78de2f0f4"
   },
-  "values/guidance_planned_deposit": {
-    "category": "Guidance",
-    "context": "Android 0.2.3 / guidance_planned_deposit",
-    "state": "reviewed",
-    "reason": "Localization 0.2.3 editorial review: concise actionable state or recovery guidance; remove redundant defensive prose while retaining consent and privacy information.",
-    "sha256": "63a6c629cc856c0d243abbae223c12cb5e0ce97059e3eb3c78f20990d6fa557c"
-  },
   "values/label_payment_methods": {
     "category": "Navigation",
     "context": "Android Phase B label_payment_methods",
@@ -1942,8 +1914,8 @@
     "category": "Guidance",
     "context": "Android 0.2.3 / guidance_card_history",
     "state": "reviewed",
-    "reason": "Localization 0.2.3 editorial review: concise actionable state or recovery guidance; remove redundant defensive prose while retaining consent and privacy information.",
-    "sha256": "e6858a327ba3c1700cc730211f2f12a6e2a03a1762a539f38f50145b65816007"
+    "reason": "Conditional notice only while changing a currently shared card to private.",
+    "sha256": "e0b7867e421695912150e5296937e5bc3b6245220d004170da3fd6445b27e984"
   },
   "values/action_add_card": {
     "category": "Action",
@@ -2575,13 +2547,6 @@
     "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
     "sha256": "4658bc163bc995551a2d2e3b014d209f7dcabd46395c9778b38dc62f30939847"
   },
-  "values-zh-rCN/guidance_actual_cny": {
-    "category": "Guidance",
-    "context": "Android Phase B guidance_actual_cny",
-    "state": "reviewed",
-    "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
-    "sha256": "d81ac73d5cbe3439a617de09a925c4cc8673e5b568da4f54408871b91e0dec72"
-  },
   "values-zh-rCN/label_exchange_rate": {
     "category": "Guidance",
     "context": "Android Phase B label_exchange_rate",
@@ -3037,13 +3002,6 @@
     "reason": "Requested native business action/state or required validation; gift emotional text follows approved sender-label rules.",
     "sha256": "33871a64016e779f3195feb1f3d610c198be8d9250fd0747fbaa6dfea2f89368"
   },
-  "values-zh-rCN/guidance_planned_deposit": {
-    "category": "Guidance",
-    "context": "Android 0.2.3 / guidance_planned_deposit",
-    "state": "reviewed",
-    "reason": "Localization 0.2.3 editorial review: concise actionable state or recovery guidance; remove redundant defensive prose while retaining consent and privacy information.",
-    "sha256": "ced6c398c95deb06f5d40695312fedc47a92aae61dab6c89b53648bd8cedc134"
-  },
   "values-zh-rCN/label_payment_methods": {
     "category": "Navigation",
     "context": "Android Phase B label_payment_methods",
@@ -3111,8 +3069,8 @@
     "category": "Guidance",
     "context": "Android 0.2.3 / guidance_card_history",
     "state": "reviewed",
-    "reason": "Localization 0.2.3 editorial review: concise actionable state or recovery guidance; remove redundant defensive prose while retaining consent and privacy information.",
-    "sha256": "fb89085ffac74412de00fc654381f4c559aef6fa1252a9001ae334d592d26aa9"
+    "reason": "Conditional notice only while changing a currently shared card to private.",
+    "sha256": "89917b4cb49c8e87309cf990f3dbd8ae107070a5bc84b21c5d399469d5ac2d87"
   },
   "values-zh-rCN/action_add_card": {
     "category": "Action",

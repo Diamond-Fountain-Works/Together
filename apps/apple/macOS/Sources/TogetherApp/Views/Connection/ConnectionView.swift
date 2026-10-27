@@ -24,7 +24,9 @@ struct ConnectionView: View {
     private var relayContent: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 24) {
+                #if os(macOS)
                 PageHeading(title: Copy.text("nav.connection"), subtitle: "")
+                #endif
                 HStack { Circle().fill(model.network.isOnline ? .green : .secondary).frame(width: 7, height: 7); Text(model.network.state.displayName).font(.callout); Spacer() }
                     .accessibilityIdentifier("connection.state")
                 TogetherIconButton(Copy.text("device.title"), systemImage: TogetherSymbols.name("desktopcomputer")) { model.show(.devices) }.accessibilityIdentifier("connection.devices")
@@ -67,11 +69,13 @@ struct ConnectionView: View {
                     }
                 } else {
                     TogetherCard {
-                        HStack(spacing: 18) {
+                        TogetherAdaptiveStack(spacing: 18) {
                             AvatarView(profile: model.engine.ownProfile, size: 54, engine: model.engine).matchedGeometryEffect(id: "self", in: pairGeometry)
                             if showSuccess { Image(systemName: TogetherSymbols.name("heart.fill")).foregroundColor(TogetherTheme.rose); Text(Copy.text("copy.status.15a314eb8b4d")).font(.headline) }
                             AvatarView(profile: model.engine.partnerProfile, size: 54, engine: model.engine).matchedGeometryEffect(id: "partner", in: pairGeometry)
+                            #if os(macOS)
                             Spacer()
+                            #endif
                             Button(Copy.text("copy.action.68891ab35cab")) { model.network.reconnect() }.disabled(model.network.busy).accessibilityIdentifier("connection.reconnect")
                             Button(Copy.text("copy.action.dcfe516d1114")) { model.network.synchronize() }.disabled(!model.network.isOnline).accessibilityIdentifier("connection.sync")
                         }

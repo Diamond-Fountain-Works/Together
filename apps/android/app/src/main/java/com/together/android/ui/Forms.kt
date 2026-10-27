@@ -365,10 +365,6 @@ internal fun AmountFields(d: AmountDraft) {
     Input(d.original, { d.original = it }, R.string.label_original_amount, "amount.original")
     if (d.currency != "CNY") {
         Input(d.cny, { d.cny = it }, R.string.label_final_cny, "amount.cny")
-        Text(
-            stringResource(R.string.guidance_actual_cny),
-            style = MaterialTheme.typography.bodySmall,
-        )
         Input(d.rate, { d.rate = it }, R.string.label_exchange_rate, "amount.rate")
         Input(d.source, { d.source = it }, R.string.label_rate_source)
         DateField(d.quoteDate, { d.quoteDate = it }, R.string.label_rate_date)

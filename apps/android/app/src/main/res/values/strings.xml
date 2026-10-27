@@ -58,7 +58,6 @@
     <string name="action_revoke">Revoke device</string>
     <string name="confirm_revoke">Revoke this device?</string>
     <string name="guidance_root_required">Device authorization and revocation require your original trusted Mac.</string>
-    <string name="guidance_offline">Sync when both devices are online.</string>
     <string name="label_user">User ID</string>
     <string name="label_device">Device ID</string>
     <string name="label_version">Version</string>
@@ -126,7 +125,6 @@
     <string name="action_search">Search</string>
     <string name="label_original_amount">Original amount</string>
     <string name="label_final_cny">Actual CNY settlement</string>
-    <string name="guidance_actual_cny">Actual CNY takes priority over the optional reference rate.</string>
     <string name="label_exchange_rate">CNY per original unit (optional)</string>
     <string name="label_rate_source">Rate source</string>
     <string name="label_rate_date">Rate date</string>
@@ -192,7 +190,6 @@
     <string name="label_financial_cycle">Financial cycle</string>
     <string name="label_salary_day">Salary day (optional, 1–31)</string>
     <string name="label_planned_deposit">Planned deposit day (optional, 1–31)</string>
-    <string name="guidance_planned_deposit">Choose a day for deposit reminders.</string>
     <string name="label_payment_methods">Payment methods</string>
     <string name="label_bank">Bank name</string>
     <string name="label_card_name">Card name</string>
@@ -202,7 +199,7 @@
     <string name="label_debit">Debit</string>
     <string name="label_credit">Credit</string>
     <string name="label_shared_visibility">Share this card profile</string>
-    <string name="guidance_card_history">Previously shared entries remain in history.</string>
+    <string name="guidance_card_history">Previously shared records remain</string>
     <string name="action_add_card">Add card profile</string>
     <string name="label_photo">Photo</string>
     <string name="label_avatar">Avatar</string>

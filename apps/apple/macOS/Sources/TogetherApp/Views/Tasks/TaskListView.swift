@@ -21,15 +21,17 @@ struct TaskListView: View {
         let activeFilter = model.taskFilter
         let visibleIds = Set(tasks.map(\.id))
         return VStack(alignment: .leading, spacing: 20) {
-            HStack(spacing: 16) {
+            TogetherAdaptiveStack(spacing: 12, desktop: .init(spacing: 16)) {
                 Picker(Copy.text("plans.filter.label"), selection: $model.taskFilter) {
                     ForEach(TaskListFilter.allCases) { filter in
                         Text(filter.title).tag(filter).accessibilityIdentifier("plans.filter." + filter.rawValue)
                     }
-                }.pickerStyle(.segmented).labelsHidden().frame(maxWidth: 240).accessibilityIdentifier("plans.taskFilter")
+                }.pickerStyle(.segmented).labelsHidden().togetherPhoneFillWidth(desktopMaximum: 240).accessibilityIdentifier("plans.taskFilter")
+                #if os(macOS)
                 Spacer(minLength: 12)
+                #endif
                 TextField(Copy.text("copy.guidance.5d02c355dcc5"), text: $model.taskSearch)
-                    .textFieldStyle(.roundedBorder).frame(maxWidth: 220).accessibilityIdentifier("plans.taskSearch")
+                    .textFieldStyle(.roundedBorder).togetherPhoneFillWidth(desktopMaximum: 220).accessibilityIdentifier("plans.taskSearch")
             }.togetherHorizontalPadding(30)
             ScrollViewReader { proxy in
             List {
@@ -50,13 +52,13 @@ struct TaskListView: View {
                                 Button { withAnimation(TogetherTheme.motion(reduceMotion)) { model.toggle(task) } } label: {
                                     Image(systemName: TogetherSymbols.name(task.status == .completed ? "checkmark.circle.fill" : task.visibleStatus(at: model.currentDate) == .scheduled ? "clock" : "circle"))
                                         .font(.system(size: 21)).foregroundColor(task.status == .completed ? TogetherTheme.rose : .secondary)
-                                }.buttonStyle(.plain).disabled(task.visibleStatus(at: model.currentDate) == .scheduled)
+                                }.togetherTouchTarget().buttonStyle(.plain).disabled(task.visibleStatus(at: model.currentDate) == .scheduled)
                                     .accessibilityIdentifier("task.toggle." + task.id.uuidString).help(task.visibleStatus(at: model.currentDate) == .scheduled ? Copy.text("copy.guidance.cdbeaea998d1") : Copy.text("copy.guidance.91b5dcb6e512"))
                                 Button { model.taskScrollAnchors[activeFilter] = task.id; model.show(.task(task.id)) } label: {
                                     VStack(alignment: .leading, spacing: 7) {
                                         Text(task.title).font(.headline).strikethrough(task.status == .completed).foregroundColor(.primary)
                                         if !task.notes.isEmpty { Text(task.notes).font(.callout).foregroundColor(.secondary).lineLimit(2) }
-                                        HStack(spacing: 12) {
+                                        TogetherAdaptiveStack(spacing: 6, desktop: .init(spacing: 12)) {
                                             if let assigned = task.assignedTo { Label { Text(model.name(assigned)) } icon: { Image(systemName: TogetherSymbols.name("person")) }.font(.caption) }
                                             if let due = task.dueAt { Label { Text(Copy.date(due, includeTime: true)) } icon: { Image(systemName: TogetherSymbols.name("calendar")) }.font(.caption) }
                                             if let id = task.recurrenceRuleId, let rule = model.engine.snapshot.rules[id] { Label(rule.mode == .flexible ? Copy.text("copy.status.9622d2850be8") : Copy.format("copy.guidance.26272e530d64", String(describing: rule.interval), rule.unit.displayName), systemImage: TogetherSymbols.name("repeat")).font(.caption) }
@@ -67,7 +69,7 @@ struct TaskListView: View {
                                     Button(Copy.text("copy.action.051836569928")) { model.show(.task(task.id)) }
                                     if let id = task.recurrenceRuleId, model.engine.snapshot.rules[id]?.mode == .flexible { Button(Copy.text("copy.status.626ba31a7939")) { model.show(.nextTime(task.id)) } }
                                     TogetherRoleButton(Copy.text("copy.action.29dfebea0fda"), role: .destructive) { deleting = task }
-                                } label: { Image(systemName: TogetherSymbols.name("ellipsis")) }.togetherBorderlessMenu().fixedSize()
+                                } label: { Image(systemName: TogetherSymbols.name("ellipsis")) }.togetherTouchTarget().togetherBorderlessMenu().fixedSize()
                             }
                         }
                         .id(task.id)

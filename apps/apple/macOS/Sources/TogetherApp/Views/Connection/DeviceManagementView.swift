@@ -46,9 +46,11 @@ struct DeviceManagementView: View {
                     if let peer = model.engine.peer { row(peer.descriptor, revoked: false) }
                 } else {
                     ForEach(manager.devices) { device in
-                        HStack(alignment: .top) {
+                        TogetherAdaptiveStack(spacing: 12, desktop: .init(alignment: .top)) {
                             row(device.descriptor, revoked: !device.isActive)
+                            #if os(macOS)
                             Spacer()
+                            #endif
                             if !model.usesNativeTransport, manager.isController, device.isActive, device.descriptor.userId == model.engine.identity.descriptor.userId,
                                model.engine.context.authorization?.root(for: device.descriptor.userId)?.deviceId != device.id {
                                 Button(Copy.text("device.action.revoke")) { manager.revoking = device }.disabled(manager.busy).accessibilityIdentifier("devices.revoke." + device.id.uuidString)
@@ -67,7 +69,7 @@ struct DeviceManagementView: View {
         let own = descriptor.deviceId == model.engine.identity.descriptor.deviceId
         let online = model.network.multiDeviceService?.connectedDevices.contains(descriptor.deviceId) ?? (model.engine.peer?.descriptor.deviceId == descriptor.deviceId && model.partnerIsOnline)
         return VStack(alignment: .leading, spacing: 5) {
-            HStack {
+            TogetherAdaptiveStack(spacing: 12, desktop: .init()) {
                 Image(systemName: TogetherSymbols.name("desktopcomputer"))
                 Text(verbatim: descriptor.displayName).fontWeight(.medium)
                 if let owner = model.engine.snapshot.profiles[descriptor.userId] {
@@ -81,7 +83,7 @@ struct DeviceManagementView: View {
     }
     @ViewBuilder private var controller: some View {
         if manager.isController {
-            HStack {
+            TogetherAdaptiveStack(spacing: 12, desktop: .init()) {
                 Button(Copy.text("device.action.add")) { manager.createOffer() }.togetherProminentButton().accessibilityIdentifier("devices.add")
                 Button(Copy.text("device.action.importRequest")) { manager.importRequest() }.accessibilityIdentifier("devices.importRequest")
             }.disabled(manager.busy || manager.service == nil)
@@ -127,7 +129,7 @@ struct DeviceManagementView: View {
         VStack(alignment: .leading, spacing: 14) {
             Text(Copy.text("device.migration.title")).font(.headline)
             Text(Copy.text("device.guidance.migration")).font(.callout).foregroundColor(.secondary)
-            HStack {
+            TogetherAdaptiveStack(spacing: 12, desktop: .init()) {
                 Button(Copy.text("device.action.exportMigration")) { manager.beginMigration() }.accessibilityIdentifier("devices.migration.begin")
                 Button(Copy.text("device.action.importMigration")) { manager.importMigration() }.accessibilityIdentifier("devices.migration.import")
             }

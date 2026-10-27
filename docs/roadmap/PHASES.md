@@ -1,4 +1,25 @@
-# 0.2.4 compatibility — current isolated workstream
+# Concise shared UI copy — current workstream
+
+User requested deletion of redundant and defensive UI writing while the iPhone
+client is being delivered. Apple Build27 and Android18 retain the same UI/data
+architecture. Build26/commit4ed0824 closed7/7 hosted checks as a retained checkpoint;
+current-copy checks belong to the latest commit. No runtime baseline is approved.
+[Copy dispositions](../qa/reports/UI_COPY_TRIM_0_2_4.md).
+
+# iPhone client — Build 27 isolated workstream
+
+`feature/iphone-client` starts at verified compatibility commit
+`bf3e0f0df9b0800b74049ba3f4ae6ed210094b76`, stacked on Draft PR #15.
+Android navigation/information architecture is reused through native SwiftUI
+presentation, not copied databases or another sync engine. The work covers
+phone drawer/tablet split, compact forms, native wheels, safe media selection,
+landscape and accessibility reflow. User deferred both simulator and physical
+runtime acceptance; unsigned generic-device builds cannot close those gates.
+
+No parent PR is merged, no App installed, no production data changed and no
+Relay deployed. [Current QA](../qa/reports/IPHONE_CLIENT_QA.md).
+
+# 0.2.4 compatibility — prior isolated workstream
 
 `feature/platform-compatibility` is stacked on the verified localization
 checkpoint `833d11e96e29973f3916a3e34662ef8b15b51739`. No parent PR, published

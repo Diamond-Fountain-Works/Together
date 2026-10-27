@@ -176,9 +176,11 @@ struct SharedChangeHistoryView: View {
   private var visible: [ChangeEvent] { events.filter(domain.includes) }
   var body: some View {
     VStack(alignment: .leading, spacing: 18) {
-      HStack {
+      TogetherAdaptiveStack(spacing: 12, desktop: .init()) {
         Text(Copy.text("sync.changes.title")).font(.title2.weight(.semibold))
+        #if os(macOS)
         Spacer()
+        #endif
         Picker(Copy.text("finance.filter.all"), selection: $domain) {
           ForEach(ChangeDomain.allCases) { Text($0.title).tag($0) }
         }.labelsHidden().frame(maxWidth: 210).accessibilityIdentifier("sync.changes.filter")
@@ -193,7 +195,7 @@ struct SharedChangeHistoryView: View {
           LazyVStack(alignment: .leading, spacing: 16) { ForEach(visible) { event in row(event) } }
         }.accessibilityIdentifier("sync.changes.list")
       }
-      HStack {
+      TogetherAccessibleStack(desktop: .init()) {
         Button(Copy.text("sync.review.action")) {
           Task {
             do {
@@ -202,15 +204,22 @@ struct SharedChangeHistoryView: View {
             } catch { model.errorMessage = Copy.userError(error) }
           }
         }.disabled(visible.isEmpty).accessibilityIdentifier("sync.changes.review")
+        #if os(macOS)
         Spacer()
+        #endif
         Button(Copy.text("copy.action.3fd47edce45b")) { model.dismissSheet() }.keyboardShortcut(
           .cancelAction
         ).accessibilityIdentifier("sync.changes.close")
       }
-    }.togetherPadding(28).frame(
+    }.togetherPadding(28)
+    #if os(macOS)
+    .frame(
       minWidth: 620, idealWidth: 700, maxWidth: 760, minHeight: 500, idealHeight: 660,
       maxHeight: 720
     )
+    #else
+    .togetherSheetSize(width: 760)
+    #endif
     .togetherTask(id: model.engine.changeNumber) {
       do {
         events = try await model.changeReview.events(context: model.engine.context)
@@ -224,19 +233,23 @@ struct SharedChangeHistoryView: View {
   }
   private func row(_ event: ChangeEvent) -> some View {
     VStack(alignment: .leading, spacing: 8) {
-      HStack(alignment: .firstTextBaseline) {
+      TogetherAdaptiveStack(spacing: 6, desktop: .init(alignment: .firstTextBaseline)) {
         Text(model.name(event.actorId)).font(.headline)
         Text(
           Copy.text("sync.origin." + event.origin(local: model.engine.identity.descriptor).rawValue)
         ).font(.caption).foregroundColor(.secondary)
+        #if os(macOS)
         Spacer()
+        #endif
         Text(Copy.date(event.occurredAt)).font(.caption).foregroundColor(.secondary)
       }
-      HStack {
+      TogetherAdaptiveStack(spacing: 8, desktop: .init()) {
         Text(action(event))
         Text(domainName(event)).foregroundColor(.secondary)
         if !event.title.isEmpty { Text(verbatim: event.title).lineLimit(2) }
+        #if os(macOS)
         Spacer()
+        #endif
         if event.resolution != .effective {
           Text(Copy.text("sync.resolution." + event.resolution.rawValue)).font(.caption)
             .foregroundColor(.secondary)
@@ -261,7 +274,7 @@ struct SharedChangeHistoryView: View {
         ForEach(fields, id: \.self) { key in
           VStack(alignment: .leading, spacing: 4) {
             Text(fieldName(key)).font(.caption).foregroundColor(.secondary)
-            HStack(alignment: .top) {
+            TogetherAdaptiveStack(spacing: 8, desktop: .init(alignment: .top)) {
               Text(verbatim: value(event.before[key], field: key)).foregroundColor(.secondary)
               Image(systemName: TogetherSymbols.name("arrow.right")).foregroundColor(Color.secondary.opacity(0.65))
               Text(verbatim: value(event.after[key], field: key))

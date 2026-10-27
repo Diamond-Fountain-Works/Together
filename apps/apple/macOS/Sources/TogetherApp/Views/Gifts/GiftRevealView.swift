@@ -19,7 +19,7 @@ struct GiftRevealView: View {
         VStack(spacing: 0) {
             HStack {
                 Text(gifts.count > 1 ? Copy.format("copy.emotional.07940efad8c3", String(describing: gifts.count)) : Copy.text("copy.emotional.c35685beea5a")).font(.caption).foregroundColor(.secondary)
-                Spacer(); TogetherIconButton(Copy.text("copy.action.3fd47edce45b"), systemImage: TogetherSymbols.name("xmark")) { close() }.labelStyle(.iconOnly).buttonStyle(.plain).keyboardShortcut(.cancelAction).accessibilityIdentifier("gift.close")
+                Spacer(); TogetherIconButton(Copy.text("copy.action.3fd47edce45b"), systemImage: TogetherSymbols.name("xmark")) { close() }.labelStyle(.iconOnly).togetherTouchTarget().buttonStyle(.plain).keyboardShortcut(.cancelAction).accessibilityIdentifier("gift.close")
             }.togetherPadding(24)
             if let gift {
                 ScrollView {
@@ -35,9 +35,11 @@ struct GiftRevealView: View {
                             Text(LoveCopy.ending(sender: role(gift)))
                                 .font(.callout.weight(.light)).foregroundColor(TogetherTheme.rose).padding(.top, 12)
                                 .transition(.opacity).togetherAnimation(reduceMotion ? nil : .easeOut(duration: 0.25).delay(0.16), value: opened)
+                            #if os(iOS)
+                            giftActions(gift)
+                            #endif
                         } else {
                             Text(LoveCopy.introduction(sender: role(gift))).font(.title2.weight(.medium)).multilineTextAlignment(.center)
-                            Text(Copy.text("copy.status.99d1094feca8")).foregroundColor(.secondary)
                             Button(Copy.text("copy.emotional.0fe0176cc04d")) {
                                 model.perform { try model.engine.markGiftOpened(gift.id) }
                                 withAnimation(TogetherTheme.motion(reduceMotion)) { opened = true }
@@ -45,27 +47,9 @@ struct GiftRevealView: View {
                         }
                     }.togetherHorizontalPadding(36).padding(.bottom, 28).frame(maxWidth: .infinity)
                 }.frame(minHeight: TogetherPlatform.giftContentMinimumHeight, maxHeight: 500)
-                if opened {
-                    VStack(spacing: 14) {
-                        if gifts.count > 1 {
-                            HStack {
-                                Button(Copy.text("copy.action.d77339465930")) { change(-1) }.disabled(index == 0)
-                                Spacer(); Text(Copy.format("copy.guidance.f7fe73b265ee", String(describing: index + 1), String(describing: gifts.count))).font(.caption.monospacedDigit()).foregroundColor(.secondary); Spacer()
-                                Button(Copy.text("copy.action.eca2213cf87f")) { change(1) }.disabled(index >= gifts.count - 1)
-                            }
-                        }
-                        HStack {
-                            if gift.recipientId == model.engine.identity.descriptor.userId {
-                                Button(Copy.text("copy.emotional.8bd6be42784c")) { model.reply(to: gift.id) }
-                            }
-                            Spacer(); Button(Copy.text("copy.emotional.b26ee65bfb3b")) { close() }.togetherProminentButton().togetherLargeControl().keyboardShortcut(.defaultAction).accessibilityIdentifier("gift.received")
-                        }
-                        if model.engine.hasSentGift(on: model.currentDate), gift.recipientId == model.engine.identity.descriptor.userId {
-                            Text(Copy.text("copy.emotional.13049016bf03")).font(.caption).foregroundColor(.secondary)
-                        }
-                    }.togetherPadding(24).togetherMaterialSurface()
-                        .transition(.opacity).togetherAnimation(reduceMotion ? nil : .easeOut(duration: 0.25).delay(0.22), value: opened)
-                }
+                #if os(macOS)
+                if opened { giftActions(gift) }
+                #endif
             } else {
                 TogetherEmptyState(Copy.text("copy.empty_state.7ff1ed89807d"), systemImage: TogetherSymbols.name("envelope"))
                 Button(Copy.text("copy.action.3fd47edce45b")) { close() }.togetherPadding(24)
@@ -77,6 +61,34 @@ struct GiftRevealView: View {
             model.giftRevealDidAppear(automatic: automatic)
             if automatic { for gift in gifts { model.perform { try model.engine.markGiftPresented(gift.id, automatic: true) } } }
         }
+    }
+    private func giftActions(_ gift: DailyLoveGift) -> some View {
+        VStack(spacing: 14) {
+            if gifts.count > 1 {
+                HStack {
+                    Button(Copy.text("copy.action.d77339465930")) { change(-1) }.disabled(index == 0)
+                    Spacer()
+                    Text(Copy.format("copy.guidance.f7fe73b265ee", String(index + 1), String(gifts.count))).font(.caption.monospacedDigit()).foregroundColor(.secondary)
+                    Spacer()
+                    Button(Copy.text("copy.action.eca2213cf87f")) { change(1) }.disabled(index >= gifts.count - 1)
+                }
+            }
+            TogetherAdaptiveStack(spacing: 12, desktop: .init()) {
+                if gift.recipientId == model.engine.identity.descriptor.userId {
+                    Button(Copy.text("copy.emotional.8bd6be42784c")) { model.reply(to: gift.id) }.togetherTouchTarget()
+                }
+                #if os(macOS)
+                Spacer()
+                #endif
+                Button(Copy.text("copy.emotional.b26ee65bfb3b")) { close() }
+                    .togetherProminentButton().togetherLargeControl().togetherTouchTarget()
+                    .keyboardShortcut(.defaultAction).accessibilityIdentifier("gift.received")
+            }
+            if model.engine.hasSentGift(on: model.currentDate), gift.recipientId == model.engine.identity.descriptor.userId {
+                Text(Copy.text("copy.emotional.13049016bf03")).font(.caption).foregroundColor(.secondary)
+            }
+        }.togetherPadding(24).togetherMaterialSurface()
+            .transition(.opacity).togetherAnimation(reduceMotion ? nil : .easeOut(duration: 0.25).delay(0.22), value: opened)
     }
     private func role(_ gift: DailyLoveGift) -> RelationshipLabel { model.engine.snapshot.profiles[gift.senderId]?.role ?? .unknown }
     private func close() { withAnimation(TogetherTheme.motion(reduceMotion)) { model.dismissSheet() } }
@@ -95,7 +107,7 @@ struct GiftContentsView: View {
                 Spacer()
             }
             Text(LoveCopy.title(sender: profile?.role ?? .unknown, hasText: gift.hasText)).font(.title2.weight(.medium))
-            if let text = gift.textContent, gift.hasText { Text(text).font(.system(size: 19)).lineSpacing(6).togetherTextSelection().fixedSize(horizontal: false, vertical: true).accessibilityIdentifier("gift.privateText") }
+            if let text = gift.textContent, gift.hasText { giftText(text).lineSpacing(6).togetherTextSelection().fixedSize(horizontal: false, vertical: true).accessibilityIdentifier("gift.privateText") }
             if let id = gift.audioAssetId, let asset = model.engine.snapshot.mediaAssets[id] {
                 Text(Copy.text("copy.emotional.c6b12f8ce310")).font(.callout).foregroundColor(.secondary)
                 AudioPlayerView(url: model.engine.mediaStore.originalURL(asset))
@@ -107,5 +119,12 @@ struct GiftContentsView: View {
                     .disabled(!model.engine.mediaStore.hasVerified(asset)).accessibilityIdentifier("gift.savePhoto")
             }
         }.frame(maxWidth: .infinity, alignment: .leading)
+    }
+    private func giftText(_ text: String) -> Text {
+        #if os(iOS)
+        Text(text).font(.body)
+        #else
+        Text(text).font(.system(size: 19))
+        #endif
     }
 }
