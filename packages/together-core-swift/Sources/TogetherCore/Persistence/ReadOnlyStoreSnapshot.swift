@@ -58,6 +58,13 @@ import CSQLite
         }
         defer { sqlite3_close(source) }
         guard sqlite3_db_readonly(source, "main") == 1 else { throw RepositoryError.unsupportedStorage }
+        // A just-released CoreData store can still be finishing its WAL close
+        // on another queue. Apply the existing bounded budget to the first
+        // read as well as backup steps; never restart an already-begun BEGIN.
+        let readWait = max(0, min(busyBudget, maximumDuration).nanoseconds / 1_000_000)
+        guard sqlite3_busy_timeout(source, Int32(clamping: readWait)) == SQLITE_OK else {
+            throw RepositoryError.unsupportedStorage
+        }
         // A read transaction pins one snapshot even if another process writes.
         let begun = sqlite3_exec(source, "BEGIN; PRAGMA schema_version;", nil, nil, nil)
         guard begun == SQLITE_OK else {
@@ -65,6 +72,9 @@ import CSQLite
             throw RepositoryError.unsupportedStorage
         }
         defer { sqlite3_exec(source, "ROLLBACK", nil, nil, nil) }
+        // Backup owns its existing explicit monotonic retry budget. Do not
+        // nest this connection-level wait inside each subsequent backup step.
+        guard sqlite3_busy_timeout(source, 0) == SQLITE_OK else { throw RepositoryError.unsupportedStorage }
 
         var destination: OpaquePointer?
         let destinationResult = sqlite3_open_v2(try canonicalParentPath(snapshot), &destination, SQLITE_OPEN_READWRITE | SQLITE_OPEN_FULLMUTEX | SQLITE_OPEN_NOFOLLOW, nil)
