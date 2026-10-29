@@ -1,3 +1,10 @@
+# Unreleased — responsibility boundaries
+
+- Group replica production recovery, configuration and Wishes commands by responsibility.
+- Separate C1 binding, API DTO/endpoints, content encoding and bootstrap entry points.
+- Retain exact declaration/method bytes, access levels, runtime objects and public APIs.
+- [File mapping and verification](../architecture/RESPONSIBILITY_REFACTOR.md).
+
 # 0.2.4 Build27 / Android18 — concise UI copy candidate (unreleased)
 
 - Remove repeated wish/grant, reminder, crop, split-allocation and offline explanations.

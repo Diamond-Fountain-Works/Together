@@ -1,5 +1,14 @@
 # Together Architecture
 
+## Responsibility boundaries
+
+TogetherCore keeps its existing ReplicaEngine and C1ReplicationService runtime
+objects. Production recovery, Wishes commands, C1 binding/API/content and bootstrap
+declarations now have dedicated source files inside that same module. Private
+lifecycle state remains with its owner. No protocol, storage, public API or
+business behavior changes accompany the move.
+See [file mapping and verification](RESPONSIBILITY_REFACTOR.md).
+
 ## Apple compatibility boundary — 0.2.4 candidate
 
 The current source prepares one Apple Silicon macOS client with a macOS 11

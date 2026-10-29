@@ -3,43 +3,6 @@ import Foundation
 @preconcurrency import Network
 import Combine
 
-public struct C1ReplicationBinding: Codable, Equatable, Sendable {
-  public var serviceURL: URL
-  public var spaceId: UUID
-  public var legacyRouteId: UUID
-  public var localDeviceId: UUID
-  public init(serviceURL: URL, spaceId: UUID, legacyRouteId: UUID, localDeviceId: UUID) {
-    self.serviceURL = serviceURL
-    self.spaceId = spaceId
-    self.legacyRouteId = legacyRouteId
-    self.localDeviceId = localDeviceId
-  }
-}
-struct C1RelaySpace: Codable, Sendable {
-  var schemaVersion: Int
-  var legacyRouteId: UUID
-  var spaceId: UUID
-  var archive: AuthorizationArchive
-  var authorizationDigest: String
-  func verified(local: DeviceDescriptor, previous: SpaceAuthorization?) throws -> SpaceAuthorization
-  {
-    let trust = try SpaceAuthorization.restore(archive)
-    guard schemaVersion == 2, trust.spaceId == spaceId, trust.containsActive(local),
-      try trust.digest == authorizationDigest
-    else { throw ReplicationError.unauthorized }
-    if let previous {
-      guard try trust.genesis.digest == previous.genesis.digest,
-        previous.events.allSatisfy(trust.events.contains)
-      else { throw ReplicationError.staleAuthorization }
-    }
-    return trust
-  }
-}
-private struct C1Bootstrap: Codable {
-  var legacyRouteId: UUID
-  var authorization: AuthorizationArchive
-}
-private struct C1AuthorizationRequest: Codable { var event: SignedDeviceAuthorization }
 private struct C1DirectedPacket: Codable {
   var kind = "relay4"
   var senderDeviceId: UUID
@@ -52,62 +15,7 @@ private struct C1Presence: Codable {
   var devices: [UUID]
   var authorizationDigest: String
 }
-enum C1Content: Codable {
-  case replication(ReplicationFrame)
-  case media(WirePayload)
-  private enum Keys: String, CodingKey { case kind, frame, payload }
-  init(from decoder: any Decoder) throws {
-    let c = try decoder.container(keyedBy: Keys.self)
-    switch try c.decode(String.self, forKey: .kind) {
-    case "replication": self = .replication(try c.decode(ReplicationFrame.self, forKey: .frame))
-    case "media": self = .media(try c.decode(WirePayload.self, forKey: .payload))
-    default: throw ReplicationError.incompatibleProtocol
-    }
-  }
-  func encode(to encoder: any Encoder) throws {
-    var c = encoder.container(keyedBy: Keys.self)
-    switch self {
-    case .replication(let frame):
-      try c.encode("replication", forKey: .kind)
-      try c.encode(frame, forKey: .frame)
-    case .media(let payload):
-      try c.encode("media", forKey: .kind)
-      try c.encode(payload, forKey: .payload)
-    }
-  }
-}
 
-extension RelayAPI {
-  func bootstrap4(legacyRouteId: UUID, authorization: AuthorizationArchive) async throws
-    -> C1RelaySpace
-  {
-    try await request(
-      "POST", path: "/v2/spaces",
-      body: CanonicalJSON.encode(
-        C1Bootstrap(legacyRouteId: legacyRouteId, authorization: authorization)),
-      as: C1RelaySpace.self, maximumResponseBytes: 131072)
-  }
-  func space4(_ space: UUID) async throws -> C1RelaySpace {
-    try await request(
-      "GET", path: "/v2/spaces/\(space)", as: C1RelaySpace.self, maximumResponseBytes: 131072)
-  }
-  func authorize4(_ space: UUID, event: SignedDeviceAuthorization) async throws -> C1RelaySpace {
-    try await request(
-      "POST", path: "/v2/spaces/\(space)/devices",
-      body: CanonicalJSON.encode(C1AuthorizationRequest(event: event)), as: C1RelaySpace.self,
-      maximumResponseBytes: 131072)
-  }
-  func ticket4(_ space: UUID) async throws -> RelayTicket {
-    try await request(
-      "POST", path: "/v2/spaces/\(space)/ticket", body: Data("{}".utf8), as: RelayTicket.self)
-  }
-  func websocketURL4(_ space: UUID) -> URL {
-    var components = URLComponents(
-      url: base.appendingPathComponent("v2/socket/\(space)"), resolvingAgainstBaseURL: false)!
-    components.scheme = base.scheme == "https" ? "wss" : "ws"
-    return components.url!
-  }
-}
 
 @MainActor private final class C1PeerChannel {
   let remote: DeviceDescriptor
@@ -193,58 +101,6 @@ extension RelayAPI {
     }
     monitor.start(queue: DispatchQueue(label: "com.together.c1.multidevice.path"))
   }
-  public static func migrationProposal(engine: ReplicaEngine) async throws -> SpaceGenesisBody {
-    guard !engine.usesReplication4, engine.peer != nil else { throw ReplicationError.unauthorized }
-    let context = engine.context
-    let log = engine.operations
-    guard
-      await Task.detached(operation: {
-        log.allSatisfy { op in
-          context.devices[op.operation.deviceId].map { op.verified(by: $0) } ?? false
-        }
-      }).value
-    else { throw ReplicationError.invalidSignature }
-    let checkpoint = try await OperationInventoryIndex(repository: engine.repository).checkpoint()
-    return SpaceGenesisBody(context: context, legacyCheckpoint: checkpoint)
-  }
-  public static func signMigrationProposal(engine: ReplicaEngine, proposal: SpaceGenesisBody)
-    async throws -> DeviceSignature
-  {
-    guard try await migrationProposal(engine: engine) == proposal else {
-      throw ReplicationError.inventoryChanged
-    }
-    return DeviceSignature(
-      deviceId: engine.identity.descriptor.deviceId,
-      signature: try engine.identity.sign(CanonicalJSON.encode(proposal)))
-  }
-  /// Two original devices must sign one identical frozen-space/checkpoint
-  /// proposal. This API never manufactures the partner's signature.
-  public static func migrate(engine: ReplicaEngine, genesis: SignedSpaceGenesis) async throws
-    -> C1ReplicationService
-  {
-    guard !engine.usesReplication4,
-      let legacy = try engine.repository.load(RelayBinding.self, key: "relay-binding"),
-      let peer = engine.peer
-    else { throw ReplicationError.unauthorized }
-    let trust = try SpaceAuthorization(
-      genesis: genesis,
-      existingPins: ReplicaContext(local: engine.identity.descriptor, peer: peer.descriptor))
-    let index = OperationInventoryIndex(repository: engine.repository)
-    guard try await index.checkpoint() == genesis.body.legacyCheckpoint else {
-      throw ReplicationError.inventoryChanged
-    }
-    let api = try RelayAPI(base: legacy.serviceURL, identity: engine.identity)
-    let remote = try await api.bootstrap4(
-      legacyRouteId: legacy.routeId, authorization: trust.archive)
-    _ = try remote.verified(local: engine.identity.descriptor, previous: trust)
-    guard try await index.checkpoint() == genesis.body.legacyCheckpoint else { throw ReplicationError.inventoryChanged }
-    let binding = C1ReplicationBinding(
-      serviceURL: legacy.serviceURL, spaceId: trust.spaceId, legacyRouteId: legacy.routeId,
-      localDeviceId: engine.identity.descriptor.deviceId)
-    let store = try await engine.activateReplication4(remote.archive)
-    try engine.repository.save(binding, key: "replication4/relay-binding")
-    return try C1ReplicationService(engine: engine, binding: binding, store: store)
-  }
   public func progress(for operationId: UUID) async throws -> OperationDeliveryProgress {
     var transferring: Set<UUID> = []
     for (id, channel) in channels {
@@ -260,35 +116,6 @@ extension RelayAPI {
   }
   public func authorizationArchive() async -> AuthorizationArchive {
     await store.authorization.archive
-  }
-  /// The bootstrap digest must be obtained from an already trusted device,
-  /// after the new device's independent public key has been authorized.
-  public static func prepareAuthorizedDevice(
-    repository: TogetherRepository, identity: DeviceIdentity, binding: C1ReplicationBinding,
-    archive: AuthorizationArchive, trustedGenesisDigest: String
-  ) throws {
-    let trust = try SpaceAuthorization.restore(archive)
-    guard try trust.genesis.digest == trustedGenesisDigest,
-      trust.containsActive(identity.descriptor),
-      binding.localDeviceId == identity.descriptor.deviceId, binding.spaceId == trust.spaceId,
-      try repository.operationCount() == 0
-    else { throw ReplicationError.unauthorized }
-    if let prior = try repository.load(LocalIdentityMetadata.self, key: "local-identity") {
-      guard prior.deviceId == identity.descriptor.deviceId,
-        prior.userId == identity.descriptor.userId,
-        prior.spaceId == identity.descriptor.initialSpaceId
-      else { throw ReplicationError.unauthorized }
-    }
-    try repository.saveAtomically([
-      "replication4/authorization": CanonicalJSON.encode(trust.archive),
-      "replication4/relay-binding": CanonicalJSON.encode(binding),
-      "local-identity": CanonicalJSON.encode(
-        LocalIdentityMetadata(
-          deviceId: identity.descriptor.deviceId, userId: identity.descriptor.userId,
-          spaceId: identity.descriptor.initialSpaceId)),
-      "replication4/local-device": CanonicalJSON.encode(identity.descriptor),
-      "initial-time-zone": CanonicalJSON.encode(trust.genesis.body.sharedTimeZoneIdentifier),
-    ])
   }
   public func start() async {
     enabled = true

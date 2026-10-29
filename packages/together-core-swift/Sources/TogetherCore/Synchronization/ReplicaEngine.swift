@@ -2,26 +2,6 @@ import Foundation
 import CryptoKit
 import Combine
 
-public struct RecurrenceDraft: Sendable {
-    public var mode: RecurrenceMode
-    public var unit: RecurrenceUnit
-    public var interval: Int
-    public var timeZoneIdentifier: String
-    public init(mode: RecurrenceMode, unit: RecurrenceUnit = .day, interval: Int = 1, timeZoneIdentifier: String = TimeZone.current.identifier) {
-        self.mode = mode; self.unit = unit; self.interval = interval; self.timeZoneIdentifier = timeZoneIdentifier
-    }
-}
-public struct ListenerSettings: Codable, Sendable {
-    public var host: String
-    public var port: UInt16
-    public var enabled: Bool
-    public init(host: String = "127.0.0.1", port: UInt16 = 58431, enabled: Bool = false) { self.host = host; self.port = port; self.enabled = enabled }
-}
-public enum TogetherError: LocalizedError {
-    case invalid(String)
-    public var errorDescription: String? { if case let .invalid(text) = self { text } else { nil } }
-}
-
 @MainActor public final class ReplicaEngine: ObservableObject {
     public let identity: DeviceIdentity
     public let repository: TogetherRepository
@@ -72,47 +52,6 @@ public enum TogetherError: LocalizedError {
         try ensureSharedSpace()
         try reconcileRecurrence()
         try reconcileFinanceBills()
-    }
-
-    public static func production(migrateLegacyIdentity: Bool = false) throws -> ReplicaEngine {
-        guard !["com.together.app.qa", "com.together.app.ios.qa"].contains(Bundle.main.bundleIdentifier ?? "") else {throw TogetherError.invalid(Copy.text("qa.error.isolatedLaunch"))}
-        let systemSupport = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)[0]
-        #if os(iOS)
-        // Canonicalize only the OS-provided parent (/var's sandbox alias),
-        // never the user-controlled Together child or identity workspace.
-        let support = systemSupport.resolvingSymlinksInPath()
-        #else
-        let support = systemSupport
-        #endif
-        let root = support.appendingPathComponent("Together", isDirectory: true)
-        let directory = try DeviceEnrollmentWorkspace(root: root).activeDirectory()
-        if !FileManager.default.fileExists(atPath: directory.appendingPathComponent("Together.store").path) {
-            let keys = (try? FileManager.default.contentsOfDirectory(at: directory.appendingPathComponent("Identity"), includingPropertiesForKeys: nil)) ?? []
-            guard keys.isEmpty else { throw IdentityStorageError.identityMismatch }
-        }
-        try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
-        let repository = try TogetherRepository(url: directory.appendingPathComponent("Together.store"))
-        let operations = try repository.allOperations()
-        let existingMetadata = try repository.load(LocalIdentityMetadata.self, key: "local-identity")
-        guard existingMetadata != nil || operations.isEmpty else { throw IdentityStorageError.identityMismatch }
-        let metadata = existingMetadata ?? LocalIdentityMetadata()
-        let enrolled = try repository.load(DeviceDescriptor.self, key: "replication4/local-device")
-        if directory != root, existingMetadata == nil || enrolled == nil { throw IdentityStorageError.identityMismatch }
-        if let enrolled { guard enrolled.deviceId == metadata.deviceId, enrolled.userId == metadata.userId, enrolled.initialSpaceId == metadata.spaceId else { throw IdentityStorageError.identityMismatch } }
-        let storedZone = try repository.load(String.self, key: "initial-time-zone")
-        let zone = enrolled?.initialTimeZoneIdentifier ?? storedZone ?? TimeZone.current.identifier
-        let identity = try DeviceIdentity.persistent(deviceId: metadata.deviceId, userId: metadata.userId, spaceId: metadata.spaceId,
-                                                     directory: directory.appendingPathComponent("Identity", isDirectory: true),
-                                                     needsExistingIdentity: existingMetadata != nil || !operations.isEmpty || enrolled != nil, migrateLegacy: migrateLegacyIdentity, timeZoneIdentifier: zone, protocolVersion: enrolled?.protocolVersion ?? 3, displayName: enrolled?.displayName ?? "我") { key in
-            let publicKey = try Curve25519.Signing.PrivateKey(rawRepresentation: key).publicKey
-            if let enrolled, enrolled.publicKey != publicKey.rawRepresentation { throw IdentityStorageError.identityMismatch }
-            for operation in operations where operation.operation.deviceId == metadata.deviceId {
-                guard try publicKey.isValidSignature(operation.signature, for: CanonicalJSON.encode(operation.operation)) else { throw IdentityStorageError.identityMismatch }
-            }
-        }
-        try repository.save(metadata, key: "local-identity")
-        try repository.save(zone, key: "initial-time-zone")
-        return try ReplicaEngine(repository: repository, identity: identity, mediaRoot: directory.appendingPathComponent("Media"), enrollmentRoot: root)
     }
 
     public func authorize(_ proposed: PairedPeer) throws {
@@ -341,23 +280,6 @@ public enum TogetherError: LocalizedError {
         try append(entity: id, type: .task, action: .patch, fields: ["nextAt": .date(date)])
         try reconcileRecurrence()
     }
-
-    @discardableResult public func grant(fulfiller: UUID, beneficiary: UUID, quantity: Int, date: CivilDate, notes: String) throws -> UUID {
-        let id = UUID()
-        try append(entity: id, type: .wishGrant, action: .create, fields: ["spaceId": .id(context.spaceId), "fulfillerId": .id(fulfiller), "beneficiaryId": .id(beneficiary), "quantity": .integer(quantity), "grantedOn": .string(date.iso), "createdBy": .id(identity.descriptor.userId), "notes": .string(notes)])
-        return id
-    }
-    public func adjustGrant(_ grantId: UUID, delta: Int, notes: String) throws {
-        try append(entity: UUID(), type: .grantAdjustment, action: .create, fields: ["grantId": .id(grantId), "delta": .integer(delta), "notes": .string(notes)])
-    }
-    @discardableResult public func createWish(grantId: UUID, title: String, description: String) throws -> UUID {
-        let id = UUID()
-        try append(entity: id, type: .wishItem, action: .create, fields: ["grantId": .id(grantId), "title": .string(title), "description": .string(description), "createdBy": .id(identity.descriptor.userId)])
-        return id
-    }
-    public func requestFulfillment(_ id: UUID) throws { try append(entity: id, type: .wishItem, action: .requestFulfillment, fields: [:]) }
-    public func confirmFulfillment(_ id: UUID) throws { try append(entity: id, type: .wishItem, action: .confirmFulfillment, fields: [:]) }
-    public func rejectFulfillment(_ id: UUID) throws { try append(entity: id, type: .wishItem, action: .rejectFulfillment, fields: [:]) }
 
     func append(entity: UUID, type: EntityType, action: OperationType, fields: [String: LogValue], createdAt: Date? = nil) throws {
         try appendGroup([(entity,type,action,fields)],createdAt:createdAt)
