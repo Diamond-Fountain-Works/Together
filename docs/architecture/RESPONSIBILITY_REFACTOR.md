@@ -50,6 +50,7 @@ private 请求类型跟随 API 实现移动；private 通道类型保留在协�
 公开 API、持久化键、Schema、Canonical JSON、签名、Lamport、ACK、重连和业务规则保持原样。
 `protocol/`、原生依赖、UI/文案资源、Android 源码和发布配置未修改。
 SwiftPM 自动发现新增 Core 文件，Xcode 继续引用同一个本地 Package。
+两份 CI 工作流的 PR 目标列表补入 `feature/iphone-client`，使堆叠 PR 实际执行完整检查；测试步骤与断言没有修改。
 
 这是职责归档和入口分离，没有宣称建立独立 WishService 或完成深层运行时解耦。
 本轮不发布安装包；App/同步/存储版本不变。

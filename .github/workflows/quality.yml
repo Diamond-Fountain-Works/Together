@@ -3,7 +3,7 @@ on:
   push:
     branches: [main, 'feature/**', 'fix/**', 'refactor/**', 'release/**']
   pull_request:
-    branches: [main, 'feature/localization-0.2.3', 'feature/platform-compatibility', 'refactor/monorepo-foundation']
+    branches: [main, 'feature/localization-0.2.3', 'feature/platform-compatibility', 'feature/iphone-client', 'refactor/monorepo-foundation']
   workflow_dispatch:
 permissions:
   contents: read
